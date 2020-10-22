@@ -29,7 +29,8 @@ jobs:
       # Runs a set of commands using the runners shell
       - name: Build WebApp
         run: |
-          yarn install
+          yarn policies set-version
+          yarn install --frozen-lockfile
           yarn build
           
       - name: Deploy to Netlify
