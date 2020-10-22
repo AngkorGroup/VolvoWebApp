@@ -31,7 +31,7 @@ const App = () => {
 									{routes.map((route: RouteType) => (
 										<Route
 											key={route.id}
-											exact={true}
+											exact
 											path={route.path}
 											component={route.component}
 										/>
