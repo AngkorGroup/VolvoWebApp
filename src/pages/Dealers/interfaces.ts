@@ -7,4 +7,5 @@ export interface Dealer {
 	type: string;
 	phone: string;
 	zone: string;
+	maxCashiers: string;
 }

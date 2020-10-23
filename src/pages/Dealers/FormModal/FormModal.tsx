@@ -31,6 +31,7 @@ const initialValues: Dealer = {
 	type: '',
 	phone: '',
 	zone: '',
+	maxCashiers: '',
 };
 
 const fieldProps = {
@@ -90,6 +91,9 @@ const FormModal: React.FC<FormModalProps> = ({
 								</Grid>
 								<Grid item xs={8}>
 									<Field name='address' label='Dirección' {...fieldProps} />
+								</Grid>
+								<Grid item xs={4}>
+									<Field name='maxCashiers' label='Max. POS' {...fieldProps} />
 								</Grid>
 							</Grid>
 						</DialogContent>

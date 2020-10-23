@@ -31,7 +31,17 @@ const DealerRow = ({ item, onEdit, onDelete }: DealerRowProps) => {
 	const classes = useStyles();
 	const [showEditModal, setShowEditModal] = useState(false);
 	const [showDeleteModal, setShowDeleteModal] = useState(false);
-	const { code, name, ruc, address, status, type, phone, zone } = item;
+	const {
+		code,
+		name,
+		ruc,
+		address,
+		status,
+		type,
+		phone,
+		zone,
+		maxCashiers,
+	} = item;
 
 	const setEditModalVisible = (flag: boolean) => () => setShowEditModal(flag);
 	const setDelModalVisible = (flag: boolean) => () => setShowDeleteModal(flag);
@@ -47,6 +57,7 @@ const DealerRow = ({ item, onEdit, onDelete }: DealerRowProps) => {
 				<TableCell>{type}</TableCell>
 				<TableCell>{phone}</TableCell>
 				<TableCell>{zone}</TableCell>
+				<TableCell>{maxCashiers}</TableCell>
 				<TableCell>
 					<div className={classes.actionButtons}>
 						<VolvoIconButton
