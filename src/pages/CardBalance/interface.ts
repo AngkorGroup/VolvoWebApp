@@ -31,6 +31,7 @@ export interface Expiration {
 
 export interface Card {
 	id: string;
+	type: string;
 	name: string;
 	balance: string;
 }

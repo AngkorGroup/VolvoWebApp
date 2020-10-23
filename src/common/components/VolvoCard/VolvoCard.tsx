@@ -1,8 +1,12 @@
 import { createStyles, makeStyles, Theme } from '@material-ui/core';
 import React from 'react';
+import cardBlue from '../../assets/images/cardBlue.jpg';
+import cardRed from '../../assets/images/cardRed.jpg';
 
 interface VolvoCardProps {
 	title: string;
+	// This prop will be deleted when real data comes in
+	type: string;
 	balance: string;
 	number?: string;
 	url?: string;
@@ -19,6 +23,7 @@ const useStyles = makeStyles(({ palette }: Theme) =>
 			justifyContent: 'space-between',
 			color: palette.primary.contrastText,
 			fontSize: '30px',
+			position: 'relative',
 		},
 		normal: {
 			width: '250px',
@@ -31,27 +36,37 @@ const useStyles = makeStyles(({ palette }: Theme) =>
 		title: {
 			fontWeight: 700,
 			marginTop: '5px',
+			zIndex: 2,
 		},
 		balance: {
 			marginBottom: '10px',
+			zIndex: 2,
 		},
 		number: {
 			fontSize: '15px',
 			fontWeight: 400,
+		},
+		image: {
+			position: 'absolute',
+			width: '100%',
+			zIndex: 1,
 		},
 	}),
 );
 
 const VolvoCard: React.FC<VolvoCardProps> = ({
 	title,
+	type,
 	balance,
 	number,
 	isThumbnail,
 }: VolvoCardProps) => {
 	const classes = useStyles();
+	const cardIMG = type === 'VURE' ? cardBlue : cardRed;
 	const sizeClass = isThumbnail ? classes.thumbnail : classes.normal;
 	return (
 		<div className={`${classes.card} ${sizeClass}`}>
+			<img className={classes.image} src={cardIMG} alt='Imagen de la tarjeta' />
 			<div className={classes.title}>
 				<div>{title}</div>
 				<div className={classes.number}>{number}</div>

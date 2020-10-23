@@ -107,7 +107,12 @@ const CardBatchesModal: React.FC<CardBatchesModalProps> = ({
 			<DialogTitle id='alert-dialog-title'>Lotes</DialogTitle>
 			<DialogContent>
 				<div className={classes.cardContainer}>
-					<VolvoCard balance={balance} title={type} number={number} />
+					<VolvoCard
+						type={type}
+						balance={balance}
+						title={type}
+						number={number}
+					/>
 				</div>
 				{loading && <PageLoader />}
 				{!loading && (

@@ -111,7 +111,11 @@ const CardListModal: React.FC<CardListModalProps> = ({
 			<DialogTitle id='alert-dialog-title'>Tarjetas</DialogTitle>
 			<DialogContent>
 				<div className={classes.cardContainer}>
-					<VolvoCard balance={cardDisplayData.balance} title={cardType} />
+					<VolvoCard
+						type={cardType}
+						balance={cardDisplayData.balance}
+						title={cardType}
+					/>
 				</div>
 				{loading && <PageLoader />}
 				{!loading && (
