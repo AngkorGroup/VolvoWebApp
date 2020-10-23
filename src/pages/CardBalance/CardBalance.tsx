@@ -85,11 +85,12 @@ const useStyles = makeStyles(
 			display: 'flex',
 		},
 		headerItem: {
-			flexGrow: 1,
+			flexGrow: 3,
 		},
 		cardContainer: {
 			display: 'flex',
 			justifyContent: 'center',
+			flexGrow: 1,
 		},
 	}),
 );

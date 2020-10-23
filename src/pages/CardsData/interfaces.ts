@@ -10,6 +10,8 @@ export interface CardData {
 	tpNumber: string;
 	createdAt: string;
 	currency: string;
-	contact: Contact;
+	contactName: string;
+	contactType: string;
+	contactPhone: string;
 	status: string;
 }
