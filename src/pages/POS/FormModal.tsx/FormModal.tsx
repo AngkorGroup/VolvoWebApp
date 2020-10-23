@@ -25,6 +25,7 @@ interface FormModalProps {
 const initialValues: POSForm = {
 	code: '',
 	phone: '',
+	email: '',
 };
 
 const fieldProps = {
@@ -69,6 +70,9 @@ const FormModal: React.FC<FormModalProps> = ({
 								</Grid>
 								<Grid item xs={8}>
 									<Field name='phone' label='Celular' {...fieldProps} />
+								</Grid>
+								<Grid item xs={12}>
+									<Field name='email' label='Correo' {...fieldProps} />
 								</Grid>
 							</Grid>
 						</DialogContent>

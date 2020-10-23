@@ -26,6 +26,9 @@ const posColumns = [
 		title: 'Celular',
 	},
 	{
+		title: 'Email',
+	},
+	{
 		title: 'Acciones',
 		props: { align: 'center' as 'center' },
 	},
@@ -40,6 +43,7 @@ const posRows: POSType[] = [
 			name: 'AUTOMOTORES MOQUEGUA',
 		},
 		phone: '987654321',
+		email: 'fpeña@gmail.com',
 	},
 	{
 		id: '2',
@@ -49,6 +53,7 @@ const posRows: POSType[] = [
 			name: 'AUTOMOTORES MOQUEGUA',
 		},
 		phone: '988665531',
+		email: 'lcastillo@gmail.com',
 	},
 	{
 		id: '3',
@@ -58,6 +63,7 @@ const posRows: POSType[] = [
 			name: 'AUTOMOTORES MOQUEGUA',
 		},
 		phone: '999666333',
+		email: 'hlobaton@gmail.com',
 	},
 ];
 
@@ -68,6 +74,7 @@ const POS: React.FC = () => {
 	const [posList, setPOSList] = useState<POSType[]>([]);
 	const [filtered, setFiltered] = useState<POSType[]>([]);
 	const { addPageMessage } = useContext(AppContext);
+	const maxCashiers = 5;
 
 	const onFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const newQuery = e.target.value;
@@ -147,18 +154,22 @@ const POS: React.FC = () => {
 					<div>
 						<PageActionBar justifyContent='space-between'>
 							<TableFilter value={query} onChange={onFilterChange} />
-							<VolvoButton
-								text='Agregar'
-								icon={<AddIcon />}
-								color='primary'
-								onClick={setAddModalVisible(true)}
-							/>
-							<FormModal
-								title='Agregar POS'
-								show={showAddModal}
-								onClose={setAddModalVisible(false)}
-								onConfirm={onAddPOS}
-							/>
+							{posList.length < maxCashiers && (
+								<React.Fragment>
+									<VolvoButton
+										text='Agregar'
+										icon={<AddIcon />}
+										color='primary'
+										onClick={setAddModalVisible(true)}
+									/>
+									<FormModal
+										title='Agregar POS'
+										show={showAddModal}
+										onClose={setAddModalVisible(false)}
+										onConfirm={onAddPOS}
+									/>
+								</React.Fragment>
+							)}
 						</PageActionBar>
 						<BasicTable columns={posColumns}>
 							<React.Fragment>

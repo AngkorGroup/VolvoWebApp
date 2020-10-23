@@ -5,6 +5,7 @@ export interface POS {
 	dealer: Partial<Dealer>;
 	code: string;
 	phone: string;
+	email: string;
 }
 
 export type POSForm = Partial<POS>;
