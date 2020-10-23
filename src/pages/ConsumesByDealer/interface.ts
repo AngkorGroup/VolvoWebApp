@@ -1,5 +1,8 @@
 export interface Consume {
 	id: string;
+	voucher: string;
+	paymentType: string;
+	status: string;
 	cardType: string;
 	cardNumber: string;
 	tpNumber: string;

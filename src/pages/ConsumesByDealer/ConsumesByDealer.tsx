@@ -28,6 +28,9 @@ import MultiTypeAhead from '../../common/components/MultiTypeAhead/MultiTypeAhea
 
 const consumesColumns = [
 	{
+		title: '#Voucher',
+	},
+	{
 		title: 'Tipo',
 	},
 	{
@@ -40,10 +43,16 @@ const consumesColumns = [
 		title: 'Cliente',
 	},
 	{
-		title: 'Fecha Operación',
+		title: 'Fecha Op.',
 	},
 	{
-		title: 'Nombre del Contacto',
+		title: 'Cobro',
+	},
+	{
+		title: 'Estado',
+	},
+	{
+		title: 'Contacto',
 	},
 	{
 		title: 'Moneda',
@@ -61,6 +70,9 @@ const consumesColumns = [
 const consumesRows: Consume[] = [
 	{
 		id: '1',
+		voucher: '589614',
+		paymentType: 'PRESENCIAL',
+		status: 'CONFIRMADO',
 		cardType: 'VREP',
 		cardNumber: '924201002274611260',
 		tpNumber: '598941562',
@@ -74,6 +86,9 @@ const consumesRows: Consume[] = [
 	},
 	{
 		id: '2',
+		voucher: '589633',
+		paymentType: 'PRESENCIAL',
+		status: 'CONFIRMADO',
 		cardType: 'VREP',
 		cardNumber: '924201002274611277',
 		tpNumber: '538921372',
@@ -87,6 +102,9 @@ const consumesRows: Consume[] = [
 	},
 	{
 		id: '3',
+		voucher: '715596',
+		paymentType: 'REMOTO',
+		status: 'CONFIRMADO',
 		cardType: 'VURE',
 		cardNumber: '924201002274611281',
 		tpNumber: '558943272',
@@ -100,6 +118,9 @@ const consumesRows: Consume[] = [
 	},
 	{
 		id: '4',
+		voucher: '763325',
+		paymentType: 'REMOTO',
+		status: 'CONFIRMADO',
 		cardType: 'VURE',
 		cardNumber: '924201002274611256',
 		tpNumber: '218941272',
@@ -113,6 +134,9 @@ const consumesRows: Consume[] = [
 	},
 	{
 		id: '5',
+		voucher: '829635',
+		paymentType: 'REMOTO',
+		status: 'INGRESADO',
 		cardType: 'VURE',
 		cardNumber: '924201002274611292',
 		tpNumber: '498941272',
@@ -129,6 +153,9 @@ const consumesRows: Consume[] = [
 const rowsForBox = [
 	{
 		id: '1',
+		voucher: '589614',
+		paymentType: 'PRESENCIAL',
+		status: 'CONFIRMADO',
 		cardType: 'VREP',
 		cardNumber: '924201002274611260',
 		tpNumber: '598941562',
@@ -142,6 +169,9 @@ const rowsForBox = [
 	},
 	{
 		id: '2',
+		voucher: '589633',
+		paymentType: 'PRESENCIAL',
+		status: 'CONFIRMADO',
 		cardType: 'VREP',
 		cardNumber: '924201002274611277',
 		tpNumber: '538921372',
@@ -218,7 +248,7 @@ const ConsumesByDealer: React.FC = () => {
 	return (
 		<div>
 			<div>
-				<PageTitle title='Consumos por Dealer' />
+				<PageTitle title='Operaciones por Dealer' />
 				<TypeAhead
 					options={MOCKED_DEALERS_TYPEAHEAD}
 					placeholder='Dealer'

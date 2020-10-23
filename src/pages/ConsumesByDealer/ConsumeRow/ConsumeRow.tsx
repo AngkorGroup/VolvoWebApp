@@ -29,6 +29,9 @@ const ConsumeRow = ({ item }: ConsumeRowProps) => {
 	const onOpenModal = () => setShowModal(true);
 	const onCloseModal = () => setShowModal(false);
 	const {
+		voucher,
+		paymentType,
+		status,
 		cardType,
 		cardNumber,
 		tpNumber,
@@ -42,11 +45,14 @@ const ConsumeRow = ({ item }: ConsumeRowProps) => {
 	const amountColor = amount.includes('-') ? classes.negative : '';
 	return (
 		<TableRow>
+			<TableCell>{voucher}</TableCell>
 			<TableCell>{cardType}</TableCell>
 			<TableCell>{cardNumber}</TableCell>
 			<TableCell>{tpNumber}</TableCell>
 			<TableCell>{client}</TableCell>
 			<TableCell>{date}</TableCell>
+			<TableCell>{paymentType}</TableCell>
+			<TableCell>{status}</TableCell>
 			<TableCell>{contact}</TableCell>
 			<TableCell>{currency}</TableCell>
 			<TableCell className={amountColor} align='right'>
