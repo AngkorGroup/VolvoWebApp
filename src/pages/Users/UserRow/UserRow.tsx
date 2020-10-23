@@ -29,7 +29,8 @@ const UserRow = ({
 	const [showCardsModal, setShowCardsModal] = useState(false);
 	const [showPOSModal, setShowPOSModal] = useState(false);
 	const [showDeleteModal, setShowDeleteModal] = useState(false);
-	const { id, name, email, phone, createdAt, status, deletedAt } = item;
+	const { id, name, email, phone, createdAt, type, status, deletedAt } = item;
+	const isCashier = type === 'App Cajero';
 
 	const onOpenMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
 		setAnchorEl(event.currentTarget);
@@ -61,6 +62,7 @@ const UserRow = ({
 				<TableCell>{email}</TableCell>
 				<TableCell>{phone}</TableCell>
 				<TableCell>{createdAt}</TableCell>
+				<TableCell>{type}</TableCell>
 				<TableCell>{status}</TableCell>
 				<TableCell>{deletedAt}</TableCell>
 				<TableCell align='center'>
@@ -92,7 +94,7 @@ const UserRow = ({
 								Consultar tarjetas
 							</MenuItem>
 						)}
-						{!deletedAt && (
+						{!deletedAt && isCashier && (
 							<MenuItem onClick={setPOSModalVisible(true)}>
 								Asociar POS
 							</MenuItem>

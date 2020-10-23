@@ -31,7 +31,7 @@ const POSRow = ({ item, onEdit, onDelete }: POSRowProps) => {
 	const classes = useStyles();
 	const [showEditModal, setShowEditModal] = useState(false);
 	const [showDeleteModal, setShowDeleteModal] = useState(false);
-	const { dealer, id, code, phone } = item;
+	const { dealer, id, code, phone, email } = item;
 
 	const setEditModalVisible = (flag: boolean) => () => setShowEditModal(flag);
 	const setDelModalVisible = (flag: boolean) => () => setShowDeleteModal(flag);
@@ -44,6 +44,7 @@ const POSRow = ({ item, onEdit, onDelete }: POSRowProps) => {
 				</TableCell>
 				<TableCell>{code}</TableCell>
 				<TableCell>{phone}</TableCell>
+				<TableCell>{email}</TableCell>
 				<TableCell>
 					<div className={classes.actionButtons}>
 						<VolvoIconButton

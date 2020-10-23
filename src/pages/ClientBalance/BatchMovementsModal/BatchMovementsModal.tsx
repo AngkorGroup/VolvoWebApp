@@ -150,6 +150,7 @@ const BatchMovementsModal: React.FC<BatchMovementsModalProps> = ({
 						balance={cardData.balance}
 						title={cardData.type}
 						number={cardData.number}
+						type={cardData.type}
 					/>
 				</div>
 				<div className={classes.batchInfoContainer}>{batchText}</div>

@@ -79,7 +79,7 @@ export const MENU_ITEMS: MenuItem[] = [
 	},
 	{
 		id: 'ConsumesByDealer',
-		title: 'Consumos por Dealer',
+		title: 'Operaciones por Dealer',
 		path: '/consumes_by_dealer',
 		icon: ListAltIcon,
 	},

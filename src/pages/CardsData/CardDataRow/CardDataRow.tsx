@@ -7,7 +7,17 @@ interface CardDataRowProps {
 }
 
 const CardDataRow = ({ item }: CardDataRowProps) => {
-	const { type, number, tpNumber, createdAt, currency, contact, status } = item;
+	const {
+		type,
+		number,
+		tpNumber,
+		createdAt,
+		currency,
+		contactName,
+		contactType,
+		contactPhone,
+		status,
+	} = item;
 	return (
 		<React.Fragment>
 			<TableRow>
@@ -16,8 +26,9 @@ const CardDataRow = ({ item }: CardDataRowProps) => {
 				<TableCell>{tpNumber}</TableCell>
 				<TableCell>{createdAt}</TableCell>
 				<TableCell>{currency}</TableCell>
-				<TableCell>{contact.name}</TableCell>
-				<TableCell>{contact.type}</TableCell>
+				<TableCell>{contactName}</TableCell>
+				<TableCell>{contactType}</TableCell>
+				<TableCell>{contactPhone}</TableCell>
 				<TableCell>{status}</TableCell>
 			</TableRow>
 		</React.Fragment>

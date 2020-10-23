@@ -34,6 +34,9 @@ const cardColumns = [
 		title: 'Tipo Contacto',
 	},
 	{
+		title: 'Celular',
+	},
+	{
 		title: 'Estado',
 	},
 ];
@@ -45,11 +48,9 @@ const cardDataRows: CardData[] = [
 		tpNumber: '598941562',
 		createdAt: '01/01/2020',
 		currency: 'US$',
-		contact: {
-			id: '1',
-			name: 'Federico Montero',
-			type: 'Principal',
-		},
+		contactName: 'Federico Montero',
+		contactType: 'Principal',
+		contactPhone: '987654321',
 		status: 'Activo',
 	},
 	{
@@ -58,11 +59,9 @@ const cardDataRows: CardData[] = [
 		tpNumber: '538921372',
 		createdAt: '01/06/2020',
 		currency: 'US$',
-		contact: {
-			id: '2',
-			name: 'Gianfranco Galvez Montero',
-			type: 'Adicional',
-		},
+		contactName: 'Gianfranco Galvez Montero',
+		contactType: 'Adicional',
+		contactPhone: '949666888',
 		status: 'Activo',
 	},
 	{
@@ -71,11 +70,9 @@ const cardDataRows: CardData[] = [
 		tpNumber: '558943272',
 		createdAt: '01/07/2020',
 		currency: 'US$',
-		contact: {
-			id: '3',
-			name: 'Mauricio Castañeda Monzón',
-			type: 'Adicional',
-		},
+		contactName: 'Mauricio Castañeda Monzón',
+		contactType: 'Adicional',
+		contactPhone: '985555123',
 		status: 'Activo',
 	},
 	{
@@ -84,11 +81,9 @@ const cardDataRows: CardData[] = [
 		tpNumber: '218941272',
 		createdAt: '01/08/2020',
 		currency: 'US$',
-		contact: {
-			id: '4',
-			name: 'Brajean Junchaya Navarrete',
-			type: 'Adicional',
-		},
+		contactName: 'Brajean Junchaya Navarrete',
+		contactType: 'Adicional',
+		contactPhone: '987486426',
 		status: 'Activo',
 	},
 	{
@@ -97,11 +92,9 @@ const cardDataRows: CardData[] = [
 		tpNumber: '498941272',
 		createdAt: '02/08/2020',
 		currency: 'US$',
-		contact: {
-			id: '2',
-			name: 'Juan Jose Ramirez Calderón',
-			type: 'Adicional',
-		},
+		contactName: 'Juan Jose Ramirez Calderón',
+		contactType: 'Adicional',
+		contactPhone: '963852741',
 		status: 'Activo',
 	},
 ];

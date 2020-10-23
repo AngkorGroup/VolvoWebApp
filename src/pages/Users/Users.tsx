@@ -30,6 +30,9 @@ const userColumns = [
 		title: 'Fecha de Creación',
 	},
 	{
+		title: 'Tipo',
+	},
+	{
 		title: 'Estado',
 	},
 	{
@@ -48,6 +51,7 @@ const userRows: User[] = [
 		email: 'fmontero@gmail.com',
 		phone: '999888777',
 		createdAt: '10/01/2020',
+		type: 'Web',
 		status: 'Activo',
 		deletedAt: '',
 	},
@@ -57,6 +61,7 @@ const userRows: User[] = [
 		email: 'fmontero@gmail.com',
 		phone: '963852741',
 		createdAt: '11/01/2020',
+		type: 'Web',
 		status: 'Activo',
 		deletedAt: '',
 	},
@@ -66,6 +71,7 @@ const userRows: User[] = [
 		email: 'fmontero@gmail.com',
 		phone: '951753456',
 		createdAt: '10/01/2020',
+		type: 'Web',
 		status: 'Inactivo',
 		deletedAt: '15/09/2020',
 	},
@@ -75,8 +81,19 @@ const userRows: User[] = [
 		email: 'fmontero@gmail.com',
 		phone: '987654321',
 		createdAt: '10/01/2020',
+		type: 'Web',
 		status: 'Inactivo',
 		deletedAt: '10/09/2020',
+	},
+	{
+		id: '00102',
+		name: 'Luis Salazar',
+		email: 'lsalazar@gmail.com',
+		phone: '999666333',
+		createdAt: '13/01/2020',
+		type: 'App Cajero',
+		status: 'Activo',
+		deletedAt: '',
 	},
 ];
 

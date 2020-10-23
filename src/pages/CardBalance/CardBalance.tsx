@@ -74,9 +74,9 @@ const expirationRows: Expiration[] = [
 ];
 
 const volvoCards: Card[] = [
-	{ id: '1', name: 'VOLVO CASH', balance: 'US$ 4,800.00' },
-	{ id: '2', name: 'VOLVO CASH', balance: 'US$ 3,800.00' },
-	{ id: '3', name: 'VOLVO CASH', balance: 'US$ 400.00' },
+	{ id: '1', type: 'VURE', name: 'BONO UREA', balance: 'US$ 4,800.00' },
+	{ id: '2', type: 'VREP', name: 'REPUESTOS', balance: 'US$ 3,800.00' },
+	{ id: '3', type: 'VURE', name: 'BONO UREA', balance: 'US$ 400.00' },
 ];
 
 const useStyles = makeStyles(
@@ -85,11 +85,12 @@ const useStyles = makeStyles(
 			display: 'flex',
 		},
 		headerItem: {
-			flexGrow: 1,
+			flexGrow: 3,
 		},
 		cardContainer: {
 			display: 'flex',
 			justifyContent: 'center',
+			flexGrow: 1,
 		},
 	}),
 );
@@ -148,7 +149,13 @@ const CardBalance: React.FC = () => {
 					/>
 				</div>
 				<div className={[classes.headerItem, classes.cardContainer].join(' ')}>
-					{card && <VolvoCard title={card.name} balance={card.balance} />}
+					{card && (
+						<VolvoCard
+							type={card.type}
+							title={card.name}
+							balance={card.balance}
+						/>
+					)}
 				</div>
 			</div>
 			<PageBody>

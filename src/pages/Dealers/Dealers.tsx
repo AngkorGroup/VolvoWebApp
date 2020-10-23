@@ -36,6 +36,9 @@ const dealerColumns = [
 		title: 'Teléfono',
 	},
 	{
+		title: 'Max. POS',
+	},
+	{
 		title: 'Zona',
 	},
 	{
@@ -53,6 +56,7 @@ const dealerRows = [
 		status: 'Activo',
 		type: 'Own',
 		phone: '01 461-4225',
+		maxCashiers: '5',
 		zone: 'Norte',
 	},
 	{
@@ -63,6 +67,7 @@ const dealerRows = [
 		status: 'Activo',
 		type: 'Own',
 		phone: '01 361-4895',
+		maxCashiers: '3',
 		zone: 'Lima',
 	},
 	{
@@ -73,6 +78,7 @@ const dealerRows = [
 		status: 'Activo',
 		type: 'Private',
 		phone: '01 271-7525',
+		maxCashiers: '3',
 		zone: 'Lima',
 	},
 ];

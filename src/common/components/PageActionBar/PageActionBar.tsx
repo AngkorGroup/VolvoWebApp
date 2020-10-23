@@ -5,7 +5,7 @@ type JustifyContent = 'flex-start' | 'flex-end' | 'space-between';
 
 interface PageActionBarProps {
 	justifyContent?: JustifyContent;
-	children: JSX.Element | JSX.Element[];
+	children: React.ReactNode;
 }
 
 const useStyles = makeStyles(() =>
