@@ -4,14 +4,19 @@ import {
 	DialogActions,
 	DialogContent,
 	DialogTitle,
+	FormControl,
 	Grid,
+	InputLabel,
 	makeStyles,
+	MenuItem,
+	Select,
 	TextField,
 	Theme,
 } from '@material-ui/core';
 import { Field, Form, Formik } from 'formik';
 import React from 'react';
 import VolvoButton from '../../../common/components/VolvoButton/VolvoButton';
+import { MOCKED_USER_TYPES } from '../../../common/utils/mocked';
 import { User } from '../interfaces';
 
 interface FormModalProps {
@@ -28,6 +33,7 @@ const initialValues: User = {
 	email: '',
 	phone: '',
 	createdAt: '14/10/2020',
+	type: '',
 	status: 'Activo',
 };
 
@@ -76,6 +82,23 @@ const FormModal: React.FC<FormModalProps> = ({
 								</Grid>
 								<Grid item xs={6}>
 									<Field name='phone' label='Teléfono' {...fieldProps} />
+								</Grid>
+								<Grid item xs={6}>
+									<FormControl variant='outlined' fullWidth size='small'>
+										<InputLabel id='typeLabel'>Tipo de Usuario</InputLabel>
+										<Field
+											labelId='typeLabel'
+											label='Tipo de Usuario'
+											name='type'
+											as={Select}
+										>
+											{MOCKED_USER_TYPES.map((d) => (
+												<MenuItem key={d.value} value={d.value}>
+													{d.label}
+												</MenuItem>
+											))}
+										</Field>
+									</FormControl>
 								</Grid>
 							</Grid>
 						</DialogContent>
