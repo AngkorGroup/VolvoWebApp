@@ -6,7 +6,7 @@ import {
 	DialogTitle,
 } from '@material-ui/core';
 import React from 'react';
-import VolvoButton from '../../../common/components/VolvoButton/VolvoButton';
+import { VolvoButton } from 'common/components';
 
 interface DeleteModalProps {
 	show: boolean;

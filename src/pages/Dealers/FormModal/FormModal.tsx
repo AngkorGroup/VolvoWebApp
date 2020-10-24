@@ -11,7 +11,7 @@ import {
 } from '@material-ui/core';
 import { Field, Form, Formik } from 'formik';
 import React from 'react';
-import VolvoButton from '../../../common/components/VolvoButton/VolvoButton';
+import { VolvoButton } from 'common/components';
 import { Dealer } from '../interfaces';
 
 interface FormModalProps {

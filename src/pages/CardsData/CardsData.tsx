@@ -1,13 +1,14 @@
+import {
+	BasicTable,
+	PageActionBar,
+	PageBody,
+	PageLoader,
+	PageTitle,
+	TableFilter,
+	TypeAhead,
+} from 'common/components';
+import { filterRows, MOCKED_CLIENTS_TYPEAHEAD, Option } from 'common/utils';
 import React, { useState } from 'react';
-import BasicTable from '../../common/components/BasicTable/BasicTable';
-import PageActionBar from '../../common/components/PageActionBar/PageActionBar';
-import PageBody from '../../common/components/PageBody/PageBody';
-import PageLoader from '../../common/components/PageLoader/PageLoader';
-import PageTitle from '../../common/components/PageTitle/PageTitle';
-import TableFilter from '../../common/components/TableFilter/TableFilter';
-import TypeAhead, { Option } from '../../common/components/TypeAhead/TypeAhead';
-import { MOCKED_CLIENTS_TYPEAHEAD } from '../../common/utils/mocked';
-import { filterRows } from '../../common/utils/utils';
 import CardDataRow from './CardDataRow/CardDataRow';
 import { CARD_COLUMNS } from './columns';
 import { CardData } from './interfaces';

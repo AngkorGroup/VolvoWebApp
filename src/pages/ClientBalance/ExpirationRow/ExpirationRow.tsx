@@ -1,7 +1,7 @@
 import { TableCell, TableRow } from '@material-ui/core';
 import React, { useState } from 'react';
 import FormatListNumberedIcon from '@material-ui/icons/FormatListNumbered';
-import VolvoIconButton from '../../../common/components/VolvoIconButton/VolvoIconButton';
+import { VolvoIconButton } from 'common/components';
 import BatchMovementsModal from '../BatchMovementsModal/BatchMovementsModal';
 import { VolvoCardData } from '../interfaces';
 

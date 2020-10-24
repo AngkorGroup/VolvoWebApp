@@ -1,8 +1,8 @@
 import { TableCell, TableRow } from '@material-ui/core';
 import React, { useState } from 'react';
 import DashboardIcon from '@material-ui/icons/Dashboard';
+import { VolvoIconButton } from 'common/components';
 import { ClientCardRow, VolvoCardData } from '../../interfaces';
-import VolvoIconButton from '../../../../common/components/VolvoIconButton/VolvoIconButton';
 import CardBatchesModal from '../../CardBatchesModal/CardBatchesModal';
 
 interface CardListRowProps {

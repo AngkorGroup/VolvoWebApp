@@ -12,8 +12,8 @@ import {
 	Select,
 	Theme,
 } from '@material-ui/core';
+import { Option } from 'common/utils/types';
 import React, { useState } from 'react';
-import { Option } from '../../../common/components/TypeAhead/TypeAhead';
 import VolvoButton from '../../../common/components/VolvoButton/VolvoButton';
 import { UserPOSForm } from '../interfaces';
 

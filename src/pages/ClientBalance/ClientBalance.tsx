@@ -1,21 +1,22 @@
 import { makeStyles } from '@material-ui/core';
 import React, { useState } from 'react';
-import BasicTable from '../../common/components/BasicTable/BasicTable';
-import CustomTab from '../../common/components/CustomTab/CustomTab';
-import CustomTabs from '../../common/components/CustomTabs/CustomTabs';
-import EmptyState from '../../common/components/EmptyState/EmptyState';
-import PageBody from '../../common/components/PageBody/PageBody';
-import PageLoader from '../../common/components/PageLoader/PageLoader';
-import PageTitle from '../../common/components/PageTitle/PageTitle';
-import TabPanel from '../../common/components/TabPanel/TabPanel';
-import TypeAhead, { Option } from '../../common/components/TypeAhead/TypeAhead';
-import { MOCKED_CLIENTS_TYPEAHEAD } from '../../common/utils/mocked';
-import { CardType } from './interfaces';
+import {
+	BasicTable,
+	CustomTab,
+	CustomTabs,
+	EmptyState,
+	PageBody,
+	PageLoader,
+	PageTitle,
+	TabPanel,
+	TypeAhead,
+	PageActionBar,
+	TableFilter,
+} from 'common/components';
+import { filterRows, MOCKED_CLIENTS_TYPEAHEAD, Option } from 'common/utils';
 import CardRow from './CardRow/CardRow';
 import ExpirationRow, { Expiration } from './ExpirationRow/ExpirationRow';
-import PageActionBar from '../../common/components/PageActionBar/PageActionBar';
-import TableFilter from '../../common/components/TableFilter/TableFilter';
-import { filterRows } from '../../common/utils/utils';
+import { CardType } from './interfaces';
 import { CARD_COLUMNS, EXPIRATION_COLUMNS } from './columns';
 
 const cardRows = [

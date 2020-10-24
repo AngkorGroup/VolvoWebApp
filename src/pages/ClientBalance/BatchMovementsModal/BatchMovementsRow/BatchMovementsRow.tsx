@@ -7,9 +7,8 @@ import {
 } from '@material-ui/core';
 import React, { useState } from 'react';
 import ReceiptIcon from '@material-ui/icons/Receipt';
-import VolvoIconButton from '../../../../common/components/VolvoIconButton/VolvoIconButton';
+import { ImageModal, VolvoIconButton } from 'common/components';
 import { BatchMovementRow } from '../../interfaces';
-import ImageModal from '../../../../common/components/ImageModal/ImageModal';
 
 interface BatchMovementsRowProps {
 	item: BatchMovementRow;

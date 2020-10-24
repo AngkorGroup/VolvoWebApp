@@ -1,16 +1,18 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import PublishIcon from '@material-ui/icons/Publish';
-import BasicTable from '../../common/components/BasicTable/BasicTable';
-import PageTitle from '../../common/components/PageTitle/PageTitle';
-import VolvoButton from '../../common/components/VolvoButton/VolvoButton';
 import { createStyles, makeStyles } from '@material-ui/core';
-import PageLoader from '../../common/components/PageLoader/PageLoader';
-import PageBody from '../../common/components/PageBody/PageBody';
+import {
+	BasicTable,
+	PageActionBar,
+	PageBody,
+	PageLoader,
+	PageTitle,
+	TableFilter,
+	VolvoButton,
+} from 'common/components';
+import { filterRows } from 'common/utils';
 import ClientRow from './ClientRow/ClientRow';
 import { Client } from './interface';
-import PageActionBar from '../../common/components/PageActionBar/PageActionBar';
-import { filterRows } from '../../common/utils/utils';
-import TableFilter from '../../common/components/TableFilter/TableFilter';
 import AppContext from '../../AppContext';
 import { CLIENT_COLUMNS } from './columns';
 

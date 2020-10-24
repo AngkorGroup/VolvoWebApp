@@ -1,7 +1,7 @@
 import { TableCell, TableRow } from '@material-ui/core';
 import React, { useState } from 'react';
 import ViewCarouselIcon from '@material-ui/icons/ViewCarousel';
-import VolvoIconButton from '../../../common/components/VolvoIconButton/VolvoIconButton';
+import { VolvoIconButton } from 'common/components';
 import CardListModal from '../CardListModal/CardListModal';
 import { CardType } from '../interfaces';
 

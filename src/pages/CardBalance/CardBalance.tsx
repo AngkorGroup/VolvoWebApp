@@ -1,19 +1,20 @@
 import { createStyles, makeStyles } from '@material-ui/core';
+import {
+	BasicTable,
+	CustomTab,
+	CustomTabs,
+	EmptyState,
+	PageActionBar,
+	PageBody,
+	PageLoader,
+	PageTitle,
+	TableFilter,
+	TabPanel,
+	TypeAhead,
+	VolvoCard,
+} from 'common/components';
+import { filterRows, MOCKED_CARDS_TYPEAHEAD, Option } from 'common/utils';
 import React, { useState } from 'react';
-import BasicTable from '../../common/components/BasicTable/BasicTable';
-import CustomTab from '../../common/components/CustomTab/CustomTab';
-import CustomTabs from '../../common/components/CustomTabs/CustomTabs';
-import EmptyState from '../../common/components/EmptyState/EmptyState';
-import PageActionBar from '../../common/components/PageActionBar/PageActionBar';
-import PageBody from '../../common/components/PageBody/PageBody';
-import PageLoader from '../../common/components/PageLoader/PageLoader';
-import PageTitle from '../../common/components/PageTitle/PageTitle';
-import TableFilter from '../../common/components/TableFilter/TableFilter';
-import TabPanel from '../../common/components/TabPanel/TabPanel';
-import TypeAhead, { Option } from '../../common/components/TypeAhead/TypeAhead';
-import VolvoCard from '../../common/components/VolvoCard/VolvoCard';
-import { MOCKED_CARDS_TYPEAHEAD } from '../../common/utils/mocked';
-import { filterRows } from '../../common/utils/utils';
 import { EXPIRATION_COLUMNS, MOVEMENT_COLUMNS } from './columns';
 import ExpirationRow from './ExpirationRow/ExpirationRow';
 import { Expiration, Movement, Card } from './interface';

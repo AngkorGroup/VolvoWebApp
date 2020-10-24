@@ -14,11 +14,10 @@ import {
 	Theme,
 } from '@material-ui/core';
 import { Field, Form, Formik } from 'formik';
+import { FilePicker, VolvoButton } from 'common/components';
+import { Option } from 'common/utils';
 import React from 'react';
-import { Option } from '../../../common/components/TypeAhead/TypeAhead';
-import VolvoButton from '../../../common/components/VolvoButton/VolvoButton';
 import { CardTypeForm } from '../interfaces';
-import FilePicker from '../../../common/components/FilePicker/FilePicker';
 
 interface FormModalProps {
 	show: boolean;

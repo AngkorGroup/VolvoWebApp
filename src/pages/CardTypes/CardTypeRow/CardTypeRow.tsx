@@ -7,11 +7,13 @@ import {
 import React, { useState } from 'react';
 import CreateIcon from '@material-ui/icons/Create';
 import DeleteIcon from '@material-ui/icons/Delete';
-import VolvoIconButton from '../../../common/components/VolvoIconButton/VolvoIconButton';
+import {
+	ConfirmationModal,
+	VolvoCard,
+	VolvoIconButton,
+} from 'common/components';
 import { CardType, CardTypeForm } from '../interfaces';
 import FormModal from '../FormModal/FormModal';
-import ConfirmationModal from '../../../common/components/ConfirmationModal/ConfirmationModal';
-import VolvoCard from '../../../common/components/VolvoCard/VolvoCard';
 
 interface CardTypeRowProps {
 	item: CardType;

@@ -4,10 +4,8 @@ import {
 	DialogContent,
 	DialogTitle,
 } from '@material-ui/core';
+import { BasicTable, PageLoader, VolvoButton } from 'common/components';
 import React, { useEffect, useState } from 'react';
-import BasicTable from '../../../common/components/BasicTable/BasicTable';
-import PageLoader from '../../../common/components/PageLoader/PageLoader';
-import VolvoButton from '../../../common/components/VolvoButton/VolvoButton';
 import { BATCH_COLUMNS } from '../columns';
 import { UserCard } from '../interfaces';
 import CardRow from './CardRow/CardRow';

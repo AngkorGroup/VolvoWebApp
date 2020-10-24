@@ -1,7 +1,7 @@
 import { TableCell, TableRow } from '@material-ui/core';
 import React, { useState } from 'react';
 import VisibilityIcon from '@material-ui/icons/Visibility';
-import VolvoIconButton from '../../../common/components/VolvoIconButton/VolvoIconButton';
+import { VolvoIconButton } from 'common/components';
 import { Expiration } from '../interface';
 import BatchListModal from '../BatchListModal/BatchListModal';
 

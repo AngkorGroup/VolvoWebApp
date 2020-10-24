@@ -8,10 +8,12 @@ import {
 	Theme,
 } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
-import BasicTable from '../../../common/components/BasicTable/BasicTable';
-import PageLoader from '../../../common/components/PageLoader/PageLoader';
-import VolvoButton from '../../../common/components/VolvoButton/VolvoButton';
-import VolvoCard from '../../../common/components/VolvoCard/VolvoCard';
+import {
+	BasicTable,
+	PageLoader,
+	VolvoButton,
+	VolvoCard,
+} from 'common/components';
 import CardBatchesRow from './CardBatchesRow/CardBatchesRow';
 import { CardBatchRow, VolvoCardData } from '../interfaces';
 import { CARD_BATCH_COLUMNS } from '../columns';

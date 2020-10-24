@@ -7,11 +7,13 @@ import {
 	makeStyles,
 	Theme,
 } from '@material-ui/core';
+import {
+	BasicTable,
+	PageLoader,
+	VolvoButton,
+	VolvoCard,
+} from 'common/components';
 import React, { useEffect, useState } from 'react';
-import BasicTable from '../../../common/components/BasicTable/BasicTable';
-import PageLoader from '../../../common/components/PageLoader/PageLoader';
-import VolvoButton from '../../../common/components/VolvoButton/VolvoButton';
-import VolvoCard from '../../../common/components/VolvoCard/VolvoCard';
 import { BATCH_MOVEMENTS_COLUMNS } from '../columns';
 import { BatchMovementRow, VolvoCardData } from '../interfaces';
 import BatchMovementsRow from './BatchMovementsRow/BatchMovementsRow';

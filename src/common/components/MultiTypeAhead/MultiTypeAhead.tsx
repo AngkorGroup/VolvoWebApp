@@ -4,6 +4,7 @@ import {
 	AutocompleteChangeDetails,
 	AutocompleteChangeReason,
 } from '@material-ui/lab';
+import { Option } from 'common/utils/types';
 import React from 'react';
 
 export type ChangeFunction = (
@@ -19,11 +20,6 @@ interface MultiTypeAheadProps {
 	placeholder: string;
 	options: Option[];
 	onChange: ChangeFunction;
-}
-
-export interface Option {
-	value: string;
-	label: string;
 }
 
 const MultiTypeAhead: React.FC<MultiTypeAheadProps> = ({

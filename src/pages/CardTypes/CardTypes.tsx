@@ -1,16 +1,18 @@
 import React, { useContext, useEffect, useState } from 'react';
 import AddIcon from '@material-ui/icons/Add';
-import BasicTable from '../../common/components/BasicTable/BasicTable';
-import PageTitle from '../../common/components/PageTitle/PageTitle';
-import VolvoButton from '../../common/components/VolvoButton/VolvoButton';
+import {
+	BasicTable,
+	PageActionBar,
+	PageBody,
+	PageLoader,
+	PageTitle,
+	TableFilter,
+	VolvoButton,
+} from 'common/components';
+import { filterRows } from 'common/utils';
 import FormModal from './FormModal/FormModal';
 import { CardType, CardTypeForm } from './interfaces';
-import PageLoader from '../../common/components/PageLoader/PageLoader';
-import PageBody from '../../common/components/PageBody/PageBody';
 import CardTypeRow from './CardTypeRow/CardTypeRow';
-import PageActionBar from '../../common/components/PageActionBar/PageActionBar';
-import TableFilter from '../../common/components/TableFilter/TableFilter';
-import { filterRows } from '../../common/utils/utils';
 import AppContext from '../../AppContext';
 import { CARD_TYPE_COLUMNS } from './columns';
 

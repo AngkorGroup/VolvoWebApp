@@ -1,16 +1,18 @@
 import React, { useContext, useEffect, useState } from 'react';
 import AddIcon from '@material-ui/icons/Add';
-import BasicTable from '../../common/components/BasicTable/BasicTable';
-import PageTitle from '../../common/components/PageTitle/PageTitle';
-import VolvoButton from '../../common/components/VolvoButton/VolvoButton';
+import {
+	BasicTable,
+	PageActionBar,
+	PageBody,
+	PageLoader,
+	PageTitle,
+	TableFilter,
+	VolvoButton,
+} from 'common/components';
+import { filterRows } from 'common/utils';
 import FormModal from './FormModal/FormModal';
 import { User, UserPOSForm } from './interfaces';
-import PageLoader from '../../common/components/PageLoader/PageLoader';
-import PageBody from '../../common/components/PageBody/PageBody';
 import UserRow from './UserRow/UserRow';
-import TableFilter from '../../common/components/TableFilter/TableFilter';
-import { filterRows } from '../../common/utils/utils';
-import PageActionBar from '../../common/components/PageActionBar/PageActionBar';
 import AppContext from '../../AppContext';
 import { USER_COLUMNS } from './columns';
 

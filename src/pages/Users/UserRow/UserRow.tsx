@@ -1,12 +1,11 @@
 import { Menu, MenuItem, TableCell, TableRow } from '@material-ui/core';
 import React, { useState } from 'react';
 import SettingsIcon from '@material-ui/icons/Settings';
-import VolvoIconButton from '../../../common/components/VolvoIconButton/VolvoIconButton';
+import { ConfirmationModal, VolvoIconButton } from 'common/components';
 import { User, UserPOSForm } from '../interfaces';
 import FormModal from '../FormModal/FormModal';
 import POSModal from '../POSModal/POSModal';
 import CardsModal from '../CardsModal/CardsModal';
-import ConfirmationModal from '../../../common/components/ConfirmationModal/ConfirmationModal';
 
 interface UserRowProps {
 	item: User;

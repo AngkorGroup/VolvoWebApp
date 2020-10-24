@@ -7,10 +7,9 @@ import {
 import React, { useState } from 'react';
 import CreateIcon from '@material-ui/icons/Create';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import VolvoIconButton from '../../../common/components/VolvoIconButton/VolvoIconButton';
+import { ConfirmationModal, VolvoIconButton } from 'common/components';
 import { ClientUser } from '../interfaces';
 import FormModal from '../FormModal/FormModal';
-import ConfirmationModal from '../../../common/components/ConfirmationModal/ConfirmationModal';
 
 interface ClientUserRowProps {
 	item: ClientUser;

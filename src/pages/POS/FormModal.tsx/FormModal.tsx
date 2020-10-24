@@ -9,9 +9,9 @@ import {
 	TextField,
 	Theme,
 } from '@material-ui/core';
+import { VolvoButton } from 'common/components';
 import { Field, Form, Formik } from 'formik';
 import React from 'react';
-import VolvoButton from '../../../common/components/VolvoButton/VolvoButton';
 import { POSForm } from '../interfaces';
 
 interface FormModalProps {

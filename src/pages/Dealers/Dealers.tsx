@@ -1,18 +1,20 @@
 import React, { useContext, useEffect, useState } from 'react';
 import AddIcon from '@material-ui/icons/Add';
-import BasicTable from '../../common/components/BasicTable/BasicTable';
-import PageTitle from '../../common/components/PageTitle/PageTitle';
-import VolvoButton from '../../common/components/VolvoButton/VolvoButton';
+import {
+	BasicTable,
+	PageActionBar,
+	PageBody,
+	PageLoader,
+	PageTitle,
+	TableFilter,
+	VolvoButton,
+} from 'common/components';
 import DealerRow from './DealerRow/DealerRow';
 import FormModal from './FormModal/FormModal';
 import { Dealer } from './interfaces';
-import PageLoader from '../../common/components/PageLoader/PageLoader';
-import PageBody from '../../common/components/PageBody/PageBody';
 import AppContext from '../../AppContext';
-import { filterRows } from '../../common/utils/utils';
-import PageActionBar from '../../common/components/PageActionBar/PageActionBar';
-import TableFilter from '../../common/components/TableFilter/TableFilter';
 import { DEALER_COLUMNS } from './columns';
+import { filterRows } from 'common/utils';
 
 const dealerRows = [
 	{

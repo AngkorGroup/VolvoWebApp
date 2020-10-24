@@ -13,10 +13,10 @@ import {
 	TextField,
 	Theme,
 } from '@material-ui/core';
+import { VolvoButton } from 'common/components';
+import { Option } from 'common/utils';
 import { Field, Form, Formik } from 'formik';
 import React from 'react';
-import { Option } from '../../../common/components/TypeAhead/TypeAhead';
-import VolvoButton from '../../../common/components/VolvoButton/VolvoButton';
 import { ClientUser } from '../interfaces';
 
 interface FormModalProps {
