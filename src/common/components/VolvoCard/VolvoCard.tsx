@@ -1,7 +1,7 @@
 import { createStyles, makeStyles, Theme } from '@material-ui/core';
 import React from 'react';
-import cardBlue from '../../assets/images/cardBlue.jpg';
-import cardRed from '../../assets/images/cardRed.jpg';
+import cardOcean from '../../assets/images/cardOcean.png';
+import cardGray from '../../assets/images/cardGray.png';
 
 interface VolvoCardProps {
 	title: string;
@@ -62,7 +62,7 @@ const VolvoCard: React.FC<VolvoCardProps> = ({
 	isThumbnail,
 }: VolvoCardProps) => {
 	const classes = useStyles();
-	const cardIMG = type === 'VURE' ? cardBlue : cardRed;
+	const cardIMG = type === 'VURE' ? cardGray : cardOcean;
 	const sizeClass = isThumbnail ? classes.thumbnail : classes.normal;
 	return (
 		<div className={`${classes.card} ${sizeClass}`}>
