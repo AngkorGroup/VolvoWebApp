@@ -8,6 +8,7 @@ import React, { useEffect, useState } from 'react';
 import BasicTable from '../../../common/components/BasicTable/BasicTable';
 import PageLoader from '../../../common/components/PageLoader/PageLoader';
 import VolvoButton from '../../../common/components/VolvoButton/VolvoButton';
+import { BATCH_COLUMNS } from '../columns';
 import { Batch } from '../interface';
 import BatchRow from './BatchRow/BatchRow';
 
@@ -16,14 +17,6 @@ interface BatchListModalProps {
 	id: string;
 	onClose: () => void;
 }
-
-const batchColumns = [
-	{ title: 'Número de Tarjeta' },
-	{ title: 'Lote' },
-	{ title: 'Vencimiento' },
-	{ title: 'Moneda' },
-	{ title: 'Saldo', props: { align: 'center' as 'center' } },
-];
 
 const batchRows: Batch[] = [
 	{
@@ -86,7 +79,7 @@ const BatchListModal: React.FC<BatchListModalProps> = ({
 			<DialogContent>
 				{loading && <PageLoader />}
 				{!loading && (
-					<BasicTable columns={batchColumns}>
+					<BasicTable columns={BATCH_COLUMNS}>
 						<React.Fragment>
 							{batches.map((item, i: number) => (
 								<BatchRow key={i} item={item} />

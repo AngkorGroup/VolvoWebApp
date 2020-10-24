@@ -12,45 +12,7 @@ import { filterRows } from '../../common/utils/utils';
 import TableFilter from '../../common/components/TableFilter/TableFilter';
 import PageActionBar from '../../common/components/PageActionBar/PageActionBar';
 import AppContext from '../../AppContext';
-
-const loadsColumns = [
-	{
-		title: 'Contrato',
-	},
-	{
-		title: 'RUC',
-	},
-	{
-		title: 'Razón Social',
-	},
-	{
-		title: 'Fecha',
-	},
-	{
-		title: 'Chasis',
-	},
-	{
-		title: 'Factura',
-	},
-	{
-		title: 'Importe',
-	},
-	{
-		title: 'Moneda',
-	},
-	{
-		title: 'Tipo',
-	},
-	{
-		title: 'Motivo',
-	},
-	{
-		title: 'Tipo Tarjeta',
-	},
-	{
-		title: '# TopPerú',
-	},
-];
+import { LOAD_COLUMNS } from './columns';
 
 const loadsRows: Load[] = [
 	{
@@ -181,7 +143,7 @@ const Loads: React.FC = () => {
 						/>
 					</PageActionBar>
 					<div>
-						<BasicTable columns={loadsColumns}>
+						<BasicTable columns={LOAD_COLUMNS}>
 							<React.Fragment>
 								{filtered.map((item, i: number) => (
 									<LoadRow key={i} item={item} />

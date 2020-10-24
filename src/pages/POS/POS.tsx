@@ -14,25 +14,7 @@ import PageActionBar from '../../common/components/PageActionBar/PageActionBar';
 import TableFilter from '../../common/components/TableFilter/TableFilter';
 import { filterRows } from '../../common/utils/utils';
 import AppContext from '../../AppContext';
-
-const posColumns = [
-	{
-		title: 'Dealer',
-	},
-	{
-		title: 'Id',
-	},
-	{
-		title: 'Celular',
-	},
-	{
-		title: 'Email',
-	},
-	{
-		title: 'Acciones',
-		props: { align: 'center' as 'center' },
-	},
-];
+import { POS_COLUMNS } from './columns';
 
 const posRows: POSType[] = [
 	{
@@ -171,7 +153,7 @@ const POS: React.FC = () => {
 								</React.Fragment>
 							)}
 						</PageActionBar>
-						<BasicTable columns={posColumns}>
+						<BasicTable columns={POS_COLUMNS}>
 							<React.Fragment>
 								{filtered.map((item, i: number) => (
 									<POSRow

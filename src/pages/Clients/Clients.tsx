@@ -12,27 +12,7 @@ import PageActionBar from '../../common/components/PageActionBar/PageActionBar';
 import { filterRows } from '../../common/utils/utils';
 import TableFilter from '../../common/components/TableFilter/TableFilter';
 import AppContext from '../../AppContext';
-
-const clientColumns = [
-	{
-		title: 'RUC',
-	},
-	{
-		title: 'Nombre',
-	},
-	{
-		title: 'Fecha Creación',
-	},
-	{
-		title: 'Dirección',
-	},
-	{
-		title: 'Teléfono',
-	},
-	{
-		title: 'Estado',
-	},
-];
+import { CLIENT_COLUMNS } from './columns';
 
 const clientRows: Client[] = [
 	{
@@ -159,7 +139,7 @@ const Clients: React.FC = () => {
 						/>
 					</PageActionBar>
 					<div>
-						<BasicTable columns={clientColumns}>
+						<BasicTable columns={CLIENT_COLUMNS}>
 							<React.Fragment>
 								{filtered.map((item, i: number) => (
 									<ClientRow key={i} item={item} />

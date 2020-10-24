@@ -25,47 +25,7 @@ import {
 import VolvoIconButton from '../../common/components/VolvoIconButton/VolvoIconButton';
 import { filterDateRangeRows } from '../../common/utils/utils';
 import MultiTypeAhead from '../../common/components/MultiTypeAhead/MultiTypeAhead';
-
-const consumesColumns = [
-	{
-		title: '#Voucher',
-	},
-	{
-		title: 'Tipo',
-	},
-	{
-		title: 'Número de Tarjeta',
-	},
-	{
-		title: '#TopPerú',
-	},
-	{
-		title: 'Cliente',
-	},
-	{
-		title: 'Fecha Op.',
-	},
-	{
-		title: 'Cobro',
-	},
-	{
-		title: 'Estado',
-	},
-	{
-		title: 'Contacto',
-	},
-	{
-		title: 'Moneda',
-	},
-	{
-		title: 'Monto',
-		props: { align: 'center' as 'center' },
-	},
-	{
-		title: 'Acciones',
-		props: { align: 'center' as 'center' },
-	},
-];
+import { CONSUMES_COLUMNS } from './columns';
 
 const consumesRows: Consume[] = [
 	{
@@ -313,7 +273,7 @@ const ConsumesByDealer: React.FC = () => {
 									</Grid>
 								</Grid>
 							</PageActionBar>
-							<BasicTable columns={consumesColumns}>
+							<BasicTable columns={CONSUMES_COLUMNS}>
 								<React.Fragment>
 									{filtered.map((item, i: number) => (
 										<ConsumeRow key={i} item={item} />

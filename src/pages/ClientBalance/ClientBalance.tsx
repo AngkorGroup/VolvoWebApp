@@ -16,13 +16,7 @@ import ExpirationRow, { Expiration } from './ExpirationRow/ExpirationRow';
 import PageActionBar from '../../common/components/PageActionBar/PageActionBar';
 import TableFilter from '../../common/components/TableFilter/TableFilter';
 import { filterRows } from '../../common/utils/utils';
-
-const cardColumns = [
-	{ title: 'Tipo de Tarjeta' },
-	{ title: 'Moneda' },
-	{ title: 'Saldo', props: { align: 'center' as 'center' } },
-	{ title: 'Acciones', props: { align: 'center' as 'center' } },
-];
+import { CARD_COLUMNS, EXPIRATION_COLUMNS } from './columns';
 
 const cardRows = [
 	{
@@ -37,16 +31,6 @@ const cardRows = [
 		currency: 'US$',
 		balance: '6,400.00',
 	},
-];
-
-const expirationColumns = [
-	{ title: 'Tipo de Tarjeta' },
-	{ title: 'Número de Tarjeta' },
-	{ title: 'Lote' },
-	{ title: 'Vencimiento' },
-	{ title: 'Moneda' },
-	{ title: 'Saldo', props: { align: 'center' as 'center' } },
-	{ title: 'Acciones', props: { align: 'center' as 'center' } },
 ];
 
 const expirationRows = [
@@ -159,7 +143,7 @@ const ClientBalance: React.FC = () => {
 								</PageActionBar>
 								<BasicTable
 									tableClassname={classes.cardsTable}
-									columns={cardColumns}
+									columns={CARD_COLUMNS}
 								>
 									<React.Fragment>
 										{filteredCards.map((item, i: number) => (
@@ -177,7 +161,7 @@ const ClientBalance: React.FC = () => {
 										onChange={onExpirationFilterChange}
 									/>
 								</PageActionBar>
-								<BasicTable columns={expirationColumns}>
+								<BasicTable columns={EXPIRATION_COLUMNS}>
 									<React.Fragment>
 										{filteredExpirations.map((item, i: number) => (
 											<ExpirationRow key={i} item={item} />

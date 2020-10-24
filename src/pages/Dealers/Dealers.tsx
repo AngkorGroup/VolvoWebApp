@@ -12,40 +12,7 @@ import AppContext from '../../AppContext';
 import { filterRows } from '../../common/utils/utils';
 import PageActionBar from '../../common/components/PageActionBar/PageActionBar';
 import TableFilter from '../../common/components/TableFilter/TableFilter';
-
-const dealerColumns = [
-	{
-		title: 'Código',
-	},
-	{
-		title: 'Nombre',
-	},
-	{
-		title: 'RUC',
-	},
-	{
-		title: 'Dirección',
-	},
-	{
-		title: 'Estado',
-	},
-	{
-		title: 'Tipo',
-	},
-	{
-		title: 'Teléfono',
-	},
-	{
-		title: 'Max. POS',
-	},
-	{
-		title: 'Zona',
-	},
-	{
-		title: 'Acciones',
-		props: { align: 'center' as 'center' },
-	},
-];
+import { DEALER_COLUMNS } from './columns';
 
 const dealerRows = [
 	{
@@ -170,7 +137,7 @@ const Dealers: React.FC = () => {
 								onConfirm={onAddDealer}
 							/>
 						</PageActionBar>
-						<BasicTable columns={dealerColumns}>
+						<BasicTable columns={DEALER_COLUMNS}>
 							<React.Fragment>
 								{filtered.map((item, i: number) => (
 									<DealerRow

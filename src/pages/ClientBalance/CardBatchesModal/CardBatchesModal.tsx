@@ -14,6 +14,7 @@ import VolvoButton from '../../../common/components/VolvoButton/VolvoButton';
 import VolvoCard from '../../../common/components/VolvoCard/VolvoCard';
 import CardBatchesRow from './CardBatchesRow/CardBatchesRow';
 import { CardBatchRow, VolvoCardData } from '../interfaces';
+import { CARD_BATCH_COLUMNS } from '../columns';
 
 interface CardBatchesModalProps {
 	show: boolean;
@@ -21,18 +22,6 @@ interface CardBatchesModalProps {
 	cardData: VolvoCardData;
 	onClose: () => void;
 }
-
-const cardBatchColumns = [
-	{ title: 'Número' },
-	{ title: 'Lote' },
-	{ title: 'Vencimiento' },
-	{ title: 'Moneda' },
-	{ title: 'Saldo', props: { align: 'center' as 'center' } },
-	{
-		title: 'Acciones',
-		props: { align: 'center' as 'center' },
-	},
-];
 
 const cardBatchRows: CardBatchRow[] = [
 	{
@@ -116,7 +105,7 @@ const CardBatchesModal: React.FC<CardBatchesModalProps> = ({
 				</div>
 				{loading && <PageLoader />}
 				{!loading && (
-					<BasicTable columns={cardBatchColumns}>
+					<BasicTable columns={CARD_BATCH_COLUMNS}>
 						<React.Fragment>
 							{cardBatches.map((item, i: number) => (
 								<CardBatchesRow key={i} item={item} cardData={cardData} />

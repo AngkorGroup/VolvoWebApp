@@ -14,32 +14,10 @@ import TypeAhead, { Option } from '../../common/components/TypeAhead/TypeAhead';
 import VolvoCard from '../../common/components/VolvoCard/VolvoCard';
 import { MOCKED_CARDS_TYPEAHEAD } from '../../common/utils/mocked';
 import { filterRows } from '../../common/utils/utils';
+import { EXPIRATION_COLUMNS, MOVEMENT_COLUMNS } from './columns';
 import ExpirationRow from './ExpirationRow/ExpirationRow';
 import { Expiration, Movement, Card } from './interface';
 import MovementRow from './MovementRow/MovementRow';
-
-const movementColumns = [
-	{ title: 'Tipo' },
-	{ title: '# Op.' },
-	{ title: 'Fecha Op.' },
-	{ title: 'Motivo' },
-	{ title: 'Monto', props: { align: 'center' as 'center' } },
-	{ title: 'Dealer' },
-	{ title: 'Caja' },
-	{ title: 'Lote' },
-	{ title: 'Origen/Destino' },
-	{ title: 'Acciones', props: { align: 'center' as 'center' } },
-];
-
-const expirationColumns = [
-	{ title: 'Tipo' },
-	{ title: 'Número Tarjeta' },
-	{ title: 'Lote' },
-	{ title: 'Moneda' },
-	{ title: 'Saldo', props: { align: 'center' as 'center' } },
-	{ title: 'Vencimiento' },
-	{ title: 'Acciones', props: { align: 'center' as 'center' } },
-];
 
 const movementRows: Movement[] = [
 	{
@@ -177,7 +155,7 @@ const CardBalance: React.FC = () => {
 										onChange={onMovementFilterChange}
 									/>
 								</PageActionBar>
-								<BasicTable columns={movementColumns}>
+								<BasicTable columns={MOVEMENT_COLUMNS}>
 									<React.Fragment>
 										{filteredMovements.map((item, i: number) => (
 											<MovementRow key={i} item={item} />
@@ -194,7 +172,7 @@ const CardBalance: React.FC = () => {
 										onChange={onExpirationFilterChange}
 									/>
 								</PageActionBar>
-								<BasicTable columns={expirationColumns}>
+								<BasicTable columns={EXPIRATION_COLUMNS}>
 									<React.Fragment>
 										{filteredExpirations.map((item, i: number) => (
 											<ExpirationRow key={i} item={item} />
