@@ -1,20 +1,8 @@
 import React, { useState } from 'react';
-import BasicTable from '../../common/components/BasicTable/BasicTable';
-import PageActionBar from '../../common/components/PageActionBar/PageActionBar';
-import PageBody from '../../common/components/PageBody/PageBody';
-import PageLoader from '../../common/components/PageLoader/PageLoader';
-import PageTitle from '../../common/components/PageTitle/PageTitle';
-import TypeAhead, { Option } from '../../common/components/TypeAhead/TypeAhead';
-import {
-	MOCKED_CARD_TYPES_MULTITYPEAHEAD,
-	MOCKED_CASHIERS_SELECT,
-	MOCKED_DEALERS_TYPEAHEAD,
-} from '../../common/utils/mocked';
 import ConsumeRow from './ConsumeRow/ConsumeRow';
 import { Consume } from './interface';
 import SearchIcon from '@material-ui/icons/Search';
 import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date';
-import DatePicker from '../../common/components/DatePicker/DatePicker';
 import {
 	FormControl,
 	Grid,
@@ -22,50 +10,25 @@ import {
 	MenuItem,
 	Select,
 } from '@material-ui/core';
-import VolvoIconButton from '../../common/components/VolvoIconButton/VolvoIconButton';
-import { filterDateRangeRows } from '../../common/utils/utils';
-import MultiTypeAhead from '../../common/components/MultiTypeAhead/MultiTypeAhead';
-
-const consumesColumns = [
-	{
-		title: '#Voucher',
-	},
-	{
-		title: 'Tipo',
-	},
-	{
-		title: 'Número de Tarjeta',
-	},
-	{
-		title: '#TopPerú',
-	},
-	{
-		title: 'Cliente',
-	},
-	{
-		title: 'Fecha Op.',
-	},
-	{
-		title: 'Cobro',
-	},
-	{
-		title: 'Estado',
-	},
-	{
-		title: 'Contacto',
-	},
-	{
-		title: 'Moneda',
-	},
-	{
-		title: 'Monto',
-		props: { align: 'center' as 'center' },
-	},
-	{
-		title: 'Acciones',
-		props: { align: 'center' as 'center' },
-	},
-];
+import {
+	filterDateRangeRows,
+	MOCKED_CARD_TYPES_MULTITYPEAHEAD,
+	MOCKED_CASHIERS_SELECT,
+	MOCKED_DEALERS_TYPEAHEAD,
+	Option,
+} from 'common/utils';
+import {
+	BasicTable,
+	DatePicker,
+	MultiTypeAhead,
+	PageActionBar,
+	PageBody,
+	PageLoader,
+	PageTitle,
+	TypeAhead,
+	VolvoIconButton,
+} from 'common/components';
+import { CONSUMES_COLUMNS } from './columns';
 
 const consumesRows: Consume[] = [
 	{
@@ -313,7 +276,7 @@ const ConsumesByDealer: React.FC = () => {
 									</Grid>
 								</Grid>
 							</PageActionBar>
-							<BasicTable columns={consumesColumns}>
+							<BasicTable columns={CONSUMES_COLUMNS}>
 								<React.Fragment>
 									{filtered.map((item, i: number) => (
 										<ConsumeRow key={i} item={item} />

@@ -1,51 +1,20 @@
 import React, { useContext, useEffect, useState } from 'react';
 import AddIcon from '@material-ui/icons/Add';
-import BasicTable from '../../common/components/BasicTable/BasicTable';
-import PageTitle from '../../common/components/PageTitle/PageTitle';
-import VolvoButton from '../../common/components/VolvoButton/VolvoButton';
+import {
+	BasicTable,
+	PageActionBar,
+	PageBody,
+	PageLoader,
+	PageTitle,
+	TableFilter,
+	VolvoButton,
+} from 'common/components';
 import DealerRow from './DealerRow/DealerRow';
 import FormModal from './FormModal/FormModal';
 import { Dealer } from './interfaces';
-import PageLoader from '../../common/components/PageLoader/PageLoader';
-import PageBody from '../../common/components/PageBody/PageBody';
 import AppContext from '../../AppContext';
-import { filterRows } from '../../common/utils/utils';
-import PageActionBar from '../../common/components/PageActionBar/PageActionBar';
-import TableFilter from '../../common/components/TableFilter/TableFilter';
-
-const dealerColumns = [
-	{
-		title: 'Código',
-	},
-	{
-		title: 'Nombre',
-	},
-	{
-		title: 'RUC',
-	},
-	{
-		title: 'Dirección',
-	},
-	{
-		title: 'Estado',
-	},
-	{
-		title: 'Tipo',
-	},
-	{
-		title: 'Teléfono',
-	},
-	{
-		title: 'Max. POS',
-	},
-	{
-		title: 'Zona',
-	},
-	{
-		title: 'Acciones',
-		props: { align: 'center' as 'center' },
-	},
-];
+import { DEALER_COLUMNS } from './columns';
+import { filterRows } from 'common/utils';
 
 const dealerRows = [
 	{
@@ -170,7 +139,7 @@ const Dealers: React.FC = () => {
 								onConfirm={onAddDealer}
 							/>
 						</PageActionBar>
-						<BasicTable columns={dealerColumns}>
+						<BasicTable columns={DEALER_COLUMNS}>
 							<React.Fragment>
 								{filtered.map((item, i: number) => (
 									<DealerRow

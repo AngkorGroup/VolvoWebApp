@@ -1,28 +1,23 @@
 import { makeStyles } from '@material-ui/core';
 import React, { useState } from 'react';
-import BasicTable from '../../common/components/BasicTable/BasicTable';
-import CustomTab from '../../common/components/CustomTab/CustomTab';
-import CustomTabs from '../../common/components/CustomTabs/CustomTabs';
-import EmptyState from '../../common/components/EmptyState/EmptyState';
-import PageBody from '../../common/components/PageBody/PageBody';
-import PageLoader from '../../common/components/PageLoader/PageLoader';
-import PageTitle from '../../common/components/PageTitle/PageTitle';
-import TabPanel from '../../common/components/TabPanel/TabPanel';
-import TypeAhead, { Option } from '../../common/components/TypeAhead/TypeAhead';
-import { MOCKED_CLIENTS_TYPEAHEAD } from '../../common/utils/mocked';
-import { CardType } from './interfaces';
+import {
+	BasicTable,
+	CustomTab,
+	CustomTabs,
+	EmptyState,
+	PageBody,
+	PageLoader,
+	PageTitle,
+	TabPanel,
+	TypeAhead,
+	PageActionBar,
+	TableFilter,
+} from 'common/components';
+import { filterRows, MOCKED_CLIENTS_TYPEAHEAD, Option } from 'common/utils';
 import CardRow from './CardRow/CardRow';
 import ExpirationRow, { Expiration } from './ExpirationRow/ExpirationRow';
-import PageActionBar from '../../common/components/PageActionBar/PageActionBar';
-import TableFilter from '../../common/components/TableFilter/TableFilter';
-import { filterRows } from '../../common/utils/utils';
-
-const cardColumns = [
-	{ title: 'Tipo de Tarjeta' },
-	{ title: 'Moneda' },
-	{ title: 'Saldo', props: { align: 'center' as 'center' } },
-	{ title: 'Acciones', props: { align: 'center' as 'center' } },
-];
+import { CardType } from './interfaces';
+import { CARD_COLUMNS, EXPIRATION_COLUMNS } from './columns';
 
 const cardRows = [
 	{
@@ -37,16 +32,6 @@ const cardRows = [
 		currency: 'US$',
 		balance: '6,400.00',
 	},
-];
-
-const expirationColumns = [
-	{ title: 'Tipo de Tarjeta' },
-	{ title: 'Número de Tarjeta' },
-	{ title: 'Lote' },
-	{ title: 'Vencimiento' },
-	{ title: 'Moneda' },
-	{ title: 'Saldo', props: { align: 'center' as 'center' } },
-	{ title: 'Acciones', props: { align: 'center' as 'center' } },
 ];
 
 const expirationRows = [
@@ -159,7 +144,7 @@ const ClientBalance: React.FC = () => {
 								</PageActionBar>
 								<BasicTable
 									tableClassname={classes.cardsTable}
-									columns={cardColumns}
+									columns={CARD_COLUMNS}
 								>
 									<React.Fragment>
 										{filteredCards.map((item, i: number) => (
@@ -177,7 +162,7 @@ const ClientBalance: React.FC = () => {
 										onChange={onExpirationFilterChange}
 									/>
 								</PageActionBar>
-								<BasicTable columns={expirationColumns}>
+								<BasicTable columns={EXPIRATION_COLUMNS}>
 									<React.Fragment>
 										{filteredExpirations.map((item, i: number) => (
 											<ExpirationRow key={i} item={item} />

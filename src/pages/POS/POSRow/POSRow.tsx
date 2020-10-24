@@ -7,10 +7,9 @@ import {
 import React, { useState } from 'react';
 import CreateIcon from '@material-ui/icons/Create';
 import DeleteIcon from '@material-ui/icons/Delete';
-import VolvoIconButton from '../../../common/components/VolvoIconButton/VolvoIconButton';
+import { ConfirmationModal, VolvoIconButton } from 'common/components';
 import { POS, POSForm } from '../interfaces';
 import FormModal from '../FormModal.tsx/FormModal';
-import ConfirmationModal from '../../../common/components/ConfirmationModal/ConfirmationModal';
 
 interface POSRowProps {
 	item: POS;

@@ -1,16 +1,12 @@
 import { TextField } from '@material-ui/core';
 import { Autocomplete } from '@material-ui/lab';
+import { Option } from 'common/utils/types';
 import React from 'react';
 
 interface TypeAheadProps {
 	placeholder: string;
 	options: Option[];
 	onChange: (event: any, newValue: string | Option) => void;
-}
-
-export interface Option {
-	value: string;
-	label: string;
 }
 
 const TypeAhead: React.FC<TypeAheadProps> = ({

@@ -1,39 +1,20 @@
 import React, { useContext, useState } from 'react';
-import BasicTable from '../../common/components/BasicTable/BasicTable';
-import PageTitle from '../../common/components/PageTitle/PageTitle';
+import {
+	BasicTable,
+	EmptyState,
+	PageActionBar,
+	PageBody,
+	PageLoader,
+	PageTitle,
+	TableFilter,
+	TypeAhead,
+} from 'common/components';
+import { filterRows, MOCKED_CLIENTS_TYPEAHEAD } from 'common/utils';
 import { ClientUser } from './interfaces';
-import PageLoader from '../../common/components/PageLoader/PageLoader';
-import PageBody from '../../common/components/PageBody/PageBody';
 import ClientUserRow from './ClientUserRow/ClientUserRow';
-import { MOCKED_CLIENTS_TYPEAHEAD } from '../../common/utils/mocked';
-import TypeAhead, { Option } from '../../common/components/TypeAhead/TypeAhead';
-import EmptyState from '../../common/components/EmptyState/EmptyState';
-import { filterRows } from '../../common/utils/utils';
-import PageActionBar from '../../common/components/PageActionBar/PageActionBar';
-import TableFilter from '../../common/components/TableFilter/TableFilter';
 import AppContext from '../../AppContext';
-
-const clientUserColumns = [
-	{
-		title: 'DNI',
-	},
-	{
-		title: 'Tipo',
-	},
-	{
-		title: 'Celular',
-	},
-	{
-		title: 'Correo Electrónico',
-	},
-	{
-		title: 'Nombre Completo',
-	},
-	{
-		title: 'Acciones',
-		props: { align: 'center' as 'center' },
-	},
-];
+import { CLIENT_USER_COLUMNS } from './columns';
+import { Option } from 'common/utils/types';
 
 const clientUserRows: ClientUser[] = [
 	{
@@ -113,7 +94,7 @@ const ClientUsers: React.FC = () => {
 						<PageActionBar>
 							<TableFilter value={query} onChange={onFilterChange} />
 						</PageActionBar>
-						<BasicTable columns={clientUserColumns}>
+						<BasicTable columns={CLIENT_USER_COLUMNS}>
 							<React.Fragment>
 								{filtered.map((item, i: number) => (
 									<ClientUserRow

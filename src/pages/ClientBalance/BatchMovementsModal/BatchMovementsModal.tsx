@@ -7,11 +7,14 @@ import {
 	makeStyles,
 	Theme,
 } from '@material-ui/core';
+import {
+	BasicTable,
+	PageLoader,
+	VolvoButton,
+	VolvoCard,
+} from 'common/components';
 import React, { useEffect, useState } from 'react';
-import BasicTable from '../../../common/components/BasicTable/BasicTable';
-import PageLoader from '../../../common/components/PageLoader/PageLoader';
-import VolvoButton from '../../../common/components/VolvoButton/VolvoButton';
-import VolvoCard from '../../../common/components/VolvoCard/VolvoCard';
+import { BATCH_MOVEMENTS_COLUMNS } from '../columns';
 import { BatchMovementRow, VolvoCardData } from '../interfaces';
 import BatchMovementsRow from './BatchMovementsRow/BatchMovementsRow';
 
@@ -22,21 +25,6 @@ interface BatchMovementsModalProps {
 	batchText: string;
 	onClose: () => void;
 }
-
-const batchMovementsColumns = [
-	{ title: 'Número' },
-	{ title: '#Operación' },
-	{ title: 'Fecha Op.' },
-	{ title: 'Moneda' },
-	{ title: 'Monto', props: { align: 'center' as 'center' } },
-	{ title: 'Dealer' },
-	{ title: 'Caja' },
-	{ title: 'Lote' },
-	{
-		title: 'Acciones',
-		props: { align: 'center' as 'center' },
-	},
-];
 
 const batchMovementRows: BatchMovementRow[] = [
 	{
@@ -156,7 +144,7 @@ const BatchMovementsModal: React.FC<BatchMovementsModalProps> = ({
 				<div className={classes.batchInfoContainer}>{batchText}</div>
 				{loading && <PageLoader />}
 				{!loading && (
-					<BasicTable columns={batchMovementsColumns}>
+					<BasicTable columns={BATCH_MOVEMENTS_COLUMNS}>
 						<React.Fragment>
 							{batchMovements.map((item, i: number) => (
 								<BatchMovementsRow key={i} item={item} />

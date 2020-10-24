@@ -4,10 +4,9 @@ import {
 	DialogContent,
 	DialogTitle,
 } from '@material-ui/core';
+import { BasicTable, PageLoader, VolvoButton } from 'common/components';
 import React, { useEffect, useState } from 'react';
-import BasicTable from '../../../common/components/BasicTable/BasicTable';
-import PageLoader from '../../../common/components/PageLoader/PageLoader';
-import VolvoButton from '../../../common/components/VolvoButton/VolvoButton';
+import { BATCH_COLUMNS } from '../columns';
 import { UserCard } from '../interfaces';
 import CardRow from './CardRow/CardRow';
 
@@ -16,14 +15,6 @@ interface CardsModalProps {
 	id: string;
 	onClose: () => void;
 }
-
-const batchColumns = [
-	{ title: 'Número' },
-	{ title: 'Fecha de Creación' },
-	{ title: 'Tipo' },
-	{ title: 'Moneda' },
-	{ title: 'Saldo', props: { align: 'center' as 'center' } },
-];
 
 const batchRows: UserCard[] = [
 	{
@@ -86,7 +77,7 @@ const CardsModal: React.FC<CardsModalProps> = ({
 			<DialogContent>
 				{loading && <PageLoader />}
 				{!loading && (
-					<BasicTable columns={batchColumns}>
+					<BasicTable columns={BATCH_COLUMNS}>
 						<React.Fragment>
 							{cards.map((item, i: number) => (
 								<CardRow key={i} item={item} />

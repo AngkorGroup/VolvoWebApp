@@ -7,11 +7,14 @@ import {
 	makeStyles,
 	Theme,
 } from '@material-ui/core';
+import {
+	BasicTable,
+	PageLoader,
+	VolvoButton,
+	VolvoCard,
+} from 'common/components';
 import React, { useEffect, useState } from 'react';
-import BasicTable from '../../../common/components/BasicTable/BasicTable';
-import PageLoader from '../../../common/components/PageLoader/PageLoader';
-import VolvoButton from '../../../common/components/VolvoButton/VolvoButton';
-import VolvoCard from '../../../common/components/VolvoCard/VolvoCard';
+import { CARD_LIST_COLUMNS } from '../columns';
 import { ClientCardRow, VolvoCardData } from '../interfaces';
 import CardListRow from './CardListRow/CardListRow';
 
@@ -23,17 +26,6 @@ interface CardListModalProps {
 	balance: string;
 	onClose: () => void;
 }
-
-const cardListColumns = [
-	{ title: 'Número' },
-	{ title: 'Contacto' },
-	{ title: 'Moneda' },
-	{ title: 'Saldo', props: { align: 'center' as 'center' } },
-	{
-		title: 'Acciones',
-		props: { align: 'center' as 'center' },
-	},
-];
 
 const clientCardRows: ClientCardRow[] = [
 	{
@@ -119,7 +111,7 @@ const CardListModal: React.FC<CardListModalProps> = ({
 				</div>
 				{loading && <PageLoader />}
 				{!loading && (
-					<BasicTable columns={cardListColumns}>
+					<BasicTable columns={CARD_LIST_COLUMNS}>
 						<React.Fragment>
 							{cards.map((item, i: number) => (
 								<CardListRow key={i} item={item} cardData={cardDisplayData} />

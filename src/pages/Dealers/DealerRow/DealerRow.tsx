@@ -7,7 +7,7 @@ import {
 import React, { useState } from 'react';
 import CreateIcon from '@material-ui/icons/Create';
 import DeleteIcon from '@material-ui/icons/Delete';
-import VolvoIconButton from '../../../common/components/VolvoIconButton/VolvoIconButton';
+import { VolvoIconButton } from 'common/components';
 import { Dealer } from '../interfaces';
 import FormModal from '../FormModal/FormModal';
 import DeleteModal from '../DeleteModal/DeleteModal';
