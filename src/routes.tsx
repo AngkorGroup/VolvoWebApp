@@ -1,3 +1,4 @@
+import SignIn from 'pages/SignIn/SignIn';
 import React, { lazy } from 'react';
 import HOCLayout from './common/Layout/HOCLayout';
 
@@ -78,7 +79,7 @@ export interface Route {
 }
 
 export const routes: Route[] = [
-	{ id: 'Home', path: '/', component: PageCardBalance },
+	{ id: 'SignIn', path: '/', component: SignIn },
 	{ id: 'CardBalance', path: '/card_balance', component: PageCardBalance },
 	{ id: 'CardsData', path: '/cards_data', component: PageCardsData },
 	{ id: 'CardTypes', path: '/card_types', component: PageCardTypes },
