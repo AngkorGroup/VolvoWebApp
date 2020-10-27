@@ -5,13 +5,14 @@ import {
 	ThemeProvider,
 } from '@material-ui/core';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
+import GuardedRoute from 'common/components/GuardedRoute/GuardedRoute';
+import PageMessages from 'common/Layout/PageMessages/PageMessages';
 import moment from 'moment';
 import React, { Suspense } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import './App.css';
 import { AppProvider } from './AppContext';
-import PageMessages from './common/Layout/PageMessages/PageMessages';
-import { routes, Route as RouteType } from './routes';
+import { routes, Route as RouteType, guarded } from './routes';
 import pageTheme from './theme';
 
 const theme = createMuiTheme({
@@ -30,6 +31,14 @@ const App = () => {
 								<Switch>
 									{routes.map((route: RouteType) => (
 										<Route
+											key={route.id}
+											exact
+											path={route.path}
+											component={route.component}
+										/>
+									))}
+									{guarded.map((route: RouteType) => (
+										<GuardedRoute
 											key={route.id}
 											exact
 											path={route.path}

@@ -1,17 +1,19 @@
+import { PageMessage, User } from 'common/utils';
 import React, { ReactElement, useState, useCallback } from 'react';
-import { PageMessage } from './common/utils/pageMessage';
 
 interface AppProviderProps {
 	children: ReactElement;
 }
 
 interface ContextProps {
+	user: User | null;
 	pageMessages: PageMessage[];
 	addPageMessage: (m: PageMessage) => void;
 	updateState: Function;
 }
 
 const initialState: ContextProps = {
+	user: null,
 	pageMessages: [],
 	addPageMessage: () => {},
 	updateState: Function.prototype,

@@ -78,8 +78,7 @@ export interface Route {
 	component: (props: any) => JSX.Element;
 }
 
-export const routes: Route[] = [
-	{ id: 'SignIn', path: '/', component: SignIn },
+export const guarded: Route[] = [
 	{ id: 'CardBalance', path: '/card_balance', component: PageCardBalance },
 	{ id: 'CardsData', path: '/cards_data', component: PageCardsData },
 	{ id: 'CardTypes', path: '/card_types', component: PageCardTypes },
@@ -100,3 +99,5 @@ export const routes: Route[] = [
 	{ id: 'POS', path: '/pos', component: PagePOS },
 	{ id: 'Users', path: '/users', component: PageUsers },
 ];
+
+export const routes: Route[] = [{ id: 'SignIn', path: '/', component: SignIn }];

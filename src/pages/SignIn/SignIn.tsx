@@ -36,24 +36,21 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-const TEST_USER = {
-	user: 'test',
-	password: 'test',
-};
-
 const SignIn = () => {
 	const classes = useStyles();
 	const { push } = useHistory();
-	const [user, setUser] = useState('');
+	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
-	const { addPageMessage } = useContext(AppContext);
+	const { addPageMessage, updateState } = useContext(AppContext);
 
-	const onUserChange = (e: any) => setUser(e.target.value);
+	const onUserChange = (e: any) => setEmail(e.target.value);
 	const onPassChange = (e: any) => setPassword(e.target.value);
 
 	const handleSubmit = (e: FormEvent) => {
 		e.preventDefault();
-		if (user === TEST_USER.user && password === TEST_USER.password) {
+		if (email && password) {
+			// TODO: save user on local storage
+			updateState!({ user: { email } });
 			push('/client_balance');
 		} else {
 			addPageMessage!({
@@ -80,10 +77,11 @@ const SignIn = () => {
 						margin='normal'
 						required
 						fullWidth
-						label='Usuario'
-						name='user'
+						label='Correo'
+						name='email'
 						autoFocus
-						value={user}
+						autoComplete='email'
+						value={email}
 						onChange={onUserChange}
 					/>
 					<TextField
