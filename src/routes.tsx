@@ -1,3 +1,4 @@
+import SignIn from 'pages/SignIn/SignIn';
 import React, { lazy } from 'react';
 import HOCLayout from './common/Layout/HOCLayout';
 
@@ -77,8 +78,7 @@ export interface Route {
 	component: (props: any) => JSX.Element;
 }
 
-export const routes: Route[] = [
-	{ id: 'Home', path: '/', component: PageCardBalance },
+export const guarded: Route[] = [
 	{ id: 'CardBalance', path: '/card_balance', component: PageCardBalance },
 	{ id: 'CardsData', path: '/cards_data', component: PageCardsData },
 	{ id: 'CardTypes', path: '/card_types', component: PageCardTypes },
@@ -99,3 +99,5 @@ export const routes: Route[] = [
 	{ id: 'POS', path: '/pos', component: PagePOS },
 	{ id: 'Users', path: '/users', component: PageUsers },
 ];
+
+export const routes: Route[] = [{ id: 'SignIn', path: '/', component: SignIn }];

@@ -8,8 +8,10 @@ import {
 	Typography,
 } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
-import React from 'react';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import React, { useContext } from 'react';
 import Sidebar from '../components/Sidebar/Sidebar';
+import AppContext from 'AppContext';
 
 interface LayoutProps {
 	menu?: JSX.Element;
@@ -40,15 +42,25 @@ const useStyles = makeStyles((theme) =>
 			flexGrow: 1,
 			padding: theme.spacing(3),
 		},
+		logout: {
+			position: 'absolute',
+			right: '10px',
+			color: '#fff',
+		},
 	}),
 );
 
 const Layout: React.FC<LayoutProps> = (props) => {
 	const classes = useStyles();
 	const [mobileOpen, setMobileOpen] = React.useState(false);
+	const { updateState } = useContext(AppContext);
 
 	const handleDrawerToggle = () => {
 		setMobileOpen(!mobileOpen);
+	};
+
+	const onLogout = () => {
+		updateState!({ user: null });
 	};
 
 	return (
@@ -69,6 +81,14 @@ const Layout: React.FC<LayoutProps> = (props) => {
 						<Typography variant='h6' noWrap>
 							Volvo Web App
 						</Typography>
+						<IconButton
+							className={classes.logout}
+							onClick={onLogout}
+							color='default'
+							title='Cerrar sesión'
+						>
+							<ExitToAppIcon />
+						</IconButton>
 					</Toolbar>
 				</AppBar>
 				<Sidebar
