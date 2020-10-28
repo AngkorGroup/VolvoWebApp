@@ -3,6 +3,12 @@ export interface Option {
 	label: string;
 }
 
-export interface User {
+export interface Admin {
+	id: string;
+	firstName: string;
+	lastName: string;
+	fullName: string;
+	userName: string;
+	phone: string;
 	email: string;
 }
