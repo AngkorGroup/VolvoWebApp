@@ -1,7 +1,6 @@
 import { createStyles, makeStyles, Theme } from '@material-ui/core';
 import React from 'react';
-import cardOcean from '../../assets/images/cardOcean.png';
-import cardGray from '../../assets/images/cardGray.png';
+import { colors } from 'theme';
 
 interface VolvoCardProps {
 	title: string;
@@ -51,6 +50,12 @@ const useStyles = makeStyles(({ palette }: Theme) =>
 			width: '100%',
 			zIndex: 1,
 		},
+		cardGray: {
+			backgroundColor: colors.slate,
+		},
+		cardOcean: {
+			backgroundColor: palette.info.main,
+		},
 	}),
 );
 
@@ -62,11 +67,10 @@ const VolvoCard: React.FC<VolvoCardProps> = ({
 	isThumbnail,
 }: VolvoCardProps) => {
 	const classes = useStyles();
-	const cardIMG = type === 'VURE' ? cardGray : cardOcean;
+	const color = type === 'VURE' ? classes.cardGray : classes.cardOcean;
 	const sizeClass = isThumbnail ? classes.thumbnail : classes.normal;
 	return (
-		<div className={`${classes.card} ${sizeClass}`}>
-			<img className={classes.image} src={cardIMG} alt='Imagen de la tarjeta' />
+		<div className={`${classes.card} ${sizeClass} ${color}`}>
 			<div className={classes.title}>
 				<div>{title}</div>
 				<div className={classes.number}>{number}</div>

@@ -1,6 +1,6 @@
 import { Overrides } from '@material-ui/core/styles/overrides';
 
-const colors = {
+export const colors = {
 	// Corporate Colors
 	volvoBlue: '#182871',
 	volvoSilver: '#8D9192',
