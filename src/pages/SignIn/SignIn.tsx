@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -13,6 +13,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { useHistory } from 'react-router-dom';
 import AppContext from 'AppContext';
+import { LOGIN_URL } from 'common/constants/api';
+import { api, Admin, setAuthToken } from 'common/utils';
 
 type FormEvent = React.FormEvent<HTMLFormElement>;
 
@@ -36,22 +38,34 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
+interface LoginResponse {
+	admin: Admin;
+	authToken: string;
+}
+
 const SignIn = () => {
 	const classes = useStyles();
 	const { push } = useHistory();
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
-	const { addPageMessage, updateState } = useContext(AppContext);
+	const { user, addPageMessage, setAppUser } = useContext(AppContext);
 
 	const onUserChange = (e: any) => setEmail(e.target.value);
 	const onPassChange = (e: any) => setPassword(e.target.value);
 
-	const handleSubmit = (e: FormEvent) => {
+	const handleSubmit = async (e: FormEvent) => {
 		e.preventDefault();
-		if (email && password) {
-			// TODO: save user on local storage
-			updateState!({ user: { email } });
-			push('/client_balance');
+		const response = await api.post<LoginResponse>(LOGIN_URL, {
+			email,
+			password,
+		});
+		if (response.ok) {
+			const { admin, authToken } = response.data || {};
+			if (admin && authToken && setAppUser) {
+				setAppUser(admin, authToken);
+				setAuthToken(authToken);
+				push('/client_balance');
+			}
 		} else {
 			addPageMessage!({
 				title: 'Credenciales Incorrectas',
@@ -60,6 +74,13 @@ const SignIn = () => {
 			});
 		}
 	};
+
+	useEffect(() => {
+		if (user) {
+			push('/client_balance');
+		}
+		// eslint-disable-next-line
+	}, []);
 
 	return (
 		<Container component='main' maxWidth='xs'>
@@ -97,7 +118,7 @@ const SignIn = () => {
 						onChange={onPassChange}
 					/>
 					<FormControlLabel
-						control={<Checkbox value='remember' color='primary' />}
+						control={<Checkbox value='remember' color='primary' checked />}
 						label='Recordarme'
 					/>
 					<Button

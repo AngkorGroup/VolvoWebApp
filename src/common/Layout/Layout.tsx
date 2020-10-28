@@ -12,6 +12,7 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import React, { useContext } from 'react';
 import Sidebar from '../components/Sidebar/Sidebar';
 import AppContext from 'AppContext';
+import { removeAuthToken } from 'common/utils';
 
 interface LayoutProps {
 	menu?: JSX.Element;
@@ -53,14 +54,18 @@ const useStyles = makeStyles((theme) =>
 const Layout: React.FC<LayoutProps> = (props) => {
 	const classes = useStyles();
 	const [mobileOpen, setMobileOpen] = React.useState(false);
-	const { updateState } = useContext(AppContext);
+	const { setAppUser } = useContext(AppContext);
 
 	const handleDrawerToggle = () => {
 		setMobileOpen(!mobileOpen);
 	};
 
 	const onLogout = () => {
-		updateState!({ user: null });
+		if (setAppUser) {
+			// Perform the logout API call
+			setAppUser(null);
+			removeAuthToken();
+		}
 	};
 
 	return (

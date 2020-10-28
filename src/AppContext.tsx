@@ -1,4 +1,5 @@
-import { PageMessage, User } from 'common/utils';
+import UserRepository from 'common/repository/UserRepository';
+import { PageMessage, Admin } from 'common/utils';
 import React, { ReactElement, useState, useCallback } from 'react';
 
 interface AppProviderProps {
@@ -6,16 +7,18 @@ interface AppProviderProps {
 }
 
 interface ContextProps {
-	user: User | null;
+	user: Admin | null;
 	pageMessages: PageMessage[];
 	addPageMessage: (m: PageMessage) => void;
+	setAppUser: (u: Admin | null, t?: string) => void;
 	updateState: Function;
 }
 
 const initialState: ContextProps = {
-	user: null,
+	user: UserRepository.getUser(),
 	pageMessages: [],
 	addPageMessage: () => {},
+	setAppUser: () => {},
 	updateState: Function.prototype,
 };
 
@@ -28,7 +31,7 @@ const AppProvider = ({ children }: AppProviderProps) => {
 	const [state, setState] = useState<PartialContext>(initialState);
 	const updateState = useCallback(
 		(newState: PartialContext, callback: Callback = undefined) => {
-			setState((state: PartialContext) => ({ ...state, ...newState }));
+			setState((oldState: PartialContext) => ({ ...oldState, ...newState }));
 
 			if (callback && typeof callback === 'function') {
 				callback();
@@ -38,14 +41,30 @@ const AppProvider = ({ children }: AppProviderProps) => {
 	);
 
 	const addPageMessage = useCallback((message: PageMessage) => {
-		setState((state: PartialContext) => ({
-			...state,
-			pageMessages: [...(state.pageMessages || []), message],
+		setState((oldState: PartialContext) => ({
+			...oldState,
+			pageMessages: [...(oldState.pageMessages || []), message],
+		}));
+	}, []);
+
+	const setAppUser = useCallback((user: Admin | null, token: string = '') => {
+		if (user && token) {
+			UserRepository.setUser(user);
+			UserRepository.setToken(token);
+		} else {
+			UserRepository.removeUser();
+			UserRepository.removeToken();
+		}
+		setState((oldState: PartialContext) => ({
+			...oldState,
+			user,
 		}));
 	}, []);
 
 	return (
-		<AppContext.Provider value={{ ...state, updateState, addPageMessage }}>
+		<AppContext.Provider
+			value={{ ...state, updateState, addPageMessage, setAppUser }}
+		>
 			{children}
 		</AppContext.Provider>
 	);
