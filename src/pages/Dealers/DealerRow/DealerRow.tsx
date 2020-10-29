@@ -56,8 +56,8 @@ const DealerRow = ({ item, onEdit, onDelete }: DealerRowProps) => {
 				<TableCell>{status}</TableCell>
 				<TableCell>{type}</TableCell>
 				<TableCell>{phone}</TableCell>
+				<TableCell align='center'>{maxCashiers}</TableCell>
 				<TableCell>{zone}</TableCell>
-				<TableCell>{maxCashiers}</TableCell>
 				<TableCell>
 					<div className={classes.actionButtons}>
 						<VolvoIconButton
