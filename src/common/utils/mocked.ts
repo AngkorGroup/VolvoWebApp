@@ -21,6 +21,29 @@ export const MOCKED_CLIENTS_TYPEAHEAD = [
 	},
 ];
 
+export const MOCKED_CONTACTS_TYPEAHEAD = [
+	{
+		value: '1',
+		label: 'Angkor Group S.A.C: 987654321 - Federico Montero',
+	},
+	{
+		value: '2',
+		label: 'Angkor Group S.A.C: 949666888 - Gianfranco Galvez',
+	},
+	{
+		value: '3',
+		label: 'Angkor Group S.A.C: 985555123 - Mauricio Castañeda',
+	},
+	{
+		value: '4',
+		label: 'Angkor Group S.A.C: 987486426 - Brajean Junchaya',
+	},
+	{
+		value: '5',
+		label: 'Angkor Group S.A.C: 963852741 - Juan Jose Ramirez',
+	},
+];
+
 export const MOCKED_CARDS_TYPEAHEAD = [
 	{
 		value: '1',

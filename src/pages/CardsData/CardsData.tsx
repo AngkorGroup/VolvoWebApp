@@ -1,3 +1,4 @@
+import { Grid } from '@material-ui/core';
 import {
 	BasicTable,
 	PageActionBar,
@@ -7,7 +8,12 @@ import {
 	TableFilter,
 	TypeAhead,
 } from 'common/components';
-import { filterRows, MOCKED_CLIENTS_TYPEAHEAD, Option } from 'common/utils';
+import {
+	filterRows,
+	MOCKED_CLIENTS_TYPEAHEAD,
+	MOCKED_CONTACTS_TYPEAHEAD,
+	Option,
+} from 'common/utils';
 import React, { useState } from 'react';
 import CardDataRow from './CardDataRow/CardDataRow';
 import { CARD_COLUMNS } from './columns';
@@ -93,15 +99,35 @@ const CardsData: React.FC = () => {
 		}, 1500);
 	};
 
+	const onContactChange = (_: any, newValue: string | Option) => {
+		setLoading(true);
+		setTimeout(() => {
+			setCards(cardDataRows);
+			setFiltered(cardDataRows);
+			setLoading(false);
+		}, 1500);
+	};
+
 	return (
 		<div>
 			<div>
 				<PageTitle title='Tarjetas' />
-				<TypeAhead
-					options={MOCKED_CLIENTS_TYPEAHEAD}
-					placeholder='Cliente'
-					onChange={onClientChange}
-				/>
+				<Grid container spacing={1}>
+					<Grid item xs={6}>
+						<TypeAhead
+							options={MOCKED_CLIENTS_TYPEAHEAD}
+							placeholder='Cliente'
+							onChange={onClientChange}
+						/>
+					</Grid>
+					<Grid item xs={6}>
+						<TypeAhead
+							options={MOCKED_CONTACTS_TYPEAHEAD}
+							placeholder='Contacto'
+							onChange={onContactChange}
+						/>
+					</Grid>
+				</Grid>
 			</div>
 			<PageBody>
 				<div>
