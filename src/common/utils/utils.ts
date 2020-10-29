@@ -1,5 +1,6 @@
 import moment, { Moment } from 'moment';
 import { DEFAULT_DATE_FORMAT } from '../constants/constants';
+import { Client, Option } from './types';
 
 // TODO: research about iterating over keys of generic types
 export const filterRows = (query: string, rows: any[]) => {
@@ -31,4 +32,11 @@ export const filterDateRangeRows = (
 		const isDateOnRange = date.isBetween(start, end, undefined, '[]');
 		return isDateOnRange;
 	});
+};
+
+export const parseClients = (clients: Client[]): Option[] => {
+	return clients.map((c) => ({
+		value: `${c.id}`,
+		label: `RUC: ${c.ruc} ${c.name} - US$ 10,000.00`,
+	}));
 };

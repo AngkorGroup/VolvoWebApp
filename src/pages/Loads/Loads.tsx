@@ -17,12 +17,12 @@ import {
 	TableFilter,
 	VolvoButton,
 } from 'common/components';
-import { api, filterRows, Load, LoadError } from 'common/utils';
-import { LOADS_URL } from 'common/constants/api';
+import { filterRows, LoadError } from 'common/utils';
 import { mapLoads, TableLoad } from './interfaces';
 import LoadRow from './LoadRow/LoadRow';
 import AppContext from '../../AppContext';
 import { LOAD_COLUMNS } from './columns';
+import { getLoadErrors, getLoads, massiveUpload } from 'common/services';
 
 const useStyles = makeStyles(() =>
 	createStyles({
@@ -71,7 +71,7 @@ const Loads: React.FC = () => {
 	const onUpload = () => inputRef.current?.click();
 
 	const checkErrors = async () => {
-		const response = await api.get<LoadError[]>(`${LOADS_URL}/errors`);
+		const response = await getLoadErrors();
 		if (response.ok) {
 			const errors = response.data;
 			if (errors?.length) {
@@ -95,9 +95,7 @@ const Loads: React.FC = () => {
 		const files = e.target.files || [];
 		if (files.length > 0) {
 			setLoading(true);
-			const formData = new FormData();
-			formData.append('file', files[0]);
-			const response = await api.post<LoadError[]>(LOADS_URL, formData);
+			const response = await massiveUpload(files[0]);
 			if (response.ok) {
 				const errors = response.data;
 				if (errors?.length) {
@@ -125,8 +123,8 @@ const Loads: React.FC = () => {
 	};
 
 	useEffect(() => {
-		const getLoads = async () => {
-			const response = await api.get<Load[]>(LOADS_URL);
+		const getAllLoads = async () => {
+			const response = await getLoads();
 			setLoading(false);
 			if (response.ok) {
 				const loadsData = mapLoads(response.data || []);
@@ -135,7 +133,7 @@ const Loads: React.FC = () => {
 			}
 		};
 
-		getLoads();
+		getAllLoads();
 	}, []);
 
 	return (

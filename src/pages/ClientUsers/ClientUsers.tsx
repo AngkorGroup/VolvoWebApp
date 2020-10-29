@@ -1,5 +1,6 @@
 import React, { useContext, useState } from 'react';
 import {
+	AsyncTypeAhead,
 	BasicTable,
 	EmptyState,
 	PageActionBar,
@@ -7,14 +8,14 @@ import {
 	PageLoader,
 	PageTitle,
 	TableFilter,
-	TypeAhead,
 } from 'common/components';
-import { filterRows, MOCKED_CLIENTS_TYPEAHEAD } from 'common/utils';
+import { filterRows, parseClients } from 'common/utils';
 import { ClientUser } from './interfaces';
 import ClientUserRow from './ClientUserRow/ClientUserRow';
 import AppContext from '../../AppContext';
 import { CLIENT_USER_COLUMNS } from './columns';
 import { Option } from 'common/utils/types';
+import { getClients } from 'common/services';
 
 const clientUserRows: ClientUser[] = [
 	{
@@ -30,6 +31,8 @@ const clientUserRows: ClientUser[] = [
 
 const ClientUsers: React.FC = () => {
 	const [loading, setLoading] = useState(false);
+	const [loadingOptions, setLoadingOptions] = useState(false);
+	const [clients, setClients] = useState<Option[]>([]);
 	const [query, setQuery] = useState('');
 	const [clientUsers, setClientUsers] = useState<ClientUser[]>([]);
 	const [filtered, setFiltered] = useState<ClientUser[]>([]);
@@ -40,6 +43,16 @@ const ClientUsers: React.FC = () => {
 		const filtered = filterRows(newQuery, clientUsers);
 		setQuery(newQuery);
 		setFiltered(filtered);
+	};
+
+	const onTypeQuery = async (e: React.ChangeEvent<HTMLInputElement>) => {
+		setLoadingOptions(true);
+		const response = await getClients(e.target.value);
+		if (response.ok) {
+			const data = parseClients(response.data || []);
+			setClients(data);
+		}
+		setLoadingOptions(false);
 	};
 
 	const onClientChange = (_: any, newValue: string | Option) => {
@@ -78,10 +91,12 @@ const ClientUsers: React.FC = () => {
 		<div>
 			<div>
 				<PageTitle title='Contactos por Cliente' />
-				<TypeAhead
-					options={MOCKED_CLIENTS_TYPEAHEAD}
+				<AsyncTypeAhead
+					options={clients}
 					placeholder='Cliente'
+					loading={loadingOptions}
 					onChange={onClientChange}
+					onType={onTypeQuery}
 				/>
 			</div>
 			<PageBody>

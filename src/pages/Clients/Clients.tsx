@@ -12,55 +12,10 @@ import {
 } from 'common/components';
 import { filterRows } from 'common/utils';
 import ClientRow from './ClientRow/ClientRow';
-import { Client } from './interface';
+import { mapClients, TableClient } from './interface';
 import AppContext from '../../AppContext';
 import { CLIENT_COLUMNS } from './columns';
-
-const clientRows: Client[] = [
-	{
-		ruc: '20506002975',
-		name: 'Angkor Group S.A.C',
-		createdAt: '01/01/2020',
-		address: 'Calle Monte Rosa, Santiago de Surco 15038',
-		phone: '01 461-4225',
-		status: 'Activo',
-	},
-	{
-		ruc: '20506002976',
-		name: 'Zieme PLC',
-		createdAt: '01/06/2020',
-		address: 'Avenida Perú, 3331',
-		phone: '01 361-4895',
-		status: 'Activo',
-	},
-	{
-		ruc: '20506002977',
-		name: 'Bashirian-Legros',
-		createdAt: '01/07/2020',
-		address: 'Avenida Guillermo Dansey 1395, Cercado',
-		phone: '01 271-7525',
-		status: 'Activo',
-	},
-];
-
-const newClientRows = [
-	{
-		ruc: '20506002978',
-		name: 'Hickle Group',
-		createdAt: '01/08/2020',
-		address: 'Avenida El Ejército, 530 Miraflores',
-		phone: '01 541-2427',
-		status: 'Activo',
-	},
-	{
-		ruc: '20506002979',
-		name: "Runolfsdottir-O'Conner",
-		createdAt: '02/08/2020',
-		address: 'Jirón Mrscal Miller, 1922, Lince',
-		phone: '01 221-1285',
-		status: 'Activo',
-	},
-];
+import { getClients } from 'common/services';
 
 const useStyles = makeStyles(() =>
 	createStyles({
@@ -75,8 +30,8 @@ const Clients: React.FC = () => {
 	const inputRef = useRef<HTMLInputElement>(null);
 	const [loading, setLoading] = useState(false);
 	const [query, setQuery] = useState('');
-	const [clients, setClients] = useState<Client[]>([]);
-	const [filtered, setFiltered] = useState<Client[]>([]);
+	const [clients, setClients] = useState<TableClient[]>([]);
+	const [filtered, setFiltered] = useState<TableClient[]>([]);
 	const { addPageMessage } = useContext(AppContext);
 
 	const onFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -95,7 +50,7 @@ const Clients: React.FC = () => {
 			// perform API call
 			setTimeout(() => {
 				setLoading(false);
-				const newClients = [...clients, ...newClientRows];
+				const newClients = [...clients];
 				setClients(newClients);
 				setFiltered(newClients);
 				addPageMessage!({
@@ -108,12 +63,18 @@ const Clients: React.FC = () => {
 	};
 
 	useEffect(() => {
-		setLoading(true);
-		setTimeout(() => {
+		const getLoads = async () => {
+			const response = await getClients();
 			setLoading(false);
-			setClients(clientRows);
-			setFiltered(clientRows);
-		}, 1000);
+			if (response.ok) {
+				const data = mapClients(response.data || []);
+				setClients(data);
+				setFiltered(data);
+			}
+		};
+
+		setLoading(true);
+		getLoads();
 	}, []);
 
 	return (
