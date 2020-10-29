@@ -20,6 +20,7 @@
     "axios": "^0.20.0",
     "formik": "^2.2.0",
     "moment": "^2.29.1",
+    "object-path": "^0.11.5",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-router-dom": "^5.2.0",
