@@ -1,6 +1,13 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import PublishIcon from '@material-ui/icons/Publish';
-import { createStyles, makeStyles } from '@material-ui/core';
+import ErrorIcon from '@material-ui/icons/Error';
+import {
+	createStyles,
+	List,
+	ListItem,
+	ListItemText,
+	makeStyles,
+} from '@material-ui/core';
 import {
 	BasicTable,
 	PageActionBar,
@@ -10,59 +17,12 @@ import {
 	TableFilter,
 	VolvoButton,
 } from 'common/components';
-import { filterRows } from 'common/utils';
-import { Load } from './interfaces';
+import { api, filterRows, Load, LoadError } from 'common/utils';
+import { LOADS_URL } from 'common/constants/api';
+import { mapLoads, TableLoad } from './interfaces';
 import LoadRow from './LoadRow/LoadRow';
 import AppContext from '../../AppContext';
 import { LOAD_COLUMNS } from './columns';
-
-const loadsRows: Load[] = [
-	{
-		number: '0010020',
-		ruc: '20506002975',
-		name: 'Angkor Group',
-		date: '01/01/2020',
-		chassis: 'Chasis 1',
-		invoice: 'F001-00003659',
-		amount: '5,000.00',
-		currency: 'US$',
-		type: 'CONTRATO',
-		reason: 'Creación de tarjeta',
-		card: 'VREP',
-		tpNumber: '22258',
-	},
-	{
-		number: '0010021',
-		ruc: '20506002975',
-		name: 'Angkor Group',
-		date: '01/06/2020',
-		chassis: 'Chasis 1',
-		invoice: 'F001-00004736',
-		amount: '1,000.00',
-		currency: 'US$',
-		type: 'ADENDA',
-		reason: 'Creación de tarjeta',
-		card: 'VURE',
-		tpNumber: '22259',
-	},
-];
-
-const newLoadRows = [
-	{
-		number: '0010024',
-		ruc: '20506002975',
-		name: 'Angkor Group',
-		date: '02/08/2020',
-		chassis: 'Chasis 5',
-		invoice: 'F001-00001447',
-		amount: '4,800.00',
-		currency: 'US$',
-		type: 'CONTRATO',
-		reason: 'Creación de tarjeta',
-		card: 'VURE',
-		tpNumber: '78845',
-	},
-];
 
 const useStyles = makeStyles(() =>
 	createStyles({
@@ -73,16 +33,32 @@ const useStyles = makeStyles(() =>
 		input: {
 			display: 'none',
 		},
+		actionButtons: {
+			margin: '0 5px',
+		},
 	}),
 );
+
+const mapErrors = (errors: LoadError[]) => {
+	return (
+		<List dense>
+			{errors.map((e) => (
+				<ListItem key={e.rowIndex}>
+					<ListItemText primary={`Línea ${e.rowIndex}: ${e.errorMessage}`} />
+				</ListItem>
+			))}
+		</List>
+	);
+};
 
 const Loads: React.FC = () => {
 	const classes = useStyles();
 	const inputRef = useRef<HTMLInputElement>(null);
-	const [loading, setLoading] = useState(false);
+	const [loading, setLoading] = useState(true);
 	const [query, setQuery] = useState('');
-	const [loads, setLoads] = useState<Load[]>([]);
-	const [filtered, setFiltered] = useState<Load[]>([]);
+	const [loads, setLoads] = useState<TableLoad[]>([]);
+	const [filtered, setFiltered] = useState<TableLoad[]>([]);
+
 	const { addPageMessage } = useContext(AppContext);
 
 	const onFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -94,30 +70,72 @@ const Loads: React.FC = () => {
 
 	const onUpload = () => inputRef.current?.click();
 
-	const onSelectFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+	const checkErrors = async () => {
+		const response = await api.get<LoadError[]>(`${LOADS_URL}/errors`);
+		if (response.ok) {
+			const errors = response.data;
+			if (errors?.length) {
+				const errorsText = mapErrors(errors);
+				addPageMessage!({
+					title: 'Errores en el archivo',
+					text: errorsText,
+					status: 'warning',
+				});
+			} else {
+				addPageMessage!({
+					title: 'Formato Correcto',
+					text: 'No se ha detectado ningún error en ningún archivo',
+					status: 'success',
+				});
+			}
+		}
+	};
+
+	const onSelectFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
 		const files = e.target.files || [];
 		if (files.length > 0) {
 			setLoading(true);
-			// perform API call
-			setTimeout(() => {
-				setLoading(false);
-				setLoads((old) => [...old, ...newLoadRows]);
+			const formData = new FormData();
+			formData.append('file', files[0]);
+			const response = await api.post<LoadError[]>(LOADS_URL, formData);
+			if (response.ok) {
+				const errors = response.data;
+				if (errors?.length) {
+					const errorsText = mapErrors(errors);
+					addPageMessage!({
+						title: 'Errores en el archivo',
+						text: errorsText,
+						status: 'warning',
+					});
+				} else {
+					addPageMessage!({
+						title: 'Carga Masiva Exitosa',
+						text: 'Se realizó la carga masiva de datos correctamente',
+						status: 'success',
+					});
+				}
+			} else {
 				addPageMessage!({
-					title: 'Carga Masiva Exitosa',
-					text: 'Se realizó la carga masiva de datos correctamente',
-					status: 'success',
+					title: 'Carga Masiva Fallida',
+					text: 'Hubo un error en la carga masiva, intente nuevamente',
+					status: 'error',
 				});
-			}, 1000);
+			}
 		}
 	};
 
 	useEffect(() => {
-		setLoading(true);
-		setTimeout(() => {
+		const getLoads = async () => {
+			const response = await api.get<Load[]>(LOADS_URL);
 			setLoading(false);
-			setLoads(loadsRows);
-			setFiltered(loadsRows);
-		}, 1000);
+			if (response.ok) {
+				const loadsData = mapLoads(response.data || []);
+				setLoads(loadsData);
+				setFiltered(loadsData);
+			}
+		};
+
+		getLoads();
 	}, []);
 
 	return (
@@ -137,12 +155,22 @@ const Loads: React.FC = () => {
 							type='file'
 							onChange={onSelectFile}
 						/>
-						<VolvoButton
-							text='Carga Masiva'
-							icon={<PublishIcon />}
-							color='primary'
-							onClick={onUpload}
-						/>
+						<div>
+							<VolvoButton
+								className={classes.actionButtons}
+								text='Carga Masiva'
+								icon={<PublishIcon />}
+								color='primary'
+								onClick={onUpload}
+							/>
+							<VolvoButton
+								className={classes.actionButtons}
+								text='Ver Errores'
+								icon={<ErrorIcon />}
+								color='primary'
+								onClick={checkErrors}
+							/>
+						</div>
 					</PageActionBar>
 					<div>
 						<BasicTable columns={LOAD_COLUMNS}>

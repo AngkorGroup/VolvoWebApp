@@ -1,9 +1,10 @@
 import { TableCell, TableRow } from '@material-ui/core';
+import Amount from 'common/components/Amount/Amount';
 import React from 'react';
-import { Load } from '../interfaces';
+import { TableLoad } from '../interfaces';
 
 interface LoadRowProps {
-	item: Load;
+	item: TableLoad;
 }
 
 const LoadRow = ({ item }: LoadRowProps) => {
@@ -29,7 +30,9 @@ const LoadRow = ({ item }: LoadRowProps) => {
 			<TableCell>{date}</TableCell>
 			<TableCell>{chassis}</TableCell>
 			<TableCell>{invoice}</TableCell>
-			<TableCell>{amount}</TableCell>
+			<TableCell>
+				<Amount value={amount} />
+			</TableCell>
 			<TableCell>{currency}</TableCell>
 			<TableCell>{type}</TableCell>
 			<TableCell>{reason}</TableCell>
