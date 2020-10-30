@@ -5,7 +5,7 @@ import { DEFAULT_DURATION, MessageStatus } from '../../../utils/pageMessage';
 
 interface MessageProps {
 	title: string;
-	message: string;
+	message: string | JSX.Element;
 	status: MessageStatus;
 	duration?: number;
 }
