@@ -1,6 +1,7 @@
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useMemo, useRef, useState } from 'react';
 import PublishIcon from '@material-ui/icons/Publish';
 import ErrorIcon from '@material-ui/icons/Error';
+import { useQuery } from 'react-query';
 import {
 	createStyles,
 	List,
@@ -56,10 +57,11 @@ const Loads: React.FC = () => {
 	const inputRef = useRef<HTMLInputElement>(null);
 	const [loading, setLoading] = useState(true);
 	const [query, setQuery] = useState('');
-	const [loads, setLoads] = useState<TableLoad[]>([]);
 	const [filtered, setFiltered] = useState<TableLoad[]>([]);
-
 	const { addPageMessage } = useContext(AppContext);
+
+	const { data, status } = useQuery('loads', getLoads);
+	const loads = useMemo(() => mapLoads(data?.data || []), [data]);
 
 	const onFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const newQuery = e.target.value;
@@ -123,26 +125,18 @@ const Loads: React.FC = () => {
 	};
 
 	useEffect(() => {
-		const getAllLoads = async () => {
-			const response = await getLoads();
-			setLoading(false);
-			if (response.ok) {
-				const loadsData = mapLoads(response.data || []);
-				setLoads(loadsData);
-				setFiltered(loadsData);
-			}
-		};
-
-		getAllLoads();
-	}, []);
+		if (loads.length > 0) {
+			setFiltered(loads);
+		}
+	}, [loads]);
 
 	return (
 		<div>
 			<div>
 				<PageTitle title='Cargas y Recargas' />
 			</div>
-			{loading && <PageLoader />}
-			{!loading && loads.length > 0 && (
+			{status === 'loading' && loading && <PageLoader />}
+			{status === 'success' && loads.length > 0 && (
 				<PageBody>
 					<PageActionBar justifyContent='space-between'>
 						<TableFilter value={query} onChange={onFilterChange} />

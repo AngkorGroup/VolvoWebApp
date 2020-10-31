@@ -7923,6 +7923,12 @@ react-number-format@^4.4.1:
   dependencies:
     prop-types "^15.7.2"
 
+react-query@^2.25.2:
+  version "2.25.2"
+  resolved "https://registry.yarnpkg.com/react-query/-/react-query-2.25.2.tgz#afefdf57a166bcbf08c93a26522a8c6cb1bdf849"
+  dependencies:
+    "@babel/runtime" "^7.5.5"
+
 react-router-dom@^5.2.0:
   version "5.2.0"
   resolved "https://registry.yarnpkg.com/react-router-dom/-/react-router-dom-5.2.0.tgz#9e65a4d0c45e13289e66c7b17c7e175d0ea15662"
