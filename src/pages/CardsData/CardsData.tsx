@@ -1,5 +1,6 @@
 import { Grid } from '@material-ui/core';
 import {
+	AsyncTypeAhead,
 	BasicTable,
 	PageActionBar,
 	PageBody,
@@ -8,11 +9,12 @@ import {
 	TableFilter,
 	TypeAhead,
 } from 'common/components';
+import { getClients } from 'common/services';
 import {
 	filterRows,
-	MOCKED_CLIENTS_TYPEAHEAD,
 	MOCKED_CONTACTS_TYPEAHEAD,
 	Option,
+	parseClients,
 } from 'common/utils';
 import React, { useState } from 'react';
 import CardDataRow from './CardDataRow/CardDataRow';
@@ -79,6 +81,8 @@ const cardDataRows: CardData[] = [
 
 const CardsData: React.FC = () => {
 	const [loading, setLoading] = useState(false);
+	const [loadingClients, setLoadingClients] = useState(false);
+	const [clients, setClients] = useState<Option[]>([]);
 	const [query, setQuery] = useState('');
 	const [cards, setCards] = useState<CardData[]>([]);
 	const [filtered, setFiltered] = useState<CardData[]>([]);
@@ -88,6 +92,16 @@ const CardsData: React.FC = () => {
 		const filtered = filterRows(newQuery, cards);
 		setQuery(newQuery);
 		setFiltered(filtered);
+	};
+
+	const onTypeClient = async (e: React.ChangeEvent<HTMLInputElement>) => {
+		setLoadingClients(true);
+		const response = await getClients(e.target.value);
+		if (response.ok) {
+			const data = parseClients(response.data || []);
+			setClients(data);
+		}
+		setLoadingClients(false);
 	};
 
 	const onClientChange = (_: any, newValue: string | Option) => {
@@ -114,10 +128,12 @@ const CardsData: React.FC = () => {
 				<PageTitle title='Tarjetas' />
 				<Grid container spacing={1}>
 					<Grid item xs={6}>
-						<TypeAhead
-							options={MOCKED_CLIENTS_TYPEAHEAD}
+						<AsyncTypeAhead
+							options={clients}
 							placeholder='Cliente'
+							loading={loadingClients}
 							onChange={onClientChange}
+							onType={onTypeClient}
 						/>
 					</Grid>
 					<Grid item xs={6}>

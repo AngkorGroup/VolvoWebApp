@@ -1,5 +1,5 @@
 import { TableCell, TableRow } from '@material-ui/core';
-import Amount from 'common/components/Amount/Amount';
+import { Amount } from 'common/components';
 import React from 'react';
 import { TableLoad } from '../interfaces';
 

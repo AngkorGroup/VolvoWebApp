@@ -40,6 +40,8 @@ export interface Client {
 	ruc: string;
 	address: string;
 	phone: string;
+	status: string;
+	createdAt: string;
 	mainContact: Contact;
 }
 

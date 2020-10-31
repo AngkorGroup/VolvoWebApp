@@ -9,15 +9,16 @@ import {
 	PageLoader,
 	PageTitle,
 	TabPanel,
-	TypeAhead,
 	PageActionBar,
 	TableFilter,
+	AsyncTypeAhead,
 } from 'common/components';
-import { filterRows, MOCKED_CLIENTS_TYPEAHEAD, Option } from 'common/utils';
+import { filterRows, Option, parseClients } from 'common/utils';
 import CardRow from './CardRow/CardRow';
 import ExpirationRow, { Expiration } from './ExpirationRow/ExpirationRow';
 import { CardType } from './interfaces';
 import { CARD_COLUMNS, EXPIRATION_COLUMNS } from './columns';
+import { getClients } from 'common/services';
 
 const cardRows = [
 	{
@@ -79,6 +80,8 @@ const ClientBalance: React.FC = () => {
 	const classes = useStyles();
 	const [tab, setTab] = useState(0);
 	const [loading, setLoading] = useState(false);
+	const [loadingClients, setLoadingClients] = useState(false);
+	const [clients, setClients] = useState<Option[]>([]);
 	const [queryCard, setQueryCard] = useState('');
 	const [queryExpiration, setQueryExpiration] = useState('');
 	const [cards, setCards] = useState<CardType[]>([]);
@@ -88,6 +91,17 @@ const ClientBalance: React.FC = () => {
 		[],
 	);
 	const onTabChange = (_: any, newTab: number) => setTab(newTab);
+
+	const onTypeQuery = async (e: React.ChangeEvent<HTMLInputElement>) => {
+		setLoadingClients(true);
+		const query = e.target.value;
+		const response = await getClients(query);
+		setLoadingClients(false);
+		if (response.ok) {
+			const data = parseClients(response.data || []);
+			setClients(data);
+		}
+	};
 
 	const onClientChange = (_: any, newValue: string | Option) => {
 		setLoading(true);
@@ -113,14 +127,17 @@ const ClientBalance: React.FC = () => {
 		setQueryExpiration(newQuery);
 		setFilteredExpirations(filtered);
 	};
+
 	return (
 		<div>
 			<div>
 				<PageTitle title='Saldos Clientes' />
-				<TypeAhead
-					options={MOCKED_CLIENTS_TYPEAHEAD}
+				<AsyncTypeAhead
+					options={clients}
 					placeholder='Cliente'
+					loading={loadingClients}
 					onChange={onClientChange}
+					onType={onTypeQuery}
 				/>
 			</div>
 			<PageBody>

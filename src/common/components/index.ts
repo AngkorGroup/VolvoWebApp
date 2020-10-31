@@ -1,3 +1,5 @@
+export { default as Amount } from './Amount/Amount';
+export { default as AsyncTypeAhead } from './AsyncTypeAhead/AsyncTypeAhead';
 export { default as BasicTable } from './BasicTable/BasicTable';
 export { default as ConfirmationModal } from './ConfirmationModal/ConfirmationModal';
 export { default as CustomTab } from './CustomTab/CustomTab';

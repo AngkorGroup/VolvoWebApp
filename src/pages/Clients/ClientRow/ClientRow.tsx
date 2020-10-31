@@ -1,9 +1,9 @@
 import { TableCell, TableRow } from '@material-ui/core';
 import React from 'react';
-import { Client } from '../interface';
+import { TableClient } from '../interface';
 
 interface ClientRowProps {
-	item: Client;
+	item: TableClient;
 }
 
 const ClientRow = ({ item }: ClientRowProps) => {
