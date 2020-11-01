@@ -1,6 +1,7 @@
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useMemo, useRef, useState } from 'react';
 import PublishIcon from '@material-ui/icons/Publish';
 import { createStyles, makeStyles } from '@material-ui/core';
+import { useQuery } from 'react-query';
 import {
 	BasicTable,
 	PageActionBar,
@@ -30,9 +31,11 @@ const Clients: React.FC = () => {
 	const inputRef = useRef<HTMLInputElement>(null);
 	const [loading, setLoading] = useState(false);
 	const [query, setQuery] = useState('');
-	const [clients, setClients] = useState<TableClient[]>([]);
 	const [filtered, setFiltered] = useState<TableClient[]>([]);
 	const { addPageMessage } = useContext(AppContext);
+
+	const { data, status } = useQuery(null, getClients);
+	const clients = useMemo(() => mapClients(data?.data || []), [data]);
 
 	const onFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const newQuery = e.target.value;
@@ -50,9 +53,6 @@ const Clients: React.FC = () => {
 			// perform API call
 			setTimeout(() => {
 				setLoading(false);
-				const newClients = [...clients];
-				setClients(newClients);
-				setFiltered(newClients);
 				addPageMessage!({
 					title: 'Carga Masiva Exitosa',
 					text: 'Se realizó la carga masiva de datos correctamente',
@@ -63,27 +63,18 @@ const Clients: React.FC = () => {
 	};
 
 	useEffect(() => {
-		const getLoads = async () => {
-			const response = await getClients();
-			setLoading(false);
-			if (response.ok) {
-				const data = mapClients(response.data || []);
-				setClients(data);
-				setFiltered(data);
-			}
-		};
-
-		setLoading(true);
-		getLoads();
-	}, []);
+		if (clients.length > 0) {
+			setFiltered(clients);
+		}
+	}, [clients]);
 
 	return (
 		<div>
 			<div>
 				<PageTitle title='Clientes' />
 			</div>
-			{loading && <PageLoader />}
-			{!loading && clients.length > 0 && (
+			{(status === 'loading' || loading) && <PageLoader />}
+			{status === 'success' && clients.length > 0 && (
 				<PageBody>
 					<PageActionBar justifyContent='space-between'>
 						<TableFilter value={query} onChange={onFilterChange} />
