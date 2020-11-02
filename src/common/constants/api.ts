@@ -1,3 +1,11 @@
 export const LOGIN_URL = '/login';
-export const LOADS_URL = '/loads';
-export const GET_CLIENT_URL = '/clients';
+export const BATCHES_URL = '/batches';
+export const MASSIVE_UPLOAD = `${BATCHES_URL}/massive_load`;
+export const BATCHES_ERRORS_URL = `${BATCHES_URL}/errors`;
+export const GET_CLIENT_URL = '/clients/by_filter';
+export const CONTACT_URL = '/contacts';
+export const GET_CONTACTS_BY_CLIENTS_URL = `${CONTACT_URL}/by_client`;
+export const CARD_URL = '/cards';
+export const CARDS_BY_FILTER = `${CARD_URL}/by_filter`;
+export const CARDS_BY_CLIENT = `${CARD_URL}/by_client`;
+export const CARDS_BY_CLIENT_CARD_TYPE = `${CARD_URL}/by_client_and_card_type`;

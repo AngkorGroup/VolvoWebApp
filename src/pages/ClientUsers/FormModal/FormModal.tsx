@@ -108,8 +108,11 @@ const FormModal: React.FC<FormModalProps> = ({
 										{...fieldProps}
 									/>
 								</Grid>
-								<Grid item xs={12}>
-									<Field name='name' label='Nombre Completo' {...fieldProps} />
+								<Grid item xs={6}>
+									<Field name='firstName' label='Nombres' {...fieldProps} />
+								</Grid>
+								<Grid item xs={6}>
+									<Field name='lastName' label='Apellidos' {...fieldProps} />
 								</Grid>
 							</Grid>
 						</DialogContent>

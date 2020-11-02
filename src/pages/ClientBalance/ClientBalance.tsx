@@ -81,6 +81,7 @@ const ClientBalance: React.FC = () => {
 	const [tab, setTab] = useState(0);
 	const [loading, setLoading] = useState(false);
 	const [loadingClients, setLoadingClients] = useState(false);
+	const [selectedClient, setSelectedClient] = useState('');
 	const [clients, setClients] = useState<Option[]>([]);
 	const [queryCard, setQueryCard] = useState('');
 	const [queryExpiration, setQueryExpiration] = useState('');
@@ -104,6 +105,7 @@ const ClientBalance: React.FC = () => {
 	};
 
 	const onClientChange = (_: any, newValue: string | Option) => {
+		setSelectedClient((newValue as Option).value);
 		setLoading(true);
 		setTimeout(() => {
 			setCards(cardRows);
@@ -165,7 +167,7 @@ const ClientBalance: React.FC = () => {
 								>
 									<React.Fragment>
 										{filteredCards.map((item, i: number) => (
-											<CardRow key={i} item={item} />
+											<CardRow key={i} item={item} clientId={selectedClient} />
 										))}
 									</React.Fragment>
 								</BasicTable>

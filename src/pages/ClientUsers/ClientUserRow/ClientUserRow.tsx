@@ -30,7 +30,16 @@ const ClientUserRow = ({ item, onEdit, onTurnUser }: ClientUserRowProps) => {
 	const classes = useStyles();
 	const [showEditModal, setShowEditModal] = useState(false);
 	const [showConfirmation, setShowConfirmation] = useState(false);
-	const { id, documentNumber, type, phone, email, name } = item;
+	const {
+		id,
+		documentType,
+		documentNumber,
+		type,
+		phone,
+		email,
+		firstName,
+		lastName,
+	} = item;
 
 	const setEditModalVisible = (flag: boolean) => () => setShowEditModal(flag);
 	const setConfirmationVisible = (flag: boolean) => () =>
@@ -39,11 +48,14 @@ const ClientUserRow = ({ item, onEdit, onTurnUser }: ClientUserRowProps) => {
 	return (
 		<React.Fragment>
 			<TableRow>
+				<TableCell>{documentType}</TableCell>
 				<TableCell>{documentNumber}</TableCell>
 				<TableCell>{type}</TableCell>
 				<TableCell>{phone}</TableCell>
 				<TableCell>{email}</TableCell>
-				<TableCell>{name}</TableCell>
+				<TableCell>
+					{firstName} {lastName}
+				</TableCell>
 				<TableCell>
 					<div className={classes.actionButtons}>
 						<VolvoIconButton
@@ -71,7 +83,7 @@ const ClientUserRow = ({ item, onEdit, onTurnUser }: ClientUserRowProps) => {
 			/>
 			<ConfirmationModal
 				show={showConfirmation}
-				id={id}
+				id={`${id}`}
 				title='Convertir a Usuario'
 				body='¿Está seguro que desea convertir a usuario el siguiente contacto?'
 				onClose={setConfirmationVisible(false)}

@@ -103,6 +103,7 @@ const CardBatchesModal: React.FC<CardBatchesModalProps> = ({
 						balance={balance}
 						title={type}
 						number={number}
+						currency=''
 					/>
 				</div>
 				{loading && <PageLoader />}

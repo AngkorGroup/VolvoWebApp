@@ -32,6 +32,7 @@ export interface Contact {
 	status: string;
 	clientId: number;
 	userId: number;
+	client: Client;
 }
 
 export interface Client {
@@ -80,4 +81,14 @@ export interface LoadError {
 	fileName: string;
 	lineContent: string;
 	createdAt: string;
+}
+
+export interface Card {
+	id: number;
+	code: string;
+	cardType: CardType;
+	balance: Amount;
+	calculatedBalance: Amount;
+	contact: Contact;
+	contactId: number;
 }

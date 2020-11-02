@@ -1,12 +1,14 @@
 import { createStyles, makeStyles, Theme } from '@material-ui/core';
 import React from 'react';
 import { colors } from 'theme';
+import Amount from '../Amount/Amount';
 
 interface VolvoCardProps {
 	title: string;
 	// This prop will be deleted when real data comes in
 	type: string;
-	balance: string;
+	balance: number | string;
+	currency: string;
 	number?: string;
 	url?: string;
 	isThumbnail?: boolean;
@@ -63,6 +65,7 @@ const VolvoCard: React.FC<VolvoCardProps> = ({
 	title,
 	type,
 	balance,
+	currency,
 	number,
 	isThumbnail,
 }: VolvoCardProps) => {
@@ -75,7 +78,10 @@ const VolvoCard: React.FC<VolvoCardProps> = ({
 				<div>{title}</div>
 				<div className={classes.number}>{number}</div>
 			</div>
-			<div className={classes.balance}>{balance}</div>
+			<div className={classes.balance}>
+				{currency} {typeof balance === 'string' && balance}
+				{typeof balance === 'number' && <Amount value={balance} />}
+			</div>
 		</div>
 	);
 };

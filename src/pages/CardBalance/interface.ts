@@ -29,13 +29,6 @@ export interface Expiration {
 	expirationDate: string;
 }
 
-export interface Card {
-	id: string;
-	type: string;
-	name: string;
-	balance: string;
-}
-
 export interface Batch {
 	number: string;
 	batch: string;

@@ -22,7 +22,7 @@ export interface ClientCardRow {
 	number: string;
 	contact: string;
 	currency: string;
-	balance: string;
+	balance: number;
 }
 
 export interface CardType {
