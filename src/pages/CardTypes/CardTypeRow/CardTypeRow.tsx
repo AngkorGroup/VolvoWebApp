@@ -62,11 +62,20 @@ const CardTypeRow = ({ item, onEdit, onDelete }: CardTypeRowProps) => {
 							type={type}
 							isThumbnail
 							title=''
-							balance=''
+							balance={0}
 							url={imgURL}
+							currency='USD'
 						/>
 					)}
-					{!imgURL && <VolvoCard type={type} isThumbnail title='' balance='' />}
+					{!imgURL && (
+						<VolvoCard
+							type={type}
+							isThumbnail
+							title=''
+							balance={0}
+							currency='USD'
+						/>
+					)}
 				</TableCell>
 				<TableCell>{createdAt}</TableCell>
 				<TableCell>{status}</TableCell>

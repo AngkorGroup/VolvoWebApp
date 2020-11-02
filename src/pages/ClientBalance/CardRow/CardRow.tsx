@@ -7,9 +7,10 @@ import { CardType } from '../interfaces';
 
 interface CardRowProps {
 	item: CardType;
+	clientId: string;
 }
 
-const CardRow = ({ item }: CardRowProps) => {
+const CardRow = ({ item, clientId }: CardRowProps) => {
 	const [showModal, setShowModal] = useState(false);
 	const { id, cardType, currency, balance } = item;
 	const onOpenModal = () => setShowModal(true);
@@ -34,6 +35,7 @@ const CardRow = ({ item }: CardRowProps) => {
 				currency={currency}
 				balance={balance}
 				cardType={cardType}
+				clientId={clientId}
 				onClose={onCloseModal}
 			/>
 		</TableRow>

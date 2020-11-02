@@ -1,5 +1,6 @@
 import { createStyles, makeStyles } from '@material-ui/core';
 import {
+	AsyncTypeAhead,
 	BasicTable,
 	CustomTab,
 	CustomTabs,
@@ -10,14 +11,14 @@ import {
 	PageTitle,
 	TableFilter,
 	TabPanel,
-	TypeAhead,
 	VolvoCard,
 } from 'common/components';
-import { filterRows, MOCKED_CARDS_TYPEAHEAD, Option } from 'common/utils';
+import { getCardsByFilter } from 'common/services';
+import { Card, filterRows, Option, parseCard } from 'common/utils';
 import React, { useState } from 'react';
 import { EXPIRATION_COLUMNS, MOVEMENT_COLUMNS } from './columns';
 import ExpirationRow from './ExpirationRow/ExpirationRow';
-import { Expiration, Movement, Card } from './interface';
+import { Expiration, Movement } from './interface';
 import MovementRow from './MovementRow/MovementRow';
 
 const movementRows: Movement[] = [
@@ -52,12 +53,6 @@ const expirationRows: Expiration[] = [
 	},
 ];
 
-const volvoCards: Card[] = [
-	{ id: '1', type: 'VURE', name: 'BONO UREA', balance: 'US$ 4,800.00' },
-	{ id: '2', type: 'VREP', name: 'REPUESTOS', balance: 'US$ 3,800.00' },
-	{ id: '3', type: 'VURE', name: 'BONO UREA', balance: 'US$ 400.00' },
-];
-
 const useStyles = makeStyles(
 	createStyles({
 		header: {
@@ -78,6 +73,9 @@ const CardBalance: React.FC = () => {
 	const classes = useStyles();
 	const [tab, setTab] = useState(0);
 	const [loading, setLoading] = useState(false);
+	const [loadingOptions, setLoadingOptions] = useState(false);
+	const [options, setOptions] = useState<Option[]>([]);
+	const [cards, setCards] = useState<Card[]>([]);
 	const [queryMovement, setQueryMovement] = useState('');
 	const [queryExpiration, setQueryExpiration] = useState('');
 	const [card, setCard] = useState<Card | null>(null);
@@ -89,10 +87,21 @@ const CardBalance: React.FC = () => {
 	);
 	const onTabChange = (_: any, newTab: number) => setTab(newTab);
 
+	const onTypeCard = async (e: React.ChangeEvent<HTMLInputElement>) => {
+		setLoadingOptions(true);
+		const response = await getCardsByFilter(e.target.value);
+		if (response.ok) {
+			const data = parseCard(response.data || []);
+			setCards(response.data || []);
+			setOptions(data);
+		}
+		setLoadingOptions(false);
+	};
+
 	const onCardChange = (_: any, newValue: string | Option) => {
 		setLoading(true);
 		const curCard =
-			volvoCards.find((c) => c.id === (newValue as Option).value) || null;
+			cards.find((c) => `${c.id}` === (newValue as Option).value) || null;
 		setCard(curCard);
 		setTimeout(() => {
 			setMovements(movementRows);
@@ -121,18 +130,23 @@ const CardBalance: React.FC = () => {
 			<div className={classes.header}>
 				<div className={classes.headerItem}>
 					<PageTitle title='Saldos Tarjeta' />
-					<TypeAhead
-						options={MOCKED_CARDS_TYPEAHEAD}
+					<AsyncTypeAhead
+						options={options}
 						placeholder='Número de Tarjeta'
+						loading={loadingOptions}
 						onChange={onCardChange}
+						onType={onTypeCard}
 					/>
 				</div>
 				<div className={[classes.headerItem, classes.cardContainer].join(' ')}>
 					{card && (
+						// TODO: replace when endpoint retrieves type and name
 						<VolvoCard
-							type={card.type}
-							title={card.name}
-							balance={card.balance}
+							type={'VURE'}
+							title={'VOLVO UREA'}
+							number={card.code}
+							balance={card.balance.value}
+							currency={card.balance.currency}
 						/>
 					)}
 				</div>

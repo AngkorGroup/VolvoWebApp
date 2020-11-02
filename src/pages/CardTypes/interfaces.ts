@@ -1,5 +1,3 @@
-import { Card } from '../CardBalance/interface';
-
 export interface CardType {
 	id: string;
 	type: string;

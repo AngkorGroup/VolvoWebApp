@@ -1,7 +1,7 @@
 import { TableCell, TableRow } from '@material-ui/core';
 import React, { useState } from 'react';
 import DashboardIcon from '@material-ui/icons/Dashboard';
-import { VolvoIconButton } from 'common/components';
+import { Amount, VolvoIconButton } from 'common/components';
 import { ClientCardRow, VolvoCardData } from '../../interfaces';
 import CardBatchesModal from '../../CardBatchesModal/CardBatchesModal';
 
@@ -25,7 +25,9 @@ const CardListRow = ({ item, cardData }: CardListRowProps) => {
 			<TableCell>{number}</TableCell>
 			<TableCell>{contact}</TableCell>
 			<TableCell>{currency}</TableCell>
-			<TableCell align='right'>{balance}</TableCell>
+			<TableCell align='right'>
+				<Amount value={balance} />
+			</TableCell>
 			<TableCell align='center'>
 				<VolvoIconButton
 					color='success'

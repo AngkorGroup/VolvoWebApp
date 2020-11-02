@@ -13,7 +13,10 @@ import {
 	VolvoButton,
 	VolvoCard,
 } from 'common/components';
-import React, { useEffect, useState } from 'react';
+import { getCardsByClientCardType } from 'common/services';
+import { Card } from 'common/utils';
+import React from 'react';
+import { useQuery } from 'react-query';
 import { CARD_LIST_COLUMNS } from '../columns';
 import { ClientCardRow, VolvoCardData } from '../interfaces';
 import CardListRow from './CardListRow/CardListRow';
@@ -24,35 +27,9 @@ interface CardListModalProps {
 	cardType: string;
 	currency: string;
 	balance: string;
+	clientId: string;
 	onClose: () => void;
 }
-
-const clientCardRows: ClientCardRow[] = [
-	{
-		number: '924201002274611260',
-		contact: 'Federico Montero',
-		currency: 'US$',
-		balance: '4,000.00',
-	},
-	{
-		number: '924201002274611275',
-		contact: 'Gianfranco Galvez',
-		currency: 'US$',
-		balance: '1,400.00',
-	},
-	{
-		number: '924201002274611297',
-		contact: 'Mauricio Castañeda',
-		currency: 'US$',
-		balance: '1,000.00',
-	},
-	{
-		number: '924201002274611231',
-		contact: 'Brajean Junchaya',
-		currency: 'US$',
-		balance: '2,000.00',
-	},
-];
 
 const useStyles = makeStyles(({ spacing }: Theme) =>
 	createStyles({
@@ -64,26 +41,27 @@ const useStyles = makeStyles(({ spacing }: Theme) =>
 	}),
 );
 
+const mapCardList = (data: Card[]): ClientCardRow[] => {
+	return data.map((d) => ({
+		number: d.code,
+		contact: d.contact.fullName,
+		currency: d.balance.currency,
+		balance: d.balance.value,
+	}));
+};
+
 const CardListModal: React.FC<CardListModalProps> = ({
 	show,
 	id,
 	cardType,
 	currency,
 	balance,
+	clientId,
 	onClose,
 }: CardListModalProps) => {
 	const classes = useStyles();
-	const [loading, setLoading] = useState(false);
-	const [cards, setCards] = useState<ClientCardRow[]>([]);
-
-	useEffect(() => {
-		// perform API call with the 'id' param
-		setLoading(true);
-		setTimeout(() => {
-			setCards(clientCardRows);
-			setLoading(false);
-		}, 1200);
-	}, [id]);
+	const { data, status } = useQuery([clientId, id], getCardsByClientCardType);
+	const cards = mapCardList(data?.data || []);
 
 	const cardDisplayData: VolvoCardData = {
 		type: cardType,
@@ -107,10 +85,11 @@ const CardListModal: React.FC<CardListModalProps> = ({
 						type={cardType}
 						balance={cardDisplayData.balance}
 						title={cardType}
+						currency=''
 					/>
 				</div>
-				{loading && <PageLoader />}
-				{!loading && (
+				{status === 'loading' && <PageLoader />}
+				{status === 'success' && (
 					<BasicTable columns={CARD_LIST_COLUMNS}>
 						<React.Fragment>
 							{cards.map((item, i: number) => (
