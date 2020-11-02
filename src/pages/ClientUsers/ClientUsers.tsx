@@ -10,24 +10,12 @@ import {
 	TableFilter,
 } from 'common/components';
 import { filterRows, parseClients } from 'common/utils';
-import { ClientUser } from './interfaces';
+import { ClientUser, mapContacts } from './interfaces';
 import ClientUserRow from './ClientUserRow/ClientUserRow';
 import AppContext from '../../AppContext';
 import { CLIENT_USER_COLUMNS } from './columns';
 import { Option } from 'common/utils/types';
-import { getClients } from 'common/services';
-
-const clientUserRows: ClientUser[] = [
-	{
-		id: '1',
-		documentType: 'dni',
-		documentNumber: '72258936',
-		type: 'Principal',
-		phone: '999666333',
-		email: 'fmontero@gmail.com',
-		name: 'Federico Montero',
-	},
-];
+import { editContact, getClients, getContactsByClient } from 'common/services';
 
 const ClientUsers: React.FC = () => {
 	const [loading, setLoading] = useState(false);
@@ -55,27 +43,27 @@ const ClientUsers: React.FC = () => {
 		setLoadingOptions(false);
 	};
 
-	const onClientChange = (_: any, newValue: string | Option) => {
+	const onClientChange = async (_: any, newValue: string | Option) => {
 		setLoading(true);
-		setTimeout(() => {
-			setLoading(false);
-			setClientUsers(clientUserRows);
-			setFiltered(clientUserRows);
-		}, 1000);
+		const clientId = (newValue as Option).value;
+		const response = await getContactsByClient(clientId);
+		if (response.ok) {
+			const data = mapContacts(response.data || []);
+			setClientUsers(data);
+			setFiltered(data);
+		}
+		setLoading(false);
 	};
 
-	const onEditClient = (clientUser: ClientUser) => {
-		const newClients = clientUsers.map((d) =>
-			d.id === clientUser.id ? clientUser : d,
-		);
-		setClientUsers(newClients);
-		setFiltered(newClients);
-		// Perform API call
-		addPageMessage!({
-			title: 'Contacto Editado',
-			text: 'Se edito el contacto correctamente',
-			status: 'success',
-		});
+	const onEditClient = async (clientUser: ClientUser) => {
+		const response = await editContact(clientUser);
+		if (response.ok) {
+			const newClients = clientUsers.map((d) =>
+				d.id === clientUser.id ? clientUser : d,
+			);
+			setClientUsers(newClients);
+			setFiltered(newClients);
+		}
 	};
 
 	const onTurnUser = (id: string) => {
