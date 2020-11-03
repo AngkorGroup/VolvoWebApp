@@ -12,6 +12,7 @@ import {
 	PageActionBar,
 	TableFilter,
 	AsyncTypeAhead,
+	PaginatedTable,
 } from 'common/components';
 import { filterRows, Option, parseClients } from 'common/utils';
 import CardRow from './CardRow/CardRow';
@@ -25,6 +26,7 @@ import {
 import { CARD_COLUMNS, EXPIRATION_COLUMNS } from './columns';
 import { getClientCardTypes, getClients } from 'common/services';
 import { getClientBatches } from 'common/services/Batches';
+import { TABLE_ROWS_PER_PAGE } from 'common/constants/tableColumn';
 
 const useStyles = makeStyles({
 	cardsTable: {
@@ -48,6 +50,22 @@ const ClientBalance: React.FC = () => {
 		[],
 	);
 	const onTabChange = (_: any, newTab: number) => setTab(newTab);
+	const [expPage, setExpPage] = useState(0);
+	const [rowsPerPage, setRowsPerPage] = useState(TABLE_ROWS_PER_PAGE);
+
+	const handleChangePage = (
+		e: React.MouseEvent<HTMLButtonElement> | null,
+		newPage: number,
+	) => {
+		setExpPage(newPage);
+	};
+
+	const handleChangeRowsPerPage = (
+		event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+	) => {
+		setRowsPerPage(parseInt(event.target.value, 10));
+		setExpPage(0);
+	};
 
 	const onTypeQuery = async (e: React.ChangeEvent<HTMLInputElement>) => {
 		setLoadingClients(true);
@@ -91,7 +109,13 @@ const ClientBalance: React.FC = () => {
 		const filtered = filterRows(newQuery, expirations);
 		setQueryExpiration(newQuery);
 		setFilteredExpirations(filtered);
+		setExpPage(0);
 	};
+
+	const expRows = filteredExpirations.slice(
+		expPage * rowsPerPage,
+		expPage * rowsPerPage + rowsPerPage,
+	);
 
 	return (
 		<div>
@@ -144,13 +168,20 @@ const ClientBalance: React.FC = () => {
 										onChange={onExpirationFilterChange}
 									/>
 								</PageActionBar>
-								<BasicTable columns={EXPIRATION_COLUMNS}>
+								<PaginatedTable
+									columns={EXPIRATION_COLUMNS}
+									page={expPage}
+									count={filteredExpirations.length}
+									rowsPerPage={rowsPerPage}
+									onChangePage={handleChangePage}
+									onChangeRowsPerPage={handleChangeRowsPerPage}
+								>
 									<React.Fragment>
-										{filteredExpirations.map((item, i: number) => (
+										{expRows.map((item, i: number) => (
 											<ExpirationRow key={i} item={item} />
 										))}
 									</React.Fragment>
-								</BasicTable>
+								</PaginatedTable>
 							</TabPanel>
 						)}
 					</div>
