@@ -1,4 +1,5 @@
 import {
+	CARD_URL,
 	CARDS_BY_CLIENT_CARD_TYPE,
 	CARDS_BY_FILTER,
 } from 'common/constants/api';
@@ -17,4 +18,13 @@ export const getCardsByClientCardType = async (
 		clientId,
 		cardTypeId,
 	});
+};
+
+export const getCardsBatchMovements = async (
+	cardId: string,
+	batchId: string,
+) => {
+	return await api.get<Card[]>(
+		`${CARD_URL}/${cardId}/batchs/${batchId}/movements`,
+	);
 };

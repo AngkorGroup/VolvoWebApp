@@ -1,19 +1,12 @@
-interface Dealer {
-	id: string;
-	name: string;
-}
+import { CardBatch, Movement } from 'common/utils';
 
-interface Operation {
-	number: string;
-	date: string;
-}
-
-export interface Movement {
+export interface CardMovement {
 	type: string;
-	operation: Operation;
+	operationNumber: string;
+	operationDate: string;
 	reason: string;
-	amount: string;
-	dealer: Dealer;
+	amount: number;
+	dealerName: string;
 	cashier: string;
 	batch: string;
 	source: string;
@@ -25,7 +18,7 @@ export interface Expiration {
 	number: string;
 	batch: string;
 	currency: string;
-	balance: string;
+	balance: number;
 	expirationDate: string;
 }
 
@@ -36,3 +29,45 @@ export interface Batch {
 	currency: string;
 	balance: string;
 }
+
+const CONSUME_TYPE = 'CON';
+const TRANSFER_TYPE = 'STR';
+
+export const mapExpirations = (batches: CardBatch[]): Expiration[] => {
+	return batches.map(({ card, batchId, balance, expiresAt }) => ({
+		type: card?.cardType?.name,
+		number: card?.code,
+		batch: `${batchId}`,
+		currency: balance.currency,
+		balance: balance.value,
+		expirationDate: expiresAt,
+	}));
+};
+
+export const mapMovements = (movements: Movement[]): CardMovement[] => {
+	return movements.map(
+		({ type, charge, description, transfer, amount: movAmount }) => {
+			let amount = movAmount.value;
+			let voucherURL = '';
+			if (type === CONSUME_TYPE) {
+				amount = charge?.amount?.value;
+				voucherURL = charge?.imageUrl;
+			} else if (type === TRANSFER_TYPE) {
+				amount = transfer?.amount?.value;
+				voucherURL = transfer?.imageUrl;
+			}
+			return {
+				type,
+				operationNumber: charge?.operationCode,
+				operationDate: charge?.createdAt,
+				reason: description,
+				amount,
+				dealerName: charge?.cashier?.dealer?.name,
+				cashier: charge?.cashier?.fullName,
+				batch: '',
+				source: transfer?.displayName,
+				voucherURL,
+			};
+		},
+	);
+};

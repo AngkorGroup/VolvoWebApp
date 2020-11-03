@@ -47,10 +47,10 @@ export const parseClients = (clients: Client[]): Option[] => {
 };
 
 export const parseCard = (cards: Card[]): Option[] => {
-	return cards.map(({ id, code, contact, balance }: Card) => ({
+	return cards.map(({ id, code, contact, balance, cardType }: Card) => ({
 		value: `${id}`,
-		label: `VURE:${code} - RUC:${contact.client.ruc} - C:${contact.phone} - ${
-			balance.currency
-		} ${formatNumber(balance.value)}`,
+		label: `${cardType?.name}:${code} - RUC:${contact?.client?.ruc} - C:${
+			contact?.phone
+		} - ${balance?.currency} ${formatNumber(balance?.value)}`,
 	}));
 };

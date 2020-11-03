@@ -12,7 +12,7 @@ export const MOVEMENT_COLUMNS = [
 	{ title: 'Dealer' },
 	{ title: 'Caja' },
 	{ title: 'Lote' },
-	{ title: 'Origen/Destino' },
+	{ title: 'Origen/Destino', props: { align: COLUMN_CENTER } },
 	ACTIONS_COLUMN,
 ];
 
@@ -23,7 +23,7 @@ export const EXPIRATION_COLUMNS = [
 	{ title: 'Moneda' },
 	{ title: 'Saldo', props: { align: COLUMN_CENTER } },
 	{ title: 'Vencimiento' },
-	ACTIONS_COLUMN,
+	//ACTIONS_COLUMN,
 ];
 
 export const BATCH_COLUMNS = [

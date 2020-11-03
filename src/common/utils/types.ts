@@ -135,3 +135,73 @@ export interface CardBatch {
 	expiresAtExtent: string;
 	createdAt: string;
 }
+
+export interface Movement {
+	id: number;
+	amount: Amount;
+	type: string;
+	displayName: string;
+	description: string;
+	createdAt: string;
+	charge: Charge;
+	transfer: Transfer;
+}
+
+export interface Transfer {
+	id: number;
+	operationCode: string;
+	amount: Amount;
+	displayName: string;
+	imageUrl: string;
+	originCardId: number;
+	destinyCardId: number;
+	createdAt: string;
+}
+
+export interface Dealer {
+	name: string;
+	ruc: string;
+	contactName: string;
+	address: string;
+	phone: string;
+	tpCode: string;
+	archiveAt: string;
+	createdAt: string;
+}
+
+export interface Cashier {
+	id: number;
+	firstName: string;
+	lastName: string;
+	fullName: string;
+	email: string;
+	phone: string;
+	tpCode: string;
+	dealerId: number;
+	dealer: Dealer;
+	userId: number;
+	createdAt: string;
+}
+
+export interface Charge {
+	id: number;
+	operationCode: string;
+	amount: Amount;
+	displayName: string;
+	imageUrl: string;
+	status: string;
+	chargeType: string;
+	cardId: number;
+	cashierId: number;
+	cashier: Cashier;
+	createdAt: string;
+	description: string;
+}
+
+export interface BatchMovement {
+	amount: Amount;
+	batchId: number;
+	batch: Batch;
+	movementId: number;
+	movement: Movement;
+}

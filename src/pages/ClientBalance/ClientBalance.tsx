@@ -24,8 +24,11 @@ import {
 	mapExpirations,
 } from './interfaces';
 import { CARD_COLUMNS, EXPIRATION_COLUMNS } from './columns';
-import { getClientCardTypes, getClients } from 'common/services';
-import { getClientBatches } from 'common/services/Batches';
+import {
+	getClientCardTypes,
+	getClients,
+	getClientBatches,
+} from 'common/services';
 import { TABLE_ROWS_PER_PAGE } from 'common/constants/tableColumn';
 
 const useStyles = makeStyles({
