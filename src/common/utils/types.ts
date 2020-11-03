@@ -87,12 +87,14 @@ export interface LoadError {
 export interface Card {
 	id: number;
 	code: string;
+	tpCode: string;
 	cardType: CardType;
 	balance: Amount;
 	calculatedBalance: Amount;
 	contact: Contact;
 	contactId: number;
 	createdAt: string;
+	status: string;
 }
 
 export interface CardTypeSummary {

@@ -8,6 +8,7 @@ export const CLIENT_URL = '/clients';
 export const GET_CLIENT_BY_FILTER_URL = `${CLIENT_URL}/by_filter`;
 export const GET_CLIENT_BY_PAGINATION_URL = `${CLIENT_URL}/by_pagination`;
 export const CONTACT_URL = '/contacts';
+export const GET_CONTACTS_BY_FILTER_URL = `${CONTACT_URL}/by_filter`;
 export const GET_CONTACTS_BY_CLIENTS_URL = `${CONTACT_URL}/by_client`;
 export const CARD_URL = '/cards';
 export const CARDS_BY_FILTER = `${CARD_URL}/by_filter`;

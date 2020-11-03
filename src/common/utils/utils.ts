@@ -1,7 +1,7 @@
 import moment, { Moment } from 'moment';
 import numeral from 'numeral';
 import { DEFAULT_DATE_FORMAT } from '../constants/constants';
-import { Card, Client, Option } from './types';
+import { Card, Client, Contact, Option } from './types';
 
 // TODO: research about iterating over keys of generic types
 export const filterRows = (query: string, rows: any[]) => {
@@ -43,6 +43,13 @@ export const parseClients = (clients: Client[]): Option[] => {
 		label: `RUC: ${ruc} ${name} - ${balance.currency} ${formatNumber(
 			balance.value,
 		)}`,
+	}));
+};
+
+export const parseContacts = (contacts: Contact[]): Option[] => {
+	return contacts.map(({ id, fullName, phone, client }) => ({
+		value: `${id}`,
+		label: `${client?.name}: ${phone} - ${fullName}`,
 	}));
 };
 
