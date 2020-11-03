@@ -1,7 +1,7 @@
 import { TableCell, TableRow } from '@material-ui/core';
 import React, { useState } from 'react';
 import FormatListNumberedIcon from '@material-ui/icons/FormatListNumbered';
-import { VolvoIconButton } from 'common/components';
+import { Amount, VolvoIconButton } from 'common/components';
 import { CardBatchRow, VolvoCardData } from '../../interfaces';
 import BatchMovementsModal from '../../BatchMovementsModal/BatchMovementsModal';
 
@@ -22,7 +22,9 @@ const CardBatchesRow = ({ item, cardData }: CardBatchesRowProps) => {
 			<TableCell>{batch}</TableCell>
 			<TableCell>{expiration}</TableCell>
 			<TableCell>{currency}</TableCell>
-			<TableCell align='right'>{balance}</TableCell>
+			<TableCell align='right'>
+				<Amount value={balance} />
+			</TableCell>
 			<TableCell align='center'>
 				<VolvoIconButton
 					color='success'

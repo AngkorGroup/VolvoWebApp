@@ -17,10 +17,11 @@ export interface CardBatchRow {
 	batch: string;
 	expiration: string;
 	currency: string;
-	balance: string;
+	balance: number;
 }
 
 export interface ClientCardRow {
+	cardId: string;
 	number: string;
 	contact: string;
 	currency: string;
@@ -29,6 +30,7 @@ export interface ClientCardRow {
 
 export interface CardType {
 	id: string;
+	cardName: string;
 	cardType: string;
 	currency: string;
 	balance: number;
@@ -36,8 +38,10 @@ export interface CardType {
 
 export interface VolvoCardData {
 	type: string;
-	number: string;
-	balance: string;
+	number?: string;
+	balance: number;
+	name: string;
+	currency: string;
 }
 
 export interface Expiration {
@@ -52,6 +56,7 @@ export interface Expiration {
 export const mapCardType = (cardTypes: CardTypeSummary[]): CardType[] => {
 	return cardTypes.map((ct) => ({
 		id: `${ct.id}`,
+		cardName: ct.displayName,
 		cardType: ct.name,
 		currency: ct.sum.currency,
 		balance: ct.sum.value,

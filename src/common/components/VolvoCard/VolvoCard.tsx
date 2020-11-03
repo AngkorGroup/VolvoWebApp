@@ -58,6 +58,9 @@ const useStyles = makeStyles(({ palette }: Theme) =>
 		cardOcean: {
 			backgroundColor: palette.info.main,
 		},
+		cardName: {
+			fontSize: '25px',
+		},
 	}),
 );
 
@@ -75,7 +78,7 @@ const VolvoCard: React.FC<VolvoCardProps> = ({
 	return (
 		<div className={`${classes.card} ${sizeClass} ${color}`}>
 			<div className={classes.title}>
-				<div>{title}</div>
+				<div className={classes.cardName}>{title}</div>
 				<div className={classes.number}>{number}</div>
 			</div>
 			<div className={classes.balance}>

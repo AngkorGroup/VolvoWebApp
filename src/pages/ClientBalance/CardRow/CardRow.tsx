@@ -12,7 +12,7 @@ interface CardRowProps {
 
 const CardRow = ({ item, clientId }: CardRowProps) => {
 	const [showModal, setShowModal] = useState(false);
-	const { id, cardType, currency, balance } = item;
+	const { id, cardType, currency, balance, cardName } = item;
 	const onOpenModal = () => setShowModal(true);
 	const onCloseModal = () => setShowModal(false);
 	return (
@@ -31,15 +31,18 @@ const CardRow = ({ item, clientId }: CardRowProps) => {
 					<ViewCarouselIcon />
 				</VolvoIconButton>
 			</TableCell>
-			<CardListModal
-				show={showModal}
-				id={id}
-				currency={currency}
-				balance={balance}
-				cardType={cardType}
-				clientId={clientId}
-				onClose={onCloseModal}
-			/>
+			{showModal && (
+				<CardListModal
+					show={showModal}
+					id={id}
+					currency={currency}
+					balance={balance}
+					cardName={cardName}
+					cardType={cardType}
+					clientId={clientId}
+					onClose={onCloseModal}
+				/>
+			)}
 		</TableRow>
 	);
 };

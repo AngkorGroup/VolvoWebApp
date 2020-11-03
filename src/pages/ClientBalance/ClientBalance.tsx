@@ -1,5 +1,5 @@
 import { makeStyles } from '@material-ui/core';
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import {
 	BasicTable,
 	CustomTab,
@@ -112,9 +112,13 @@ const ClientBalance: React.FC = () => {
 		setExpPage(0);
 	};
 
-	const expRows = filteredExpirations.slice(
-		expPage * rowsPerPage,
-		expPage * rowsPerPage + rowsPerPage,
+	const expRows = useMemo(
+		() =>
+			filteredExpirations.slice(
+				expPage * rowsPerPage,
+				expPage * rowsPerPage + rowsPerPage,
+			),
+		[expPage, rowsPerPage, filteredExpirations],
 	);
 
 	return (

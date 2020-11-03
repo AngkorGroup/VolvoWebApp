@@ -17,7 +17,9 @@ const ExpirationRow = ({ item }: ExpirationRowProps) => {
 	const cardData: VolvoCardData = {
 		type: cardType,
 		number: cardNumber,
-		balance: `${currency} - 4,000.00`,
+		balance: 4000,
+		currency,
+		name: cardType,
 	};
 	const batchText = `Lote: ${batch} - ${currency} ${balance}`;
 	return (
