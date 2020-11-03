@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useMemo, useState } from 'react';
 import AddIcon from '@material-ui/icons/Add';
 import {
 	BasicTable,
@@ -11,54 +11,27 @@ import {
 } from 'common/components';
 import DealerRow from './DealerRow/DealerRow';
 import FormModal from './FormModal/FormModal';
-import { Dealer } from './interfaces';
+import { TableDealer, mapDealers, DealerForm } from './interfaces';
 import AppContext from '../../AppContext';
 import { DEALER_COLUMNS } from './columns';
-import { filterRows } from 'common/utils';
-
-const dealerRows = [
-	{
-		code: '8000',
-		name: 'AUTOMOTORES MOQUEGUA',
-		ruc: '20506002975',
-		address: 'Av. Industrial Moquegua 12002',
-		status: 'Activo',
-		type: 'Own',
-		phone: '01 461-4225',
-		maxCashiers: '5',
-		zone: 'Norte',
-	},
-	{
-		code: '7559',
-		name: 'VOLVO SANTA ANITA',
-		ruc: '20406003975',
-		address: 'Av. Santa Anita 15099',
-		status: 'Activo',
-		type: 'Own',
-		phone: '01 361-4895',
-		maxCashiers: '3',
-		zone: 'Lima',
-	},
-	{
-		code: '8001',
-		name: 'AUTOMOTORES TACNA',
-		ruc: '20586003957',
-		address: 'Av. Arica 1123',
-		status: 'Activo',
-		type: 'Private',
-		phone: '01 271-7525',
-		maxCashiers: '3',
-		zone: 'Lima',
-	},
-];
+import { Dealer, filterRows } from 'common/utils';
+import { useQuery } from 'react-query';
+import { addDealer, getDealers } from 'common/services';
 
 const Dealers: React.FC = () => {
-	const [loading, setLoading] = useState(false);
 	const [query, setQuery] = useState('');
 	const [showAddModal, setShowAddModal] = useState(false);
-	const [dealers, setDealers] = useState<Dealer[]>([]);
-	const [filtered, setFiltered] = useState<Dealer[]>([]);
+	const [filtered, setFiltered] = useState<TableDealer[]>([]);
 	const { addPageMessage } = useContext(AppContext);
+	const { data, status } = useQuery('dealers', getDealers);
+	const dealers = useMemo(() => {
+		if (data?.ok) {
+			const rows = mapDealers(data?.data || []);
+			setFiltered(rows);
+			return rows;
+		}
+		return [];
+	}, [data, setFiltered]);
 
 	const onFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const newQuery = e.target.value;
@@ -67,46 +40,36 @@ const Dealers: React.FC = () => {
 		setFiltered(filtered);
 	};
 
-	useEffect(() => {
-		setLoading(true);
-		setTimeout(() => {
-			setLoading(false);
-			setDealers(dealerRows);
-			setFiltered(dealerRows);
-		}, 1500);
-	}, []);
-
 	const setAddModalVisible = (flag: boolean) => () => setShowAddModal(flag);
 
-	const onAddDealer = (dealer: Dealer) => {
-		const newDealers = [...dealers, dealer];
-		setDealers(newDealers);
-		setFiltered(newDealers);
-		// Perform API call
-		addPageMessage!({
-			title: 'Dealer Agregado',
-			text: 'Se agregó un nuevo dealer correctamente',
-			status: 'success',
-		});
+	const onAddDealer = async (dealer: DealerForm) => {
+		const body: Partial<Dealer> = {
+			name: dealer.name,
+			ruc: dealer.ruc,
+			contactName: dealer.ruc,
+			address: dealer.address,
+			phone: dealer.phone,
+			tpCode: dealer.code,
+		};
+		const response = await addDealer(body);
+		if (response.ok) {
+			addPageMessage!({
+				title: 'Dealer Agregado',
+				text: 'Se agregó un nuevo dealer correctamente',
+				status: 'success',
+			});
+		}
 	};
 
-	const onEditDealer = (dealer: Dealer) => {
+	const onEditDealer = (dealer: DealerForm) => {
 		const newDealers = dealers.map((d) =>
-			d.code === dealer.code ? dealer : d,
+			d.code === dealer.code ? { ...d, ...dealer } : d,
 		);
-		setDealers(newDealers);
 		setFiltered(newDealers);
-		// Perform API call
-		addPageMessage!({
-			title: 'Dealer Editado',
-			text: 'Se editó un dealer correctamente',
-			status: 'success',
-		});
 	};
 
 	const onDeleteDealer = (id: string) => {
 		const newDealers = dealers.filter((d) => d.code !== id);
-		setDealers(newDealers);
 		setFiltered(newDealers);
 		// Perform API call
 		addPageMessage!({
@@ -121,8 +84,8 @@ const Dealers: React.FC = () => {
 				<PageTitle title='Dealers' />
 			</div>
 			<PageBody>
-				{loading && <PageLoader />}
-				{!loading && dealers.length > 0 && (
+				{status === 'loading' && <PageLoader />}
+				{status === 'success' && dealers.length > 0 && (
 					<div>
 						<PageActionBar justifyContent='space-between'>
 							<TableFilter value={query} onChange={onFilterChange} />

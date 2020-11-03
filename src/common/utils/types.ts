@@ -168,6 +168,7 @@ export interface Transfer {
 }
 
 export interface Dealer {
+	id: number;
 	name: string;
 	ruc: string;
 	contactName: string;
@@ -176,6 +177,9 @@ export interface Dealer {
 	tpCode: string;
 	archiveAt: string;
 	createdAt: string;
+	status: string;
+	zone: string;
+	maxCashiers: number;
 }
 
 export interface Cashier {

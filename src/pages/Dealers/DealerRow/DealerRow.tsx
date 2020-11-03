@@ -8,13 +8,13 @@ import React, { useState } from 'react';
 import CreateIcon from '@material-ui/icons/Create';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { VolvoIconButton } from 'common/components';
-import { Dealer } from '../interfaces';
+import { DealerForm, TableDealer } from '../interfaces';
 import FormModal from '../FormModal/FormModal';
 import DeleteModal from '../DeleteModal/DeleteModal';
 
 interface DealerRowProps {
-	item: Dealer;
-	onEdit: (data: Dealer) => void;
+	item: TableDealer;
+	onEdit: (data: DealerForm) => void;
 	onDelete: (id: string) => void;
 }
 
