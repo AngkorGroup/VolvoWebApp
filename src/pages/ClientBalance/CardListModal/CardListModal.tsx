@@ -15,8 +15,7 @@ import {
 } from 'common/components';
 import { getCardsByClientCardType } from 'common/services';
 import { Card } from 'common/utils';
-import React, { useMemo } from 'react';
-import { useQuery } from 'react-query';
+import React, { useEffect, useState } from 'react';
 import { CARD_LIST_COLUMNS } from '../columns';
 import { ClientCardRow, VolvoCardData } from '../interfaces';
 import CardListRow from './CardListRow/CardListRow';
@@ -63,13 +62,22 @@ const CardListModal: React.FC<CardListModalProps> = ({
 	onClose,
 }: CardListModalProps) => {
 	const classes = useStyles();
-	const { data, status } = useQuery([clientId, id], getCardsByClientCardType);
-	const cards = useMemo(() => {
-		if (data?.ok) {
-			return mapCardList(data?.data || []);
-		}
-		return [];
-	}, [data]);
+	const [loading, setLoading] = useState(false);
+	const [cards, setCards] = useState<ClientCardRow[]>([]);
+
+	useEffect(() => {
+		setLoading(true);
+		const fetchCards = async () => {
+			const response = await getCardsByClientCardType(clientId, id);
+			setLoading(false);
+			if (response.ok) {
+				const rows = mapCardList(response?.data || []);
+				setCards(rows);
+			}
+		};
+		fetchCards();
+		// eslint-disable-next-line
+	}, []);
 
 	const cardDisplayData: VolvoCardData = {
 		id: '',
@@ -98,8 +106,8 @@ const CardListModal: React.FC<CardListModalProps> = ({
 						currency={currency}
 					/>
 				</div>
-				{status === 'loading' && <PageLoader />}
-				{status === 'success' && (
+				{loading && <PageLoader />}
+				{!loading && (
 					<BasicTable columns={CARD_LIST_COLUMNS}>
 						<React.Fragment>
 							{cards.map((item, i: number) => (
