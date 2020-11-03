@@ -14,7 +14,7 @@ import {
 	Theme,
 } from '@material-ui/core';
 import { Field, Form, Formik } from 'formik';
-import { FilePicker, VolvoButton } from 'common/components';
+import { VolvoButton } from 'common/components';
 import { Option } from 'common/utils';
 import React from 'react';
 import { CardTypeForm } from '../interfaces';
@@ -28,8 +28,8 @@ interface FormModalProps {
 }
 
 const CURRENCIES: Option[] = [
-	{ value: 'US$', label: 'US$' },
-	{ value: 'S/.', label: 'S/.' },
+	{ value: 'USD', label: 'US$' },
+	{ value: 'PEN', label: 'S/.' },
 ];
 
 const initialValues: CardTypeForm = {
@@ -37,7 +37,7 @@ const initialValues: CardTypeForm = {
 	description: '',
 	currency: '',
 	term: '',
-	logo: null,
+	color: '',
 	createdAt: '16/10/2020',
 	status: 'Activo',
 	deletedAt: '',
@@ -76,12 +76,6 @@ const useStyles = makeStyles((theme: Theme) =>
 	}),
 );
 
-type SetValueFunction = (
-	field: string,
-	value: any,
-	shouldValidate?: boolean | undefined,
-) => void;
-
 const FormModal: React.FC<FormModalProps> = ({
 	show,
 	title,
@@ -94,14 +88,11 @@ const FormModal: React.FC<FormModalProps> = ({
 		onConfirm(data);
 		onClose();
 	};
-	const onSelectFile = (setFieldValue: SetValueFunction) => (file: File) => {
-		setFieldValue('logo', file);
-	};
 	return (
 		<Dialog open={show} onClose={onClose} aria-labelledby='form-dialog-title'>
 			<DialogTitle id='form-dialog-title'>{title}</DialogTitle>
 			<Formik initialValues={values || initialValues} onSubmit={handleSubmit}>
-				{({ setFieldValue }) => (
+				{() => (
 					<Form className={classes.root}>
 						<DialogContent>
 							<Grid container spacing={1}>
@@ -136,10 +127,11 @@ const FormModal: React.FC<FormModalProps> = ({
 									<Field name='term' label='Plazo (meses)' {...fieldProps} />
 								</Grid>
 								<Grid item xs={8}>
-									<FilePicker
-										name='logo'
-										label='Logo'
-										onChange={onSelectFile(setFieldValue)}
+									<Field
+										name='color'
+										label='Color'
+										{...fieldProps}
+										placeholder='#000000'
 									/>
 								</Grid>
 							</Grid>

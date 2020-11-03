@@ -53,6 +53,12 @@ export interface CardType {
 	displayName: string;
 	currency: string;
 	color: string;
+	term: number;
+	tpCode: string;
+	createdAt: string;
+	createdBy: string;
+	status: string;
+	deletedAt: string;
 }
 
 export interface Load {

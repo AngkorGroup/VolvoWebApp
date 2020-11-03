@@ -11,6 +11,7 @@ interface VolvoCardProps {
 	currency?: string;
 	number?: string;
 	url?: string;
+	color?: string;
 	isThumbnail?: boolean;
 }
 
@@ -69,14 +70,19 @@ const VolvoCard: React.FC<VolvoCardProps> = ({
 	type,
 	balance,
 	currency,
+	color,
 	number,
 	isThumbnail,
 }: VolvoCardProps) => {
 	const classes = useStyles();
-	const color = type === 'VURE' ? classes.cardGray : classes.cardOcean;
+	const colorClass = type === 'VURE' ? classes.cardGray : classes.cardOcean;
+	const colorStyle = color ? { backgroundColor: color } : {};
 	const sizeClass = isThumbnail ? classes.thumbnail : classes.normal;
 	return (
-		<div className={`${classes.card} ${sizeClass} ${color}`}>
+		<div
+			className={`${classes.card} ${sizeClass} ${colorClass}`}
+			style={colorStyle}
+		>
 			<div className={classes.title}>
 				<div className={classes.cardName}>{title}</div>
 				<div className={classes.number}>{number}</div>
