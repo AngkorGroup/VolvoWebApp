@@ -1,11 +1,12 @@
-import { CardBatch, CardTypeSummary } from 'common/utils';
+import { CONSUME_TYPE, TRANSFER_TYPE } from 'common/constants/constants';
+import { BatchMovement, CardBatch, CardTypeSummary } from 'common/utils';
 
 export interface BatchMovementRow {
 	cardNumber: string;
 	number: string;
 	date: string;
 	currency: string;
-	amount: string;
+	amount: number;
 	dealer: string;
 	cashier: string;
 	batch: string;
@@ -37,6 +38,7 @@ export interface CardType {
 }
 
 export interface VolvoCardData {
+	id: string;
 	type: string;
 	number?: string;
 	balance: number;
@@ -45,8 +47,11 @@ export interface VolvoCardData {
 }
 
 export interface Expiration {
+	cardId: string;
 	cardType: string;
 	cardNumber: string;
+	cardName: string;
+	cardBalance: number;
 	batch: string;
 	expiration: string;
 	currency: string;
@@ -64,12 +69,43 @@ export const mapCardType = (cardTypes: CardTypeSummary[]): CardType[] => {
 };
 
 export const mapExpirations = (expirations: CardBatch[]): Expiration[] => {
-	return expirations.map(({ card, batchId, expiresAt, balance }) => ({
+	return expirations.map(({ card, batchId, expiresAt, balance, cardId }) => ({
+		cardId: `${cardId}`,
 		cardType: card.cardType?.name,
+		cardName: card.cardType?.displayName,
 		cardNumber: card.code,
+		cardBalance: card.balance.value,
 		batch: `${batchId}`,
 		expiration: expiresAt,
 		currency: balance.currency,
 		balance: balance.value,
 	}));
+};
+
+export const mapExpirationMovements = (
+	movements: BatchMovement[],
+): BatchMovementRow[] => {
+	return movements.map(({ movement, batchId }) => {
+		const { charge, transfer, type } = movement || {};
+		let voucherURL = '';
+		let number = '';
+		if (type === CONSUME_TYPE) {
+			number = charge?.operationCode;
+			voucherURL = charge?.imageUrl;
+		} else if (type === TRANSFER_TYPE) {
+			number = charge?.operationCode;
+			voucherURL = transfer?.imageUrl;
+		}
+		return {
+			cardNumber: movement?.card?.code,
+			number,
+			date: movement?.createdAt,
+			currency: movement?.amount.currency,
+			amount: movement?.amount.value,
+			dealer: charge?.cashier?.dealer?.name,
+			cashier: charge?.cashier?.fullName,
+			batch: `${batchId}`,
+			voucherURL,
+		};
+	});
 };

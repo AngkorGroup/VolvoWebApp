@@ -1,3 +1,4 @@
+import { CONSUME_TYPE, TRANSFER_TYPE } from 'common/constants/constants';
 import { CardBatch, Movement } from 'common/utils';
 
 export interface CardMovement {
@@ -29,9 +30,6 @@ export interface Batch {
 	currency: string;
 	balance: string;
 }
-
-const CONSUME_TYPE = 'CON';
-const TRANSFER_TYPE = 'STR';
 
 export const mapExpirations = (batches: CardBatch[]): Expiration[] => {
 	return batches.map(({ card, batchId, balance, expiresAt }) => ({

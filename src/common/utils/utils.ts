@@ -23,7 +23,7 @@ interface DateRow {
 	date: string;
 }
 
-const formatNumber = (value: number) => numeral(value).format('0,0.00');
+export const formatNumber = (value: number) => numeral(value).format('0,0.00');
 
 export const filterDateRangeRows = (
 	start: Moment | null,

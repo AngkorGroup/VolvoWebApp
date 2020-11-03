@@ -7,8 +7,8 @@ interface VolvoCardProps {
 	title: string;
 	// This prop will be deleted when real data comes in
 	type: string;
-	balance: number | string;
-	currency: string;
+	balance?: number | string;
+	currency?: string;
 	number?: string;
 	url?: string;
 	isThumbnail?: boolean;

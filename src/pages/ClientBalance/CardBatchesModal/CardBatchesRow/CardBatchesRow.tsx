@@ -2,6 +2,7 @@ import { TableCell, TableRow } from '@material-ui/core';
 import React, { useState } from 'react';
 import FormatListNumberedIcon from '@material-ui/icons/FormatListNumbered';
 import { Amount, VolvoIconButton } from 'common/components';
+import { formatNumber } from 'common/utils';
 import { CardBatchRow, VolvoCardData } from '../../interfaces';
 import BatchMovementsModal from '../../BatchMovementsModal/BatchMovementsModal';
 
@@ -15,7 +16,7 @@ const CardBatchesRow = ({ item, cardData }: CardBatchesRowProps) => {
 	const { number, batch, expiration, currency, balance } = item;
 	const onOpenModal = () => setShowModal(true);
 	const onCloseModal = () => setShowModal(false);
-	const batchText = `Lote: ${batch} - ${currency} ${balance}`;
+	const batchText = `Lote: ${batch} - ${currency} ${formatNumber(balance)}`;
 	return (
 		<TableRow>
 			<TableCell>{number}</TableCell>
@@ -34,13 +35,15 @@ const CardBatchesRow = ({ item, cardData }: CardBatchesRowProps) => {
 					<FormatListNumberedIcon />
 				</VolvoIconButton>
 			</TableCell>
-			<BatchMovementsModal
-				show={showModal}
-				id={batch}
-				cardData={cardData}
-				onClose={onCloseModal}
-				batchText={batchText}
-			/>
+			{showModal && (
+				<BatchMovementsModal
+					show={showModal}
+					id={batch}
+					cardData={cardData}
+					onClose={onCloseModal}
+					batchText={batchText}
+				/>
+			)}
 		</TableRow>
 	);
 };

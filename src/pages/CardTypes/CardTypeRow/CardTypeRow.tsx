@@ -58,24 +58,9 @@ const CardTypeRow = ({ item, onEdit, onDelete }: CardTypeRowProps) => {
 				<TableCell align='center'>{term}</TableCell>
 				<TableCell align='center'>
 					{imgURL && (
-						<VolvoCard
-							type={type}
-							isThumbnail
-							title=''
-							balance={0}
-							url={imgURL}
-							currency='USD'
-						/>
+						<VolvoCard type={type} isThumbnail title='' url={imgURL} />
 					)}
-					{!imgURL && (
-						<VolvoCard
-							type={type}
-							isThumbnail
-							title=''
-							balance={0}
-							currency='USD'
-						/>
-					)}
+					{!imgURL && <VolvoCard type={type} isThumbnail title='' />}
 				</TableCell>
 				<TableCell>{createdAt}</TableCell>
 				<TableCell>{status}</TableCell>

@@ -15,10 +15,12 @@ const CardListRow = ({ item, cardData }: CardListRowProps) => {
 	const { cardId, number, contact, currency, balance } = item;
 	const onOpenModal = () => setShowModal(true);
 	const onCloseModal = () => setShowModal(false);
+
 	const newCardData: VolvoCardData = {
 		...cardData,
 		balance,
 		number,
+		id: cardId,
 	};
 	return (
 		<TableRow>

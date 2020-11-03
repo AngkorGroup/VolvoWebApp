@@ -51,12 +51,12 @@ const mapCardBatchList = (data: CardBatch[]): CardBatchRow[] => {
 
 const CardBatchesModal: React.FC<CardBatchesModalProps> = ({
 	show,
-	id: cardId,
+	id,
 	cardData,
 	onClose,
 }: CardBatchesModalProps) => {
 	const classes = useStyles();
-	const { data, status } = useQuery([cardId], getCardBatches);
+	const { data, status } = useQuery([id], getCardBatches);
 	const cardBatches = useMemo(() => {
 		if (data?.ok) {
 			return mapCardBatchList(data?.data || []);
@@ -64,6 +64,10 @@ const CardBatchesModal: React.FC<CardBatchesModalProps> = ({
 		return [];
 	}, [data]);
 	const { type, number, balance, name, currency } = cardData;
+	const newCardData: VolvoCardData = {
+		...cardData,
+		id,
+	};
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(TABLE_ROWS_PER_PAGE);
 
@@ -116,7 +120,7 @@ const CardBatchesModal: React.FC<CardBatchesModalProps> = ({
 					>
 						<React.Fragment>
 							{rows.map((item, i: number) => (
-								<CardBatchesRow key={i} item={item} cardData={cardData} />
+								<CardBatchesRow key={i} item={item} cardData={newCardData} />
 							))}
 						</React.Fragment>
 					</PaginatedTable>

@@ -142,6 +142,7 @@ export interface Movement {
 	id: number;
 	amount: Amount;
 	type: string;
+	card: Card;
 	displayName: string;
 	description: string;
 	createdAt: string;

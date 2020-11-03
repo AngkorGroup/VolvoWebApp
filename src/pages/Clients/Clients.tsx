@@ -36,7 +36,12 @@ const Clients: React.FC = () => {
 	const showUpload = false;
 
 	const { data, status } = useQuery(null, getClientsByPagination);
-	const clients = useMemo(() => mapClients(data?.data || []), [data]);
+	const clients = useMemo(() => {
+		if (data?.ok) {
+			return mapClients(data?.data || []);
+		}
+		return [];
+	}, [data]);
 
 	const onFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const newQuery = e.target.value;

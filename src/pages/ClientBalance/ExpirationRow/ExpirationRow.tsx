@@ -2,6 +2,7 @@ import { TableCell, TableRow } from '@material-ui/core';
 import React, { useState } from 'react';
 import FormatListNumberedIcon from '@material-ui/icons/FormatListNumbered';
 import { Amount, VolvoIconButton } from 'common/components';
+import { formatNumber } from 'common/utils';
 import BatchMovementsModal from '../BatchMovementsModal/BatchMovementsModal';
 import { Expiration, VolvoCardData } from '../interfaces';
 
@@ -11,17 +12,28 @@ interface ExpirationRowProps {
 
 const ExpirationRow = ({ item }: ExpirationRowProps) => {
 	const [showModal, setShowModal] = useState(false);
-	const { cardType, cardNumber, batch, expiration, currency, balance } = item;
+	const {
+		cardId,
+		cardType,
+		cardNumber,
+		cardName,
+		cardBalance,
+		batch,
+		expiration,
+		currency,
+		balance,
+	} = item;
 	const onOpenModal = () => setShowModal(true);
 	const onCloseModal = () => setShowModal(false);
 	const cardData: VolvoCardData = {
+		id: cardId,
 		type: cardType,
 		number: cardNumber,
-		balance: 4000,
+		balance: cardBalance,
 		currency,
-		name: cardType,
+		name: cardName,
 	};
-	const batchText = `Lote: ${batch} - ${currency} ${balance}`;
+	const batchText = `Lote: ${batch} - ${currency} ${formatNumber(balance)}`;
 	return (
 		<TableRow>
 			<TableCell>{cardType}</TableCell>
@@ -41,13 +53,15 @@ const ExpirationRow = ({ item }: ExpirationRowProps) => {
 					<FormatListNumberedIcon />
 				</VolvoIconButton>
 			</TableCell>
-			<BatchMovementsModal
-				show={showModal}
-				id={batch}
-				cardData={cardData}
-				onClose={onCloseModal}
-				batchText={batchText}
-			/>
+			{showModal && (
+				<BatchMovementsModal
+					show={showModal}
+					id={batch}
+					cardData={cardData}
+					onClose={onCloseModal}
+					batchText={batchText}
+				/>
+			)}
 		</TableRow>
 	);
 };

@@ -72,6 +72,7 @@ const CardListModal: React.FC<CardListModalProps> = ({
 	}, [data]);
 
 	const cardDisplayData: VolvoCardData = {
+		id: '',
 		type: cardType,
 		balance,
 		name: cardName,
