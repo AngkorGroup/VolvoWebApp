@@ -1,7 +1,6 @@
 import { createStyles, makeStyles } from '@material-ui/core';
 import {
 	AsyncTypeAhead,
-	BasicTable,
 	CustomTab,
 	CustomTabs,
 	EmptyState,
@@ -9,49 +8,28 @@ import {
 	PageBody,
 	PageLoader,
 	PageTitle,
+	PaginatedTable,
 	TableFilter,
 	TabPanel,
 	VolvoCard,
 } from 'common/components';
-import { getCardsByFilter } from 'common/services';
+import { TABLE_ROWS_PER_PAGE } from 'common/constants/tableColumn';
+import {
+	getCardBatches,
+	getCardsByFilter,
+	getMovementsByCard,
+} from 'common/services';
 import { Card, filterRows, Option, parseCard } from 'common/utils';
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { EXPIRATION_COLUMNS, MOVEMENT_COLUMNS } from './columns';
 import ExpirationRow from './ExpirationRow/ExpirationRow';
-import { Expiration, Movement } from './interface';
+import {
+	Expiration,
+	mapExpirations,
+	CardMovement,
+	mapMovements,
+} from './interface';
 import MovementRow from './MovementRow/MovementRow';
-
-const movementRows: Movement[] = [
-	{
-		type: 'CARGA',
-		operation: {
-			number: '667558',
-			date: '01/01/2020',
-		},
-		reason: 'COMPRA',
-		amount: '5,000.00',
-		dealer: {
-			id: '1',
-			name: 'AUTOMOTORES TACNA',
-		},
-		cashier: '-',
-		batch: '01012020',
-		source: '-',
-		voucherURL:
-			'https://templates.invoicehome.com/modelo-de-recibo-es-franja-azul-750px.png',
-	},
-];
-
-const expirationRows: Expiration[] = [
-	{
-		type: 'VREP',
-		number: '924201002274611260',
-		batch: '01012020',
-		currency: 'US$',
-		balance: '1,200.00',
-		expirationDate: '24/06/2021',
-	},
-];
 
 const useStyles = makeStyles(
 	createStyles({
@@ -79,13 +57,41 @@ const CardBalance: React.FC = () => {
 	const [queryMovement, setQueryMovement] = useState('');
 	const [queryExpiration, setQueryExpiration] = useState('');
 	const [card, setCard] = useState<Card | null>(null);
-	const [movements, setMovements] = useState<Movement[]>([]);
-	const [filteredMovements, setFilteredMovements] = useState<Movement[]>([]);
+	const [movements, setMovements] = useState<CardMovement[]>([]);
+	const [filteredMovements, setFilteredMovements] = useState<CardMovement[]>(
+		[],
+	);
 	const [expirations, setExpirations] = useState<Expiration[]>([]);
 	const [filteredExpirations, setFilteredExpirations] = useState<Expiration[]>(
 		[],
 	);
+	const [movPage, setMovPage] = useState(0);
+	const [movRowsPerPage, setRowsMovPerPage] = useState(TABLE_ROWS_PER_PAGE);
+	const [expPage, setExpPage] = useState(0);
+	const [expRowsPerPage, setExpRowsPerPage] = useState(TABLE_ROWS_PER_PAGE);
 	const onTabChange = (_: any, newTab: number) => setTab(newTab);
+
+	const onMovChangePage = (_: any, newPage: number) => {
+		setMovPage(newPage);
+	};
+
+	const onMovChangeRowsPerPage = (
+		event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+	) => {
+		setRowsMovPerPage(parseInt(event.target.value, 10));
+		setMovPage(0);
+	};
+
+	const onExpChangePage = (_: any, newPage: number) => {
+		setExpPage(newPage);
+	};
+
+	const onExpChangeRowsPerPage = (
+		event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+	) => {
+		setExpRowsPerPage(parseInt(event.target.value, 10));
+		setExpPage(0);
+	};
 
 	const onTypeCard = async (e: React.ChangeEvent<HTMLInputElement>) => {
 		setLoadingOptions(true);
@@ -98,18 +104,24 @@ const CardBalance: React.FC = () => {
 		setLoadingOptions(false);
 	};
 
-	const onCardChange = (_: any, newValue: string | Option) => {
+	const onCardChange = async (_: any, newValue: string | Option) => {
 		setLoading(true);
-		const curCard =
-			cards.find((c) => `${c.id}` === (newValue as Option).value) || null;
+		const cardId = (newValue as Option).value;
+		const curCard = cards.find((c) => `${c.id}` === cardId) || null;
 		setCard(curCard);
-		setTimeout(() => {
+		const movResponse = await getMovementsByCard(cardId);
+		if (movResponse.ok) {
+			const movementRows = mapMovements(movResponse?.data || []);
 			setMovements(movementRows);
 			setFilteredMovements(movementRows);
+		}
+		const expResponse = await getCardBatches(cardId);
+		if (expResponse.ok) {
+			const expirationRows = mapExpirations(expResponse?.data || []);
 			setExpirations(expirationRows);
 			setFilteredExpirations(expirationRows);
-			setLoading(false);
-		}, 1200);
+		}
+		setLoading(false);
 	};
 
 	const onMovementFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -125,6 +137,25 @@ const CardBalance: React.FC = () => {
 		setQueryExpiration(newQuery);
 		setFilteredExpirations(filtered);
 	};
+
+	const movRows = useMemo(
+		() =>
+			filteredMovements.slice(
+				movPage * movRowsPerPage,
+				movPage * movRowsPerPage + movRowsPerPage,
+			),
+		[movPage, movRowsPerPage, filteredMovements],
+	);
+
+	const expRows = useMemo(
+		() =>
+			filteredExpirations.slice(
+				expPage * expRowsPerPage,
+				expPage * expRowsPerPage + expRowsPerPage,
+			),
+		[expPage, expRowsPerPage, filteredExpirations],
+	);
+	const cardType = card?.cardType?.name || '';
 	return (
 		<div>
 			<div className={classes.header}>
@@ -142,8 +173,8 @@ const CardBalance: React.FC = () => {
 					{card && (
 						// TODO: replace when endpoint retrieves type and name
 						<VolvoCard
-							type={'VURE'}
-							title={'VOLVO UREA'}
+							type={card?.cardType?.name}
+							title={card?.cardType?.displayName}
 							number={card.code}
 							balance={card.balance.value}
 							currency={card.balance.currency}
@@ -170,13 +201,20 @@ const CardBalance: React.FC = () => {
 										onChange={onMovementFilterChange}
 									/>
 								</PageActionBar>
-								<BasicTable columns={MOVEMENT_COLUMNS}>
+								<PaginatedTable
+									columns={MOVEMENT_COLUMNS}
+									count={filteredMovements.length}
+									page={movPage}
+									rowsPerPage={movRowsPerPage}
+									onChangePage={onMovChangePage}
+									onChangeRowsPerPage={onMovChangeRowsPerPage}
+								>
 									<React.Fragment>
-										{filteredMovements.map((item, i: number) => (
+										{movRows.map((item, i: number) => (
 											<MovementRow key={i} item={item} />
 										))}
 									</React.Fragment>
-								</BasicTable>
+								</PaginatedTable>
 							</TabPanel>
 						)}
 						{!loading && expirations.length > 0 && (
@@ -187,13 +225,23 @@ const CardBalance: React.FC = () => {
 										onChange={onExpirationFilterChange}
 									/>
 								</PageActionBar>
-								<BasicTable columns={EXPIRATION_COLUMNS}>
+								<PaginatedTable
+									columns={EXPIRATION_COLUMNS}
+									count={filteredExpirations.length}
+									page={expPage}
+									rowsPerPage={expRowsPerPage}
+									onChangePage={onExpChangePage}
+									onChangeRowsPerPage={onExpChangeRowsPerPage}
+								>
 									<React.Fragment>
-										{filteredExpirations.map((item, i: number) => (
-											<ExpirationRow key={i} item={item} />
+										{expRows.map((item, i: number) => (
+											<ExpirationRow
+												key={i}
+												item={{ ...item, type: cardType }}
+											/>
 										))}
 									</React.Fragment>
-								</BasicTable>
+								</PaginatedTable>
 							</TabPanel>
 						)}
 					</div>

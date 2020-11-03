@@ -1,7 +1,7 @@
 import moment, { Moment } from 'moment';
 import numeral from 'numeral';
 import { DEFAULT_DATE_FORMAT } from '../constants/constants';
-import { Card, Client, Option } from './types';
+import { Card, Client, Contact, Option } from './types';
 
 // TODO: research about iterating over keys of generic types
 export const filterRows = (query: string, rows: any[]) => {
@@ -23,7 +23,7 @@ interface DateRow {
 	date: string;
 }
 
-const formatNumber = (value: number) => numeral(value).format('0,0.00');
+export const formatNumber = (value: number) => numeral(value).format('0,0.00');
 
 export const filterDateRangeRows = (
 	start: Moment | null,
@@ -38,17 +38,26 @@ export const filterDateRangeRows = (
 };
 
 export const parseClients = (clients: Client[]): Option[] => {
-	return clients.map((c) => ({
-		value: `${c.id}`,
-		label: `RUC: ${c.ruc} ${c.name} - US$ 10,000.00`,
+	return clients.map(({ id, ruc, name, balance }) => ({
+		value: `${id}`,
+		label: `RUC: ${ruc} ${name} - ${balance.currency} ${formatNumber(
+			balance.value,
+		)}`,
+	}));
+};
+
+export const parseContacts = (contacts: Contact[]): Option[] => {
+	return contacts.map(({ id, fullName, phone, client }) => ({
+		value: `${id}`,
+		label: `${client?.name}: ${phone} - ${fullName}`,
 	}));
 };
 
 export const parseCard = (cards: Card[]): Option[] => {
-	return cards.map(({ id, code, contact, balance }: Card) => ({
+	return cards.map(({ id, code, contact, balance, cardType }: Card) => ({
 		value: `${id}`,
-		label: `VURE:${code} - RUC:${contact.client.ruc} - C:${contact.phone} - ${
-			balance.currency
-		} ${formatNumber(balance.value)}`,
+		label: `${cardType?.name}:${code} - RUC:${contact?.client?.ruc} - C:${
+			contact?.phone
+		} - ${balance?.currency} ${formatNumber(balance?.value)}`,
 	}));
 };

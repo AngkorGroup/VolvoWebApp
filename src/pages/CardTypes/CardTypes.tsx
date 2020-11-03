@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useMemo, useState } from 'react';
 import AddIcon from '@material-ui/icons/Add';
 import {
 	BasicTable,
@@ -9,45 +9,34 @@ import {
 	TableFilter,
 	VolvoButton,
 } from 'common/components';
-import { filterRows } from 'common/utils';
+import { CardType, filterRows } from 'common/utils';
 import FormModal from './FormModal/FormModal';
-import { CardType, CardTypeForm } from './interfaces';
+import { TableCardType, CardTypeForm, mapCardType } from './interfaces';
 import CardTypeRow from './CardTypeRow/CardTypeRow';
 import AppContext from '../../AppContext';
 import { CARD_TYPE_COLUMNS } from './columns';
-
-const cardTypeRows: CardType[] = [
-	{
-		id: '1',
-		type: 'VREP',
-		description: 'VOLVO REPUESTOS',
-		currency: 'US$',
-		term: '18',
-		imgURL: '',
-		createdAt: '10/05/2020',
-		status: 'Activo',
-		deletedAt: '',
-	},
-	{
-		id: '2',
-		type: 'VURE',
-		description: 'VOLVO BONO UREA',
-		currency: 'US$',
-		term: '12',
-		imgURL: '',
-		createdAt: '11/05/2020',
-		status: 'Activo',
-		deletedAt: '',
-	},
-];
+import { useQuery } from 'react-query';
+import {
+	addCardType,
+	deleteCardType,
+	editCardType,
+	getCardTypes,
+} from 'common/services';
 
 const CardTypes: React.FC = () => {
-	const [loading, setLoading] = useState(false);
 	const [query, setQuery] = useState('');
 	const [showAddModal, setShowAddModal] = useState(false);
-	const [cardTypes, setCardTypes] = useState<CardType[]>([]);
-	const [filtered, setFiltered] = useState<CardType[]>([]);
+	const [filtered, setFiltered] = useState<TableCardType[]>([]);
 	const { addPageMessage } = useContext(AppContext);
+	const { data, status } = useQuery('cardTypes', getCardTypes);
+	const cardTypes = useMemo(() => {
+		if (data?.ok) {
+			const rows = mapCardType(data?.data || []);
+			setFiltered(rows);
+			return rows;
+		}
+		return [];
+	}, [data, setFiltered]);
 
 	const onFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const newQuery = e.target.value;
@@ -56,57 +45,58 @@ const CardTypes: React.FC = () => {
 		setFiltered(filtered);
 	};
 
-	useEffect(() => {
-		setLoading(true);
-		setTimeout(() => {
-			setLoading(false);
-			setCardTypes(cardTypeRows);
-			setFiltered(cardTypeRows);
-		}, 1500);
-	}, []);
-
 	const setAddModalVisible = (flag: boolean) => () => setShowAddModal(flag);
 
-	const onAddCardType = (cardType: CardTypeForm) => {
-		const newCardTypes = [...cardTypes, cardType as CardType];
-		setCardTypes(newCardTypes);
-		setFiltered(newCardTypes);
-		// Perform API call
-		addPageMessage!({
-			title: 'Tipo de Tarjeta Agregado',
-			text: 'Se agregó un nuevo tipo de tarjeta correctamente',
-			status: 'success',
-		});
+	const onAddCardType = async (cardType: CardTypeForm) => {
+		const term = parseInt(cardType.term || '0', 10) * 30;
+		const body: Partial<CardType> = {
+			name: cardType.type || '',
+			displayName: cardType.description || '',
+			currency: cardType.currency || '',
+			color: cardType.color || '',
+			tpCode: '0004',
+			term,
+		};
+		const response = await addCardType(body);
+		if (response.ok) {
+			addPageMessage!({
+				title: 'Tipo de Tarjeta Agregado',
+				text: 'Se agregó un nuevo tipo de tarjeta correctamente',
+				status: 'success',
+			});
+		}
 	};
 
-	const onEditCardType = (cardType: CardTypeForm) => {
-		const newCardTypes = cardTypes.map((d) =>
-			d.id === cardType.id ? (cardType as CardType) : d,
-		);
-		setCardTypes(newCardTypes);
-		setFiltered(newCardTypes);
-		// Perform API call
-		addPageMessage!({
-			title: 'Tipo de Tarjeta Editado',
-			text: 'Se editó un tipo de tarjeta correctamente',
-			status: 'success',
-		});
+	const onEditCardType = async (cardType: CardTypeForm) => {
+		const term = parseInt(cardType.term || '0', 10) * 30;
+		const body: Partial<CardType> = {
+			id: +(cardType.id || '0'),
+			name: cardType.type || '',
+			displayName: cardType.description || '',
+			currency: cardType.currency || '',
+			color: cardType.color || '',
+			tpCode: '0004',
+			term,
+		};
+		const response = await editCardType(body);
+		if (response.ok) {
+			addPageMessage!({
+				title: 'Tipo de Tarjeta Editado',
+				text: 'Se editó un tipo de tarjeta correctamente',
+				status: 'success',
+			});
+		}
 	};
 
-	const onDeleteCardType = (id: string) => {
-		const status = 'Inactivo';
-		const deletedAt = '16/10/2020';
-		const newCardTypes = cardTypes.map((d) =>
-			d.id !== id ? d : { ...d, status, deletedAt },
-		);
-		setCardTypes(newCardTypes);
-		setFiltered(newCardTypes);
-		// Perform API call
-		addPageMessage!({
-			title: 'Tipo de Tarjeta Desactivado',
-			text: 'Se desactivó un tipo de tarjeta correctamente',
-			status: 'success',
-		});
+	const onDeleteCardType = async (id: string) => {
+		const response = await deleteCardType(id);
+		if (response.ok) {
+			addPageMessage!({
+				title: 'Tipo de Tarjeta Desactivado',
+				text: 'Se desactivó un tipo de tarjeta correctamente',
+				status: 'success',
+			});
+		}
 	};
 	return (
 		<div>
@@ -114,8 +104,8 @@ const CardTypes: React.FC = () => {
 				<PageTitle title='Tipos de Tarjeta' />
 			</div>
 			<PageBody>
-				{loading && <PageLoader />}
-				{!loading && cardTypes.length > 0 && (
+				{status === 'loading' && <PageLoader />}
+				{status === 'success' && cardTypes.length > 0 && (
 					<div>
 						<PageActionBar justifyContent='space-between'>
 							<TableFilter value={query} onChange={onFilterChange} />

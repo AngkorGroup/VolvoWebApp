@@ -1,11 +1,11 @@
 import { TableCell, TableRow } from '@material-ui/core';
 import React, { useState } from 'react';
 import ReceiptIcon from '@material-ui/icons/Receipt';
-import { ImageModal, VolvoIconButton } from 'common/components';
-import { Movement } from '../interface';
+import { Amount, ImageModal, VolvoIconButton } from 'common/components';
+import { CardMovement } from '../interface';
 
 interface MovementRowProps {
-	item: Movement;
+	item: CardMovement;
 }
 
 const MovementRow = ({ item }: MovementRowProps) => {
@@ -14,10 +14,11 @@ const MovementRow = ({ item }: MovementRowProps) => {
 	const onCloseModal = () => setShowModal(false);
 	const {
 		type,
-		operation,
+		operationNumber,
+		operationDate,
 		reason,
 		amount,
-		dealer,
+		dealerName,
 		cashier,
 		batch,
 		source,
@@ -26,14 +27,16 @@ const MovementRow = ({ item }: MovementRowProps) => {
 	return (
 		<TableRow>
 			<TableCell>{type}</TableCell>
-			<TableCell>{operation.number}</TableCell>
-			<TableCell>{operation.date}</TableCell>
+			<TableCell>{operationNumber}</TableCell>
+			<TableCell>{operationDate}</TableCell>
 			<TableCell>{reason}</TableCell>
-			<TableCell align='right'>{amount}</TableCell>
-			<TableCell>{dealer.name}</TableCell>
+			<TableCell align='right'>
+				<Amount value={amount} />
+			</TableCell>
+			<TableCell>{dealerName}</TableCell>
 			<TableCell>{cashier}</TableCell>
 			<TableCell>{batch}</TableCell>
-			<TableCell>{source}</TableCell>
+			<TableCell align='center'>{source}</TableCell>
 			<TableCell align='center'>
 				{!!voucherURL && (
 					<VolvoIconButton

@@ -61,7 +61,12 @@ const Loads: React.FC = () => {
 	const { addPageMessage } = useContext(AppContext);
 
 	const { data, status } = useQuery('loads', getLoads);
-	const loads = useMemo(() => mapLoads(data?.data || []), [data]);
+	const loads = useMemo(() => {
+		if (data?.ok) {
+			return mapLoads(data?.data || []);
+		}
+		return [];
+	}, [data]);
 
 	const onFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const newQuery = e.target.value;

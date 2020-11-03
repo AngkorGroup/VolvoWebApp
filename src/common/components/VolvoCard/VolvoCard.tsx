@@ -7,10 +7,11 @@ interface VolvoCardProps {
 	title: string;
 	// This prop will be deleted when real data comes in
 	type: string;
-	balance: number | string;
-	currency: string;
+	balance?: number | string;
+	currency?: string;
 	number?: string;
 	url?: string;
+	color?: string;
 	isThumbnail?: boolean;
 }
 
@@ -58,6 +59,9 @@ const useStyles = makeStyles(({ palette }: Theme) =>
 		cardOcean: {
 			backgroundColor: palette.info.main,
 		},
+		cardName: {
+			fontSize: '25px',
+		},
 	}),
 );
 
@@ -66,16 +70,21 @@ const VolvoCard: React.FC<VolvoCardProps> = ({
 	type,
 	balance,
 	currency,
+	color,
 	number,
 	isThumbnail,
 }: VolvoCardProps) => {
 	const classes = useStyles();
-	const color = type === 'VURE' ? classes.cardGray : classes.cardOcean;
+	const colorClass = type === 'VURE' ? classes.cardGray : classes.cardOcean;
+	const colorStyle = color ? { backgroundColor: color } : {};
 	const sizeClass = isThumbnail ? classes.thumbnail : classes.normal;
 	return (
-		<div className={`${classes.card} ${sizeClass} ${color}`}>
+		<div
+			className={`${classes.card} ${sizeClass} ${colorClass}`}
+			style={colorStyle}
+		>
 			<div className={classes.title}>
-				<div>{title}</div>
+				<div className={classes.cardName}>{title}</div>
 				<div className={classes.number}>{number}</div>
 			</div>
 			<div className={classes.balance}>

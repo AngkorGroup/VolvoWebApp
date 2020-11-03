@@ -7,7 +7,7 @@ import {
 } from '@material-ui/core';
 import React, { useState } from 'react';
 import ReceiptIcon from '@material-ui/icons/Receipt';
-import { ImageModal, VolvoIconButton } from 'common/components';
+import { Amount, ImageModal, VolvoIconButton } from 'common/components';
 import { BatchMovementRow } from '../../interfaces';
 
 interface BatchMovementsRowProps {
@@ -38,7 +38,7 @@ const BatchMovementsRow = ({ item }: BatchMovementsRowProps) => {
 		batch,
 		voucherURL,
 	} = item;
-	const amountColor = amount.includes('-') ? classes.negative : '';
+	const amountColor = amount < 0 ? classes.negative : '';
 	return (
 		<TableRow>
 			<TableCell>{cardNumber}</TableCell>
@@ -46,7 +46,7 @@ const BatchMovementsRow = ({ item }: BatchMovementsRowProps) => {
 			<TableCell>{date}</TableCell>
 			<TableCell>{currency}</TableCell>
 			<TableCell className={amountColor} align='right'>
-				{amount}
+				<Amount value={amount} />
 			</TableCell>
 			<TableCell>{dealer}</TableCell>
 			<TableCell>{cashier}</TableCell>

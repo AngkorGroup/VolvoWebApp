@@ -13,6 +13,7 @@ export { default as PageActionBar } from './PageActionBar/PageActionBar';
 export { default as PageBody } from './PageBody/PageBody';
 export { default as PageLoader } from './PageLoader/PageLoader';
 export { default as PageTitle } from './PageTitle/PageTitle';
+export { default as PaginatedTable } from './PaginatedTable/PaginatedTable';
 export { default as Sidebar } from './Sidebar/Sidebar';
 export { default as SidebarItem } from './SidebarItem/SidebarItem';
 export { default as TableFilter } from './TableFilter/TableFilter';

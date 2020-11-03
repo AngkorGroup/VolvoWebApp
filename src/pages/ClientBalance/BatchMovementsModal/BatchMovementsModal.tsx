@@ -13,9 +13,11 @@ import {
 	VolvoButton,
 	VolvoCard,
 } from 'common/components';
-import React, { useEffect, useState } from 'react';
+import { getCardsBatchMovements } from 'common/services';
+import React, { useMemo } from 'react';
+import { useQuery } from 'react-query';
 import { BATCH_MOVEMENTS_COLUMNS } from '../columns';
-import { BatchMovementRow, VolvoCardData } from '../interfaces';
+import { mapExpirationMovements, VolvoCardData } from '../interfaces';
 import BatchMovementsRow from './BatchMovementsRow/BatchMovementsRow';
 
 interface BatchMovementsModalProps {
@@ -25,69 +27,6 @@ interface BatchMovementsModalProps {
 	batchText: string;
 	onClose: () => void;
 }
-
-const batchMovementRows: BatchMovementRow[] = [
-	{
-		cardNumber: '924201002274611260',
-		number: '667558',
-		date: '01/01/2021 15:30',
-		currency: 'US$',
-		amount: '3,500.00',
-		dealer: 'VOLVO SANTA ANITA',
-		cashier: 'CAJA34',
-		batch: '01012020',
-		voucherURL:
-			'https://templates.invoicehome.com/modelo-de-recibo-es-franja-azul-750px.png',
-	},
-	{
-		cardNumber: '924201002274611260',
-		number: '667559',
-		date: '05/03/2021 17:30',
-		currency: 'US$',
-		amount: '-600.00',
-		dealer: 'AUTOMOTORES TACNA',
-		cashier: 'CAJA4',
-		batch: '01062020',
-		voucherURL:
-			'https://templates.invoicehome.com/modelo-de-recibo-es-franja-azul-750px.png',
-	},
-	{
-		cardNumber: '924201002274611260',
-		number: '667559',
-		date: '05/03/2021 17:30',
-		currency: 'US$',
-		amount: '-300.00',
-		dealer: 'AUTOMOTORES TACNA',
-		cashier: 'CAJA4',
-		batch: '01072020',
-		voucherURL:
-			'https://templates.invoicehome.com/modelo-de-recibo-es-franja-azul-750px.png',
-	},
-	{
-		cardNumber: '924201002274611260',
-		number: '667575',
-		date: '02/05/2021 12:23',
-		currency: 'US$',
-		amount: '400.00',
-		dealer: 'VOLVO SANTA ANITA',
-		cashier: 'CAJA2',
-		batch: '01082020',
-		voucherURL:
-			'https://templates.invoicehome.com/modelo-de-recibo-es-franja-azul-750px.png',
-	},
-	{
-		cardNumber: '924201002274611260',
-		number: '667592',
-		date: '04/06/2021 11:47',
-		currency: 'US$',
-		amount: '-500.00',
-		dealer: 'MANUCCI DIESEL TRUJILLO',
-		cashier: 'CAJA3',
-		batch: '01092020',
-		voucherURL:
-			'https://templates.invoicehome.com/modelo-de-recibo-es-franja-azul-750px.png',
-	},
-];
 
 const useStyles = makeStyles(({ spacing }: Theme) =>
 	createStyles({
@@ -110,17 +49,16 @@ const BatchMovementsModal: React.FC<BatchMovementsModalProps> = ({
 	onClose,
 }: BatchMovementsModalProps) => {
 	const classes = useStyles();
-	const [loading, setLoading] = useState(false);
-	const [batchMovements, setBatchMovements] = useState<BatchMovementRow[]>([]);
-
-	useEffect(() => {
-		// perform API call with the 'cardNumber' param
-		setLoading(true);
-		setTimeout(() => {
-			setBatchMovements(batchMovementRows);
-			setLoading(false);
-		}, 1200);
-	}, [batch]);
+	const { data, status } = useQuery(
+		[cardData.id, batch],
+		getCardsBatchMovements,
+	);
+	const batchMovements = useMemo(() => {
+		if (data?.ok) {
+			return mapExpirationMovements(data.data || []);
+		}
+		return [];
+	}, [data]);
 
 	return (
 		<Dialog
@@ -136,15 +74,15 @@ const BatchMovementsModal: React.FC<BatchMovementsModalProps> = ({
 				<div className={classes.cardContainer}>
 					<VolvoCard
 						balance={cardData.balance}
-						title={cardData.type}
+						title={cardData.name}
 						number={cardData.number}
 						type={cardData.type}
-						currency=''
+						currency={cardData.currency}
 					/>
 				</div>
 				<div className={classes.batchInfoContainer}>{batchText}</div>
-				{loading && <PageLoader />}
-				{!loading && (
+				{status === 'loading' && <PageLoader />}
+				{status === 'success' && (
 					<BasicTable columns={BATCH_MOVEMENTS_COLUMNS}>
 						<React.Fragment>
 							{batchMovements.map((item, i: number) => (

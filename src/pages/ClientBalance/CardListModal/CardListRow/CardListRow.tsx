@@ -12,13 +12,15 @@ interface CardListRowProps {
 
 const CardListRow = ({ item, cardData }: CardListRowProps) => {
 	const [showModal, setShowModal] = useState(false);
-	const { number, contact, currency, balance } = item;
+	const { cardId, number, contact, currency, balance } = item;
 	const onOpenModal = () => setShowModal(true);
 	const onCloseModal = () => setShowModal(false);
+
 	const newCardData: VolvoCardData = {
 		...cardData,
-		balance: `${currency} ${balance}`,
+		balance,
 		number,
+		id: cardId,
 	};
 	return (
 		<TableRow>
@@ -37,12 +39,14 @@ const CardListRow = ({ item, cardData }: CardListRowProps) => {
 					<DashboardIcon />
 				</VolvoIconButton>
 			</TableCell>
-			<CardBatchesModal
-				show={showModal}
-				id={number}
-				cardData={newCardData}
-				onClose={onCloseModal}
-			/>
+			{showModal && (
+				<CardBatchesModal
+					show={showModal}
+					id={cardId}
+					cardData={newCardData}
+					onClose={onCloseModal}
+				/>
+			)}
 		</TableRow>
 	);
 };

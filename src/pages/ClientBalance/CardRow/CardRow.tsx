@@ -1,7 +1,7 @@
 import { TableCell, TableRow } from '@material-ui/core';
 import React, { useState } from 'react';
 import ViewCarouselIcon from '@material-ui/icons/ViewCarousel';
-import { VolvoIconButton } from 'common/components';
+import { Amount, VolvoIconButton } from 'common/components';
 import CardListModal from '../CardListModal/CardListModal';
 import { CardType } from '../interfaces';
 
@@ -12,14 +12,16 @@ interface CardRowProps {
 
 const CardRow = ({ item, clientId }: CardRowProps) => {
 	const [showModal, setShowModal] = useState(false);
-	const { id, cardType, currency, balance } = item;
+	const { id, cardType, currency, balance, cardName } = item;
 	const onOpenModal = () => setShowModal(true);
 	const onCloseModal = () => setShowModal(false);
 	return (
 		<TableRow>
 			<TableCell>{cardType}</TableCell>
-			<TableCell>{currency}</TableCell>
-			<TableCell align='right'>{balance}</TableCell>
+			<TableCell align='center'>{currency}</TableCell>
+			<TableCell align='right'>
+				<Amount value={balance} />
+			</TableCell>
 			<TableCell align='center'>
 				<VolvoIconButton
 					color='success'
@@ -29,15 +31,18 @@ const CardRow = ({ item, clientId }: CardRowProps) => {
 					<ViewCarouselIcon />
 				</VolvoIconButton>
 			</TableCell>
-			<CardListModal
-				show={showModal}
-				id={id}
-				currency={currency}
-				balance={balance}
-				cardType={cardType}
-				clientId={clientId}
-				onClose={onCloseModal}
-			/>
+			{showModal && (
+				<CardListModal
+					show={showModal}
+					id={id}
+					currency={currency}
+					balance={balance}
+					cardName={cardName}
+					cardType={cardType}
+					clientId={clientId}
+					onClose={onCloseModal}
+				/>
+			)}
 		</TableRow>
 	);
 };

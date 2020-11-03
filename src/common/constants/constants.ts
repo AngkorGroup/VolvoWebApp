@@ -90,3 +90,6 @@ export const MENU_ITEMS: MenuItem[] = [
 		icon: AccountCircleIcon,
 	},
 ];
+
+export const CONSUME_TYPE = 'CON';
+export const TRANSFER_TYPE = 'STR';

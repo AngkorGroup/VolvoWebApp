@@ -7,16 +7,20 @@ import {
 	makeStyles,
 	Theme,
 } from '@material-ui/core';
-import React, { useEffect, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import {
-	BasicTable,
 	PageLoader,
+	PaginatedTable,
 	VolvoButton,
 	VolvoCard,
 } from 'common/components';
+import { CardBatch } from 'common/utils';
 import CardBatchesRow from './CardBatchesRow/CardBatchesRow';
 import { CardBatchRow, VolvoCardData } from '../interfaces';
 import { CARD_BATCH_COLUMNS } from '../columns';
+import { useQuery } from 'react-query';
+import { getCardBatches } from 'common/services/Batches';
+import { TABLE_ROWS_PER_PAGE } from 'common/constants/tableColumn';
 
 interface CardBatchesModalProps {
 	show: boolean;
@@ -24,37 +28,6 @@ interface CardBatchesModalProps {
 	cardData: VolvoCardData;
 	onClose: () => void;
 }
-
-const cardBatchRows: CardBatchRow[] = [
-	{
-		number: '924201002274611260',
-		batch: '01012020',
-		expiration: '01/01/2020',
-		currency: 'US$',
-		balance: '2,500.00',
-	},
-	{
-		number: '924201002274611260',
-		batch: '01062020',
-		expiration: '01/06/2020',
-		currency: 'US$',
-		balance: '900.00',
-	},
-	{
-		number: '924201002274611260',
-		batch: '01072020',
-		expiration: '01/07/2020',
-		currency: 'US$',
-		balance: '400.00',
-	},
-	{
-		number: '924201002274611260',
-		batch: '01082020',
-		expiration: '01/08/2020',
-		currency: 'US$',
-		balance: '200.00',
-	},
-];
 
 const useStyles = makeStyles(({ spacing }: Theme) =>
 	createStyles({
@@ -66,25 +39,54 @@ const useStyles = makeStyles(({ spacing }: Theme) =>
 	}),
 );
 
+const mapCardBatchList = (data: CardBatch[]): CardBatchRow[] => {
+	return data.map(({ card, batchId, expiresAt, balance }) => ({
+		number: card.code,
+		batch: `${batchId}`,
+		expiration: expiresAt,
+		currency: balance.currency,
+		balance: balance.value,
+	}));
+};
+
 const CardBatchesModal: React.FC<CardBatchesModalProps> = ({
 	show,
-	id: cardNumber,
+	id,
 	cardData,
 	onClose,
 }: CardBatchesModalProps) => {
 	const classes = useStyles();
-	const [loading, setLoading] = useState(false);
-	const [cardBatches, setCardBatches] = useState<CardBatchRow[]>([]);
-	const { type, number, balance } = cardData;
+	const { data, status } = useQuery([id], getCardBatches);
+	const cardBatches = useMemo(() => {
+		if (data?.ok) {
+			return mapCardBatchList(data?.data || []);
+		}
+		return [];
+	}, [data]);
+	const { type, number, balance, name, currency } = cardData;
+	const newCardData: VolvoCardData = {
+		...cardData,
+		id,
+	};
+	const [page, setPage] = useState(0);
+	const [rowsPerPage, setRowsPerPage] = useState(TABLE_ROWS_PER_PAGE);
 
-	useEffect(() => {
-		// perform API call with the 'cardNumber' param
-		setLoading(true);
-		setTimeout(() => {
-			setCardBatches(cardBatchRows);
-			setLoading(false);
-		}, 1200);
-	}, [cardNumber]);
+	const handleChangePage = (_: any, newPage: number) => {
+		setPage(newPage);
+	};
+
+	const handleChangeRowsPerPage = (
+		e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+	) => {
+		setRowsPerPage(parseInt(e.target.value, 10));
+		setPage(0);
+	};
+
+	const rows = useMemo(
+		() =>
+			cardBatches.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
+		[page, rowsPerPage, cardBatches],
+	);
 
 	return (
 		<Dialog
@@ -101,20 +103,27 @@ const CardBatchesModal: React.FC<CardBatchesModalProps> = ({
 					<VolvoCard
 						type={type}
 						balance={balance}
-						title={type}
+						title={name}
 						number={number}
-						currency=''
+						currency={currency}
 					/>
 				</div>
-				{loading && <PageLoader />}
-				{!loading && (
-					<BasicTable columns={CARD_BATCH_COLUMNS}>
+				{status === 'loading' && <PageLoader />}
+				{status === 'success' && (
+					<PaginatedTable
+						columns={CARD_BATCH_COLUMNS}
+						page={page}
+						count={cardBatches.length}
+						rowsPerPage={rowsPerPage}
+						onChangePage={handleChangePage}
+						onChangeRowsPerPage={handleChangeRowsPerPage}
+					>
 						<React.Fragment>
-							{cardBatches.map((item, i: number) => (
-								<CardBatchesRow key={i} item={item} cardData={cardData} />
+							{rows.map((item, i: number) => (
+								<CardBatchesRow key={i} item={item} cardData={newCardData} />
 							))}
 						</React.Fragment>
-					</BasicTable>
+					</PaginatedTable>
 				)}
 			</DialogContent>
 			<DialogActions>

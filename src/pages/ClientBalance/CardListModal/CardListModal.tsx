@@ -15,7 +15,7 @@ import {
 } from 'common/components';
 import { getCardsByClientCardType } from 'common/services';
 import { Card } from 'common/utils';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useQuery } from 'react-query';
 import { CARD_LIST_COLUMNS } from '../columns';
 import { ClientCardRow, VolvoCardData } from '../interfaces';
@@ -25,8 +25,9 @@ interface CardListModalProps {
 	show: boolean;
 	id: string;
 	cardType: string;
+	cardName: string;
 	currency: string;
-	balance: string;
+	balance: number;
 	clientId: string;
 	onClose: () => void;
 }
@@ -42,11 +43,12 @@ const useStyles = makeStyles(({ spacing }: Theme) =>
 );
 
 const mapCardList = (data: Card[]): ClientCardRow[] => {
-	return data.map((d) => ({
-		number: d.code,
-		contact: d.contact.fullName,
-		currency: d.balance.currency,
-		balance: d.balance.value,
+	return data.map(({ id, code, contact, balance }) => ({
+		cardId: `${id}`,
+		number: code,
+		contact: contact?.fullName,
+		currency: balance?.currency,
+		balance: balance?.value,
 	}));
 };
 
@@ -54,6 +56,7 @@ const CardListModal: React.FC<CardListModalProps> = ({
 	show,
 	id,
 	cardType,
+	cardName,
 	currency,
 	balance,
 	clientId,
@@ -61,12 +64,19 @@ const CardListModal: React.FC<CardListModalProps> = ({
 }: CardListModalProps) => {
 	const classes = useStyles();
 	const { data, status } = useQuery([clientId, id], getCardsByClientCardType);
-	const cards = mapCardList(data?.data || []);
+	const cards = useMemo(() => {
+		if (data?.ok) {
+			return mapCardList(data?.data || []);
+		}
+		return [];
+	}, [data]);
 
 	const cardDisplayData: VolvoCardData = {
+		id: '',
 		type: cardType,
-		number: '',
-		balance: `${currency} ${balance}`,
+		balance,
+		name: cardName,
+		currency,
 	};
 
 	return (
@@ -83,9 +93,9 @@ const CardListModal: React.FC<CardListModalProps> = ({
 				<div className={classes.cardContainer}>
 					<VolvoCard
 						type={cardType}
-						balance={cardDisplayData.balance}
-						title={cardType}
-						currency=''
+						balance={balance}
+						title={cardName}
+						currency={currency}
 					/>
 				</div>
 				{status === 'loading' && <PageLoader />}

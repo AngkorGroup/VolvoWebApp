@@ -7,82 +7,24 @@ import {
 	PageLoader,
 	PageTitle,
 	TableFilter,
-	TypeAhead,
 } from 'common/components';
-import { getClients } from 'common/services';
 import {
-	filterRows,
-	MOCKED_CONTACTS_TYPEAHEAD,
-	Option,
-	parseClients,
-} from 'common/utils';
+	getCardsByClient,
+	getClients,
+	getContactsByFilter,
+} from 'common/services';
+import { filterRows, Option, parseClients, parseContacts } from 'common/utils';
 import React, { useState } from 'react';
 import CardDataRow from './CardDataRow/CardDataRow';
 import { CARD_COLUMNS } from './columns';
-import { CardData } from './interfaces';
-
-const cardDataRows: CardData[] = [
-	{
-		type: 'VREP',
-		number: '924201002274611260',
-		tpNumber: '598941562',
-		createdAt: '01/01/2020',
-		currency: 'US$',
-		contactName: 'Federico Montero',
-		contactType: 'Principal',
-		contactPhone: '987654321',
-		status: 'Activo',
-	},
-	{
-		type: 'VREP',
-		number: '924201002274611277',
-		tpNumber: '538921372',
-		createdAt: '01/06/2020',
-		currency: 'US$',
-		contactName: 'Gianfranco Galvez Montero',
-		contactType: 'Adicional',
-		contactPhone: '949666888',
-		status: 'Activo',
-	},
-	{
-		type: 'VURE',
-		number: '924201002274611281',
-		tpNumber: '558943272',
-		createdAt: '01/07/2020',
-		currency: 'US$',
-		contactName: 'Mauricio Castañeda Monzón',
-		contactType: 'Adicional',
-		contactPhone: '985555123',
-		status: 'Activo',
-	},
-	{
-		type: 'VURE',
-		number: '924201002274611256',
-		tpNumber: '218941272',
-		createdAt: '01/08/2020',
-		currency: 'US$',
-		contactName: 'Brajean Junchaya Navarrete',
-		contactType: 'Adicional',
-		contactPhone: '987486426',
-		status: 'Activo',
-	},
-	{
-		type: 'VURE',
-		number: '924201002274611292',
-		tpNumber: '498941272',
-		createdAt: '02/08/2020',
-		currency: 'US$',
-		contactName: 'Juan Jose Ramirez Calderón',
-		contactType: 'Adicional',
-		contactPhone: '963852741',
-		status: 'Activo',
-	},
-];
+import { CardData, mapCardData } from './interfaces';
 
 const CardsData: React.FC = () => {
 	const [loading, setLoading] = useState(false);
 	const [loadingClients, setLoadingClients] = useState(false);
+	const [loadingContacts, setLoadingContacts] = useState(false);
 	const [clients, setClients] = useState<Option[]>([]);
+	const [contacts, setContacts] = useState<Option[]>([]);
 	const [query, setQuery] = useState('');
 	const [cards, setCards] = useState<CardData[]>([]);
 	const [filtered, setFiltered] = useState<CardData[]>([]);
@@ -104,22 +46,30 @@ const CardsData: React.FC = () => {
 		setLoadingClients(false);
 	};
 
-	const onClientChange = (_: any, newValue: string | Option) => {
-		setLoading(true);
-		setTimeout(() => {
-			setCards(cardDataRows);
-			setFiltered(cardDataRows);
-			setLoading(false);
-		}, 1500);
+	const onTypeContact = async (e: React.ChangeEvent<HTMLInputElement>) => {
+		setLoadingContacts(true);
+		const response = await getContactsByFilter(e.target.value);
+		if (response.ok) {
+			const data = parseContacts(response.data || []);
+			setContacts(data);
+		}
+		setLoadingContacts(false);
 	};
 
-	const onContactChange = (_: any, newValue: string | Option) => {
+	const onTypeAheadChange = (byContact?: boolean) => async (
+		_: any,
+		newValue: string | Option,
+	) => {
 		setLoading(true);
-		setTimeout(() => {
+		const response = await getCardsByClient(byContact)(
+			(newValue as Option).value,
+		);
+		if (response.ok) {
+			const cardDataRows = mapCardData(response.data || []);
 			setCards(cardDataRows);
 			setFiltered(cardDataRows);
-			setLoading(false);
-		}, 1500);
+		}
+		setLoading(false);
 	};
 
 	return (
@@ -132,15 +82,17 @@ const CardsData: React.FC = () => {
 							options={clients}
 							placeholder='Cliente'
 							loading={loadingClients}
-							onChange={onClientChange}
+							onChange={onTypeAheadChange()}
 							onType={onTypeClient}
 						/>
 					</Grid>
 					<Grid item xs={6}>
-						<TypeAhead
-							options={MOCKED_CONTACTS_TYPEAHEAD}
+						<AsyncTypeAhead
+							options={contacts}
 							placeholder='Contacto'
-							onChange={onContactChange}
+							loading={loadingContacts}
+							onChange={onTypeAheadChange(true)}
+							onType={onTypeContact}
 						/>
 					</Grid>
 				</Grid>

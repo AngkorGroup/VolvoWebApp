@@ -1,5 +1,5 @@
 import { makeStyles } from '@material-ui/core';
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import {
 	BasicTable,
 	CustomTab,
@@ -12,63 +12,24 @@ import {
 	PageActionBar,
 	TableFilter,
 	AsyncTypeAhead,
+	PaginatedTable,
 } from 'common/components';
 import { filterRows, Option, parseClients } from 'common/utils';
 import CardRow from './CardRow/CardRow';
-import ExpirationRow, { Expiration } from './ExpirationRow/ExpirationRow';
-import { CardType } from './interfaces';
+import ExpirationRow from './ExpirationRow/ExpirationRow';
+import {
+	CardType,
+	mapCardType,
+	Expiration,
+	mapExpirations,
+} from './interfaces';
 import { CARD_COLUMNS, EXPIRATION_COLUMNS } from './columns';
-import { getClients } from 'common/services';
-
-const cardRows = [
-	{
-		id: '1',
-		cardType: 'VREP',
-		currency: 'US$',
-		balance: '8,400.00',
-	},
-	{
-		id: '2',
-		cardType: 'VURE',
-		currency: 'US$',
-		balance: '6,400.00',
-	},
-];
-
-const expirationRows = [
-	{
-		cardType: 'VREP',
-		cardNumber: '924201002274611260',
-		batch: '01012020',
-		expiration: '01/01/2021',
-		currency: 'US$',
-		balance: '2,500.00',
-	},
-	{
-		cardType: 'VREP',
-		cardNumber: '924201002274611260',
-		batch: '01062020',
-		expiration: '01/06/2021',
-		currency: 'US$',
-		balance: '900.00',
-	},
-	{
-		cardType: 'VURE',
-		cardNumber: '924201002274611262',
-		batch: '01072020',
-		expiration: '01/07/2021',
-		currency: 'US$',
-		balance: '400.00',
-	},
-	{
-		cardType: 'VURE',
-		cardNumber: '924201002274611262',
-		batch: '11082020',
-		expiration: '01/08/2021',
-		currency: 'US$',
-		balance: '200.00',
-	},
-];
+import {
+	getClientCardTypes,
+	getClients,
+	getClientBatches,
+} from 'common/services';
+import { TABLE_ROWS_PER_PAGE } from 'common/constants/tableColumn';
 
 const useStyles = makeStyles({
 	cardsTable: {
@@ -92,6 +53,22 @@ const ClientBalance: React.FC = () => {
 		[],
 	);
 	const onTabChange = (_: any, newTab: number) => setTab(newTab);
+	const [expPage, setExpPage] = useState(0);
+	const [rowsPerPage, setRowsPerPage] = useState(TABLE_ROWS_PER_PAGE);
+
+	const handleChangePage = (
+		e: React.MouseEvent<HTMLButtonElement> | null,
+		newPage: number,
+	) => {
+		setExpPage(newPage);
+	};
+
+	const handleChangeRowsPerPage = (
+		event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+	) => {
+		setRowsPerPage(parseInt(event.target.value, 10));
+		setExpPage(0);
+	};
 
 	const onTypeQuery = async (e: React.ChangeEvent<HTMLInputElement>) => {
 		setLoadingClients(true);
@@ -104,16 +81,23 @@ const ClientBalance: React.FC = () => {
 		}
 	};
 
-	const onClientChange = (_: any, newValue: string | Option) => {
-		setSelectedClient((newValue as Option).value);
+	const onClientChange = async (_: any, newValue: string | Option) => {
+		const clientId = (newValue as Option).value;
+		setSelectedClient(clientId);
 		setLoading(true);
-		setTimeout(() => {
-			setCards(cardRows);
-			setFilteredCards(cardRows);
-			setExpirations(expirationRows);
-			setFilteredExpirations(expirationRows);
-			setLoading(false);
-		}, 1500);
+		const cardTypesResponse = await getClientCardTypes(clientId);
+		if (cardTypesResponse.ok) {
+			const cardData = mapCardType(cardTypesResponse.data || []);
+			setCards(cardData);
+			setFilteredCards(cardData);
+		}
+		const movementsResponse = await getClientBatches(clientId);
+		if (movementsResponse.ok) {
+			const expirationData = mapExpirations(movementsResponse.data || []);
+			setExpirations(expirationData);
+			setFilteredExpirations(expirationData);
+		}
+		setLoading(false);
 	};
 
 	const onCardFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -128,7 +112,17 @@ const ClientBalance: React.FC = () => {
 		const filtered = filterRows(newQuery, expirations);
 		setQueryExpiration(newQuery);
 		setFilteredExpirations(filtered);
+		setExpPage(0);
 	};
+
+	const expRows = useMemo(
+		() =>
+			filteredExpirations.slice(
+				expPage * rowsPerPage,
+				expPage * rowsPerPage + rowsPerPage,
+			),
+		[expPage, rowsPerPage, filteredExpirations],
+	);
 
 	return (
 		<div>
@@ -181,13 +175,20 @@ const ClientBalance: React.FC = () => {
 										onChange={onExpirationFilterChange}
 									/>
 								</PageActionBar>
-								<BasicTable columns={EXPIRATION_COLUMNS}>
+								<PaginatedTable
+									columns={EXPIRATION_COLUMNS}
+									page={expPage}
+									count={filteredExpirations.length}
+									rowsPerPage={rowsPerPage}
+									onChangePage={handleChangePage}
+									onChangeRowsPerPage={handleChangeRowsPerPage}
+								>
 									<React.Fragment>
-										{filteredExpirations.map((item, i: number) => (
+										{expRows.map((item, i: number) => (
 											<ExpirationRow key={i} item={item} />
 										))}
 									</React.Fragment>
-								</BasicTable>
+								</PaginatedTable>
 							</TabPanel>
 						)}
 					</div>

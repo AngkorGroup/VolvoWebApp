@@ -16,7 +16,7 @@ import ClientRow from './ClientRow/ClientRow';
 import { mapClients, TableClient } from './interface';
 import AppContext from '../../AppContext';
 import { CLIENT_COLUMNS } from './columns';
-import { getClients } from 'common/services';
+import { getClientsByPagination } from 'common/services';
 
 const useStyles = makeStyles(() =>
 	createStyles({
@@ -33,9 +33,15 @@ const Clients: React.FC = () => {
 	const [query, setQuery] = useState('');
 	const [filtered, setFiltered] = useState<TableClient[]>([]);
 	const { addPageMessage } = useContext(AppContext);
+	const showUpload = false;
 
-	const { data, status } = useQuery(null, getClients);
-	const clients = useMemo(() => mapClients(data?.data || []), [data]);
+	const { data, status } = useQuery(null, getClientsByPagination);
+	const clients = useMemo(() => {
+		if (data?.ok) {
+			return mapClients(data?.data || []);
+		}
+		return [];
+	}, [data]);
 
 	const onFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const newQuery = e.target.value;
@@ -85,12 +91,14 @@ const Clients: React.FC = () => {
 							type='file'
 							onChange={onSelectFile}
 						/>
-						<VolvoButton
-							text='Carga Masiva'
-							icon={<PublishIcon />}
-							color='primary'
-							onClick={onUpload}
-						/>
+						{showUpload && (
+							<VolvoButton
+								text='Carga Masiva'
+								icon={<PublishIcon />}
+								color='primary'
+								onClick={onUpload}
+							/>
+						)}
 					</PageActionBar>
 					<div>
 						<BasicTable columns={CLIENT_COLUMNS}>

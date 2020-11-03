@@ -12,11 +12,11 @@ import {
 	VolvoCard,
 	VolvoIconButton,
 } from 'common/components';
-import { CardType, CardTypeForm } from '../interfaces';
+import { TableCardType, CardTypeForm } from '../interfaces';
 import FormModal from '../FormModal/FormModal';
 
 interface CardTypeRowProps {
-	item: CardType;
+	item: TableCardType;
 	onEdit: (data: CardTypeForm) => void;
 	onDelete: (id: string) => void;
 }
@@ -40,7 +40,7 @@ const CardTypeRow = ({ item, onEdit, onDelete }: CardTypeRowProps) => {
 		description,
 		currency,
 		term,
-		imgURL,
+		color,
 		createdAt,
 		status,
 		deletedAt,
@@ -57,25 +57,7 @@ const CardTypeRow = ({ item, onEdit, onDelete }: CardTypeRowProps) => {
 				<TableCell align='center'>{currency}</TableCell>
 				<TableCell align='center'>{term}</TableCell>
 				<TableCell align='center'>
-					{imgURL && (
-						<VolvoCard
-							type={type}
-							isThumbnail
-							title=''
-							balance={0}
-							url={imgURL}
-							currency='USD'
-						/>
-					)}
-					{!imgURL && (
-						<VolvoCard
-							type={type}
-							isThumbnail
-							title=''
-							balance={0}
-							currency='USD'
-						/>
-					)}
+					<VolvoCard type={type} isThumbnail title='' color={color} />
 				</TableCell>
 				<TableCell>{createdAt}</TableCell>
 				<TableCell>{status}</TableCell>
