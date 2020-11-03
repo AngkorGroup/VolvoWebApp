@@ -1,7 +1,7 @@
 import { TableCell, TableRow } from '@material-ui/core';
 import React, { useState } from 'react';
 import ViewCarouselIcon from '@material-ui/icons/ViewCarousel';
-import { VolvoIconButton } from 'common/components';
+import { Amount, VolvoIconButton } from 'common/components';
 import CardListModal from '../CardListModal/CardListModal';
 import { CardType } from '../interfaces';
 
@@ -18,8 +18,10 @@ const CardRow = ({ item, clientId }: CardRowProps) => {
 	return (
 		<TableRow>
 			<TableCell>{cardType}</TableCell>
-			<TableCell>{currency}</TableCell>
-			<TableCell align='right'>{balance}</TableCell>
+			<TableCell align='center'>{currency}</TableCell>
+			<TableCell align='right'>
+				<Amount value={balance} />
+			</TableCell>
 			<TableCell align='center'>
 				<VolvoIconButton
 					color='success'

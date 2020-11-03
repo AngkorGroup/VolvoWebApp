@@ -1,18 +1,9 @@
 import { TableCell, TableRow } from '@material-ui/core';
 import React, { useState } from 'react';
 import FormatListNumberedIcon from '@material-ui/icons/FormatListNumbered';
-import { VolvoIconButton } from 'common/components';
+import { Amount, VolvoIconButton } from 'common/components';
 import BatchMovementsModal from '../BatchMovementsModal/BatchMovementsModal';
-import { VolvoCardData } from '../interfaces';
-
-export interface Expiration {
-	cardType: string;
-	cardNumber: string;
-	batch: string;
-	expiration: string;
-	currency: string;
-	balance: string;
-}
+import { Expiration, VolvoCardData } from '../interfaces';
 
 interface ExpirationRowProps {
 	item: Expiration;
@@ -35,8 +26,10 @@ const ExpirationRow = ({ item }: ExpirationRowProps) => {
 			<TableCell>{cardNumber}</TableCell>
 			<TableCell>{batch}</TableCell>
 			<TableCell>{expiration}</TableCell>
-			<TableCell>{currency}</TableCell>
-			<TableCell align='right'>{balance}</TableCell>
+			<TableCell align='center'>{currency}</TableCell>
+			<TableCell align='right'>
+				<Amount value={balance} />
+			</TableCell>
 			<TableCell align='center'>
 				<VolvoIconButton
 					color='success'

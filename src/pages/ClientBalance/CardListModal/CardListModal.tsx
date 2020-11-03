@@ -26,7 +26,7 @@ interface CardListModalProps {
 	id: string;
 	cardType: string;
 	currency: string;
-	balance: string;
+	balance: number;
 	clientId: string;
 	onClose: () => void;
 }
@@ -83,9 +83,9 @@ const CardListModal: React.FC<CardListModalProps> = ({
 				<div className={classes.cardContainer}>
 					<VolvoCard
 						type={cardType}
-						balance={cardDisplayData.balance}
+						balance={balance}
 						title={cardType}
-						currency=''
+						currency={currency}
 					/>
 				</div>
 				{status === 'loading' && <PageLoader />}

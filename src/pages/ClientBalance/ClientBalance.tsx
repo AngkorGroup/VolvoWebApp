@@ -15,60 +15,16 @@ import {
 } from 'common/components';
 import { filterRows, Option, parseClients } from 'common/utils';
 import CardRow from './CardRow/CardRow';
-import ExpirationRow, { Expiration } from './ExpirationRow/ExpirationRow';
-import { CardType } from './interfaces';
+import ExpirationRow from './ExpirationRow/ExpirationRow';
+import {
+	CardType,
+	mapCardType,
+	Expiration,
+	mapExpirations,
+} from './interfaces';
 import { CARD_COLUMNS, EXPIRATION_COLUMNS } from './columns';
-import { getClients } from 'common/services';
-
-const cardRows = [
-	{
-		id: '1',
-		cardType: 'VREP',
-		currency: 'US$',
-		balance: '8,400.00',
-	},
-	{
-		id: '2',
-		cardType: 'VURE',
-		currency: 'US$',
-		balance: '6,400.00',
-	},
-];
-
-const expirationRows = [
-	{
-		cardType: 'VREP',
-		cardNumber: '924201002274611260',
-		batch: '01012020',
-		expiration: '01/01/2021',
-		currency: 'US$',
-		balance: '2,500.00',
-	},
-	{
-		cardType: 'VREP',
-		cardNumber: '924201002274611260',
-		batch: '01062020',
-		expiration: '01/06/2021',
-		currency: 'US$',
-		balance: '900.00',
-	},
-	{
-		cardType: 'VURE',
-		cardNumber: '924201002274611262',
-		batch: '01072020',
-		expiration: '01/07/2021',
-		currency: 'US$',
-		balance: '400.00',
-	},
-	{
-		cardType: 'VURE',
-		cardNumber: '924201002274611262',
-		batch: '11082020',
-		expiration: '01/08/2021',
-		currency: 'US$',
-		balance: '200.00',
-	},
-];
+import { getClientCardTypes, getClients } from 'common/services';
+import { getClientBatches } from 'common/services/Batches';
 
 const useStyles = makeStyles({
 	cardsTable: {
@@ -104,16 +60,23 @@ const ClientBalance: React.FC = () => {
 		}
 	};
 
-	const onClientChange = (_: any, newValue: string | Option) => {
-		setSelectedClient((newValue as Option).value);
+	const onClientChange = async (_: any, newValue: string | Option) => {
+		const clientId = (newValue as Option).value;
+		setSelectedClient(clientId);
 		setLoading(true);
-		setTimeout(() => {
-			setCards(cardRows);
-			setFilteredCards(cardRows);
-			setExpirations(expirationRows);
-			setFilteredExpirations(expirationRows);
-			setLoading(false);
-		}, 1500);
+		const cardTypesResponse = await getClientCardTypes(clientId);
+		if (cardTypesResponse.ok) {
+			const cardData = mapCardType(cardTypesResponse.data || []);
+			setCards(cardData);
+			setFilteredCards(cardData);
+		}
+		const movementsResponse = await getClientBatches(clientId);
+		if (movementsResponse.ok) {
+			const expirationData = mapExpirations(movementsResponse.data || []);
+			setExpirations(expirationData);
+			setFilteredExpirations(expirationData);
+		}
+		setLoading(false);
 	};
 
 	const onCardFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {

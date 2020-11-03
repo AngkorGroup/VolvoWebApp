@@ -38,9 +38,11 @@ export const filterDateRangeRows = (
 };
 
 export const parseClients = (clients: Client[]): Option[] => {
-	return clients.map((c) => ({
-		value: `${c.id}`,
-		label: `RUC: ${c.ruc} ${c.name} - US$ 10,000.00`,
+	return clients.map(({ id, ruc, name, balance }) => ({
+		value: `${id}`,
+		label: `RUC: ${ruc} ${name} - ${balance.currency} ${formatNumber(
+			balance.value,
+		)}`,
 	}));
 };
 

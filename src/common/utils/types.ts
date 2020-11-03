@@ -44,6 +44,7 @@ export interface Client {
 	status: string;
 	createdAt: string;
 	mainContact: Contact;
+	balance: Amount;
 }
 
 export interface CardType {
@@ -91,4 +92,46 @@ export interface Card {
 	calculatedBalance: Amount;
 	contact: Contact;
 	contactId: number;
+	createdAt: string;
+}
+
+export interface CardTypeSummary {
+	id: number;
+	name: string;
+	displayName: string;
+	sum: Amount;
+}
+
+export interface Batch {
+	id: number;
+	amount: Amount;
+	expiresAt: string;
+	expiresAtExtent: string;
+	tpContractDate: string;
+	tpChasis: string;
+	tpInvoiceDate: string;
+	tpInvoiceCode: string;
+	tpContractType: string;
+	clientId: number;
+	tpContractNumber: string;
+	tpContractBatchNumber: string;
+	dealerCode: string;
+	dealerName: string;
+	businessCode: string;
+	businessDescription: string;
+	cardTypeId: number;
+	lineContent: string;
+	createdAt: string;
+}
+
+export interface CardBatch {
+	id: number;
+	balance: Amount;
+	batchId: number;
+	batch: Batch;
+	cardId: number;
+	card: Card;
+	expiresAt: string;
+	expiresAtExtent: string;
+	createdAt: string;
 }
