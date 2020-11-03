@@ -6,11 +6,11 @@ export const getCardTypes = async () => {
 };
 
 export const addCardType = async (cardType: Partial<CardType>) => {
-	return await api.post<CardType[]>(CARD_TYPES_URL, cardType);
+	return await api.post<CardType>(CARD_TYPES_URL, cardType);
 };
 
 export const editCardType = async (cardType: Partial<CardType>) => {
-	return await api.put<CardType[]>(CARD_TYPES_URL, cardType);
+	return await api.put<CardType>(CARD_TYPES_URL, cardType);
 };
 
 export const deleteCardType = async (id: string) => {

@@ -12,17 +12,17 @@ import {
 import { Field, Form, Formik } from 'formik';
 import React from 'react';
 import { VolvoButton } from 'common/components';
-import { Dealer } from '../interfaces';
+import { DealerForm } from '../interfaces';
 
 interface FormModalProps {
 	show: boolean;
 	title: string;
-	values?: Dealer;
+	values?: DealerForm;
 	onClose: () => void;
-	onConfirm: (data: Dealer) => void;
+	onConfirm: (data: DealerForm) => void;
 }
 
-const initialValues: Dealer = {
+const initialValues: DealerForm = {
 	code: '',
 	name: '',
 	ruc: '',
@@ -31,7 +31,7 @@ const initialValues: Dealer = {
 	type: '',
 	phone: '',
 	zone: '',
-	maxCashiers: '',
+	maxCashiers: 0,
 };
 
 const fieldProps = {
@@ -59,7 +59,7 @@ const FormModal: React.FC<FormModalProps> = ({
 	onConfirm,
 }: FormModalProps) => {
 	const classes = useStyles();
-	const handleSubmit = (data: Dealer) => {
+	const handleSubmit = (data: DealerForm) => {
 		onConfirm(data);
 		onClose();
 	};

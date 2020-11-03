@@ -1,8 +1,8 @@
-import { Dealer } from '../Dealers/interfaces';
+import { TableDealer } from '../Dealers/interfaces';
 
 export interface POS {
 	id: string;
-	dealer: Partial<Dealer>;
+	dealer: Partial<TableDealer>;
 	code: string;
 	phone: string;
 	email: string;
