@@ -1,34 +1,19 @@
-import {
-	createStyles,
-	makeStyles,
-	TableCell,
-	TableRow,
-	Theme,
-} from '@material-ui/core';
+import { TableCell, TableRow } from '@material-ui/core';
 import React, { useState } from 'react';
 import ReceiptIcon from '@material-ui/icons/Receipt';
 import { Amount, ImageModal, VolvoIconButton } from 'common/components';
 import { BatchMovementRow } from '../../interfaces';
+import { getPendingStatus } from 'common/utils';
 
 interface BatchMovementsRowProps {
 	item: BatchMovementRow;
 }
 
-const useStyles = makeStyles(({ palette }: Theme) =>
-	createStyles({
-		negative: {
-			color: palette.error.main,
-		},
-	}),
-);
-
 const BatchMovementsRow = ({ item }: BatchMovementsRowProps) => {
-	const classes = useStyles();
 	const [showModal, setShowModal] = useState(false);
 	const onOpenModal = () => setShowModal(true);
 	const onCloseModal = () => setShowModal(false);
 	const {
-		cardNumber,
 		number,
 		date,
 		currency,
@@ -37,15 +22,18 @@ const BatchMovementsRow = ({ item }: BatchMovementsRowProps) => {
 		cashier,
 		batch,
 		voucherURL,
+		chargeStatus,
+		type,
 	} = item;
-	const amountColor = amount < 0 ? classes.negative : '';
+	const pendingStatus = getPendingStatus(chargeStatus);
 	return (
 		<TableRow>
-			<TableCell>{cardNumber}</TableCell>
+			<TableCell>{type}</TableCell>
 			<TableCell>{number}</TableCell>
 			<TableCell>{date}</TableCell>
 			<TableCell>{currency}</TableCell>
-			<TableCell className={amountColor} align='right'>
+			<TableCell align='right'>
+				{pendingStatus && `(${pendingStatus}) `}
 				<Amount value={amount} />
 			</TableCell>
 			<TableCell>{dealer}</TableCell>

@@ -12,7 +12,7 @@ interface CardRowProps {
 
 const CardRow = ({ item, clientId }: CardRowProps) => {
 	const [showModal, setShowModal] = useState(false);
-	const { id, cardType, currency, balance, cardName } = item;
+	const { id, cardType, currency, balance, cardName, cardColor } = item;
 	const onOpenModal = () => setShowModal(true);
 	const onCloseModal = () => setShowModal(false);
 	return (
@@ -38,6 +38,7 @@ const CardRow = ({ item, clientId }: CardRowProps) => {
 					currency={currency}
 					balance={balance}
 					cardName={cardName}
+					cardColor={cardColor}
 					cardType={cardType}
 					clientId={clientId}
 					onClose={onCloseModal}

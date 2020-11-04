@@ -38,7 +38,7 @@ export const CARD_BATCH_COLUMNS = [
 ];
 
 export const BATCH_MOVEMENTS_COLUMNS = [
-	{ title: 'Número' },
+	{ title: 'Tipo' },
 	{ title: '#Operación' },
 	{ title: 'Fecha Op.' },
 	{ title: 'Moneda' },

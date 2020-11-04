@@ -11,6 +11,8 @@ export interface BatchMovementRow {
 	cashier: string;
 	batch: string;
 	voucherURL: string;
+	chargeStatus: string;
+	type: string;
 }
 
 export interface CardBatchRow {
@@ -33,6 +35,7 @@ export interface CardType {
 	id: string;
 	cardName: string;
 	cardType: string;
+	cardColor: string;
 	currency: string;
 	balance: number;
 }
@@ -44,6 +47,7 @@ export interface VolvoCardData {
 	balance: number;
 	name: string;
 	currency: string;
+	color: string;
 }
 
 export interface Expiration {
@@ -52,6 +56,7 @@ export interface Expiration {
 	cardNumber: string;
 	cardName: string;
 	cardBalance: number;
+	cardColor: string;
 	batch: string;
 	expiration: string;
 	currency: string;
@@ -62,6 +67,7 @@ export const mapCardType = (cardTypes: CardTypeSummary[]): CardType[] => {
 	return cardTypes.map((ct) => ({
 		id: `${ct.id}`,
 		cardName: ct.displayName,
+		cardColor: ct.color,
 		cardType: ct.name,
 		currency: ct.sum.currency,
 		balance: ct.sum.value,
@@ -75,6 +81,7 @@ export const mapExpirations = (expirations: CardBatch[]): Expiration[] => {
 		cardName: card.cardType?.displayName,
 		cardNumber: card.code,
 		cardBalance: card.balance.value,
+		cardColor: card.cardType?.color,
 		batch: `${batchId}`,
 		expiration: expiresAt,
 		currency: balance.currency,
@@ -93,7 +100,7 @@ export const mapExpirationMovements = (
 			number = charge?.operationCode;
 			voucherURL = charge?.imageUrl;
 		} else if (type === TRANSFER_TYPE) {
-			number = charge?.operationCode;
+			number = transfer?.operationCode;
 			voucherURL = transfer?.imageUrl;
 		}
 		return {
@@ -106,6 +113,8 @@ export const mapExpirationMovements = (
 			cashier: charge?.cashier?.fullName,
 			batch: `${batchId}`,
 			voucherURL,
+			chargeStatus: charge?.status,
+			type: movement?.displayName,
 		};
 	});
 };

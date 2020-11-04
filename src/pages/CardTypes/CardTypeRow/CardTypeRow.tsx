@@ -43,7 +43,7 @@ const CardTypeRow = ({ item, onEdit, onDelete }: CardTypeRowProps) => {
 		color,
 		createdAt,
 		status,
-		deletedAt,
+		archiveAt,
 	} = item;
 
 	const setEditModalVisible = (flag: boolean) => () => setShowEditModal(flag);
@@ -57,13 +57,13 @@ const CardTypeRow = ({ item, onEdit, onDelete }: CardTypeRowProps) => {
 				<TableCell align='center'>{currency}</TableCell>
 				<TableCell align='center'>{term}</TableCell>
 				<TableCell align='center'>
-					<VolvoCard type={type} isThumbnail title='' color={color} />
+					<VolvoCard isThumbnail title='' color={color} />
 				</TableCell>
 				<TableCell>{createdAt}</TableCell>
 				<TableCell>{status}</TableCell>
-				<TableCell>{deletedAt}</TableCell>
+				<TableCell>{archiveAt}</TableCell>
 				<TableCell>
-					{!deletedAt && (
+					{!archiveAt && (
 						<div className={classes.actionButtons}>
 							<VolvoIconButton
 								color='primary'
@@ -78,7 +78,7 @@ const CardTypeRow = ({ item, onEdit, onDelete }: CardTypeRowProps) => {
 					)}
 				</TableCell>
 			</TableRow>
-			{!deletedAt && (
+			{!archiveAt && (
 				<FormModal
 					title='Editar Tipo de Tarjeta'
 					show={showEditModal}
@@ -87,7 +87,7 @@ const CardTypeRow = ({ item, onEdit, onDelete }: CardTypeRowProps) => {
 					onConfirm={onEdit}
 				/>
 			)}
-			{!deletedAt && (
+			{!archiveAt && (
 				<ConfirmationModal
 					show={showDeleteModal}
 					id={id}

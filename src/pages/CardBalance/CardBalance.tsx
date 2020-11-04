@@ -173,11 +173,11 @@ const CardBalance: React.FC = () => {
 					{card && (
 						// TODO: replace when endpoint retrieves type and name
 						<VolvoCard
-							type={card?.cardType?.name}
 							title={card?.cardType?.displayName}
 							number={card.code}
 							balance={card.balance.value}
 							currency={card.balance.currency}
+							color={card?.cardType?.color}
 						/>
 					)}
 				</div>

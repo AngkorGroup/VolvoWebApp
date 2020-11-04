@@ -58,7 +58,7 @@ export interface CardType {
 	createdAt: string;
 	createdBy: string;
 	status: string;
-	deletedAt: string;
+	archiveAt: string;
 }
 
 export interface Load {
@@ -108,6 +108,7 @@ export interface CardTypeSummary {
 	name: string;
 	displayName: string;
 	sum: Amount;
+	color: string;
 }
 
 export interface Batch {

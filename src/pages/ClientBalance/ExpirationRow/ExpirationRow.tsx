@@ -18,6 +18,7 @@ const ExpirationRow = ({ item }: ExpirationRowProps) => {
 		cardNumber,
 		cardName,
 		cardBalance,
+		cardColor,
 		batch,
 		expiration,
 		currency,
@@ -32,6 +33,7 @@ const ExpirationRow = ({ item }: ExpirationRowProps) => {
 		balance: cardBalance,
 		currency,
 		name: cardName,
+		color: cardColor,
 	};
 	const batchText = `Lote: ${batch} - ${currency} ${formatNumber(balance)}`;
 	return (
