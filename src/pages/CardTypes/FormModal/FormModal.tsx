@@ -40,7 +40,7 @@ const initialValues: CardTypeForm = {
 	color: '',
 	createdAt: '16/10/2020',
 	status: 'Activo',
-	deletedAt: '',
+	archiveAt: '',
 };
 
 const fieldProps = {

@@ -63,7 +63,7 @@ const CardBatchesModal: React.FC<CardBatchesModalProps> = ({
 		}
 		return [];
 	}, [data]);
-	const { type, number, balance, name, currency } = cardData;
+	const { color, number, balance, name, currency } = cardData;
 	const newCardData: VolvoCardData = {
 		...cardData,
 		id,
@@ -101,11 +101,11 @@ const CardBatchesModal: React.FC<CardBatchesModalProps> = ({
 			<DialogContent>
 				<div className={classes.cardContainer}>
 					<VolvoCard
-						type={type}
 						balance={balance}
 						title={name}
 						number={number}
 						currency={currency}
+						color={color}
 					/>
 				</div>
 				{status === 'loading' && <PageLoader />}

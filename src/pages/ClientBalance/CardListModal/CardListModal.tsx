@@ -25,6 +25,7 @@ interface CardListModalProps {
 	id: string;
 	cardType: string;
 	cardName: string;
+	cardColor: string;
 	currency: string;
 	balance: number;
 	clientId: string;
@@ -56,6 +57,7 @@ const CardListModal: React.FC<CardListModalProps> = ({
 	id,
 	cardType,
 	cardName,
+	cardColor,
 	currency,
 	balance,
 	clientId,
@@ -85,6 +87,7 @@ const CardListModal: React.FC<CardListModalProps> = ({
 		balance,
 		name: cardName,
 		currency,
+		color: cardColor,
 	};
 
 	return (
@@ -100,7 +103,7 @@ const CardListModal: React.FC<CardListModalProps> = ({
 			<DialogContent>
 				<div className={classes.cardContainer}>
 					<VolvoCard
-						type={cardType}
+						color={cardColor}
 						balance={balance}
 						title={cardName}
 						currency={currency}
