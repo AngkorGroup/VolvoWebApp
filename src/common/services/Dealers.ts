@@ -1,5 +1,5 @@
 import { DEALERS_URL, DEALERS_BY_FILTER_URL } from 'common/constants/api';
-import { api, Dealer } from 'common/utils';
+import { api, Cashier, Charge, Dealer } from 'common/utils';
 
 export const getDealers = async () => {
 	return await api.get<Dealer[]>(DEALERS_URL);
@@ -19,4 +19,25 @@ export const editDealer = async (dealer: Partial<Dealer>) => {
 
 export const deleteDealer = async (id: string) => {
 	return await api.delete(`${DEALERS_URL}/${id}`);
+};
+
+export const getDealerCashiers = async (id: string) => {
+	return await api.get<Cashier[]>(`${DEALERS_URL}/${id}/cashiers`);
+};
+
+export const getDealerCharges = async (
+	id: string,
+	beginDate?: string,
+	endDate?: string,
+	cashierId?: string,
+	cardTypesList?: string[],
+) => {
+	const cardTypes = cardTypesList?.join(',');
+	const params = {
+		beginDate,
+		endDate,
+		cashierId,
+		cardTypes,
+	};
+	return await api.get<Charge[]>(`${DEALERS_URL}/${id}/charges`, params);
 };

@@ -71,6 +71,7 @@ export interface Load {
 	tpInvoiceDate: string;
 	tpInvoiceCode: string;
 	tpContractType: string;
+	tpContractBatchNumber: string;
 	clientId: number;
 	client: Client;
 	tpContractNumber: string;
@@ -207,6 +208,7 @@ export interface Charge {
 	status: string;
 	chargeType: string;
 	cardId: number;
+	card: Card;
 	cashierId: number;
 	cashier: Cashier;
 	createdAt: string;
