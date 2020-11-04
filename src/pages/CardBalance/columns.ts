@@ -11,7 +11,6 @@ export const MOVEMENT_COLUMNS = [
 	{ title: 'Monto', props: { align: COLUMN_CENTER } },
 	{ title: 'Dealer' },
 	{ title: 'Caja' },
-	{ title: 'Lote' },
 	{ title: 'Origen/Destino', props: { align: COLUMN_CENTER } },
 	ACTIONS_COLUMN,
 ];

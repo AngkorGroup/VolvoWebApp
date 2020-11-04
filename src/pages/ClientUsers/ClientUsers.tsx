@@ -58,21 +58,12 @@ const ClientUsers: React.FC = () => {
 	const onEditClient = async (clientUser: ClientUser) => {
 		const response = await editContact(clientUser);
 		if (response.ok) {
-			const newClients = clientUsers.map((d) =>
-				d.id === clientUser.id ? clientUser : d,
-			);
-			setClientUsers(newClients);
-			setFiltered(newClients);
+			addPageMessage!({
+				title: 'Contacto Convertido',
+				text: 'Se hizo la conversión a usuario del contacto correctamente',
+				status: 'success',
+			});
 		}
-	};
-
-	const onTurnUser = (id: string) => {
-		// Perform API call
-		addPageMessage!({
-			title: 'Contacto Convertido',
-			text: 'Se hizo la conversión a usuario del contacto correctamente',
-			status: 'success',
-		});
 	};
 
 	return (
@@ -100,12 +91,7 @@ const ClientUsers: React.FC = () => {
 						<BasicTable columns={CLIENT_USER_COLUMNS}>
 							<React.Fragment>
 								{filtered.map((item, i: number) => (
-									<ClientUserRow
-										key={i}
-										item={item}
-										onEdit={onEditClient}
-										onTurnUser={onTurnUser}
-									/>
+									<ClientUserRow key={i} item={item} onEdit={onEditClient} />
 								))}
 							</React.Fragment>
 						</BasicTable>

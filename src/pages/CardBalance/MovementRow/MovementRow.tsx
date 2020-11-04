@@ -21,7 +21,6 @@ const MovementRow = ({ item }: MovementRowProps) => {
 		amount,
 		dealerName,
 		cashier,
-		batch,
 		source,
 		voucherURL,
 		chargeStatus,
@@ -39,7 +38,6 @@ const MovementRow = ({ item }: MovementRowProps) => {
 			</TableCell>
 			<TableCell>{dealerName}</TableCell>
 			<TableCell>{cashier}</TableCell>
-			<TableCell>{batch}</TableCell>
 			<TableCell align='center'>{source}</TableCell>
 			<TableCell align='center'>
 				{!!voucherURL && (
