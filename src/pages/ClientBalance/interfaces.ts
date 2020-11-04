@@ -11,6 +11,8 @@ export interface BatchMovementRow {
 	cashier: string;
 	batch: string;
 	voucherURL: string;
+	chargeStatus: string;
+	type: string;
 }
 
 export interface CardBatchRow {
@@ -98,7 +100,7 @@ export const mapExpirationMovements = (
 			number = charge?.operationCode;
 			voucherURL = charge?.imageUrl;
 		} else if (type === TRANSFER_TYPE) {
-			number = charge?.operationCode;
+			number = transfer?.operationCode;
 			voucherURL = transfer?.imageUrl;
 		}
 		return {
@@ -111,6 +113,8 @@ export const mapExpirationMovements = (
 			cashier: charge?.cashier?.fullName,
 			batch: `${batchId}`,
 			voucherURL,
+			chargeStatus: charge?.status,
+			type: movement?.displayName,
 		};
 	});
 };

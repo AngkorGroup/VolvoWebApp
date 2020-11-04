@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import ReceiptIcon from '@material-ui/icons/Receipt';
 import { Amount, ImageModal, VolvoIconButton } from 'common/components';
 import { CardMovement } from '../interface';
+import { getPendingStatus } from 'common/utils';
 
 interface MovementRowProps {
 	item: CardMovement;
@@ -23,7 +24,9 @@ const MovementRow = ({ item }: MovementRowProps) => {
 		batch,
 		source,
 		voucherURL,
+		chargeStatus,
 	} = item;
+	const pendingStatus = getPendingStatus(chargeStatus);
 	return (
 		<TableRow>
 			<TableCell>{type}</TableCell>
@@ -31,6 +34,7 @@ const MovementRow = ({ item }: MovementRowProps) => {
 			<TableCell>{operationDate}</TableCell>
 			<TableCell>{reason}</TableCell>
 			<TableCell align='right'>
+				{pendingStatus && `(${pendingStatus}) `}
 				<Amount value={amount} />
 			</TableCell>
 			<TableCell>{dealerName}</TableCell>

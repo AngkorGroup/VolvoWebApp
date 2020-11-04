@@ -61,3 +61,9 @@ export const parseCard = (cards: Card[]): Option[] => {
 		} - ${balance?.currency} ${formatNumber(balance?.value)}`,
 	}));
 };
+
+const PENDING_STATUS = 'P';
+
+export const getPendingStatus = (status: string) => {
+	return status && status[0] === PENDING_STATUS ? PENDING_STATUS : '';
+};

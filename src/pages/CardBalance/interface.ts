@@ -11,6 +11,7 @@ export interface CardMovement {
 	cashier: string;
 	batch: string;
 	source: string;
+	chargeStatus: string;
 	voucherURL: string;
 }
 
@@ -44,27 +45,28 @@ export const mapExpirations = (batches: CardBatch[]): Expiration[] => {
 
 export const mapMovements = (movements: Movement[]): CardMovement[] => {
 	return movements.map(
-		({ type, charge, description, transfer, amount: movAmount }) => {
-			let amount = movAmount.value;
+		({ type, charge, description, transfer, amount, createdAt }) => {
 			let voucherURL = '';
+			let operationNumber = '';
 			if (type === CONSUME_TYPE) {
-				amount = charge?.amount?.value;
+				operationNumber = charge?.operationCode;
 				voucherURL = charge?.imageUrl;
 			} else if (type === TRANSFER_TYPE) {
-				amount = transfer?.amount?.value;
+				operationNumber = transfer?.operationCode;
 				voucherURL = transfer?.imageUrl;
 			}
 			return {
 				type,
-				operationNumber: charge?.operationCode,
-				operationDate: charge?.createdAt,
+				operationNumber,
+				operationDate: createdAt,
 				reason: description,
-				amount,
+				amount: amount.value,
 				dealerName: charge?.cashier?.dealer?.name,
 				cashier: charge?.cashier?.fullName,
 				batch: '',
 				source: transfer?.displayName,
 				voucherURL,
+				chargeStatus: charge?.status,
 			};
 		},
 	);
