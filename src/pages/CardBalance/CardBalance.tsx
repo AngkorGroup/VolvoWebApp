@@ -19,7 +19,7 @@ import {
 	getCardsByFilter,
 	getMovementsByCard,
 } from 'common/services';
-import { Card, filterRows, Option, parseCard } from 'common/utils';
+import { Card, filterRows, Option, parseCards } from 'common/utils';
 import React, { useMemo, useState } from 'react';
 import { EXPIRATION_COLUMNS, MOVEMENT_COLUMNS } from './columns';
 import ExpirationRow from './ExpirationRow/ExpirationRow';
@@ -97,7 +97,7 @@ const CardBalance: React.FC = () => {
 		setLoadingOptions(true);
 		const response = await getCardsByFilter(e.target.value);
 		if (response.ok) {
-			const data = parseCard(response.data || []);
+			const data = parseCards(response.data || []);
 			setCards(response.data || []);
 			setOptions(data);
 		}

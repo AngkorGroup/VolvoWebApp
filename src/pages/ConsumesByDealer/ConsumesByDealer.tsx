@@ -14,10 +14,11 @@ import {
 	filterDateRangeRows,
 	MOCKED_CARD_TYPES_MULTITYPEAHEAD,
 	MOCKED_CASHIERS_SELECT,
-	MOCKED_DEALERS_TYPEAHEAD,
 	Option,
+	parseDealers,
 } from 'common/utils';
 import {
+	AsyncTypeAhead,
 	BasicTable,
 	DatePicker,
 	MultiTypeAhead,
@@ -25,10 +26,10 @@ import {
 	PageBody,
 	PageLoader,
 	PageTitle,
-	TypeAhead,
 	VolvoIconButton,
 } from 'common/components';
 import { CONSUMES_COLUMNS } from './columns';
+import { getDealersByFilter } from 'common/services';
 
 const consumesRows: Consume[] = [
 	{
@@ -155,6 +156,8 @@ type SelectEvent = React.ChangeEvent<{
 
 const ConsumesByDealer: React.FC = () => {
 	const [loading, setLoading] = useState(false);
+	const [loadingOptions, setLoadingOptions] = useState(false);
+	const [options, setOptions] = useState<Option[]>([]);
 	const [startDate, setStartDate] = useState<MaterialUiPickersDate>(null);
 	const [endDate, setEndDate] = useState<MaterialUiPickersDate>(null);
 	const [cashier, setCashier] = useState('all');
@@ -208,14 +211,26 @@ const ConsumesByDealer: React.FC = () => {
 		}, 1000);
 	};
 
+	const onTypeDealer = async (e: React.ChangeEvent<HTMLInputElement>) => {
+		setLoadingOptions(true);
+		const response = await getDealersByFilter(e.target.value);
+		if (response.ok) {
+			const data = parseDealers(response.data || []);
+			setOptions(data);
+		}
+		setLoadingOptions(false);
+	};
+
 	return (
 		<div>
 			<div>
 				<PageTitle title='Operaciones por Dealer' />
-				<TypeAhead
-					options={MOCKED_DEALERS_TYPEAHEAD}
+				<AsyncTypeAhead
+					options={options}
 					placeholder='Dealer'
+					loading={loadingOptions}
 					onChange={onDealerChange}
+					onType={onTypeDealer}
 				/>
 			</div>
 			<PageBody>

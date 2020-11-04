@@ -176,6 +176,7 @@ export interface Dealer {
 	address: string;
 	phone: string;
 	tpCode: string;
+	type: string;
 	archiveAt: string;
 	createdAt: string;
 	status: string;

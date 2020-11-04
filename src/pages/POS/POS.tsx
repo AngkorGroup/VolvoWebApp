@@ -1,21 +1,22 @@
 import React, { useContext, useState } from 'react';
 import AddIcon from '@material-ui/icons/Add';
 import {
+	AsyncTypeAhead,
 	BasicTable,
 	PageActionBar,
 	PageBody,
 	PageLoader,
 	PageTitle,
 	TableFilter,
-	TypeAhead,
 	VolvoButton,
 } from 'common/components';
-import { filterRows, MOCKED_DEALERS_TYPEAHEAD, Option } from 'common/utils';
+import { filterRows, Option, parseDealers } from 'common/utils';
 import { POS as POSType, POSForm } from './interfaces';
 import POSRow from './POSRow/POSRow';
 import FormModal from './FormModal.tsx/FormModal';
 import AppContext from '../../AppContext';
 import { POS_COLUMNS } from './columns';
+import { getDealersByFilter } from 'common/services';
 
 const posRows: POSType[] = [
 	{
@@ -52,6 +53,8 @@ const posRows: POSType[] = [
 
 const POS: React.FC = () => {
 	const [loading, setLoading] = useState(false);
+	const [loadingOptions, setLoadingOptions] = useState(false);
+	const [options, setOptions] = useState<Option[]>([]);
 	const [query, setQuery] = useState('');
 	const [showAddModal, setShowAddModal] = useState(false);
 	const [posList, setPOSList] = useState<POSType[]>([]);
@@ -121,14 +124,27 @@ const POS: React.FC = () => {
 			status: 'success',
 		});
 	};
+
+	const onTypeDealer = async (e: React.ChangeEvent<HTMLInputElement>) => {
+		setLoadingOptions(true);
+		const response = await getDealersByFilter(e.target.value);
+		if (response.ok) {
+			const data = parseDealers(response.data || []);
+			setOptions(data);
+		}
+		setLoadingOptions(false);
+	};
+
 	return (
 		<div>
 			<div>
 				<PageTitle title='POS' />
-				<TypeAhead
-					options={MOCKED_DEALERS_TYPEAHEAD}
+				<AsyncTypeAhead
+					options={options}
 					placeholder='Dealer'
+					loading={loadingOptions}
 					onChange={onDealerChange}
+					onType={onTypeDealer}
 				/>
 			</div>
 			<PageBody>
