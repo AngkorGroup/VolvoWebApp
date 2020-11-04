@@ -16,7 +16,12 @@ import AppContext from '../../AppContext';
 import { DEALER_COLUMNS } from './columns';
 import { Dealer, filterRows } from 'common/utils';
 import { useQuery } from 'react-query';
-import { addDealer, getDealers } from 'common/services';
+import {
+	addDealer,
+	deleteDealer,
+	editDealer,
+	getDealers,
+} from 'common/services';
 
 const Dealers: React.FC = () => {
 	const [query, setQuery] = useState('');
@@ -50,6 +55,9 @@ const Dealers: React.FC = () => {
 			address: dealer.address,
 			phone: dealer.phone,
 			tpCode: dealer.code,
+			type: dealer.type,
+			zone: dealer.zone,
+			maxCashiers: dealer.maxCashiers,
 		};
 		const response = await addDealer(body);
 		if (response.ok) {
@@ -61,22 +69,37 @@ const Dealers: React.FC = () => {
 		}
 	};
 
-	const onEditDealer = (dealer: DealerForm) => {
-		const newDealers = dealers.map((d) =>
-			d.code === dealer.code ? { ...d, ...dealer } : d,
-		);
-		setFiltered(newDealers);
+	const onEditDealer = async (dealer: DealerForm) => {
+		const body: Partial<Dealer> = {
+			id: parseInt(dealer.id || '0', 10),
+			name: dealer.name,
+			ruc: dealer.ruc,
+			address: dealer.address,
+			phone: dealer.phone,
+			tpCode: dealer.code,
+			type: dealer.type,
+			zone: dealer.zone,
+			maxCashiers: dealer.maxCashiers,
+		};
+		const response = await editDealer(body);
+		if (response.ok) {
+			addPageMessage!({
+				title: 'Dealer Editado',
+				text: 'Se editó un dealer correctamente',
+				status: 'success',
+			});
+		}
 	};
 
-	const onDeleteDealer = (id: string) => {
-		const newDealers = dealers.filter((d) => d.code !== id);
-		setFiltered(newDealers);
-		// Perform API call
-		addPageMessage!({
-			title: 'Dealer Eliminado',
-			text: 'Se eliminó el dealer correctamente',
-			status: 'success',
-		});
+	const onDeleteDealer = async (id: string) => {
+		const response = await deleteDealer(id);
+		if (response.ok) {
+			addPageMessage!({
+				title: 'Dealer Eliminado',
+				text: 'Se eliminó un dealer correctamente',
+				status: 'success',
+			});
+		}
 	};
 	return (
 		<div>

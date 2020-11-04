@@ -1,57 +1,31 @@
 import React, { useContext, useState } from 'react';
 import AddIcon from '@material-ui/icons/Add';
 import {
+	AsyncTypeAhead,
 	BasicTable,
 	PageActionBar,
 	PageBody,
 	PageLoader,
 	PageTitle,
 	TableFilter,
-	TypeAhead,
 	VolvoButton,
 } from 'common/components';
-import { filterRows, MOCKED_DEALERS_TYPEAHEAD, Option } from 'common/utils';
-import { POS as POSType, POSForm } from './interfaces';
+import { filterRows, Option, parseDealers } from 'common/utils';
+import { mapCashiers, POS as POSType, POSForm } from './interfaces';
 import POSRow from './POSRow/POSRow';
 import FormModal from './FormModal.tsx/FormModal';
 import AppContext from '../../AppContext';
 import { POS_COLUMNS } from './columns';
-
-const posRows: POSType[] = [
-	{
-		id: '1',
-		code: '22569',
-		dealer: {
-			code: '8000',
-			name: 'AUTOMOTORES MOQUEGUA',
-		},
-		phone: '987654321',
-		email: 'fpeña@gmail.com',
-	},
-	{
-		id: '2',
-		code: '22570',
-		dealer: {
-			code: '8000',
-			name: 'AUTOMOTORES MOQUEGUA',
-		},
-		phone: '988665531',
-		email: 'lcastillo@gmail.com',
-	},
-	{
-		id: '3',
-		code: '22571',
-		dealer: {
-			code: '8000',
-			name: 'AUTOMOTORES MOQUEGUA',
-		},
-		phone: '999666333',
-		email: 'hlobaton@gmail.com',
-	},
-];
+import {
+	deleteCashier,
+	getCashiers,
+	getDealersByFilter,
+} from 'common/services';
 
 const POS: React.FC = () => {
 	const [loading, setLoading] = useState(false);
+	const [loadingOptions, setLoadingOptions] = useState(false);
+	const [options, setOptions] = useState<Option[]>([]);
 	const [query, setQuery] = useState('');
 	const [showAddModal, setShowAddModal] = useState(false);
 	const [posList, setPOSList] = useState<POSType[]>([]);
@@ -66,13 +40,16 @@ const POS: React.FC = () => {
 		setFiltered(filtered);
 	};
 
-	const onDealerChange = (_: any, newValue: string | Option) => {
+	const onDealerChange = async (_: any, newValue: string | Option) => {
 		setLoading(true);
-		setTimeout(() => {
-			setLoading(false);
-			setPOSList(posRows);
-			setFiltered(posRows);
-		}, 1000);
+		const dealerId = (newValue as Option).value;
+		const response = await getCashiers(dealerId);
+		if (response.ok) {
+			const data = mapCashiers(response.data || []);
+			setPOSList(data);
+			setFiltered(data);
+		}
+		setLoading(false);
 	};
 
 	const setAddModalVisible = (flag: boolean) => () => setShowAddModal(flag);
@@ -110,25 +87,37 @@ const POS: React.FC = () => {
 		});
 	};
 
-	const onDeletePOS = (id: string) => {
-		const newPOSList = posList.filter((d) => d.id !== id);
-		setPOSList(newPOSList);
-		setFiltered(newPOSList);
-		// Perform API call
-		addPageMessage!({
-			title: 'POS Eliminado',
-			text: 'Se eliminó un POS correctamente',
-			status: 'success',
-		});
+	const onDeletePOS = async (id: string) => {
+		const response = await deleteCashier(id);
+		if (response.ok) {
+			addPageMessage!({
+				title: 'Cajero Eliminado',
+				text: 'Se eliminó un cajero correctamente',
+				status: 'success',
+			});
+		}
 	};
+
+	const onTypeDealer = async (e: React.ChangeEvent<HTMLInputElement>) => {
+		setLoadingOptions(true);
+		const response = await getDealersByFilter(e.target.value);
+		if (response.ok) {
+			const data = parseDealers(response.data || []);
+			setOptions(data);
+		}
+		setLoadingOptions(false);
+	};
+
 	return (
 		<div>
 			<div>
 				<PageTitle title='POS' />
-				<TypeAhead
-					options={MOCKED_DEALERS_TYPEAHEAD}
+				<AsyncTypeAhead
+					options={options}
 					placeholder='Dealer'
+					loading={loadingOptions}
 					onChange={onDealerChange}
+					onType={onTypeDealer}
 				/>
 			</div>
 			<PageBody>

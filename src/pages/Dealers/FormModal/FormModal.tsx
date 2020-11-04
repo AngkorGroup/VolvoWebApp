@@ -4,8 +4,12 @@ import {
 	DialogActions,
 	DialogContent,
 	DialogTitle,
+	FormControl,
 	Grid,
+	InputLabel,
 	makeStyles,
+	MenuItem,
+	Select,
 	TextField,
 	Theme,
 } from '@material-ui/core';
@@ -13,6 +17,7 @@ import { Field, Form, Formik } from 'formik';
 import React from 'react';
 import { VolvoButton } from 'common/components';
 import { DealerForm } from '../interfaces';
+import { Option } from 'common/utils';
 
 interface FormModalProps {
 	show: boolean;
@@ -47,9 +52,17 @@ const useStyles = makeStyles((theme: Theme) =>
 			'& .MuiTextField-root': {
 				marginTop: theme.spacing(1),
 			},
+			'& .MuiFormControl-root': {
+				marginTop: '8px',
+			},
 		},
 	}),
 );
+
+const DEALER_TYPES: Option[] = [
+	{ value: 'Internal', label: 'Internal' },
+	{ value: 'External', label: 'External' },
+];
 
 const FormModal: React.FC<FormModalProps> = ({
 	show,
@@ -81,7 +94,21 @@ const FormModal: React.FC<FormModalProps> = ({
 									<Field name='ruc' label='RUC' {...fieldProps} />
 								</Grid>
 								<Grid item xs={4}>
-									<Field name='type' label='Tipo' {...fieldProps} />
+									<FormControl variant='outlined' fullWidth size='small'>
+										<InputLabel id='dealerTypeLabel'>Tipo</InputLabel>
+										<Field
+											labelId='dealerTypeLabel'
+											label='Tipo'
+											name='type'
+											as={Select}
+										>
+											{DEALER_TYPES.map((d) => (
+												<MenuItem key={d.value} value={d.value}>
+													{d.label}
+												</MenuItem>
+											))}
+										</Field>
+									</FormControl>
 								</Grid>
 								<Grid item xs={4}>
 									<Field name='phone' label='Teléfono' {...fieldProps} />

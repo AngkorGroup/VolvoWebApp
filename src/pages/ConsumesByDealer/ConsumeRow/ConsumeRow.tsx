@@ -1,30 +1,16 @@
-import {
-	createStyles,
-	makeStyles,
-	TableCell,
-	TableRow,
-	Theme,
-} from '@material-ui/core';
+import { TableCell, TableRow } from '@material-ui/core';
 import React, { useState } from 'react';
 import ReceiptIcon from '@material-ui/icons/Receipt';
 import VolvoIconButton from '../../../common/components/VolvoIconButton/VolvoIconButton';
 import { Consume } from '../interface';
 import ImageModal from '../../../common/components/ImageModal/ImageModal';
+import { Amount } from 'common/components';
 
 interface ConsumeRowProps {
 	item: Consume;
 }
 
-const useStyles = makeStyles(({ palette }: Theme) =>
-	createStyles({
-		negative: {
-			color: palette.error.main,
-		},
-	}),
-);
-
 const ConsumeRow = ({ item }: ConsumeRowProps) => {
-	const classes = useStyles();
 	const [showModal, setShowModal] = useState(false);
 	const onOpenModal = () => setShowModal(true);
 	const onCloseModal = () => setShowModal(false);
@@ -42,7 +28,6 @@ const ConsumeRow = ({ item }: ConsumeRowProps) => {
 		amount,
 		voucherURL,
 	} = item;
-	const amountColor = amount.includes('-') ? classes.negative : '';
 	return (
 		<TableRow>
 			<TableCell>{voucher}</TableCell>
@@ -55,8 +40,8 @@ const ConsumeRow = ({ item }: ConsumeRowProps) => {
 			<TableCell>{status}</TableCell>
 			<TableCell>{contact}</TableCell>
 			<TableCell>{currency}</TableCell>
-			<TableCell className={amountColor} align='right'>
-				{amount}
+			<TableCell align='right'>
+				<Amount value={amount} />
 			</TableCell>
 			<TableCell align='center'>
 				{!!voucherURL && (

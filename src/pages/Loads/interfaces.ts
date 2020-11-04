@@ -28,6 +28,6 @@ export const mapLoads = (loads: Load[]): TableLoad[] => {
 		type: l.tpContractType,
 		reason: l.businessDescription,
 		card: l.cardType.name,
-		tpNumber: l.tpContractNumber,
+		tpNumber: l.tpContractBatchNumber,
 	}));
 };

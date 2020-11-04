@@ -1,7 +1,15 @@
 import moment, { Moment } from 'moment';
 import numeral from 'numeral';
 import { DEFAULT_DATE_FORMAT } from '../constants/constants';
-import { Card, Client, Contact, Option } from './types';
+import {
+	Card,
+	CardType,
+	Cashier,
+	Client,
+	Contact,
+	Dealer,
+	Option,
+} from './types';
 
 // TODO: research about iterating over keys of generic types
 export const filterRows = (query: string, rows: any[]) => {
@@ -53,12 +61,35 @@ export const parseContacts = (contacts: Contact[]): Option[] => {
 	}));
 };
 
-export const parseCard = (cards: Card[]): Option[] => {
+export const parseCards = (cards: Card[]): Option[] => {
 	return cards.map(({ id, code, contact, balance, cardType }: Card) => ({
 		value: `${id}`,
 		label: `${cardType?.name}:${code} - RUC:${contact?.client?.ruc} - C:${
 			contact?.phone
 		} - ${balance?.currency} ${formatNumber(balance?.value)}`,
+	}));
+};
+
+export const parseDealers = (dealers: Dealer[]): Option[] => {
+	return dealers.map(({ id, ruc, tpCode, name }) => ({
+		value: `${id}`,
+		label: `${tpCode} - ${name} RUC: ${ruc}`,
+	}));
+};
+
+export const parseCashiers = (cashiers: Cashier[]): Option[] => {
+	const defaultOption = { value: 'all', label: 'Todas' };
+	const options = cashiers.map(({ id, phone, fullName }) => ({
+		value: `${id}`,
+		label: `${phone} - ${fullName}`,
+	}));
+	return [defaultOption, ...options];
+};
+
+export const parseCardTypes = (cardTypes: CardType[]): Option[] => {
+	return cardTypes.map((ct) => ({
+		value: `${ct.id}`,
+		label: ct.displayName,
 	}));
 };
 

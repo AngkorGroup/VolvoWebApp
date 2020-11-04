@@ -1,6 +1,7 @@
 export * from './Batches';
 export * from './Cards';
 export * from './CardTypes';
+export * from './Cashiers';
 export * from './Clients';
 export * from './Contacts';
 export * from './Dealers';

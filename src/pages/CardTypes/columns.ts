@@ -8,7 +8,7 @@ export const CARD_TYPE_COLUMNS = [
 	{ title: 'Descripción' },
 	{ title: 'Moneda' },
 	{ title: 'Plazo(meses)' },
-	{ title: 'Logo', props: { align: COLUMN_CENTER } },
+	{ title: 'Color', props: { align: COLUMN_CENTER } },
 	{ title: 'Fecha Creación' },
 	{ title: 'Estado' },
 	{ title: 'Fecha Baja' },

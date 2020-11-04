@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ConsumeRow from './ConsumeRow/ConsumeRow';
-import { Consume } from './interface';
+import { Consume, mapCharges } from './interface';
 import SearchIcon from '@material-ui/icons/Search';
 import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date';
 import {
@@ -11,13 +11,13 @@ import {
 	Select,
 } from '@material-ui/core';
 import {
-	filterDateRangeRows,
-	MOCKED_CARD_TYPES_MULTITYPEAHEAD,
-	MOCKED_CASHIERS_SELECT,
-	MOCKED_DEALERS_TYPEAHEAD,
 	Option,
+	parseCardTypes,
+	parseCashiers,
+	parseDealers,
 } from 'common/utils';
 import {
+	AsyncTypeAhead,
 	BasicTable,
 	DatePicker,
 	MultiTypeAhead,
@@ -25,128 +25,15 @@ import {
 	PageBody,
 	PageLoader,
 	PageTitle,
-	TypeAhead,
 	VolvoIconButton,
 } from 'common/components';
 import { CONSUMES_COLUMNS } from './columns';
-
-const consumesRows: Consume[] = [
-	{
-		id: '1',
-		voucher: '589614',
-		paymentType: 'PRESENCIAL',
-		status: 'CONFIRMADO',
-		cardType: 'VREP',
-		cardNumber: '924201002274611260',
-		tpNumber: '598941562',
-		client: 'Angkor Group',
-		date: '11/09/2020',
-		contact: 'Federico Montero',
-		currency: 'US$',
-		amount: '-2,500.00',
-		voucherURL:
-			'https://templates.invoicehome.com/modelo-de-recibo-es-franja-azul-750px.png',
-	},
-	{
-		id: '2',
-		voucher: '589633',
-		paymentType: 'PRESENCIAL',
-		status: 'CONFIRMADO',
-		cardType: 'VREP',
-		cardNumber: '924201002274611277',
-		tpNumber: '538921372',
-		client: 'Zieme PLC',
-		date: '02/11/2020',
-		contact: 'Gianfranco Galvez Montero',
-		currency: 'US$',
-		amount: '10,500.00',
-		voucherURL:
-			'https://templates.invoicehome.com/modelo-de-recibo-es-franja-azul-750px.png',
-	},
-	{
-		id: '3',
-		voucher: '715596',
-		paymentType: 'REMOTO',
-		status: 'CONFIRMADO',
-		cardType: 'VURE',
-		cardNumber: '924201002274611281',
-		tpNumber: '558943272',
-		client: 'Bashirian-Legros',
-		date: '16/11/2020',
-		contact: 'Mauricio Castañeda Monzón',
-		currency: 'US$',
-		amount: '-3,000.00',
-		voucherURL:
-			'https://templates.invoicehome.com/modelo-de-recibo-es-franja-azul-750px.png',
-	},
-	{
-		id: '4',
-		voucher: '763325',
-		paymentType: 'REMOTO',
-		status: 'CONFIRMADO',
-		cardType: 'VURE',
-		cardNumber: '924201002274611256',
-		tpNumber: '218941272',
-		client: 'Hickle Group',
-		date: '27/11/2020',
-		contact: 'Brajean Junchaya Navarrete',
-		currency: 'US$',
-		amount: '8,500.00',
-		voucherURL:
-			'https://templates.invoicehome.com/modelo-de-recibo-es-franja-azul-750px.png',
-	},
-	{
-		id: '5',
-		voucher: '829635',
-		paymentType: 'REMOTO',
-		status: 'INGRESADO',
-		cardType: 'VURE',
-		cardNumber: '924201002274611292',
-		tpNumber: '498941272',
-		client: 'Angkor Group',
-		date: '02/12/2020',
-		contact: 'Juan Jose Ramirez Calderón',
-		currency: 'US$',
-		amount: '1,500.00',
-		voucherURL:
-			'https://templates.invoicehome.com/modelo-de-recibo-es-franja-azul-750px.png',
-	},
-];
-
-const rowsForBox = [
-	{
-		id: '1',
-		voucher: '589614',
-		paymentType: 'PRESENCIAL',
-		status: 'CONFIRMADO',
-		cardType: 'VREP',
-		cardNumber: '924201002274611260',
-		tpNumber: '598941562',
-		client: 'Angkor Group',
-		date: '11/09/2020',
-		contact: 'Federico Montero',
-		currency: 'US$',
-		amount: '-2,500.00',
-		voucherURL:
-			'https://templates.invoicehome.com/modelo-de-recibo-es-franja-azul-750px.png',
-	},
-	{
-		id: '2',
-		voucher: '589633',
-		paymentType: 'PRESENCIAL',
-		status: 'CONFIRMADO',
-		cardType: 'VREP',
-		cardNumber: '924201002274611277',
-		tpNumber: '538921372',
-		client: 'Zieme PLC',
-		date: '02/11/2020',
-		contact: 'Gianfranco Galvez Montero',
-		currency: 'US$',
-		amount: '10,500.00',
-		voucherURL:
-			'https://templates.invoicehome.com/modelo-de-recibo-es-franja-azul-750px.png',
-	},
-];
+import {
+	getCardTypes,
+	getDealerCashiers,
+	getDealerCharges,
+	getDealersByFilter,
+} from 'common/services';
 
 type SelectEvent = React.ChangeEvent<{
 	name?: string | undefined;
@@ -155,12 +42,16 @@ type SelectEvent = React.ChangeEvent<{
 
 const ConsumesByDealer: React.FC = () => {
 	const [loading, setLoading] = useState(false);
+	const [loadingFilters, setLoadingFilters] = useState(false);
+	const [loadingOptions, setLoadingOptions] = useState(false);
+	const [options, setOptions] = useState<Option[]>([]);
+	const [cashiers, setCashiers] = useState<Option[]>([]);
+	const [cardTypeList, setCardTypeList] = useState<Option[]>([]);
 	const [startDate, setStartDate] = useState<MaterialUiPickersDate>(null);
 	const [endDate, setEndDate] = useState<MaterialUiPickersDate>(null);
+	const [dealer, setDealer] = useState('');
 	const [cashier, setCashier] = useState('all');
-	const [cardTypes, setCardTypes] = useState<Option[]>(
-		MOCKED_CARD_TYPES_MULTITYPEAHEAD,
-	);
+	const [cardTypes, setCardTypes] = useState<Option[]>([]);
 	const [consumes, setConsumes] = useState<Consume[]>([]);
 	const [filtered, setFiltered] = useState<Consume[]>([]);
 
@@ -171,57 +62,86 @@ const ConsumesByDealer: React.FC = () => {
 	const onCardTypeChange = (_: React.ChangeEvent<{}>, values: Option[]) => {
 		setCardTypes(values);
 	};
-	// TODO: look for a different approach for handling filters
-	const onApplyFilters = () => {
-		if (cashier !== 'all') {
-			setFiltered(rowsForBox);
+
+	const onApplyFilters = async () => {
+		const start = startDate?.format('DD/mm/yyyy') || '';
+		const end = endDate?.format('DD/mm/yyyy') || '';
+		const selectedCashier = cashier === 'all' ? '' : cashier;
+		const list = cardTypes.map((c) => c.value);
+		setLoading(true);
+		const responseCharges = await getDealerCharges(
+			dealer,
+			start,
+			end,
+			selectedCashier,
+			list,
+		);
+		if (responseCharges.ok) {
+			const data = mapCharges(responseCharges.data || []);
+			setConsumes(data);
+			setFiltered(data);
 		}
-		if (!!startDate && !!endDate) {
-			const consumeIds = consumes.map((c) => ({ id: c.id, date: c.date }));
-			const filteredIds = filterDateRangeRows(startDate, endDate, consumeIds);
-			const filtered = consumes.filter((c) =>
-				filteredIds.some((f) => f.id === c.id),
-			);
-			setFiltered(filtered);
-		}
-		if (cardTypes.length > 0) {
-			const filtered = consumes.filter((c) =>
-				cardTypes.some((f) => f.value === c.cardType),
-			);
-			setFiltered(filtered);
-		}
-		if (
-			(!startDate || !endDate) &&
-			cashier === 'all' &&
-			cardTypes.length === 0
-		) {
-			setFiltered(consumes);
-		}
+		setLoading(false);
 	};
 
-	const onDealerChange = (_: any, newValue: string | Option) => {
+	const onDealerChange = async (_: any, newValue: string | Option) => {
+		setLoadingFilters(true);
+		const dealerId = (newValue as Option).value;
+		setDealer(dealerId);
+		const responseCashiers = await getDealerCashiers(dealerId);
+		if (responseCashiers.ok) {
+			const data = parseCashiers(responseCashiers.data || []);
+			setCashiers(data);
+		}
+		setLoadingFilters(false);
 		setLoading(true);
-		setTimeout(() => {
-			setLoading(false);
-			setConsumes(consumesRows);
-			setFiltered(consumesRows);
-		}, 1000);
+		const responseCharges = await getDealerCharges(dealerId);
+		if (responseCharges.ok) {
+			const data = mapCharges(responseCharges.data || []);
+			setConsumes(data);
+			setFiltered(data);
+		}
+		setLoading(false);
 	};
+
+	const onTypeDealer = async (e: React.ChangeEvent<HTMLInputElement>) => {
+		setLoadingOptions(true);
+		const response = await getDealersByFilter(e.target.value);
+		if (response.ok) {
+			const data = parseDealers(response.data || []);
+			setOptions(data);
+		}
+		setLoadingOptions(false);
+	};
+
+	useEffect(() => {
+		const fetchCardTypes = async () => {
+			const response = await getCardTypes();
+			if (response.ok) {
+				const data = parseCardTypes(response.data || []);
+				setCardTypeList(data);
+				setCardTypes(data);
+			}
+		};
+		fetchCardTypes();
+	}, []);
 
 	return (
 		<div>
 			<div>
 				<PageTitle title='Operaciones por Dealer' />
-				<TypeAhead
-					options={MOCKED_DEALERS_TYPEAHEAD}
+				<AsyncTypeAhead
+					options={options}
 					placeholder='Dealer'
+					loading={loadingOptions}
 					onChange={onDealerChange}
+					onType={onTypeDealer}
 				/>
 			</div>
 			<PageBody>
 				<div>
-					{loading && <PageLoader />}
-					{!loading && consumes.length > 0 && (
+					{loadingFilters && <PageLoader />}
+					{!loadingFilters && !!dealer && (
 						<React.Fragment>
 							<PageActionBar>
 								<Grid container spacing={1}>
@@ -245,11 +165,11 @@ const ConsumesByDealer: React.FC = () => {
 											<InputLabel id='cashierLabel'>Caja</InputLabel>
 											<Select
 												labelId='cashierLabel'
-												label='Moneda'
+												label='Caja'
 												onChange={onCashierChange}
 												value={cashier}
 											>
-												{MOCKED_CASHIERS_SELECT.map((d) => (
+												{cashiers.map((d) => (
 													<MenuItem key={d.value} value={d.value}>
 														{d.label}
 													</MenuItem>
@@ -262,7 +182,7 @@ const ConsumesByDealer: React.FC = () => {
 											placeholder='Seleccione'
 											label='Tipo de Tarjeta'
 											onChange={onCardTypeChange}
-											options={MOCKED_CARD_TYPES_MULTITYPEAHEAD}
+											options={cardTypeList}
 										/>
 									</Grid>
 									<Grid item xs={1}>
@@ -276,13 +196,16 @@ const ConsumesByDealer: React.FC = () => {
 									</Grid>
 								</Grid>
 							</PageActionBar>
-							<BasicTable columns={CONSUMES_COLUMNS}>
-								<React.Fragment>
-									{filtered.map((item, i: number) => (
-										<ConsumeRow key={i} item={item} />
-									))}
-								</React.Fragment>
-							</BasicTable>
+							{loading && <PageLoader />}
+							{!loading && consumes.length > 0 && (
+								<BasicTable columns={CONSUMES_COLUMNS}>
+									<React.Fragment>
+										{filtered.map((item, i: number) => (
+											<ConsumeRow key={i} item={item} />
+										))}
+									</React.Fragment>
+								</BasicTable>
+							)}
 						</React.Fragment>
 					)}
 				</div>

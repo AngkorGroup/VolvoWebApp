@@ -23,7 +23,7 @@ export const mapDealers = (dealers: Dealer[]): TableDealer[] => {
 		ruc: d.ruc,
 		address: d.address,
 		status: d.status,
-		type: 'Web',
+		type: d.type,
 		phone: d.phone,
 		zone: d.zone,
 		maxCashiers: d.maxCashiers,

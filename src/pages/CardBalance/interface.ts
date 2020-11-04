@@ -9,7 +9,6 @@ export interface CardMovement {
 	amount: number;
 	dealerName: string;
 	cashier: string;
-	batch: string;
 	source: string;
 	chargeStatus: string;
 	voucherURL: string;
@@ -63,7 +62,6 @@ export const mapMovements = (movements: Movement[]): CardMovement[] => {
 				amount: amount.value,
 				dealerName: charge?.cashier?.dealer?.name,
 				cashier: charge?.cashier?.fullName,
-				batch: '',
 				source: transfer?.displayName,
 				voucherURL,
 				chargeStatus: charge?.status,

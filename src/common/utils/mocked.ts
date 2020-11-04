@@ -62,17 +62,6 @@ export const MOCKED_CARDS_TYPEAHEAD = [
 	},
 ];
 
-export const MOCKED_DEALERS_TYPEAHEAD = [
-	{
-		value: '1',
-		label: '8000 - AUTOMOTORES MOQUEGUA RUC: 203369582501',
-	},
-	{
-		value: '2',
-		label: '8001 - AUTOMOTORES TACNA RUC: 204785962510',
-	},
-];
-
 export const MOCKED_CASHIERS_SELECT = [
 	{
 		value: 'all',
