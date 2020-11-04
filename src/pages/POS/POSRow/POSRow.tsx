@@ -38,9 +38,7 @@ const POSRow = ({ item, onEdit, onDelete }: POSRowProps) => {
 	return (
 		<React.Fragment>
 			<TableRow>
-				<TableCell>
-					{dealer.code} - {dealer.name}
-				</TableCell>
+				<TableCell>{dealer}</TableCell>
 				<TableCell>{code}</TableCell>
 				<TableCell>{phone}</TableCell>
 				<TableCell>{email}</TableCell>

@@ -19,3 +19,4 @@ export const GET_MOVEMENTS_BY_CARD_URL = `${MOVEMENTS_URL}/by_card`;
 export const CARD_TYPES_URL = '/cardtypes';
 export const DEALERS_URL = '/dealers';
 export const DEALERS_BY_FILTER_URL = `${DEALERS_URL}/by_filter`;
+export const CASHIERS_URL = '/cashiers';
