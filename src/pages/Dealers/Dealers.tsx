@@ -1,4 +1,4 @@
-import React, { useContext, useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import AddIcon from '@material-ui/icons/Add';
 import {
 	BasicTable,
@@ -12,9 +12,8 @@ import {
 import DealerRow from './DealerRow/DealerRow';
 import FormModal from './FormModal/FormModal';
 import { TableDealer, mapDealers, DealerForm } from './interfaces';
-import AppContext from '../../AppContext';
 import { DEALER_COLUMNS } from './columns';
-import { Dealer, filterRows } from 'common/utils';
+import { buildAlertBody as at, Dealer, filterRows } from 'common/utils';
 import { useQuery } from 'react-query';
 import {
 	addDealer,
@@ -22,12 +21,13 @@ import {
 	editDealer,
 	getDealers,
 } from 'common/services';
+import { useAlert } from 'react-alert';
 
 const Dealers: React.FC = () => {
+	const alert = useAlert();
 	const [query, setQuery] = useState('');
 	const [showAddModal, setShowAddModal] = useState(false);
 	const [filtered, setFiltered] = useState<TableDealer[]>([]);
-	const { addPageMessage } = useContext(AppContext);
 	const { data, status } = useQuery('dealers', getDealers);
 	const dealers = useMemo(() => {
 		if (data?.ok) {
@@ -61,11 +61,9 @@ const Dealers: React.FC = () => {
 		};
 		const response = await addDealer(body);
 		if (response.ok) {
-			addPageMessage!({
-				title: 'Dealer Agregado',
-				text: 'Se agregó un nuevo dealer correctamente',
-				status: 'success',
-			});
+			alert.success(
+				at('Dealer Agregado', 'Se agregó un nuevo dealer correctamente'),
+			);
 		}
 	};
 
@@ -83,22 +81,16 @@ const Dealers: React.FC = () => {
 		};
 		const response = await editDealer(body);
 		if (response.ok) {
-			addPageMessage!({
-				title: 'Dealer Editado',
-				text: 'Se editó un dealer correctamente',
-				status: 'success',
-			});
+			alert.success(at('Dealer Editado', 'Se editó un dealer correctamente'));
 		}
 	};
 
 	const onDeleteDealer = async (id: string) => {
 		const response = await deleteDealer(id);
 		if (response.ok) {
-			addPageMessage!({
-				title: 'Dealer Eliminado',
-				text: 'Se eliminó un dealer correctamente',
-				status: 'success',
-			});
+			alert.success(
+				at('Dealer Eliminado', 'Se eliminó un dealer correctamente'),
+			);
 		}
 	};
 	return (

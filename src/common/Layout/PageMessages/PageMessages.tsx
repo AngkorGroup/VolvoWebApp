@@ -4,10 +4,10 @@ import { PageMessage } from '../../utils/pageMessage';
 import Message from './Message/Message';
 
 const PageMessages: React.FC = () => {
-	const { pageMessages } = useContext(AppContext);
+	//const { pageMessages } = useContext(AppContext);
 	return (
 		<div>
-			{pageMessages?.map((m: PageMessage, i) => (
+			{[]?.map((m: PageMessage, i) => (
 				<Message
 					key={i}
 					title={m.title}

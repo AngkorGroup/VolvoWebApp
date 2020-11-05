@@ -14,16 +14,18 @@ export interface POS {
 
 export type POSForm = Partial<POS>;
 
+export const mapCashier = (cashier: Cashier): POS => ({
+	id: `${cashier.id}`,
+	dealer: cashier.dealer?.name,
+	imei: cashier.imei,
+	tpCode: cashier.tpCode,
+	phone: cashier.phone,
+	email: cashier.email,
+	firstName: cashier.firstName,
+	lastName: cashier.lastName,
+	archiveAt: cashier.archiveAt,
+});
+
 export const mapCashiers = (cashiers: Cashier[]): POS[] => {
-	return cashiers.map((c) => ({
-		id: `${c.id}`,
-		dealer: c.dealer?.name,
-		imei: c.imei,
-		tpCode: c.tpCode,
-		phone: c.phone,
-		email: c.email,
-		firstName: c.firstName,
-		lastName: c.lastName,
-		archiveAt: c.archiveAt,
-	}));
+	return cashiers.map(mapCashier);
 };

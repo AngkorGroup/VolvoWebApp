@@ -6,7 +6,6 @@ import {
 } from '@material-ui/core';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import GuardedRoute from 'common/components/GuardedRoute/GuardedRoute';
-import PageMessages from 'common/Layout/PageMessages/PageMessages';
 import moment from 'moment';
 import React, { Suspense } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
@@ -26,7 +25,6 @@ const App = () => {
 				<MuiPickersUtilsProvider libInstance={moment} utils={MomentUtils}>
 					<AppProvider>
 						<Router>
-							<PageMessages />
 							<Suspense fallback={<CircularProgress size={40} thickness={4} />}>
 								<Switch>
 									{routes.map((route: RouteType) => (

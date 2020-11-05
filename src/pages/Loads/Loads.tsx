@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import PublishIcon from '@material-ui/icons/Publish';
 import ErrorIcon from '@material-ui/icons/Error';
 import { useQuery } from 'react-query';
@@ -18,12 +18,12 @@ import {
 	TableFilter,
 	VolvoButton,
 } from 'common/components';
-import { filterRows, LoadError } from 'common/utils';
+import { buildAlertBody as at, filterRows, LoadError } from 'common/utils';
 import { mapLoads, TableLoad } from './interfaces';
 import LoadRow from './LoadRow/LoadRow';
-import AppContext from '../../AppContext';
 import { LOAD_COLUMNS } from './columns';
 import { getLoadErrors, getLoads, massiveUpload } from 'common/services';
+import { useAlert } from 'react-alert';
 
 const useStyles = makeStyles(() =>
 	createStyles({
@@ -58,7 +58,7 @@ const Loads: React.FC = () => {
 	const [loading, setLoading] = useState(true);
 	const [query, setQuery] = useState('');
 	const [filtered, setFiltered] = useState<TableLoad[]>([]);
-	const { addPageMessage } = useContext(AppContext);
+	const alert = useAlert();
 
 	const { data, status } = useQuery('loads', getLoads);
 	const loads = useMemo(() => {
@@ -83,17 +83,14 @@ const Loads: React.FC = () => {
 			const errors = response.data;
 			if (errors?.length) {
 				const errorsText = mapErrors(errors);
-				addPageMessage!({
-					title: 'Errores en el archivo',
-					text: errorsText,
-					status: 'warning',
-				});
+				alert.error(at('Formato Correcto', 'errors'));
 			} else {
-				addPageMessage!({
-					title: 'Formato Correcto',
-					text: 'No se ha detectado ningún error en ningún archivo',
-					status: 'success',
-				});
+				alert.success(
+					at(
+						'Formato Correcto',
+						'No se ha detectado ningún error en ningún archivo',
+					),
+				);
 			}
 		}
 	};
@@ -107,24 +104,22 @@ const Loads: React.FC = () => {
 				const errors = response.data;
 				if (errors?.length) {
 					const errorsText = mapErrors(errors);
-					addPageMessage!({
-						title: 'Errores en el archivo',
-						text: errorsText,
-						status: 'warning',
-					});
+					alert.error(at('Errores en el archivo', 'errors'));
 				} else {
-					addPageMessage!({
-						title: 'Carga Masiva Exitosa',
-						text: 'Se realizó la carga masiva de datos correctamente',
-						status: 'success',
-					});
+					alert.success(
+						at(
+							'Carga Masiva Exitosa',
+							'Se realizó la carga masiva de datos correctamente',
+						),
+					);
 				}
 			} else {
-				addPageMessage!({
-					title: 'Carga Masiva Fallida',
-					text: 'Hubo un error en la carga masiva, intente nuevamente',
-					status: 'error',
-				});
+				alert.error(
+					at(
+						'Carga Masiva Fallida',
+						'Hubo un error en la carga masiva, intente nuevamente',
+					),
+				);
 			}
 		}
 	};
