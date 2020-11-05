@@ -1,11 +1,8 @@
 import { create } from 'apisauce';
 import UserRepository from 'common/repository/UserRepository';
 
-// TODO: handle baseUrl with .env file
-const BASE_URL = 'https://dev-volvocash.angkor-apps.com/api_web';
-
 export const api = create({
-	baseURL: BASE_URL,
+	baseURL: process.env.REACT_APP_API_URL,
 	headers: {
 		Authorization: `Bearer ${UserRepository.getToken()}`,
 	},
