@@ -30,7 +30,7 @@ const POSRow = ({ item, onEdit, onDelete }: POSRowProps) => {
 	const classes = useStyles();
 	const [showEditModal, setShowEditModal] = useState(false);
 	const [showDeleteModal, setShowDeleteModal] = useState(false);
-	const { dealer, id, code, phone, email } = item;
+	const { dealer, id, code, phone, email, imei, firstName, lastName } = item;
 
 	const setEditModalVisible = (flag: boolean) => () => setShowEditModal(flag);
 	const setDelModalVisible = (flag: boolean) => () => setShowDeleteModal(flag);
@@ -39,7 +39,11 @@ const POSRow = ({ item, onEdit, onDelete }: POSRowProps) => {
 		<React.Fragment>
 			<TableRow>
 				<TableCell>{dealer}</TableCell>
+				<TableCell>{imei}</TableCell>
 				<TableCell>{code}</TableCell>
+				<TableCell>
+					{firstName} {lastName}
+				</TableCell>
 				<TableCell>{phone}</TableCell>
 				<TableCell>{email}</TableCell>
 				<TableCell>

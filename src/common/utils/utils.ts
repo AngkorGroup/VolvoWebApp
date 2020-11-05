@@ -71,9 +71,9 @@ export const parseCards = (cards: Card[]): Option[] => {
 };
 
 export const parseDealers = (dealers: Dealer[]): Option[] => {
-	return dealers.map(({ id, ruc, tpCode, name }) => ({
+	return dealers.map(({ id, ruc, tpCode, name, maxCashiers }) => ({
 		value: `${id}`,
-		label: `${tpCode} - ${name} RUC: ${ruc}`,
+		label: `${tpCode} - ${name} RUC: ${ruc} - MÁX. CAJEROS: ${maxCashiers}`,
 	}));
 };
 

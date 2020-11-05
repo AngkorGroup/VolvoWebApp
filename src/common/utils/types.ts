@@ -190,6 +190,7 @@ export interface Cashier {
 	firstName: string;
 	lastName: string;
 	fullName: string;
+	imei: string;
 	email: string;
 	phone: string;
 	tpCode: string;
