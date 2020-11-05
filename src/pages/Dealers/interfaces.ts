@@ -11,6 +11,7 @@ export interface TableDealer {
 	phone: string;
 	zone: string;
 	maxCashiers: number;
+	archiveAt: string;
 }
 
 export type DealerForm = Partial<TableDealer>;
@@ -27,5 +28,6 @@ export const mapDealers = (dealers: Dealer[]): TableDealer[] => {
 		phone: d.phone,
 		zone: d.zone,
 		maxCashiers: d.maxCashiers,
+		archiveAt: d.archiveAt,
 	}));
 };

@@ -10,5 +10,6 @@ export const DEALER_COLUMNS = [
 	{ title: 'Teléfono' },
 	{ title: 'Max. POS' },
 	{ title: 'Zona' },
+	{ title: 'Fecha Baja' },
 	ACTIONS_COLUMN,
 ];

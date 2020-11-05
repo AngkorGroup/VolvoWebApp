@@ -32,6 +32,7 @@ const DealerRow = ({ item, onEdit, onDelete }: DealerRowProps) => {
 	const [showEditModal, setShowEditModal] = useState(false);
 	const [showDeleteModal, setShowDeleteModal] = useState(false);
 	const {
+		id,
 		code,
 		name,
 		ruc,
@@ -41,6 +42,7 @@ const DealerRow = ({ item, onEdit, onDelete }: DealerRowProps) => {
 		phone,
 		zone,
 		maxCashiers,
+		archiveAt,
 	} = item;
 
 	const setEditModalVisible = (flag: boolean) => () => setShowEditModal(flag);
@@ -58,34 +60,41 @@ const DealerRow = ({ item, onEdit, onDelete }: DealerRowProps) => {
 				<TableCell>{phone}</TableCell>
 				<TableCell align='center'>{maxCashiers}</TableCell>
 				<TableCell>{zone}</TableCell>
+				<TableCell>{archiveAt}</TableCell>
 				<TableCell>
-					<div className={classes.actionButtons}>
-						<VolvoIconButton
-							color='primary'
-							onClick={setEditModalVisible(true)}
-						>
-							<CreateIcon />
-						</VolvoIconButton>
-						<VolvoIconButton color='error' onClick={setDelModalVisible(true)}>
-							<DeleteIcon />
-						</VolvoIconButton>
-					</div>
+					{!archiveAt && (
+						<div className={classes.actionButtons}>
+							<VolvoIconButton
+								color='primary'
+								onClick={setEditModalVisible(true)}
+							>
+								<CreateIcon />
+							</VolvoIconButton>
+							<VolvoIconButton color='error' onClick={setDelModalVisible(true)}>
+								<DeleteIcon />
+							</VolvoIconButton>
+						</div>
+					)}
 				</TableCell>
 			</TableRow>
-			<FormModal
-				title='Editar Dealer'
-				show={showEditModal}
-				values={item}
-				onClose={setEditModalVisible(false)}
-				onConfirm={onEdit}
-			/>
-			<DeleteModal
-				show={showDeleteModal}
-				id={code}
-				name={name}
-				onClose={setDelModalVisible(false)}
-				onConfirm={onDelete}
-			/>
+			{showEditModal && (
+				<FormModal
+					title='Editar Dealer'
+					show={showEditModal}
+					values={item}
+					onClose={setEditModalVisible(false)}
+					onConfirm={onEdit}
+				/>
+			)}
+			{showDeleteModal && (
+				<DeleteModal
+					show={showDeleteModal}
+					id={id}
+					name={name}
+					onClose={setDelModalVisible(false)}
+					onConfirm={onDelete}
+				/>
+			)}
 		</React.Fragment>
 	);
 };

@@ -190,6 +190,7 @@ export interface Cashier {
 	firstName: string;
 	lastName: string;
 	fullName: string;
+	imei: string;
 	email: string;
 	phone: string;
 	tpCode: string;
@@ -197,6 +198,7 @@ export interface Cashier {
 	dealer: Dealer;
 	userId: number;
 	createdAt: string;
+	archiveAt: string;
 }
 
 export interface Charge {

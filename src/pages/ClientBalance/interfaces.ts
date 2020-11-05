@@ -1,4 +1,8 @@
-import { CONSUME_TYPE, TRANSFER_TYPE } from 'common/constants/constants';
+import {
+	CONSUME_TYPE,
+	S_TRANSFER_TYPE,
+	I_TRANSFER_TYPE,
+} from 'common/constants/constants';
 import { BatchMovement, CardBatch, CardTypeSummary } from 'common/utils';
 
 export interface BatchMovementRow {
@@ -99,7 +103,7 @@ export const mapExpirationMovements = (
 		if (type === CONSUME_TYPE) {
 			number = charge?.operationCode;
 			voucherURL = charge?.imageUrl;
-		} else if (type === TRANSFER_TYPE) {
+		} else if (type === S_TRANSFER_TYPE || type === I_TRANSFER_TYPE) {
 			number = transfer?.operationCode;
 			voucherURL = transfer?.imageUrl;
 		}
