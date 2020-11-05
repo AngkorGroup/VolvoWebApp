@@ -198,6 +198,7 @@ export interface Cashier {
 	dealer: Dealer;
 	userId: number;
 	createdAt: string;
+	archiveAt: string;
 }
 
 export interface Charge {

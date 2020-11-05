@@ -30,7 +30,16 @@ const POSRow = ({ item, onEdit, onDelete }: POSRowProps) => {
 	const classes = useStyles();
 	const [showEditModal, setShowEditModal] = useState(false);
 	const [showDeleteModal, setShowDeleteModal] = useState(false);
-	const { id, code, phone, email, imei, firstName, lastName } = item;
+	const {
+		id,
+		tpCode,
+		phone,
+		email,
+		imei,
+		firstName,
+		lastName,
+		archiveAt,
+	} = item;
 
 	const setEditModalVisible = (flag: boolean) => () => setShowEditModal(flag);
 	const setDelModalVisible = (flag: boolean) => () => setShowDeleteModal(flag);
@@ -39,24 +48,27 @@ const POSRow = ({ item, onEdit, onDelete }: POSRowProps) => {
 		<React.Fragment>
 			<TableRow>
 				<TableCell>{imei}</TableCell>
-				<TableCell>{code}</TableCell>
+				<TableCell>{tpCode}</TableCell>
 				<TableCell>
 					{firstName} {lastName}
 				</TableCell>
 				<TableCell>{phone}</TableCell>
 				<TableCell>{email}</TableCell>
+				<TableCell>{archiveAt}</TableCell>
 				<TableCell>
-					<div className={classes.actionButtons}>
-						<VolvoIconButton
-							color='primary'
-							onClick={setEditModalVisible(true)}
-						>
-							<CreateIcon />
-						</VolvoIconButton>
-						<VolvoIconButton color='error' onClick={setDelModalVisible(true)}>
-							<DeleteIcon />
-						</VolvoIconButton>
-					</div>
+					{!archiveAt && (
+						<div className={classes.actionButtons}>
+							<VolvoIconButton
+								color='primary'
+								onClick={setEditModalVisible(true)}
+							>
+								<CreateIcon />
+							</VolvoIconButton>
+							<VolvoIconButton color='error' onClick={setDelModalVisible(true)}>
+								<DeleteIcon />
+							</VolvoIconButton>
+						</div>
+					)}
 				</TableCell>
 			</TableRow>
 			<FormModal
