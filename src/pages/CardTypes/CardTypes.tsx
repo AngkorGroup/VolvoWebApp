@@ -1,4 +1,4 @@
-import React, { useContext, useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import AddIcon from '@material-ui/icons/Add';
 import {
 	BasicTable,
@@ -9,11 +9,10 @@ import {
 	TableFilter,
 	VolvoButton,
 } from 'common/components';
-import { CardType, filterRows } from 'common/utils';
+import { buildAlertBody as at, CardType, filterRows } from 'common/utils';
 import FormModal from './FormModal/FormModal';
 import { TableCardType, CardTypeForm, mapCardType } from './interfaces';
 import CardTypeRow from './CardTypeRow/CardTypeRow';
-import AppContext from '../../AppContext';
 import { CARD_TYPE_COLUMNS } from './columns';
 import { useQuery } from 'react-query';
 import {
@@ -22,12 +21,13 @@ import {
 	editCardType,
 	getCardTypes,
 } from 'common/services';
+import { useAlert } from 'react-alert';
 
 const CardTypes: React.FC = () => {
+	const alert = useAlert();
 	const [query, setQuery] = useState('');
 	const [showAddModal, setShowAddModal] = useState(false);
 	const [filtered, setFiltered] = useState<TableCardType[]>([]);
-	const { addPageMessage } = useContext(AppContext);
 	const { data, status } = useQuery('cardTypes', getCardTypes);
 	const cardTypes = useMemo(() => {
 		if (data?.ok) {
@@ -59,11 +59,12 @@ const CardTypes: React.FC = () => {
 		};
 		const response = await addCardType(body);
 		if (response.ok) {
-			addPageMessage!({
-				title: 'Tipo de Tarjeta Agregado',
-				text: 'Se agregó un nuevo tipo de tarjeta correctamente',
-				status: 'success',
-			});
+			alert.success(
+				at(
+					'Tipo de Tarjeta Agregado',
+					'Se agregó un nuevo tipo de tarjeta correctamente',
+				),
+			);
 		}
 	};
 
@@ -80,22 +81,24 @@ const CardTypes: React.FC = () => {
 		};
 		const response = await editCardType(body);
 		if (response.ok) {
-			addPageMessage!({
-				title: 'Tipo de Tarjeta Editado',
-				text: 'Se editó un tipo de tarjeta correctamente',
-				status: 'success',
-			});
+			alert.success(
+				at(
+					'Tipo de Tarjeta Editado',
+					'Se editó un tipo de tarjeta correctamente',
+				),
+			);
 		}
 	};
 
 	const onDeleteCardType = async (id: string) => {
 		const response = await deleteCardType(id);
 		if (response.ok) {
-			addPageMessage!({
-				title: 'Tipo de Tarjeta Desactivado',
-				text: 'Se desactivó un tipo de tarjeta correctamente',
-				status: 'success',
-			});
+			alert.success(
+				at(
+					'Tipo de Tarjeta Desactivado',
+					'Se desactivó un tipo de tarjeta correctamente',
+				),
+			);
 		}
 	};
 	return (

@@ -1,3 +1,4 @@
+export { default as AlertMessage } from './AlertMessage/AlertMessage';
 export { default as Amount } from './Amount/Amount';
 export { default as AsyncTypeAhead } from './AsyncTypeAhead/AsyncTypeAhead';
 export { default as BasicTable } from './BasicTable/BasicTable';

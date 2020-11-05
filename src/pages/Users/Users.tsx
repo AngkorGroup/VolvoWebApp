@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import AddIcon from '@material-ui/icons/Add';
 import {
 	BasicTable,
@@ -9,12 +9,12 @@ import {
 	TableFilter,
 	VolvoButton,
 } from 'common/components';
-import { filterRows } from 'common/utils';
+import { buildAlertBody as at, filterRows } from 'common/utils';
 import FormModal from './FormModal/FormModal';
 import { User, UserPOSForm } from './interfaces';
 import UserRow from './UserRow/UserRow';
-import AppContext from '../../AppContext';
 import { USER_COLUMNS } from './columns';
+import { useAlert } from 'react-alert';
 
 const userRows: User[] = [
 	{
@@ -70,12 +70,12 @@ const userRows: User[] = [
 ];
 
 const Dealers: React.FC = () => {
+	const alert = useAlert();
 	const [loading, setLoading] = useState(false);
 	const [query, setQuery] = useState('');
 	const [showAddModal, setShowAddModal] = useState(false);
 	const [users, setUsers] = useState<User[]>([]);
 	const [filtered, setFiltered] = useState<User[]>([]);
-	const { addPageMessage } = useContext(AppContext);
 
 	const onFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const newQuery = e.target.value;
@@ -100,11 +100,9 @@ const Dealers: React.FC = () => {
 		setUsers(newUsers);
 		setFiltered(newUsers);
 		// Perform API call
-		addPageMessage!({
-			title: 'Usuario Agregado',
-			text: 'Se agregó un nuevo usuario correctamente',
-			status: 'success',
-		});
+		alert.success(
+			at('Usuario Agregado ', 'Se agregó un nuevo usuario correctamente'),
+		);
 	};
 
 	const onEditUser = (user: User) => {
@@ -112,29 +110,24 @@ const Dealers: React.FC = () => {
 		setUsers(newUsers);
 		setFiltered(newUsers);
 		// Perform API call
-		addPageMessage!({
-			title: 'Usuario Editado',
-			text: 'Se editó un usuario correctamente',
-			status: 'success',
-		});
+		alert.success(at('Usuario Editado ', 'Se editó un usuario correctamente'));
 	};
 
 	const onReestablishPassword = (id: string) => {
 		// Perform API call
-		addPageMessage!({
-			title: 'Contraseña restablecida',
-			text: `Se restableció la contraseña del usuario con id: ${id}`,
-			status: 'success',
-		});
+		alert.success(
+			at(
+				'Contraseña restablecida',
+				`Se restableció la contraseña del usuario con id: ${id}`,
+			),
+		);
 	};
 
 	const onAssociatePOS = (data: UserPOSForm) => {
 		// Perform API call
-		addPageMessage!({
-			title: 'Usuario Asociado',
-			text: `Se asoció al usuario con el POS: ${data.pos}`,
-			status: 'success',
-		});
+		alert.success(
+			at('Usuario Asociado ', `Se asoció al usuario con el POS: ${data.pos}`),
+		);
 	};
 
 	const onDeleteUser = (id: string) => {
@@ -146,11 +139,9 @@ const Dealers: React.FC = () => {
 		setUsers(newUsers);
 		setFiltered(newUsers);
 		// Perform API call
-		addPageMessage!({
-			title: 'Usuario Desactivado',
-			text: 'Se desactivó un usuario correctamente',
-			status: 'success',
-		});
+		alert.success(
+			at('Usuario Desactivado ', 'Se desactivó un usuario correctamente'),
+		);
 	};
 	return (
 		<div>

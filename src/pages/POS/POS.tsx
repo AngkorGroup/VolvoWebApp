@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import AddIcon from '@material-ui/icons/Add';
 import {
 	AsyncTypeAhead,
@@ -10,11 +10,17 @@ import {
 	TableFilter,
 	VolvoButton,
 } from 'common/components';
-import { Dealer, filterRows, Option, parseDealers } from 'common/utils';
-import { mapCashiers, POS as POSType, POSForm } from './interfaces';
+import {
+	buildAlertBody as at,
+	Cashier,
+	Dealer,
+	filterRows,
+	Option,
+	parseDealers,
+} from 'common/utils';
+import { mapCashier, mapCashiers, POS as POSType, POSForm } from './interfaces';
 import POSRow from './POSRow/POSRow';
 import FormModal from './FormModal.tsx/FormModal';
-import AppContext from '../../AppContext';
 import { POS_COLUMNS } from './columns';
 import {
 	addCashier,
@@ -23,6 +29,7 @@ import {
 	getCashiers,
 	getDealersByFilter,
 } from 'common/services';
+import { useAlert } from 'react-alert';
 
 const POS: React.FC = () => {
 	const [loading, setLoading] = useState(false);
@@ -33,7 +40,7 @@ const POS: React.FC = () => {
 	const [showAddModal, setShowAddModal] = useState(false);
 	const [posList, setPOSList] = useState<POSType[]>([]);
 	const [filtered, setFiltered] = useState<POSType[]>([]);
-	const { addPageMessage } = useContext(AppContext);
+	const alert = useAlert();
 
 	const onFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const newQuery = e.target.value;
@@ -70,12 +77,15 @@ const POS: React.FC = () => {
 		};
 		const response = await addCashier(body);
 		if (response.ok) {
-			addPageMessage!({
-				title: 'Cajero Agregado',
-				text:
+			const data = mapCashier(response.data || ({} as Cashier));
+			setPOSList((old) => [...old, data]);
+			setFiltered((old) => [...old, data]);
+			alert.success(
+				at(
+					'Cajero Agregado',
 					'Se ha creado un nuevo usuario cajero correctamente y las credenciales han llegado al correo indicado',
-				status: 'success',
-			});
+				),
+			);
 		}
 	};
 
@@ -91,22 +101,20 @@ const POS: React.FC = () => {
 		};
 		const response = await editCashier(body);
 		if (response.ok) {
-			addPageMessage!({
-				title: 'Cajero Editado',
-				text: 'Se editó un POS correctamente',
-				status: 'success',
-			});
+			const data = mapCashier(response.data || ({} as Cashier));
+			const newCashiers = posList.map((c) => (c.id === data.id ? data : c));
+			setPOSList(newCashiers);
+			setFiltered(newCashiers);
+			alert.success(at('Cajero Editado', 'Se editó un cajero correctamente'));
 		}
 	};
 
 	const onDeletePOS = async (id: string) => {
 		const response = await deleteCashier(id);
 		if (response.ok) {
-			addPageMessage!({
-				title: 'Cajero Eliminado',
-				text: 'Se eliminó un cajero correctamente',
-				status: 'success',
-			});
+			alert.success(
+				at('Cajero Eliminado', 'Se eliminó un cajero correctamente'),
+			);
 		}
 	};
 

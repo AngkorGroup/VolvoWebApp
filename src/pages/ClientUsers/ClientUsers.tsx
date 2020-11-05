@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import {
 	AsyncTypeAhead,
 	BasicTable,
@@ -9,13 +9,13 @@ import {
 	PageTitle,
 	TableFilter,
 } from 'common/components';
-import { filterRows, parseClients } from 'common/utils';
+import { buildAlertBody as at, filterRows, parseClients } from 'common/utils';
 import { ClientUser, mapContacts } from './interfaces';
 import ClientUserRow from './ClientUserRow/ClientUserRow';
-import AppContext from '../../AppContext';
 import { CLIENT_USER_COLUMNS } from './columns';
 import { Option } from 'common/utils/types';
 import { editContact, getClients, getContactsByClient } from 'common/services';
+import { useAlert } from 'react-alert';
 
 const ClientUsers: React.FC = () => {
 	const [loading, setLoading] = useState(false);
@@ -24,7 +24,7 @@ const ClientUsers: React.FC = () => {
 	const [query, setQuery] = useState('');
 	const [clientUsers, setClientUsers] = useState<ClientUser[]>([]);
 	const [filtered, setFiltered] = useState<ClientUser[]>([]);
-	const { addPageMessage } = useContext(AppContext);
+	const alert = useAlert();
 
 	const onFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const newQuery = e.target.value;
@@ -58,11 +58,12 @@ const ClientUsers: React.FC = () => {
 	const onEditClient = async (clientUser: ClientUser) => {
 		const response = await editContact(clientUser);
 		if (response.ok) {
-			addPageMessage!({
-				title: 'Contacto Convertido',
-				text: 'Se hizo la conversión a usuario del contacto correctamente',
-				status: 'success',
-			});
+			alert.success(
+				at(
+					'Contacto Convertido',
+					'Se hizo la conversión a usuario del contacto correctamente',
+				),
+			);
 		}
 	};
 
