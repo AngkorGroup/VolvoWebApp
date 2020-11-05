@@ -1,5 +1,5 @@
 import UserRepository from 'common/repository/UserRepository';
-import { PageMessage, Admin } from 'common/utils';
+import { Admin } from 'common/utils';
 import React, { ReactElement, useState, useCallback } from 'react';
 
 interface AppProviderProps {
@@ -8,16 +8,12 @@ interface AppProviderProps {
 
 interface ContextProps {
 	user: Admin | null;
-	pageMessages: PageMessage[];
-	addPageMessage: (m: PageMessage) => void;
 	setAppUser: (u: Admin | null, t?: string) => void;
 	updateState: Function;
 }
 
 const initialState: ContextProps = {
 	user: UserRepository.getUser(),
-	pageMessages: [],
-	addPageMessage: () => {},
 	setAppUser: () => {},
 	updateState: Function.prototype,
 };
@@ -40,13 +36,6 @@ const AppProvider = ({ children }: AppProviderProps) => {
 		[],
 	);
 
-	const addPageMessage = useCallback((message: PageMessage) => {
-		setState((oldState: PartialContext) => ({
-			...oldState,
-			pageMessages: [...(oldState.pageMessages || []), message],
-		}));
-	}, []);
-
 	const setAppUser = useCallback((user: Admin | null, token: string = '') => {
 		if (user && token) {
 			UserRepository.setUser(user);
@@ -62,9 +51,7 @@ const AppProvider = ({ children }: AppProviderProps) => {
 	}, []);
 
 	return (
-		<AppContext.Provider
-			value={{ ...state, updateState, addPageMessage, setAppUser }}
-		>
+		<AppContext.Provider value={{ ...state, updateState, setAppUser }}>
 			{children}
 		</AppContext.Provider>
 	);

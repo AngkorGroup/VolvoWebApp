@@ -2,7 +2,7 @@ import { positions, transitions } from 'react-alert';
 
 export const options = {
 	position: positions.TOP_RIGHT,
-	timeout: 40000,
+	timeout: 4000,
 	offset: '10px',
 	transition: transitions.SCALE,
 	containerStyle: {
