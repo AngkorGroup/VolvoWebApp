@@ -14,7 +14,8 @@ import Container from '@material-ui/core/Container';
 import { useHistory } from 'react-router-dom';
 import AppContext from 'AppContext';
 import { LOGIN_URL } from 'common/constants/api';
-import { api, Admin, setAuthToken } from 'common/utils';
+import { api, Admin, setAuthToken, buildAlertBody as at } from 'common/utils';
+import { useAlert } from 'react-alert';
 
 type FormEvent = React.FormEvent<HTMLFormElement>;
 
@@ -45,10 +46,11 @@ interface LoginResponse {
 
 const SignIn = () => {
 	const classes = useStyles();
+	const alert = useAlert();
 	const { push } = useHistory();
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
-	const { user, addPageMessage, setAppUser } = useContext(AppContext);
+	const { user, setAppUser } = useContext(AppContext);
 
 	const onUserChange = (e: any) => setEmail(e.target.value);
 	const onPassChange = (e: any) => setPassword(e.target.value);
@@ -67,11 +69,12 @@ const SignIn = () => {
 				push('/client_balance');
 			}
 		} else {
-			addPageMessage!({
-				title: 'Credenciales Incorrectas',
-				text: 'Las credenciales ingresadas no son correctas.',
-				status: 'error',
-			});
+			alert.error(
+				at(
+					'Credenciales Incorrectas',
+					'Las credenciales ingresadas no son correctas.',
+				),
+			);
 		}
 	};
 
