@@ -1,4 +1,8 @@
-import { CONSUME_TYPE, TRANSFER_TYPE } from 'common/constants/constants';
+import {
+	CONSUME_TYPE,
+	S_TRANSFER_TYPE,
+	I_TRANSFER_TYPE,
+} from 'common/constants/constants';
 import { CardBatch, Movement } from 'common/utils';
 
 export interface CardMovement {
@@ -50,7 +54,7 @@ export const mapMovements = (movements: Movement[]): CardMovement[] => {
 			if (type === CONSUME_TYPE) {
 				operationNumber = charge?.operationCode;
 				voucherURL = charge?.imageUrl;
-			} else if (type === TRANSFER_TYPE) {
+			} else if (type === S_TRANSFER_TYPE || type === I_TRANSFER_TYPE) {
 				operationNumber = transfer?.operationCode;
 				voucherURL = transfer?.imageUrl;
 			}

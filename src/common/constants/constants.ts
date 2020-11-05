@@ -92,4 +92,5 @@ export const MENU_ITEMS: MenuItem[] = [
 ];
 
 export const CONSUME_TYPE = 'CON';
-export const TRANSFER_TYPE = 'STR';
+export const S_TRANSFER_TYPE = 'STR';
+export const I_TRANSFER_TYPE = 'ITR';
