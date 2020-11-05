@@ -66,7 +66,7 @@ const POS: React.FC = () => {
 			email: pos.email,
 			imei: pos.imei,
 			phone: pos.phone,
-			tpCode: pos.code,
+			tpCode: pos.tpCode,
 		};
 		const response = await addCashier(body);
 		if (response.ok) {
@@ -87,7 +87,7 @@ const POS: React.FC = () => {
 			email: pos.email,
 			imei: pos.imei,
 			phone: pos.phone,
-			tpCode: pos.code,
+			tpCode: pos.tpCode,
 		};
 		const response = await editCashier(body);
 		if (response.ok) {

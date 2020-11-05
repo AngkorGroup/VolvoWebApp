@@ -28,7 +28,7 @@ const initialValues: POSForm = {
 	email: '',
 	firstName: '',
 	lastName: '',
-	code: '',
+	tpCode: '',
 };
 
 const fieldProps = {
@@ -84,7 +84,7 @@ const FormModal: React.FC<FormModalProps> = ({
 									<Field name='lastName' label='Apellidos' {...fieldProps} />
 								</Grid>
 								<Grid item xs={12}>
-									<Field name='code' label='Código TP' {...fieldProps} />
+									<Field name='tpCode' label='Código TP' {...fieldProps} />
 								</Grid>
 							</Grid>
 						</DialogContent>
