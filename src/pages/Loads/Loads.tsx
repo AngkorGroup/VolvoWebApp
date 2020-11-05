@@ -2,13 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import PublishIcon from '@material-ui/icons/Publish';
 import ErrorIcon from '@material-ui/icons/Error';
 import { useQuery } from 'react-query';
-import {
-	createStyles,
-	List,
-	ListItem,
-	ListItemText,
-	makeStyles,
-} from '@material-ui/core';
+import { createStyles, makeStyles } from '@material-ui/core';
 import {
 	BasicTable,
 	PageActionBar,
@@ -24,6 +18,7 @@ import LoadRow from './LoadRow/LoadRow';
 import { LOAD_COLUMNS } from './columns';
 import { getLoadErrors, getLoads, massiveUpload } from 'common/services';
 import { useAlert } from 'react-alert';
+import ErrorModal from './ErrorModal/ErrorModal';
 
 const useStyles = makeStyles(() =>
 	createStyles({
@@ -40,22 +35,12 @@ const useStyles = makeStyles(() =>
 	}),
 );
 
-const mapErrors = (errors: LoadError[]) => {
-	return (
-		<List dense>
-			{errors.map((e) => (
-				<ListItem key={e.rowIndex}>
-					<ListItemText primary={`Línea ${e.rowIndex}: ${e.errorMessage}`} />
-				</ListItem>
-			))}
-		</List>
-	);
-};
-
 const Loads: React.FC = () => {
 	const classes = useStyles();
 	const inputRef = useRef<HTMLInputElement>(null);
 	const [loading, setLoading] = useState(true);
+	const [showErrors, setShowErrors] = useState(false);
+	const [errors, setErrors] = useState<LoadError[]>([]);
 	const [query, setQuery] = useState('');
 	const [filtered, setFiltered] = useState<TableLoad[]>([]);
 	const alert = useAlert();
@@ -67,6 +52,8 @@ const Loads: React.FC = () => {
 		}
 		return [];
 	}, [data]);
+
+	const onCloseModal = () => setShowErrors(false);
 
 	const onFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const newQuery = e.target.value;
@@ -80,10 +67,16 @@ const Loads: React.FC = () => {
 	const checkErrors = async () => {
 		const response = await getLoadErrors();
 		if (response.ok) {
-			const errors = response.data;
-			if (errors?.length) {
-				const errorsText = mapErrors(errors);
-				alert.error(at('Formato Correcto', 'errors'));
+			const loadErrors = response.data;
+			if (loadErrors?.length) {
+				alert.error(
+					at(
+						'Formato Incorrecto',
+						'Se han presentado algunos errores en el archivo subido',
+					),
+				);
+				setShowErrors(true);
+				setErrors(loadErrors);
 			} else {
 				alert.success(
 					at(
@@ -101,10 +94,16 @@ const Loads: React.FC = () => {
 			setLoading(true);
 			const response = await massiveUpload(files[0]);
 			if (response.ok) {
-				const errors = response.data;
-				if (errors?.length) {
-					const errorsText = mapErrors(errors);
-					alert.error(at('Errores en el archivo', 'errors'));
+				const loadErrors = response.data;
+				if (loadErrors?.length) {
+					alert.error(
+						at(
+							'Errores en el archivo',
+							'Se han presentado algunos errores en el archivo subido',
+						),
+					);
+					setShowErrors(true);
+					setErrors(loadErrors);
 				} else {
 					alert.success(
 						at(
@@ -164,6 +163,13 @@ const Loads: React.FC = () => {
 							/>
 						</div>
 					</PageActionBar>
+					{showErrors && (
+						<ErrorModal
+							show={showErrors}
+							errors={errors}
+							onClose={onCloseModal}
+						/>
+					)}
 					<div>
 						<BasicTable columns={LOAD_COLUMNS}>
 							<React.Fragment>
