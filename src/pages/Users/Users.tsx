@@ -169,22 +169,20 @@ const Dealers: React.FC = () => {
 								onConfirm={onAddUser}
 							/>
 						</PageActionBar>
-						{users.length > 0 && (
-							<BasicTable columns={USER_COLUMNS}>
-								<React.Fragment>
-									{filtered.map((item, i: number) => (
-										<UserRow
-											key={i}
-											item={item}
-											onEdit={onEditUser}
-											onReestablishPassword={onReestablishPassword}
-											onAssociatePOS={onAssociatePOS}
-											onDelete={onDeleteUser}
-										/>
-									))}
-								</React.Fragment>
-							</BasicTable>
-						)}
+						<BasicTable columns={USER_COLUMNS}>
+							<React.Fragment>
+								{filtered.map((item, i: number) => (
+									<UserRow
+										key={i}
+										item={item}
+										onEdit={onEditUser}
+										onReestablishPassword={onReestablishPassword}
+										onAssociatePOS={onAssociatePOS}
+										onDelete={onDeleteUser}
+									/>
+								))}
+							</React.Fragment>
+						</BasicTable>
 					</div>
 				)}
 			</PageBody>

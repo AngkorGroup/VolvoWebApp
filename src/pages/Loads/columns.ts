@@ -12,7 +12,7 @@ export const LOAD_COLUMNS = [
 	{ title: 'Tipo' },
 	{ title: 'Motivo' },
 	{ title: 'Tipo Tarjeta' },
-	{ title: '# TopPerú' },
+	{ title: '#TopPerú' },
 ];
 
 export const ERROR_COLUMNS = [

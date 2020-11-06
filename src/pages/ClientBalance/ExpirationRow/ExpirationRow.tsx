@@ -23,6 +23,8 @@ const ExpirationRow = ({ item }: ExpirationRowProps) => {
 		expiration,
 		currency,
 		balance,
+		contactName,
+		contactPhone,
 	} = item;
 	const onOpenModal = () => setShowModal(true);
 	const onCloseModal = () => setShowModal(false);
@@ -40,6 +42,8 @@ const ExpirationRow = ({ item }: ExpirationRowProps) => {
 		<TableRow>
 			<TableCell>{cardType}</TableCell>
 			<TableCell>{cardNumber}</TableCell>
+			<TableCell>{contactName}</TableCell>
+			<TableCell>{contactPhone}</TableCell>
 			<TableCell>{batch}</TableCell>
 			<TableCell>{expiration}</TableCell>
 			<TableCell align='center'>{currency}</TableCell>

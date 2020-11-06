@@ -13,6 +13,8 @@ export const CARD_COLUMNS = [
 export const EXPIRATION_COLUMNS = [
 	{ title: 'Tipo de Tarjeta' },
 	{ title: 'Número de Tarjeta' },
+	{ title: 'Contacto' },
+	{ title: 'Teléfono' },
 	{ title: 'Lote' },
 	{ title: 'Vencimiento' },
 	{ title: 'Moneda' },

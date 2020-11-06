@@ -22,7 +22,7 @@ const ClientUsers: React.FC = () => {
 	const [loadingOptions, setLoadingOptions] = useState(false);
 	const [clients, setClients] = useState<Option[]>([]);
 	const [query, setQuery] = useState('');
-	const [clientUsers, setClientUsers] = useState<ClientUser[]>([]);
+	const [clientUsers, setClientUsers] = useState<ClientUser[] | null>(null);
 	const [filtered, setFiltered] = useState<ClientUser[]>([]);
 	const alert = useAlert();
 
@@ -81,10 +81,8 @@ const ClientUsers: React.FC = () => {
 			</div>
 			<PageBody>
 				{loading && <PageLoader />}
-				{!loading && clientUsers.length === 0 && (
-					<EmptyState text='Ingrese un cliente' />
-				)}
-				{!loading && clientUsers.length > 0 && (
+				{!loading && !clientUsers && <EmptyState text='Ingrese un cliente' />}
+				{!loading && !!clientUsers && clientUsers.length > 0 && (
 					<React.Fragment>
 						<PageActionBar>
 							<TableFilter value={query} onChange={onFilterChange} />

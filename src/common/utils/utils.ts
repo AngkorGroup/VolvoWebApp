@@ -12,18 +12,20 @@ import {
 } from './types';
 
 // TODO: research about iterating over keys of generic types
-export const filterRows = (query: string, rows: any[]) => {
-	return rows.filter((row) => {
-		const keys = Object.keys(row);
-		const match = keys.some((key) => {
-			if (row.hasOwnProperty(key)) {
-				const value = `${row[key]}`.toLowerCase();
-				return value.includes(query.toLowerCase());
-			}
-			return false;
-		});
-		return match;
-	});
+export const filterRows = (query: string, rows: any[] | null) => {
+	return (
+		rows?.filter((row) => {
+			const keys = Object.keys(row);
+			const match = keys.some((key) => {
+				if (row.hasOwnProperty(key)) {
+					const value = `${row[key]}`.toLowerCase();
+					return value.includes(query.toLowerCase());
+				}
+				return false;
+			});
+			return match;
+		}) || []
+	);
 };
 
 interface DateRow {
