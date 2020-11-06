@@ -100,10 +100,12 @@ const Dealers: React.FC = () => {
 			</div>
 			<PageBody>
 				{status === 'loading' && <PageLoader />}
-				{status === 'success' && dealers.length > 0 && (
+				{status === 'success' && (
 					<div>
 						<PageActionBar justifyContent='space-between'>
-							<TableFilter value={query} onChange={onFilterChange} />
+							{dealers.length > 0 && (
+								<TableFilter value={query} onChange={onFilterChange} />
+							)}
 							<VolvoButton
 								text='Agregar'
 								icon={<AddIcon />}
@@ -117,18 +119,20 @@ const Dealers: React.FC = () => {
 								onConfirm={onAddDealer}
 							/>
 						</PageActionBar>
-						<BasicTable columns={DEALER_COLUMNS}>
-							<React.Fragment>
-								{filtered.map((item, i: number) => (
-									<DealerRow
-										key={i}
-										item={item}
-										onEdit={onEditDealer}
-										onDelete={onDeleteDealer}
-									/>
-								))}
-							</React.Fragment>
-						</BasicTable>
+						{dealers.length > 0 && (
+							<BasicTable columns={DEALER_COLUMNS}>
+								<React.Fragment>
+									{filtered.map((item, i: number) => (
+										<DealerRow
+											key={i}
+											item={item}
+											onEdit={onEditDealer}
+											onDelete={onDeleteDealer}
+										/>
+									))}
+								</React.Fragment>
+							</BasicTable>
+						)}
 					</div>
 				)}
 			</PageBody>
