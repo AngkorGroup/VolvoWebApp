@@ -7,7 +7,7 @@ export interface Consume {
 	status: string;
 	cardType: string;
 	cardNumber: string;
-	tpNumber: string;
+	cashier: string;
 	client: string;
 	date: string;
 	contact: string;
@@ -21,6 +21,7 @@ export const mapCharges = (charges: Charge[]): Consume[] => {
 		({
 			id,
 			operationCode,
+			cashier,
 			chargeType,
 			status,
 			card,
@@ -34,7 +35,7 @@ export const mapCharges = (charges: Charge[]): Consume[] => {
 			status: status,
 			cardType: card?.cardType?.name,
 			cardNumber: card?.code,
-			tpNumber: 'FALTA PONER',
+			cashier: cashier.fullName,
 			client: card?.contact?.client?.name,
 			date: createdAt,
 			contact: card?.contact?.fullName,

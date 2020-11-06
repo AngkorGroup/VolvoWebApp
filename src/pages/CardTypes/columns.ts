@@ -5,6 +5,7 @@ import {
 
 export const CARD_TYPE_COLUMNS = [
 	{ title: 'Tipo Tarjeta' },
+	{ title: 'Código TP' },
 	{ title: 'Descripción' },
 	{ title: 'Moneda' },
 	{ title: 'Plazo(meses)' },
