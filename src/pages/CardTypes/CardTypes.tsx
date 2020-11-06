@@ -1,4 +1,5 @@
 import React, { useMemo, useState } from 'react';
+import moment from 'moment';
 import AddIcon from '@material-ui/icons/Add';
 import {
 	BasicTable,
@@ -11,7 +12,12 @@ import {
 } from 'common/components';
 import { buildAlertBody as at, CardType, filterRows } from 'common/utils';
 import FormModal from './FormModal/FormModal';
-import { TableCardType, CardTypeForm, mapCardType } from './interfaces';
+import {
+	TableCardType,
+	CardTypeForm,
+	mapCardType,
+	mapCardTypes,
+} from './interfaces';
 import CardTypeRow from './CardTypeRow/CardTypeRow';
 import { CARD_TYPE_COLUMNS } from './columns';
 import { useQuery } from 'react-query';
@@ -31,7 +37,7 @@ const CardTypes: React.FC = () => {
 	const { data, status } = useQuery('cardTypes', getCardTypes);
 	const cardTypes = useMemo(() => {
 		if (data?.ok) {
-			const rows = mapCardType(data?.data || []);
+			const rows = mapCardTypes(data?.data || []);
 			setFiltered(rows);
 			return rows;
 		}
@@ -58,6 +64,8 @@ const CardTypes: React.FC = () => {
 		};
 		const response = await addCardType(body);
 		if (response.ok) {
+			const newRows = mapCardType(response.data || ({} as CardType));
+			setFiltered((old) => [...old, newRows]);
 			alert.success(
 				at(
 					'Tipo de Tarjeta Agregado',
@@ -79,6 +87,9 @@ const CardTypes: React.FC = () => {
 		};
 		const response = await editCardType(body);
 		if (response.ok) {
+			const newData = mapCardType(response.data || ({} as CardType));
+			const newRows = cardTypes.map((c) => (c.id === newData.id ? newData : c));
+			setFiltered(newRows);
 			alert.success(
 				at(
 					'Tipo de Tarjeta Editado',
@@ -91,6 +102,11 @@ const CardTypes: React.FC = () => {
 	const onDeleteCardType = async (id: string) => {
 		const response = await deleteCardType(id);
 		if (response.ok) {
+			const archiveAt = moment().format('DD/MM/YYYY h:mm:ss');
+			const newRows = cardTypes.map((c) =>
+				c.id === id ? { ...c, archiveAt } : c,
+			);
+			setFiltered(newRows);
 			alert.success(
 				at(
 					'Tipo de Tarjeta Desactivado',

@@ -12,15 +12,17 @@ import { Contact } from 'common/utils';
 
 export type ClientUser = Partial<Contact>;
 
+export const mapContact = (contact: Contact) => ({
+	id: contact.id,
+	documentType: contact.documentType,
+	documentNumber: contact.documentNumber,
+	type: contact.type,
+	phone: contact.phone,
+	email: contact.email,
+	firstName: contact.firstName,
+	lastName: contact.lastName,
+});
+
 export const mapContacts = (contacts: Contact[]) => {
-	return contacts.map((c) => ({
-		id: c.id,
-		documentType: c.documentType,
-		documentNumber: c.documentNumber,
-		type: c.type,
-		phone: c.phone,
-		email: c.email,
-		firstName: c.firstName,
-		lastName: c.lastName,
-	}));
+	return contacts.map(mapContact);
 };

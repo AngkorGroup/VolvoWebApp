@@ -15,17 +15,19 @@ export interface TableCardType {
 
 export type CardTypeForm = Partial<TableCardType>;
 
-export const mapCardType = (cardTypes: CardType[]): TableCardType[] => {
-	return cardTypes.map((ct) => ({
-		id: `${ct.id}`,
-		type: ct.name,
-		description: ct.displayName,
-		currency: ct.currency,
-		term: `${ct.term}`,
-		color: ct.color,
-		createdAt: ct.createdAt,
-		status: ct.status,
-		archiveAt: ct.archiveAt,
-		tpCode: ct.tpCode,
-	}));
+export const mapCardType = (cardTypes: CardType): TableCardType => ({
+	id: `${cardTypes.id}`,
+	type: cardTypes.name,
+	description: cardTypes.displayName,
+	currency: cardTypes.currency,
+	term: `${cardTypes.term}`,
+	color: cardTypes.color,
+	createdAt: cardTypes.createdAt,
+	status: cardTypes.status,
+	archiveAt: cardTypes.archiveAt,
+	tpCode: cardTypes.tpCode,
+});
+
+export const mapCardTypes = (cardTypes: CardType[]): TableCardType[] => {
+	return cardTypes.map(mapCardType);
 };

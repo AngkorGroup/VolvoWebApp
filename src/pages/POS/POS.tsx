@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import AddIcon from '@material-ui/icons/Add';
+import moment from 'moment';
 import {
 	AsyncTypeAhead,
 	BasicTable,
@@ -112,6 +113,11 @@ const POS: React.FC = () => {
 	const onDeletePOS = async (id: string) => {
 		const response = await deleteCashier(id);
 		if (response.ok) {
+			const archiveAt = moment().format('DD/MM/YYYY h:mm:ss');
+			const newRows = posList.map((c) =>
+				c.id === id ? { ...c, archiveAt } : c,
+			);
+			setFiltered(newRows);
 			alert.success(
 				at('Cajero Eliminado', 'Se eliminó un cajero correctamente'),
 			);
