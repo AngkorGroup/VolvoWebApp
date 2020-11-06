@@ -41,6 +41,7 @@ const initialValues: CardTypeForm = {
 	createdAt: '16/10/2020',
 	status: 'Activo',
 	archiveAt: '',
+	tpCode: '',
 };
 
 const fieldProps = {
@@ -126,13 +127,16 @@ const FormModal: React.FC<FormModalProps> = ({
 								<Grid item xs={4}>
 									<Field name='term' label='Plazo (meses)' {...fieldProps} />
 								</Grid>
-								<Grid item xs={8}>
+								<Grid item xs={4}>
 									<Field
 										name='color'
 										label='Color'
 										{...fieldProps}
 										placeholder='#000000'
 									/>
+								</Grid>
+								<Grid item xs={4}>
+									<Field name='tpCode' label='Código TP' {...fieldProps} />
 								</Grid>
 							</Grid>
 						</DialogContent>

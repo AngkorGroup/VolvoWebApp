@@ -48,14 +48,13 @@ const CardTypes: React.FC = () => {
 	const setAddModalVisible = (flag: boolean) => () => setShowAddModal(flag);
 
 	const onAddCardType = async (cardType: CardTypeForm) => {
-		const term = parseInt(cardType.term || '0', 10) * 30;
 		const body: Partial<CardType> = {
 			name: cardType.type || '',
 			displayName: cardType.description || '',
 			currency: cardType.currency || '',
 			color: cardType.color || '',
-			tpCode: '0004',
-			term,
+			tpCode: cardType.tpCode || '',
+			term: parseInt(cardType.term || '0', 10),
 		};
 		const response = await addCardType(body);
 		if (response.ok) {
@@ -69,15 +68,14 @@ const CardTypes: React.FC = () => {
 	};
 
 	const onEditCardType = async (cardType: CardTypeForm) => {
-		const term = parseInt(cardType.term || '0', 10) * 30;
 		const body: Partial<CardType> = {
-			id: +(cardType.id || '0'),
+			id: parseInt(cardType.id || '0', 10),
 			name: cardType.type || '',
 			displayName: cardType.description || '',
 			currency: cardType.currency || '',
 			color: cardType.color || '',
-			tpCode: '0004',
-			term,
+			tpCode: cardType.tpCode || '',
+			term: parseInt(cardType.term || '0', 10),
 		};
 		const response = await editCardType(body);
 		if (response.ok) {

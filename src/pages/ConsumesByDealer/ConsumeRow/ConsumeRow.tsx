@@ -20,7 +20,7 @@ const ConsumeRow = ({ item }: ConsumeRowProps) => {
 		status,
 		cardType,
 		cardNumber,
-		tpNumber,
+		cashier,
 		client,
 		date,
 		contact,
@@ -33,7 +33,7 @@ const ConsumeRow = ({ item }: ConsumeRowProps) => {
 			<TableCell>{voucher}</TableCell>
 			<TableCell>{cardType}</TableCell>
 			<TableCell>{cardNumber}</TableCell>
-			<TableCell>{tpNumber}</TableCell>
+			<TableCell>{cashier}</TableCell>
 			<TableCell>{client}</TableCell>
 			<TableCell>{date}</TableCell>
 			<TableCell>{paymentType}</TableCell>

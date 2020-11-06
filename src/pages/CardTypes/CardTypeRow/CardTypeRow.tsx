@@ -44,6 +44,7 @@ const CardTypeRow = ({ item, onEdit, onDelete }: CardTypeRowProps) => {
 		createdAt,
 		status,
 		archiveAt,
+		tpCode,
 	} = item;
 
 	const setEditModalVisible = (flag: boolean) => () => setShowEditModal(flag);
@@ -53,6 +54,7 @@ const CardTypeRow = ({ item, onEdit, onDelete }: CardTypeRowProps) => {
 		<React.Fragment>
 			<TableRow>
 				<TableCell>{type}</TableCell>
+				<TableCell>{tpCode}</TableCell>
 				<TableCell>{description}</TableCell>
 				<TableCell align='center'>{currency}</TableCell>
 				<TableCell align='center'>{term}</TableCell>

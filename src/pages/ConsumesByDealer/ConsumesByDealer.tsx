@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import moment from 'moment';
 import ConsumeRow from './ConsumeRow/ConsumeRow';
 import { Consume, mapCharges } from './interface';
 import SearchIcon from '@material-ui/icons/Search';
@@ -47,7 +48,7 @@ const ConsumesByDealer: React.FC = () => {
 	const [options, setOptions] = useState<Option[]>([]);
 	const [cashiers, setCashiers] = useState<Option[]>([]);
 	const [cardTypeList, setCardTypeList] = useState<Option[]>([]);
-	const [startDate, setStartDate] = useState<MaterialUiPickersDate>(null);
+	const [startDate, setStartDate] = useState<MaterialUiPickersDate>(moment());
 	const [endDate, setEndDate] = useState<MaterialUiPickersDate>(null);
 	const [dealer, setDealer] = useState('');
 	const [cashier, setCashier] = useState('all');

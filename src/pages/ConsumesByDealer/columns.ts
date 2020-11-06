@@ -7,7 +7,7 @@ export const CONSUMES_COLUMNS = [
 	{ title: '#Voucher' },
 	{ title: 'Tipo' },
 	{ title: 'Número de Tarjeta' },
-	{ title: '#TopPerú' },
+	{ title: 'Cajero' },
 	{ title: 'Cliente' },
 	{ title: 'Fecha Op.' },
 	{ title: 'Cobro' },

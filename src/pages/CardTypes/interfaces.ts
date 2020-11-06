@@ -10,6 +10,7 @@ export interface TableCardType {
 	createdAt: string;
 	status: string;
 	archiveAt: string;
+	tpCode: string;
 }
 
 export type CardTypeForm = Partial<TableCardType>;
@@ -20,10 +21,11 @@ export const mapCardType = (cardTypes: CardType[]): TableCardType[] => {
 		type: ct.name,
 		description: ct.displayName,
 		currency: ct.currency,
-		term: `${ct.term / 30}`,
+		term: `${ct.term}`,
 		color: ct.color,
 		createdAt: ct.createdAt,
 		status: ct.status,
 		archiveAt: ct.archiveAt,
+		tpCode: ct.tpCode,
 	}));
 };
