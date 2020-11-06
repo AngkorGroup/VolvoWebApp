@@ -135,10 +135,12 @@ const Loads: React.FC = () => {
 				<PageTitle title='Cargas y Recargas' />
 			</div>
 			{status === 'loading' && loading && <PageLoader />}
-			{status === 'success' && loads.length > 0 && (
+			{status === 'success' && (
 				<PageBody>
 					<PageActionBar justifyContent='space-between'>
-						<TableFilter value={query} onChange={onFilterChange} />
+						{loads.length > 0 && (
+							<TableFilter value={query} onChange={onFilterChange} />
+						)}
 						<input
 							ref={inputRef}
 							className={classes.input}

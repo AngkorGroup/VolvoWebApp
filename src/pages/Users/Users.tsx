@@ -150,10 +150,12 @@ const Dealers: React.FC = () => {
 			</div>
 			<PageBody>
 				{loading && <PageLoader />}
-				{!loading && users.length > 0 && (
+				{!loading && (
 					<div>
 						<PageActionBar justifyContent='space-between'>
-							<TableFilter value={query} onChange={onFilterChange} />
+							{users.length > 0 && (
+								<TableFilter value={query} onChange={onFilterChange} />
+							)}
 							<VolvoButton
 								text='Agregar'
 								icon={<AddIcon />}
@@ -167,20 +169,22 @@ const Dealers: React.FC = () => {
 								onConfirm={onAddUser}
 							/>
 						</PageActionBar>
-						<BasicTable columns={USER_COLUMNS}>
-							<React.Fragment>
-								{filtered.map((item, i: number) => (
-									<UserRow
-										key={i}
-										item={item}
-										onEdit={onEditUser}
-										onReestablishPassword={onReestablishPassword}
-										onAssociatePOS={onAssociatePOS}
-										onDelete={onDeleteUser}
-									/>
-								))}
-							</React.Fragment>
-						</BasicTable>
+						{users.length > 0 && (
+							<BasicTable columns={USER_COLUMNS}>
+								<React.Fragment>
+									{filtered.map((item, i: number) => (
+										<UserRow
+											key={i}
+											item={item}
+											onEdit={onEditUser}
+											onReestablishPassword={onReestablishPassword}
+											onAssociatePOS={onAssociatePOS}
+											onDelete={onDeleteUser}
+										/>
+									))}
+								</React.Fragment>
+							</BasicTable>
+						)}
 					</div>
 				)}
 			</PageBody>

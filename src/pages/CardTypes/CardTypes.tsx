@@ -108,10 +108,12 @@ const CardTypes: React.FC = () => {
 			</div>
 			<PageBody>
 				{status === 'loading' && <PageLoader />}
-				{status === 'success' && cardTypes.length > 0 && (
+				{status === 'success' && (
 					<div>
 						<PageActionBar justifyContent='space-between'>
-							<TableFilter value={query} onChange={onFilterChange} />
+							{cardTypes.length > 0 && (
+								<TableFilter value={query} onChange={onFilterChange} />
+							)}
 							<VolvoButton
 								text='Agregar'
 								icon={<AddIcon />}
@@ -125,18 +127,20 @@ const CardTypes: React.FC = () => {
 								onConfirm={onAddCardType}
 							/>
 						</PageActionBar>
-						<BasicTable columns={CARD_TYPE_COLUMNS}>
-							<React.Fragment>
-								{filtered.map((item, i: number) => (
-									<CardTypeRow
-										key={i}
-										item={item}
-										onEdit={onEditCardType}
-										onDelete={onDeleteCardType}
-									/>
-								))}
-							</React.Fragment>
-						</BasicTable>
+						{cardTypes.length > 0 && (
+							<BasicTable columns={CARD_TYPE_COLUMNS}>
+								<React.Fragment>
+									{filtered.map((item, i: number) => (
+										<CardTypeRow
+											key={i}
+											item={item}
+											onEdit={onEditCardType}
+											onDelete={onDeleteCardType}
+										/>
+									))}
+								</React.Fragment>
+							</BasicTable>
+						)}
 					</div>
 				)}
 			</PageBody>

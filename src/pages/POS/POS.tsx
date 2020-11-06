@@ -142,10 +142,12 @@ const POS: React.FC = () => {
 			</div>
 			<PageBody>
 				{loading && <PageLoader />}
-				{!loading && posList.length > 0 && (
+				{!loading && (
 					<div>
 						<PageActionBar justifyContent='space-between'>
-							<TableFilter value={query} onChange={onFilterChange} />
+							{posList.length > 0 && (
+								<TableFilter value={query} onChange={onFilterChange} />
+							)}
 							{posList.length < (dealer?.maxCashiers || 0) && (
 								<React.Fragment>
 									<VolvoButton
@@ -163,18 +165,20 @@ const POS: React.FC = () => {
 								</React.Fragment>
 							)}
 						</PageActionBar>
-						<BasicTable columns={POS_COLUMNS}>
-							<React.Fragment>
-								{filtered.map((item, i: number) => (
-									<POSRow
-										key={i}
-										item={item}
-										onEdit={onEditPOS}
-										onDelete={onDeletePOS}
-									/>
-								))}
-							</React.Fragment>
-						</BasicTable>
+						{posList.length > 0 && (
+							<BasicTable columns={POS_COLUMNS}>
+								<React.Fragment>
+									{filtered.map((item, i: number) => (
+										<POSRow
+											key={i}
+											item={item}
+											onEdit={onEditPOS}
+											onDelete={onDeletePOS}
+										/>
+									))}
+								</React.Fragment>
+							</BasicTable>
+						)}
 					</div>
 				)}
 			</PageBody>
