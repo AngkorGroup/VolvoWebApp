@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import AddIcon from '@material-ui/icons/Add';
+import moment from 'moment';
 import {
 	BasicTable,
 	PageActionBar,
@@ -11,7 +12,7 @@ import {
 } from 'common/components';
 import DealerRow from './DealerRow/DealerRow';
 import FormModal from './FormModal/FormModal';
-import { TableDealer, mapDealers, DealerForm } from './interfaces';
+import { TableDealer, mapDealers, DealerForm, mapDealer } from './interfaces';
 import { DEALER_COLUMNS } from './columns';
 import { buildAlertBody as at, Dealer, filterRows } from 'common/utils';
 import { useQuery } from 'react-query';
@@ -61,6 +62,8 @@ const Dealers: React.FC = () => {
 		};
 		const response = await addDealer(body);
 		if (response.ok) {
+			const newData = mapDealer(response.data || ({} as Dealer));
+			setFiltered((old) => [...old, newData]);
 			alert.success(
 				at('Dealer Agregado', 'Se agregó un nuevo dealer correctamente'),
 			);
@@ -81,6 +84,11 @@ const Dealers: React.FC = () => {
 		};
 		const response = await editDealer(body);
 		if (response.ok) {
+			const newData = mapDealer(response.data || ({} as Dealer));
+			const newDealers = filtered.map((c) =>
+				c.id === newData.id ? newData : c,
+			);
+			setFiltered(newDealers);
 			alert.success(at('Dealer Editado', 'Se editó un dealer correctamente'));
 		}
 	};
@@ -88,6 +96,11 @@ const Dealers: React.FC = () => {
 	const onDeleteDealer = async (id: string) => {
 		const response = await deleteDealer(id);
 		if (response.ok) {
+			const archiveAt = moment().format('DD/MM/YYYY h:mm:ss');
+			const newRows = filtered.map((c) =>
+				c.id === id ? { ...c, archiveAt } : c,
+			);
+			setFiltered(newRows);
 			alert.success(
 				at('Dealer Eliminado', 'Se eliminó un dealer correctamente'),
 			);

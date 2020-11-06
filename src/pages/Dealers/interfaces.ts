@@ -16,18 +16,20 @@ export interface TableDealer {
 
 export type DealerForm = Partial<TableDealer>;
 
+export const mapDealer = (dealers: Dealer): TableDealer => ({
+	id: `${dealers.id}`,
+	code: dealers.tpCode,
+	name: dealers.name,
+	ruc: dealers.ruc,
+	address: dealers.address,
+	status: dealers.status,
+	type: dealers.type,
+	phone: dealers.phone,
+	zone: dealers.zone,
+	maxCashiers: dealers.maxCashiers,
+	archiveAt: dealers.archiveAt,
+});
+
 export const mapDealers = (dealers: Dealer[]): TableDealer[] => {
-	return dealers.map((d) => ({
-		id: `${d.id}`,
-		code: d.tpCode,
-		name: d.name,
-		ruc: d.ruc,
-		address: d.address,
-		status: d.status,
-		type: d.type,
-		phone: d.phone,
-		zone: d.zone,
-		maxCashiers: d.maxCashiers,
-		archiveAt: d.archiveAt,
-	}));
+	return dealers.map(mapDealer);
 };

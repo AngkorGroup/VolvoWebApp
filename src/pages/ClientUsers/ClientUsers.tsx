@@ -10,10 +10,10 @@ import {
 	TableFilter,
 } from 'common/components';
 import { buildAlertBody as at, filterRows, parseClients } from 'common/utils';
-import { ClientUser, mapContacts } from './interfaces';
+import { ClientUser, mapContact, mapContacts } from './interfaces';
 import ClientUserRow from './ClientUserRow/ClientUserRow';
 import { CLIENT_USER_COLUMNS } from './columns';
-import { Option } from 'common/utils/types';
+import { Contact, Option } from 'common/utils/types';
 import { editContact, getClients, getContactsByClient } from 'common/services';
 import { useAlert } from 'react-alert';
 
@@ -58,11 +58,12 @@ const ClientUsers: React.FC = () => {
 	const onEditClient = async (clientUser: ClientUser) => {
 		const response = await editContact(clientUser);
 		if (response.ok) {
+			const data = mapContact(response.data || ({} as Contact));
+			const newClients = filtered.map((c) => (c.id === data.id ? data : c));
+			setClientUsers(newClients);
+			setFiltered(newClients);
 			alert.success(
-				at(
-					'Contacto Convertido',
-					'Se hizo la conversión a usuario del contacto correctamente',
-				),
+				at('Contacto Editado', 'Se ha editado el contacto correctamente'),
 			);
 		}
 	};
