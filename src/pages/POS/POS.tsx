@@ -165,20 +165,18 @@ const POS: React.FC = () => {
 								</React.Fragment>
 							)}
 						</PageActionBar>
-						{posList.length > 0 && (
-							<BasicTable columns={POS_COLUMNS}>
-								<React.Fragment>
-									{filtered.map((item, i: number) => (
-										<POSRow
-											key={i}
-											item={item}
-											onEdit={onEditPOS}
-											onDelete={onDeletePOS}
-										/>
-									))}
-								</React.Fragment>
-							</BasicTable>
-						)}
+						<BasicTable columns={POS_COLUMNS}>
+							<React.Fragment>
+								{filtered.map((item, i: number) => (
+									<POSRow
+										key={i}
+										item={item}
+										onEdit={onEditPOS}
+										onDelete={onDeletePOS}
+									/>
+								))}
+							</React.Fragment>
+						</BasicTable>
 					</div>
 				)}
 			</PageBody>

@@ -65,6 +65,8 @@ export interface Expiration {
 	expiration: string;
 	currency: string;
 	balance: number;
+	contactName: string;
+	contactPhone: string;
 }
 
 export const mapCardType = (cardTypes: CardTypeSummary[]): CardType[] => {
@@ -90,6 +92,8 @@ export const mapExpirations = (expirations: CardBatch[]): Expiration[] => {
 		expiration: expiresAt,
 		currency: balance.currency,
 		balance: balance.value,
+		contactName: card?.contact?.fullName,
+		contactPhone: card?.contact?.phone,
 	}));
 };
 

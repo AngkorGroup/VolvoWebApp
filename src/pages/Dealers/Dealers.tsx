@@ -119,20 +119,18 @@ const Dealers: React.FC = () => {
 								onConfirm={onAddDealer}
 							/>
 						</PageActionBar>
-						{dealers.length > 0 && (
-							<BasicTable columns={DEALER_COLUMNS}>
-								<React.Fragment>
-									{filtered.map((item, i: number) => (
-										<DealerRow
-											key={i}
-											item={item}
-											onEdit={onEditDealer}
-											onDelete={onDeleteDealer}
-										/>
-									))}
-								</React.Fragment>
-							</BasicTable>
-						)}
+						<BasicTable columns={DEALER_COLUMNS}>
+							<React.Fragment>
+								{filtered.map((item, i: number) => (
+									<DealerRow
+										key={i}
+										item={item}
+										onEdit={onEditDealer}
+										onDelete={onDeleteDealer}
+									/>
+								))}
+							</React.Fragment>
+						</BasicTable>
 					</div>
 				)}
 			</PageBody>
