@@ -14,7 +14,12 @@ import { ClientUser, mapContact, mapContacts } from './interfaces';
 import ClientUserRow from './ClientUserRow/ClientUserRow';
 import { CLIENT_USER_COLUMNS } from './columns';
 import { Contact, Option } from 'common/utils/types';
-import { editContact, getClients, getContactsByClient } from 'common/services';
+import {
+	editContact,
+	getClients,
+	getContactsByClient,
+	makeContactPrimary,
+} from 'common/services';
 import { useAlert } from 'react-alert';
 
 const ClientUsers: React.FC = () => {
@@ -55,6 +60,18 @@ const ClientUsers: React.FC = () => {
 		setLoading(false);
 	};
 
+	const onTurnUser = async (id: string) => {
+		const response = await makeContactPrimary(id);
+		if (response.ok) {
+			alert.success(
+				at(
+					'Contacto Convertido',
+					'Se hizo la conversión a usuario del contacto correctamente',
+				),
+			);
+		}
+	};
+
 	const onEditClient = async (clientUser: ClientUser) => {
 		const response = await editContact(clientUser);
 		if (response.ok) {
@@ -91,7 +108,12 @@ const ClientUsers: React.FC = () => {
 						<BasicTable columns={CLIENT_USER_COLUMNS}>
 							<React.Fragment>
 								{filtered.map((item, i: number) => (
-									<ClientUserRow key={i} item={item} onEdit={onEditClient} />
+									<ClientUserRow
+										key={i}
+										item={item}
+										onEdit={onEditClient}
+										onTurnUser={onTurnUser}
+									/>
 								))}
 							</React.Fragment>
 						</BasicTable>

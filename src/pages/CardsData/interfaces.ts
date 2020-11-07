@@ -15,20 +15,22 @@ export interface CardData {
 	contactName: string;
 	contactType: string;
 	contactPhone: string;
+	amount: number;
 	status: string;
 }
 
 export const mapCardData = (cards: Card[]): CardData[] => {
 	return cards.map(
-		({ cardType, code, createdAt, contact, tpCode, status }) => ({
+		({ cardType, code, createdAt, contact, tpCode, status, balance }) => ({
 			type: cardType?.name,
 			number: code,
 			tpNumber: tpCode,
 			createdAt: createdAt,
-			currency: cardType?.currency,
+			currency: balance?.currency,
 			contactName: contact?.fullName,
 			contactType: contact?.type,
 			contactPhone: contact?.phone,
+			amount: balance?.value,
 			status: status,
 		}),
 	);
