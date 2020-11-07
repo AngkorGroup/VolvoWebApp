@@ -7,5 +7,6 @@ export const CLIENT_USER_COLUMNS = [
 	{ title: 'Celular' },
 	{ title: 'Correo Electrónico' },
 	{ title: 'Nombre Completo' },
+	{ title: 'Estado' },
 	ACTIONS_COLUMN,
 ];

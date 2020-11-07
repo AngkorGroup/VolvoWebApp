@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import AddIcon from '@material-ui/icons/Add';
 import {
 	BasicTable,
@@ -9,73 +9,42 @@ import {
 	TableFilter,
 	VolvoButton,
 } from 'common/components';
-import { buildAlertBody as at, filterRows } from 'common/utils';
+import {
+	Admin,
+	buildAlertBody as at,
+	filterRows,
+	UserAdmin,
+} from 'common/utils';
 import FormModal from './FormModal/FormModal';
-import { User, UserPOSForm } from './interfaces';
+import { mapUserAdmin, mapUserAdmins, User, UserForm } from './interfaces';
 import UserRow from './UserRow/UserRow';
 import { USER_COLUMNS } from './columns';
 import { useAlert } from 'react-alert';
-
-const userRows: User[] = [
-	{
-		id: '00098',
-		name: 'Federico Montero',
-		email: 'fmontero@gmail.com',
-		phone: '999888777',
-		createdAt: '10/01/2020',
-		type: 'Web',
-		status: 'Activo',
-		deletedAt: '',
-	},
-	{
-		id: '00099',
-		name: 'Gianfranco Galvez',
-		email: 'fmontero@gmail.com',
-		phone: '963852741',
-		createdAt: '11/01/2020',
-		type: 'Web',
-		status: 'Activo',
-		deletedAt: '',
-	},
-	{
-		id: '00100',
-		name: 'Mauricio Castañeda',
-		email: 'fmontero@gmail.com',
-		phone: '951753456',
-		createdAt: '10/01/2020',
-		type: 'Web',
-		status: 'Inactivo',
-		deletedAt: '15/09/2020',
-	},
-	{
-		id: '00101',
-		name: 'Brajean Junchaya',
-		email: 'fmontero@gmail.com',
-		phone: '987654321',
-		createdAt: '10/01/2020',
-		type: 'Web',
-		status: 'Inactivo',
-		deletedAt: '10/09/2020',
-	},
-	{
-		id: '00102',
-		name: 'Luis Salazar',
-		email: 'lsalazar@gmail.com',
-		phone: '999666333',
-		createdAt: '13/01/2020',
-		type: 'App Cajero',
-		status: 'Activo',
-		deletedAt: '',
-	},
-];
+import { useQuery } from 'react-query';
+import {
+	addUser,
+	deleteUser,
+	editUser,
+	getUsers,
+	resetUser,
+} from 'common/services/Admins';
+import { ADMIN_TYPE } from 'common/constants/constants';
 
 const Dealers: React.FC = () => {
 	const alert = useAlert();
 	const [loading, setLoading] = useState(false);
 	const [query, setQuery] = useState('');
 	const [showAddModal, setShowAddModal] = useState(false);
-	const [users, setUsers] = useState<User[]>([]);
 	const [filtered, setFiltered] = useState<User[]>([]);
+	const { data, status } = useQuery('dealers', getUsers);
+	const users = useMemo(() => {
+		if (data?.ok) {
+			const rows = mapUserAdmins(data?.data || []);
+			setFiltered(rows);
+			return rows;
+		}
+		return [];
+	}, [data, setFiltered]);
 
 	const onFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const newQuery = e.target.value;
@@ -84,64 +53,93 @@ const Dealers: React.FC = () => {
 		setFiltered(filtered);
 	};
 
-	useEffect(() => {
-		setLoading(true);
-		setTimeout(() => {
-			setLoading(false);
-			setUsers(userRows);
-			setFiltered(userRows);
-		}, 1500);
-	}, []);
-
 	const setAddModalVisible = (flag: boolean) => () => setShowAddModal(flag);
 
-	const onAddUser = (user: User) => {
-		const newUsers = [...users, user];
-		setUsers(newUsers);
-		setFiltered(newUsers);
-		// Perform API call
-		alert.success(
-			at('Usuario Agregado ', 'Se agregó un nuevo usuario correctamente'),
-		);
+	const onAddUser = async (user: UserForm) => {
+		const newUser = {
+			firstName: user.firstName,
+			lastName: user.lastName,
+			phone: user.phone,
+			password: user.password,
+			email: user.email,
+		};
+		const response = await addUser(newUser);
+		if (response.ok) {
+			const newAdmin = response.data || ({} as Admin);
+			const newUserAdmin = {
+				id: newAdmin.userId,
+				type: ADMIN_TYPE,
+				createdAt: newAdmin.createdAt,
+				admin: newAdmin,
+			};
+			const newData = mapUserAdmin(newUserAdmin as UserAdmin);
+			setFiltered((old) => [...old, newData]);
+			alert.success(
+				at('Usuario Agregado ', 'Se agregó un nuevo usuario correctamente'),
+			);
+		}
 	};
 
-	const onEditUser = (user: User) => {
-		const newUsers = users.map((d) => (d.id === user.id ? user : d));
-		setUsers(newUsers);
-		setFiltered(newUsers);
-		// Perform API call
-		alert.success(at('Usuario Editado ', 'Se editó un usuario correctamente'));
+	const onEditUser = async (user: UserForm) => {
+		const newUser = {
+			id: parseInt(user.innerId || '0', 10),
+			firstName: user.firstName,
+			lastName: user.lastName,
+			phone: user.phone,
+			email: user.email,
+		};
+		const response = await editUser(newUser);
+		if (response.ok) {
+			const newAdmin = response.data || ({} as Admin);
+			const newUserAdmin = {
+				id: newAdmin.userId,
+				type: ADMIN_TYPE,
+				createdAt: newAdmin.createdAt,
+				admin: newAdmin,
+			};
+			const newData = mapUserAdmin(newUserAdmin as UserAdmin);
+			const newUsers = users.map((d) => (d.id === user.id ? newData : d));
+			setFiltered(newUsers);
+			alert.success(
+				at('Usuario Editado ', 'Se editó un usuario correctamente'),
+			);
+		}
 	};
 
-	const onReestablishPassword = (id: string) => {
-		// Perform API call
-		alert.success(
-			at(
-				'Contraseña restablecida',
-				`Se restableció la contraseña del usuario con id: ${id}`,
-			),
-		);
+	const onReestablishPassword = async (id: string) => {
+		setLoading(true);
+		const response = await resetUser(id);
+		setLoading(false);
+		if (response.ok) {
+			alert.success(
+				at(
+					'Contraseña restablecida',
+					`Se restableció la contraseña del usuario con id: ${id}`,
+				),
+			);
+		}
 	};
 
-	const onAssociatePOS = (data: UserPOSForm) => {
-		// Perform API call
-		alert.success(
-			at('Usuario Asociado ', `Se asoció al usuario con el POS: ${data.pos}`),
-		);
+	const onSelectContact = async (id: string, contactId: string) => {
+		setLoading(true);
+		const response = await deleteUser(id, contactId);
+		setLoading(false);
+		if (response.ok) {
+			alert.success(
+				at('Usuario Desactivado ', 'Se desactivó un usuario correctamente'),
+			);
+		}
 	};
 
-	const onDeleteUser = (id: string) => {
-		const status = 'Inactivo';
-		const deletedAt = '14/10/2020';
-		const newUsers = users.map((d) =>
-			d.id !== id ? d : { ...d, status, deletedAt },
-		);
-		setUsers(newUsers);
-		setFiltered(newUsers);
-		// Perform API call
-		alert.success(
-			at('Usuario Desactivado ', 'Se desactivó un usuario correctamente'),
-		);
+	const onDeleteUser = async (id: string) => {
+		setLoading(true);
+		const response = await deleteUser(id);
+		setLoading(false);
+		if (response.ok) {
+			alert.success(
+				at('Usuario Desactivado ', 'Se desactivó un usuario correctamente'),
+			);
+		}
 	};
 	return (
 		<div>
@@ -149,8 +147,8 @@ const Dealers: React.FC = () => {
 				<PageTitle title='Gestión de Usuarios' />
 			</div>
 			<PageBody>
-				{loading && <PageLoader />}
-				{!loading && (
+				{(status === 'loading' || loading) && <PageLoader />}
+				{(status === 'success' || !loading) && (
 					<div>
 						<PageActionBar justifyContent='space-between'>
 							{users.length > 0 && (
@@ -177,7 +175,7 @@ const Dealers: React.FC = () => {
 										item={item}
 										onEdit={onEditUser}
 										onReestablishPassword={onReestablishPassword}
-										onAssociatePOS={onAssociatePOS}
+										onSelectContact={onSelectContact}
 										onDelete={onDeleteUser}
 									/>
 								))}

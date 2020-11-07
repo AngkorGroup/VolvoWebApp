@@ -1,24 +1,83 @@
+import { Card, UserAdmin } from 'common/utils';
+
 export interface User {
 	id: string;
-	name: string;
+	innerId: string;
+	firstName: string;
+	lastName: string;
+	clientId: string;
 	email: string;
 	phone: string;
 	createdAt: string;
 	type: string;
 	status: string;
-	deletedAt?: string;
+	password?: string;
+	archiveAt: string;
 }
+
+export type UserForm = Partial<User>;
 
 export interface UserCard {
 	number: string;
 	createdAt: string;
 	type: string;
 	currency: string;
-	balance: string;
+	balance: number;
 }
 
-export interface UserPOSForm {
-	id: string;
-	dealer: string;
-	pos: string;
-}
+export const mapUserCards = (cards: Card[]): UserCard[] => {
+	return cards.map((c) => ({
+		number: c.code,
+		createdAt: c.createdAt,
+		type: c.cardType.name,
+		currency: c.balance.currency,
+		balance: c.balance.value,
+	}));
+};
+
+export const mapUserAdmin = ({
+	id,
+	admin,
+	contact,
+	cashier,
+	type,
+	createdAt,
+}: UserAdmin): User => {
+	let user = null;
+	let clientId = '';
+	if (contact) {
+		user = contact;
+		clientId = `${contact.clientId}`;
+	} else if (!!cashier) {
+		user = cashier;
+	} else {
+		user = admin;
+	}
+	const {
+		id: innerId,
+		firstName,
+		lastName,
+		email,
+		phone,
+		status,
+		archiveAt,
+	} = user;
+
+	return {
+		id: `${id}`,
+		innerId: `${innerId}`,
+		clientId,
+		firstName,
+		lastName,
+		email,
+		phone,
+		createdAt,
+		type,
+		status,
+		archiveAt,
+	};
+};
+
+export const mapUserAdmins = (users: UserAdmin[]): User[] => {
+	return users.map(mapUserAdmin);
+};

@@ -4,37 +4,30 @@ import {
 	DialogActions,
 	DialogContent,
 	DialogTitle,
-	FormControl,
 	Grid,
-	InputLabel,
 	makeStyles,
-	MenuItem,
-	Select,
 	TextField,
 	Theme,
 } from '@material-ui/core';
 import { VolvoButton } from 'common/components';
-import { MOCKED_USER_TYPES } from 'common/utils';
 import { Field, Form, Formik } from 'formik';
 import React from 'react';
-import { User } from '../interfaces';
+import { UserForm } from '../interfaces';
 
 interface FormModalProps {
 	show: boolean;
 	title: string;
-	values?: User;
+	values?: UserForm;
 	onClose: () => void;
-	onConfirm: (data: User) => void;
+	onConfirm: (data: UserForm) => void;
 }
 
-const initialValues: User = {
-	id: '00200',
-	name: '',
+const initialValues: UserForm = {
+	firstName: '',
+	lastName: '',
 	email: '',
 	phone: '',
-	createdAt: '14/10/2020',
-	type: '',
-	status: 'Activo',
+	password: '',
 };
 
 const fieldProps = {
@@ -50,6 +43,9 @@ const useStyles = makeStyles((theme: Theme) =>
 			'& .MuiTextField-root': {
 				marginTop: theme.spacing(1),
 			},
+			'& .MuiFormControl-root': {
+				marginTop: '8px',
+			},
 		},
 	}),
 );
@@ -62,7 +58,7 @@ const FormModal: React.FC<FormModalProps> = ({
 	onConfirm,
 }: FormModalProps) => {
 	const classes = useStyles();
-	const handleSubmit = (data: User) => {
+	const handleSubmit = (data: UserForm) => {
 		onConfirm(data);
 		onClose();
 	};
@@ -74,31 +70,27 @@ const FormModal: React.FC<FormModalProps> = ({
 					<Form className={classes.root}>
 						<DialogContent>
 							<Grid container spacing={1}>
-								<Grid item xs={12}>
-									<Field name='name' label='Nombre' {...fieldProps} />
+								<Grid item xs={6}>
+									<Field name='firstName' label='Nombre' {...fieldProps} />
+								</Grid>
+								<Grid item xs={6}>
+									<Field name='lastName' label='Apellido' {...fieldProps} />
 								</Grid>
 								<Grid item xs={6}>
 									<Field name='email' label='Email' {...fieldProps} />
 								</Grid>
+								{!values && (
+									<Grid item xs={6}>
+										<Field
+											name='password'
+											label='Contraseña'
+											type='password'
+											{...fieldProps}
+										/>
+									</Grid>
+								)}
 								<Grid item xs={6}>
 									<Field name='phone' label='Teléfono' {...fieldProps} />
-								</Grid>
-								<Grid item xs={6}>
-									<FormControl variant='outlined' fullWidth size='small'>
-										<InputLabel id='typeLabel'>Tipo de Usuario</InputLabel>
-										<Field
-											labelId='typeLabel'
-											label='Tipo de Usuario'
-											name='type'
-											as={Select}
-										>
-											{MOCKED_USER_TYPES.map((d) => (
-												<MenuItem key={d.value} value={d.value}>
-													{d.label}
-												</MenuItem>
-											))}
-										</Field>
-									</FormControl>
 								</Grid>
 							</Grid>
 						</DialogContent>

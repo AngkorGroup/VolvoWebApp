@@ -5,9 +5,11 @@ import {
 	DialogTitle,
 } from '@material-ui/core';
 import { BasicTable, PageLoader, VolvoButton } from 'common/components';
-import React, { useEffect, useState } from 'react';
+import { getUserCards } from 'common/services/Admins';
+import React, { useMemo } from 'react';
+import { useQuery } from 'react-query';
 import { BATCH_COLUMNS } from '../columns';
-import { UserCard } from '../interfaces';
+import { mapUserCards } from '../interfaces';
 import CardRow from './CardRow/CardRow';
 
 interface CardsModalProps {
@@ -16,53 +18,20 @@ interface CardsModalProps {
 	onClose: () => void;
 }
 
-const batchRows: UserCard[] = [
-	{
-		number: '924201002274611260',
-		createdAt: '01/01/2021',
-		type: 'VURE',
-		currency: 'US$',
-		balance: '4,000.00',
-	},
-	{
-		number: '924201002274611275',
-		createdAt: '11/01/2021',
-		type: 'VURE',
-		currency: 'US$',
-		balance: '1,400.00',
-	},
-	{
-		number: '924201002274611297',
-		createdAt: '15/01/2021',
-		type: 'VREP',
-		currency: 'US$',
-		balance: '1,000.00',
-	},
-	{
-		number: '924201002274611231',
-		createdAt: '16/01/2021',
-		type: 'VREP',
-		currency: 'US$',
-		balance: '2,000.00',
-	},
-];
-
 const CardsModal: React.FC<CardsModalProps> = ({
 	show,
 	id,
 	onClose,
 }: CardsModalProps) => {
-	const [loading, setLoading] = useState(false);
-	const [cards, setCards] = useState<UserCard[]>([]);
-
-	useEffect(() => {
-		// perform API call with the 'id' param
-		setLoading(true);
-		setTimeout(() => {
-			setCards(batchRows);
-			setLoading(false);
-		}, 1200);
-	}, [id]);
+	//const [loading, setLoading] = useState(false);
+	//const [cards, setCards] = useState<UserCard[]>([]);
+	const { data, status } = useQuery(id, getUserCards);
+	const cards = useMemo(() => {
+		if (data?.ok) {
+			return mapUserCards(data?.data || []);
+		}
+		return [];
+	}, [data]);
 
 	return (
 		<Dialog
@@ -75,8 +44,8 @@ const CardsModal: React.FC<CardsModalProps> = ({
 		>
 			<DialogTitle id='alert-dialog-title'>Tarjetas</DialogTitle>
 			<DialogContent>
-				{loading && <PageLoader />}
-				{!loading && (
+				{status === 'loading' && <PageLoader />}
+				{status === 'success' && (
 					<BasicTable columns={BATCH_COLUMNS}>
 						<React.Fragment>
 							{cards.map((item, i: number) => (

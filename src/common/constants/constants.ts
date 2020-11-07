@@ -94,3 +94,22 @@ export const MENU_ITEMS: MenuItem[] = [
 export const CONSUME_TYPE = 'CON';
 export const S_TRANSFER_TYPE = 'STR';
 export const I_TRANSFER_TYPE = 'ITR';
+
+export const ADMIN_TYPE = 'WebAdmin';
+export const CASHIER_TYPE = 'Cashier';
+export const CONTACT_TYPE = 'Contact';
+
+export const USER_TYPES = [
+	{
+		value: ADMIN_TYPE,
+		label: ADMIN_TYPE,
+	},
+	{
+		value: CASHIER_TYPE,
+		label: CASHIER_TYPE,
+	},
+	{
+		value: CONTACT_TYPE,
+		label: CONTACT_TYPE,
+	},
+];

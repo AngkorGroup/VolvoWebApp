@@ -3,14 +3,28 @@ export interface Option {
 	label: string;
 }
 
+export interface UserAdmin {
+	id: number;
+	type: string;
+	admin: Admin;
+	contact: Contact;
+	cashier: Cashier;
+	createdAt: string;
+	archiveAt: string;
+}
+
 export interface Admin {
 	id: number;
+	userId: number;
 	firstName: string;
 	lastName: string;
 	fullName: string;
 	userName: string;
 	phone: string;
 	email: string;
+	createdAt: string;
+	status: string;
+	archiveAt: string;
 }
 
 export interface Amount {
@@ -33,6 +47,7 @@ export interface Contact {
 	clientId: number;
 	userId: number;
 	client: Client;
+	archiveAt: string;
 }
 
 export interface Client {
@@ -199,6 +214,7 @@ export interface Cashier {
 	userId: number;
 	createdAt: string;
 	archiveAt: string;
+	status: string;
 }
 
 export interface Charge {
