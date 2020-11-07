@@ -1,11 +1,11 @@
 import React, { useMemo, useState } from 'react';
 import AddIcon from '@material-ui/icons/Add';
 import {
-	BasicTable,
 	PageActionBar,
 	PageBody,
 	PageLoader,
 	PageTitle,
+	PaginatedTable,
 	TableFilter,
 	VolvoButton,
 } from 'common/components';
@@ -29,11 +29,14 @@ import {
 	resetUser,
 } from 'common/services/Admins';
 import { ADMIN_TYPE } from 'common/constants/constants';
+import { TABLE_ROWS_PER_PAGE } from 'common/constants/tableColumn';
 
 const Dealers: React.FC = () => {
 	const alert = useAlert();
 	const [loading, setLoading] = useState(false);
 	const [query, setQuery] = useState('');
+	const [page, setPage] = useState(0);
+	const [rowsPerPage, setRowsPerPage] = useState(TABLE_ROWS_PER_PAGE);
 	const [showAddModal, setShowAddModal] = useState(false);
 	const [filtered, setFiltered] = useState<User[]>([]);
 	const { data, status } = useQuery('users', getUsers);
@@ -45,6 +48,22 @@ const Dealers: React.FC = () => {
 		}
 		return [];
 	}, [data, setFiltered]);
+
+	const handleChangePage = (_: any, newPage: number) => {
+		setPage(newPage);
+	};
+
+	const handleChangeRowsPerPage = (
+		e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+	) => {
+		setRowsPerPage(parseInt(e.target.value, 10));
+		setPage(0);
+	};
+
+	const rows = useMemo(
+		() => filtered.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
+		[page, rowsPerPage, filtered],
+	);
 
 	const onFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const newQuery = e.target.value;
@@ -167,9 +186,16 @@ const Dealers: React.FC = () => {
 								onConfirm={onAddUser}
 							/>
 						</PageActionBar>
-						<BasicTable columns={USER_COLUMNS}>
+						<PaginatedTable
+							columns={USER_COLUMNS}
+							count={users.length}
+							page={page}
+							rowsPerPage={rowsPerPage}
+							onChangePage={handleChangePage}
+							onChangeRowsPerPage={handleChangeRowsPerPage}
+						>
 							<React.Fragment>
-								{filtered.map((item, i: number) => (
+								{rows.map((item, i: number) => (
 									<UserRow
 										key={i}
 										item={item}
@@ -180,7 +206,7 @@ const Dealers: React.FC = () => {
 									/>
 								))}
 							</React.Fragment>
-						</BasicTable>
+						</PaginatedTable>
 					</div>
 				)}
 			</PageBody>
