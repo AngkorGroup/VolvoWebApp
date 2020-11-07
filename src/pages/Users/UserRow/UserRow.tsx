@@ -150,7 +150,7 @@ const UserRow = ({
 						<DeleteModal
 							show={showContactModal}
 							clientId={clientId}
-							id={innerId}
+							id={id}
 							onClose={setContactModal(false)}
 							onConfirm={onSelectContact}
 						/>

@@ -5,10 +5,14 @@ import {
 } from 'common/constants/api';
 import { api, Contact } from 'common/utils';
 
-export const getContactsByClient = async (clientId: string) => {
-	return await api.get<Contact[]>(
-		`${GET_CONTACTS_BY_CLIENTS_URL}?clientId=${clientId}`,
-	);
+export const getContactsByClient = async (
+	clientId: string,
+	onlyActive?: boolean,
+) => {
+	return await api.get<Contact[]>(GET_CONTACTS_BY_CLIENTS_URL, {
+		clientId,
+		onlyActive,
+	});
 };
 
 export const getContactsByFilter = async (query?: string) => {

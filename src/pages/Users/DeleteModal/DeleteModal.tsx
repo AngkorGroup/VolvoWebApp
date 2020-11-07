@@ -38,7 +38,7 @@ const DeleteModal: React.FC<DeleteModalProps> = ({
 	onConfirm,
 }: DeleteModalProps) => {
 	const [contactId, setContactId] = useState('');
-	const { data, status } = useQuery(clientId, getContactsByClient);
+	const { data, status } = useQuery([clientId, true], getContactsByClient);
 	const contacts = useMemo(() => {
 		if (data?.ok) {
 			return parseContacts(data?.data || []).filter((d) => d.value !== id);

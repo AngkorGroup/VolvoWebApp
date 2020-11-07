@@ -13,6 +13,7 @@ export interface User {
 	status: string;
 	password?: string;
 	archiveAt: string;
+	dealerId: string;
 }
 
 export type UserForm = Partial<User>;
@@ -45,6 +46,8 @@ export const mapUserAdmin = ({
 }: UserAdmin): User => {
 	let user = null;
 	let clientId = '';
+	let dealerId = '';
+	console.log({ contact, cashier, admin });
 	if (contact) {
 		user = contact;
 		clientId = `${contact.clientId}`;
@@ -52,7 +55,10 @@ export const mapUserAdmin = ({
 		user = cashier;
 	} else {
 		user = admin;
+		dealerId = `${admin?.dealerId}`;
 	}
+	console.log({ user });
+
 	const {
 		id: innerId,
 		firstName,
@@ -75,6 +81,7 @@ export const mapUserAdmin = ({
 		type,
 		status,
 		archiveAt,
+		dealerId,
 	};
 };
 

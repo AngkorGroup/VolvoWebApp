@@ -36,7 +36,7 @@ const Dealers: React.FC = () => {
 	const [query, setQuery] = useState('');
 	const [showAddModal, setShowAddModal] = useState(false);
 	const [filtered, setFiltered] = useState<User[]>([]);
-	const { data, status } = useQuery('dealers', getUsers);
+	const { data, status } = useQuery('users', getUsers);
 	const users = useMemo(() => {
 		if (data?.ok) {
 			const rows = mapUserAdmins(data?.data || []);

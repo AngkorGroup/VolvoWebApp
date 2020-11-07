@@ -25,6 +25,7 @@ export interface Admin {
 	createdAt: string;
 	status: string;
 	archiveAt: string;
+	dealerId: number;
 }
 
 export interface Amount {
