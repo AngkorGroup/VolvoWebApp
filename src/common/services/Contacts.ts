@@ -18,3 +18,7 @@ export const getContactsByFilter = async (query?: string) => {
 export const editContact = async (contact: Partial<Contact>) => {
 	return await api.put<Contact>(`${CONTACT_URL}/${contact.id}`, contact);
 };
+
+export const makeContactPrimary = async (id: string) => {
+	return await api.post(`${CONTACT_URL}/${id}/make_primary`);
+};

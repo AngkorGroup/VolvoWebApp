@@ -1,4 +1,5 @@
 import { TableCell, TableRow } from '@material-ui/core';
+import { Amount } from 'common/components';
 import React from 'react';
 import { CardData as Card } from '../interfaces';
 
@@ -13,6 +14,7 @@ const CardDataRow = ({ item }: CardDataRowProps) => {
 		tpNumber,
 		createdAt,
 		currency,
+		amount,
 		contactName,
 		contactType,
 		contactPhone,
@@ -26,6 +28,9 @@ const CardDataRow = ({ item }: CardDataRowProps) => {
 				<TableCell>{tpNumber}</TableCell>
 				<TableCell>{createdAt}</TableCell>
 				<TableCell>{currency}</TableCell>
+				<TableCell align='right'>
+					<Amount value={amount} />
+				</TableCell>
 				<TableCell>{contactName}</TableCell>
 				<TableCell>{contactType}</TableCell>
 				<TableCell>{contactPhone}</TableCell>
