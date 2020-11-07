@@ -4,14 +4,21 @@ import {
 	DialogActions,
 	DialogContent,
 	DialogTitle,
+	FormControl,
 	Grid,
+	InputLabel,
 	makeStyles,
+	MenuItem,
+	Select,
 	TextField,
 	Theme,
 } from '@material-ui/core';
-import { VolvoButton } from 'common/components';
+import { PageLoader, VolvoButton } from 'common/components';
+import { getDealers } from 'common/services';
+import { parseDealers } from 'common/utils';
 import { Field, Form, Formik } from 'formik';
-import React from 'react';
+import React, { useMemo } from 'react';
+import { useQuery } from 'react-query';
 import { UserForm } from '../interfaces';
 
 interface FormModalProps {
@@ -28,6 +35,7 @@ const initialValues: UserForm = {
 	email: '',
 	phone: '',
 	password: '',
+	dealerId: '',
 };
 
 const fieldProps = {
@@ -58,6 +66,13 @@ const FormModal: React.FC<FormModalProps> = ({
 	onConfirm,
 }: FormModalProps) => {
 	const classes = useStyles();
+	const { data, status } = useQuery('dealers', getDealers);
+	const dealers = useMemo(() => {
+		if (data?.ok) {
+			return parseDealers(data?.data || []);
+		}
+		return [];
+	}, [data]);
 	const handleSubmit = (data: UserForm) => {
 		onConfirm(data);
 		onClose();
@@ -91,6 +106,26 @@ const FormModal: React.FC<FormModalProps> = ({
 								)}
 								<Grid item xs={6}>
 									<Field name='phone' label='Teléfono' {...fieldProps} />
+								</Grid>
+								<Grid item xs={6}>
+									{status === 'loading' && <PageLoader />}
+									{status === 'success' && (
+										<FormControl variant='outlined' fullWidth size='small'>
+											<InputLabel id='documentTypeLabel'>Dealer</InputLabel>
+											<Field
+												labelId='documentTypeLabel'
+												label='Tipo de Documento'
+												name='documentType'
+												as={Select}
+											>
+												{dealers.map((d) => (
+													<MenuItem key={d.value} value={d.value}>
+														{d.label}
+													</MenuItem>
+												))}
+											</Field>
+										</FormControl>
+									)}
 								</Grid>
 							</Grid>
 						</DialogContent>

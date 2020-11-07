@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import moment from 'moment';
 import ConsumeRow from './ConsumeRow/ConsumeRow';
 import { Consume, mapCharges } from './interface';
@@ -19,13 +19,13 @@ import {
 } from 'common/utils';
 import {
 	AsyncTypeAhead,
-	BasicTable,
 	DatePicker,
 	MultiTypeAhead,
 	PageActionBar,
 	PageBody,
 	PageLoader,
 	PageTitle,
+	PaginatedTable,
 	VolvoIconButton,
 } from 'common/components';
 import { CONSUMES_COLUMNS } from './columns';
@@ -35,6 +35,7 @@ import {
 	getDealerCharges,
 	getDealersByFilter,
 } from 'common/services';
+import { TABLE_ROWS_PER_PAGE } from 'common/constants/tableColumn';
 
 type SelectEvent = React.ChangeEvent<{
 	name?: string | undefined;
@@ -45,6 +46,8 @@ const ConsumesByDealer: React.FC = () => {
 	const [loading, setLoading] = useState(false);
 	const [loadingFilters, setLoadingFilters] = useState(false);
 	const [loadingOptions, setLoadingOptions] = useState(false);
+	const [page, setPage] = useState(0);
+	const [rowsPerPage, setRowsPerPage] = useState(TABLE_ROWS_PER_PAGE);
 	const [options, setOptions] = useState<Option[]>([]);
 	const [cashiers, setCashiers] = useState<Option[]>([]);
 	const [cardTypeList, setCardTypeList] = useState<Option[]>([]);
@@ -127,6 +130,22 @@ const ConsumesByDealer: React.FC = () => {
 		fetchCardTypes();
 	}, []);
 
+	const handleChangePage = (_: any, newPage: number) => {
+		setPage(newPage);
+	};
+
+	const handleChangeRowsPerPage = (
+		e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+	) => {
+		setRowsPerPage(parseInt(e.target.value, 10));
+		setPage(0);
+	};
+
+	const rows = useMemo(
+		() => filtered.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
+		[page, rowsPerPage, filtered],
+	);
+
 	return (
 		<div>
 			<div>
@@ -199,13 +218,20 @@ const ConsumesByDealer: React.FC = () => {
 							</PageActionBar>
 							{loading && <PageLoader />}
 							{!loading && consumes.length > 0 && (
-								<BasicTable columns={CONSUMES_COLUMNS}>
+								<PaginatedTable
+									columns={CONSUMES_COLUMNS}
+									count={consumes.length}
+									page={page}
+									rowsPerPage={rowsPerPage}
+									onChangePage={handleChangePage}
+									onChangeRowsPerPage={handleChangeRowsPerPage}
+								>
 									<React.Fragment>
-										{filtered.map((item, i: number) => (
+										{rows.map((item, i: number) => (
 											<ConsumeRow key={i} item={item} />
 										))}
 									</React.Fragment>
-								</BasicTable>
+								</PaginatedTable>
 							)}
 						</React.Fragment>
 					)}
