@@ -56,10 +56,13 @@ export const parseClients = (clients: Client[]): Option[] => {
 	}));
 };
 
+const renderContactLabel = (client: string, phone: string, fullName: string) =>
+	client ? `${client}: ${phone} - ${fullName}` : `${phone} - ${fullName}`;
+
 export const parseContacts = (contacts: Contact[]): Option[] => {
 	return contacts.map(({ id, fullName, phone, client }) => ({
 		value: `${id}`,
-		label: `${client?.name}: ${phone} - ${fullName}`,
+		label: renderContactLabel(client?.name, phone, fullName),
 	}));
 };
 

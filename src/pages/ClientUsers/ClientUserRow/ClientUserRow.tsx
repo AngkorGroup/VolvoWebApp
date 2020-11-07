@@ -35,6 +35,7 @@ const ClientUserRow = ({ item, onEdit }: ClientUserRowProps) => {
 		email,
 		firstName,
 		lastName,
+		status,
 	} = item;
 
 	const setEditModalVisible = (flag: boolean) => () => setShowEditModal(flag);
@@ -50,6 +51,7 @@ const ClientUserRow = ({ item, onEdit }: ClientUserRowProps) => {
 				<TableCell>
 					{firstName} {lastName}
 				</TableCell>
+				<TableCell>{status}</TableCell>
 				<TableCell>
 					<div className={classes.actionButtons}>
 						<VolvoIconButton

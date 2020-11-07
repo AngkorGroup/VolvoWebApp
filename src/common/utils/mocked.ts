@@ -103,18 +103,3 @@ export const MOCKED_CARD_TYPES_MULTITYPEAHEAD = [
 		label: 'VOLVO REPUESTOS',
 	},
 ];
-
-export const MOCKED_USER_TYPES = [
-	{
-		value: 'Web',
-		label: 'Web',
-	},
-	{
-		value: 'App Cajero',
-		label: 'App Cajero',
-	},
-	{
-		value: 'App Cliente',
-		label: 'App Cliente',
-	},
-];

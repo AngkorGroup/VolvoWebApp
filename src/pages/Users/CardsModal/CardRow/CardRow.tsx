@@ -1,4 +1,5 @@
 import { TableCell, TableRow } from '@material-ui/core';
+import { Amount } from 'common/components';
 import React from 'react';
 import { UserCard } from '../../interfaces';
 
@@ -14,7 +15,9 @@ const CardRow = ({ item }: CardRowProps) => {
 			<TableCell>{createdAt}</TableCell>
 			<TableCell>{type}</TableCell>
 			<TableCell>{currency}</TableCell>
-			<TableCell align='right'>{balance}</TableCell>
+			<TableCell align='right'>
+				<Amount value={balance} />
+			</TableCell>
 		</TableRow>
 	);
 };
