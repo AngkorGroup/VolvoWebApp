@@ -16,6 +16,9 @@ export const LOAD_COLUMNS = [
 ];
 
 export const ERROR_COLUMNS = [
-	{ title: 'Línea', props: { align: COLUMN_CENTER } },
+	{ title: 'Fila', props: { align: COLUMN_CENTER } },
 	{ title: 'Error' },
+	{ title: 'Archivo' },
+	{ title: 'Línea' },
+	{ title: 'Fecha' },
 ];

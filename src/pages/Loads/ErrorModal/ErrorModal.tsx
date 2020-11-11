@@ -25,7 +25,7 @@ const ErrorModal: React.FC<ErrorModalProps> = ({
 	return (
 		<Dialog
 			fullWidth
-			maxWidth='md'
+			maxWidth='xl'
 			open={show}
 			onClose={onClose}
 			aria-labelledby='alert-dialog-title'
@@ -39,6 +39,9 @@ const ErrorModal: React.FC<ErrorModalProps> = ({
 							<TableRow key={i}>
 								<TableCell align='center'>{item.rowIndex}</TableCell>
 								<TableCell>{item.errorMessage}</TableCell>
+								<TableCell>{item.fileName}</TableCell>
+								<TableCell>{item.lineContent}</TableCell>
+								<TableCell>{item.createdAt}</TableCell>
 							</TableRow>
 						))}
 					</React.Fragment>
