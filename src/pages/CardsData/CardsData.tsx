@@ -14,7 +14,7 @@ import {
 	getContactsByFilter,
 } from 'common/services';
 import { filterRows, Option, parseClients, parseContacts } from 'common/utils';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import CardDataRow from './CardDataRow/CardDataRow';
 import { CARD_COLUMNS } from './columns';
 import { CardData, mapCardData } from './interfaces';
@@ -28,6 +28,30 @@ const CardsData: React.FC = () => {
 	const [query, setQuery] = useState('');
 	const [cards, setCards] = useState<CardData[]>([]);
 	const [filtered, setFiltered] = useState<CardData[]>([]);
+
+	useEffect(() => {
+		setLoadingClients(true);
+		const fetchClients = async () => {
+			const response = await getClients();
+			setLoadingClients(false);
+			if (response.ok) {
+				const data = parseClients(response.data || []);
+				setClients(data);
+			}
+		};
+		setLoadingContacts(true);
+		const fetchContacts = async () => {
+			const response = await getContactsByFilter();
+			setLoadingContacts(false);
+			if (response.ok) {
+				const data = parseContacts(response.data || []);
+				setContacts(data);
+			}
+		};
+
+		fetchClients();
+		fetchContacts();
+	}, []);
 
 	const onFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const newQuery = e.target.value;

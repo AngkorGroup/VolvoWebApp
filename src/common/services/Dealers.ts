@@ -5,7 +5,7 @@ export const getDealers = async () => {
 	return await api.get<Dealer[]>(DEALERS_URL);
 };
 
-export const getDealersByFilter = async (query: string) => {
+export const getDealersByFilter = async (query?: string) => {
 	return await api.get<Dealer[]>(DEALERS_BY_FILTER_URL, { query });
 };
 
