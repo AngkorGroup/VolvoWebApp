@@ -1,5 +1,5 @@
 import { makeStyles } from '@material-ui/core';
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import {
 	BasicTable,
 	CustomTab,
@@ -55,6 +55,20 @@ const ClientBalance: React.FC = () => {
 	const onTabChange = (_: any, newTab: number) => setTab(newTab);
 	const [expPage, setExpPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(TABLE_ROWS_PER_PAGE);
+
+	useEffect(() => {
+		setLoadingClients(true);
+		const fetchClients = async () => {
+			const response = await getClients();
+			setLoadingClients(false);
+			if (response.ok) {
+				const data = parseClients(response.data || []);
+				setClients(data);
+			}
+		};
+
+		fetchClients();
+	}, []);
 
 	const handleChangePage = (
 		e: React.MouseEvent<HTMLButtonElement> | null,

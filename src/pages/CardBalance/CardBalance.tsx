@@ -20,7 +20,7 @@ import {
 	getMovementsByCard,
 } from 'common/services';
 import { Card, filterRows, Option, parseCards } from 'common/utils';
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { EXPIRATION_COLUMNS, MOVEMENT_COLUMNS } from './columns';
 import ExpirationRow from './ExpirationRow/ExpirationRow';
 import {
@@ -70,6 +70,21 @@ const CardBalance: React.FC = () => {
 	const [expPage, setExpPage] = useState(0);
 	const [expRowsPerPage, setExpRowsPerPage] = useState(TABLE_ROWS_PER_PAGE);
 	const onTabChange = (_: any, newTab: number) => setTab(newTab);
+
+	useEffect(() => {
+		setLoadingOptions(true);
+		const fetchCards = async () => {
+			const response = await getCardsByFilter();
+			if (response.ok) {
+				const data = parseCards(response.data || []);
+				setCards(response.data || []);
+				setOptions(data);
+			}
+			setLoadingOptions(false);
+		};
+
+		fetchCards();
+	}, []);
 
 	const onMovChangePage = (_: any, newPage: number) => {
 		setMovPage(newPage);

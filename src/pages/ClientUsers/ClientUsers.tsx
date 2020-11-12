@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
 	AsyncTypeAhead,
 	BasicTable,
@@ -30,6 +30,20 @@ const ClientUsers: React.FC = () => {
 	const [clientUsers, setClientUsers] = useState<ClientUser[] | null>(null);
 	const [filtered, setFiltered] = useState<ClientUser[]>([]);
 	const alert = useAlert();
+
+	useEffect(() => {
+		setLoadingOptions(true);
+		const fetchClients = async () => {
+			const response = await getClients();
+			setLoadingOptions(false);
+			if (response.ok) {
+				const data = parseClients(response.data || []);
+				setClients(data);
+			}
+		};
+
+		fetchClients();
+	}, []);
 
 	const onFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const newQuery = e.target.value;

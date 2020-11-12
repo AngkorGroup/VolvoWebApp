@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import AddIcon from '@material-ui/icons/Add';
 import moment from 'moment';
 import {
@@ -42,6 +42,20 @@ const POS: React.FC = () => {
 	const [posList, setPOSList] = useState<POSType[]>([]);
 	const [filtered, setFiltered] = useState<POSType[]>([]);
 	const alert = useAlert();
+
+	useEffect(() => {
+		setLoadingOptions(true);
+		const fetchDealers = async () => {
+			const response = await getDealersByFilter();
+			if (response.ok) {
+				const data = response.data || [];
+				setDealers(data);
+			}
+			setLoadingOptions(false);
+		};
+
+		fetchDealers();
+	}, []);
 
 	const onFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const newQuery = e.target.value;

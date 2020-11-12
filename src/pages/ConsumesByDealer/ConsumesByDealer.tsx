@@ -127,6 +127,18 @@ const ConsumesByDealer: React.FC = () => {
 				setCardTypes(data);
 			}
 		};
+
+		setLoadingOptions(true);
+		const fetchDealers = async () => {
+			const response = await getDealersByFilter();
+			if (response.ok) {
+				const data = parseDealers(response.data || []);
+				setOptions(data);
+			}
+			setLoadingOptions(true);
+		};
+
+		fetchDealers();
 		fetchCardTypes();
 	}, []);
 
