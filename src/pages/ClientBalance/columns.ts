@@ -11,14 +11,14 @@ export const CARD_COLUMNS = [
 ];
 
 export const EXPIRATION_COLUMNS = [
-	{ title: 'Tipo de Tarjeta' },
-	{ title: 'Número de Tarjeta' },
-	{ title: 'Contacto' },
-	{ title: 'Teléfono' },
-	{ title: 'Lote' },
-	{ title: 'Vencimiento' },
-	{ title: 'Moneda' },
-	{ title: 'Saldo', props: { align: COLUMN_CENTER } },
+	{ title: 'Tipo de Tarjeta', value: 'cardType' },
+	{ title: 'Número de Tarjeta', value: 'cardNumber' },
+	{ title: 'Contacto', value: 'contactName' },
+	{ title: 'Teléfono', value: 'contactPhone' },
+	{ title: 'Lote', value: 'batch' },
+	{ title: 'Vencimiento', value: 'expiration' },
+	{ title: 'Moneda', value: 'currency' },
+	{ title: 'Saldo', value: 'balance', props: { align: COLUMN_CENTER } },
 	ACTIONS_COLUMN,
 ];
 

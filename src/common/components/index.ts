@@ -6,6 +6,7 @@ export { default as ConfirmationModal } from './ConfirmationModal/ConfirmationMo
 export { default as CustomTab } from './CustomTab/CustomTab';
 export { default as CustomTabs } from './CustomTabs/CustomTabs';
 export { default as DatePicker } from './DatePicker/DatePicker';
+export { default as DownloadExcel } from './DownloadExcel/DownloadExcel';
 export { default as EmptyState } from './EmptyState/EmptyState';
 export { default as FilePicker } from './FilePicker/FilePicker';
 export { default as GenericTable } from './GenericTable/GenericTable';

@@ -4,21 +4,20 @@ import {
 	Table,
 	TableBody,
 	TableCell,
-	TableCellProps,
 	TableContainer,
 	TableFooter,
 	TableHead,
 	TablePagination,
 	TableRow,
 } from '@material-ui/core';
-import { TABLE_ROWS_OPTIONS } from 'common/constants/tableColumn';
-import React, { ReactNode } from 'react';
+import {
+	ACTIONS_LABEL,
+	TableColumn,
+	TABLE_ROWS_OPTIONS,
+} from 'common/constants';
+import React from 'react';
+import DownloadExcel from '../DownloadExcel/DownloadExcel';
 import TablePaginationActions from './TablePaginationActions/TablePaginationActions';
-
-interface Column {
-	title: string | ReactNode;
-	props?: TableCellProps;
-}
 
 interface PaginatedTableProps {
 	tableClassname?: string;
@@ -26,15 +25,23 @@ interface PaginatedTableProps {
 	page: number;
 	rowsPerPage: number;
 	count: number;
-	columns: Column[];
+	columns: TableColumn[];
 	children: JSX.Element;
 	onChangePage: any;
 	onChangeRowsPerPage: any;
+	name?: string;
+	data?: any[];
+	exportExcel?: boolean;
 }
 
 const useStyles = makeStyles({
 	table: {
 		minWidth: 650,
+	},
+	exportButtons: {
+		display: 'flex',
+		justifyContent: 'flex-start',
+		marginBottom: '5px',
 	},
 });
 
@@ -48,42 +55,57 @@ const PaginatedTable: React.FC<PaginatedTableProps> = ({
 	children,
 	onChangePage,
 	onChangeRowsPerPage,
+	name,
+	data,
+	exportExcel,
 }: PaginatedTableProps) => {
 	const classes = useStyles();
+	const excelColumns = columns.filter((col) => col.title !== ACTIONS_LABEL);
 
 	return (
-		<TableContainer className={tableClassname} component={Paper}>
-			<Table className={classes.table} size={size} aria-label='tabla paginada'>
-				<TableHead>
-					<TableRow>
-						{columns.map((col: Column, i: number) => (
-							<TableCell key={i} {...(col.props || {})}>
-								{col.title}
-							</TableCell>
-						))}
-					</TableRow>
-				</TableHead>
-				<TableBody>{children}</TableBody>
-				<TableFooter>
-					<TableRow>
-						<TablePagination
-							rowsPerPageOptions={TABLE_ROWS_OPTIONS}
-							count={count}
-							rowsPerPage={rowsPerPage}
-							page={page}
-							SelectProps={{
-								inputProps: { 'aria-label': 'filas por página' },
-								native: true,
-							}}
-							labelRowsPerPage='Filas por página'
-							onChangePage={onChangePage}
-							onChangeRowsPerPage={onChangeRowsPerPage}
-							ActionsComponent={TablePaginationActions}
-						/>
-					</TableRow>
-				</TableFooter>
-			</Table>
-		</TableContainer>
+		<React.Fragment>
+			{exportExcel && !!data && !!name && (
+				<div className={classes.exportButtons}>
+					<DownloadExcel name={name} columns={excelColumns} data={data} />
+				</div>
+			)}
+			<TableContainer className={tableClassname} component={Paper}>
+				<Table
+					className={classes.table}
+					size={size}
+					aria-label='tabla paginada'
+				>
+					<TableHead>
+						<TableRow>
+							{columns.map((col: TableColumn, i: number) => (
+								<TableCell key={i} {...(col.props || {})}>
+									{col.title}
+								</TableCell>
+							))}
+						</TableRow>
+					</TableHead>
+					<TableBody>{children}</TableBody>
+					<TableFooter>
+						<TableRow>
+							<TablePagination
+								rowsPerPageOptions={TABLE_ROWS_OPTIONS}
+								count={count}
+								rowsPerPage={rowsPerPage}
+								page={page}
+								SelectProps={{
+									inputProps: { 'aria-label': 'filas por página' },
+									native: true,
+								}}
+								labelRowsPerPage='Filas por página'
+								onChangePage={onChangePage}
+								onChangeRowsPerPage={onChangeRowsPerPage}
+								ActionsComponent={TablePaginationActions}
+							/>
+						</TableRow>
+					</TableFooter>
+				</Table>
+			</TableContainer>
+		</React.Fragment>
 	);
 };
 

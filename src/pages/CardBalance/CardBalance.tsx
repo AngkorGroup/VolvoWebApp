@@ -225,6 +225,9 @@ const CardBalance: React.FC = () => {
 									rowsPerPage={movRowsPerPage}
 									onChangePage={onMovChangePage}
 									onChangeRowsPerPage={onMovChangeRowsPerPage}
+									name={`Saldos Tarjeta Movimientos ${card?.code}`}
+									data={movements}
+									exportExcel
 								>
 									<React.Fragment>
 										{movRows.map((item, i: number) => (
@@ -249,6 +252,9 @@ const CardBalance: React.FC = () => {
 									rowsPerPage={expRowsPerPage}
 									onChangePage={onExpChangePage}
 									onChangeRowsPerPage={onExpChangeRowsPerPage}
+									name={`Saldos Tarjeta Vencimientos ${card?.code}`}
+									data={expirations}
+									exportExcel
 								>
 									<React.Fragment>
 										{expRows.map((item, i: number) => (
