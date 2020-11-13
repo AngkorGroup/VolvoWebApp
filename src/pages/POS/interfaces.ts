@@ -2,6 +2,7 @@ import { Cashier } from 'common/utils';
 
 export interface POS {
 	id: string;
+	userId: string;
 	dealer: string;
 	imei: string;
 	tpCode: string;
@@ -16,6 +17,7 @@ export type POSForm = Partial<POS>;
 
 export const mapCashier = (cashier: Cashier): POS => ({
 	id: `${cashier.id}`,
+	userId: `${cashier.userId}`,
 	dealer: cashier.dealer?.name,
 	imei: cashier.imei,
 	tpCode: cashier.tpCode,

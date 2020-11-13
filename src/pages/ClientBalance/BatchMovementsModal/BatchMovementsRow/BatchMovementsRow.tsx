@@ -2,8 +2,9 @@ import { TableCell, TableRow } from '@material-ui/core';
 import React, { useState } from 'react';
 import ReceiptIcon from '@material-ui/icons/Receipt';
 import { Amount, ImageModal, VolvoIconButton } from 'common/components';
+import CancelIcon from '@material-ui/icons/Cancel';
 import { BatchMovementRow } from '../../interfaces';
-import { getPendingStatus } from 'common/utils';
+import { getKeyStatus } from 'common/utils';
 
 interface BatchMovementsRowProps {
 	item: BatchMovementRow;
@@ -25,7 +26,7 @@ const BatchMovementsRow = ({ item }: BatchMovementsRowProps) => {
 		chargeStatus,
 		type,
 	} = item;
-	const pendingStatus = getPendingStatus(chargeStatus);
+	const status = getKeyStatus(chargeStatus);
 	return (
 		<TableRow>
 			<TableCell>{type}</TableCell>
@@ -33,7 +34,8 @@ const BatchMovementsRow = ({ item }: BatchMovementsRowProps) => {
 			<TableCell>{date}</TableCell>
 			<TableCell>{currency}</TableCell>
 			<TableCell align='right'>
-				{pendingStatus && `(${pendingStatus}) `}
+				{status === 'P' && `(${status}) `}
+				{status === 'R' && <CancelIcon color='error' titleAccess='Rechazado' />}
 				<Amount value={amount} />
 			</TableCell>
 			<TableCell>{dealer}</TableCell>

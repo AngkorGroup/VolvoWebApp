@@ -100,7 +100,7 @@ export const mapExpirations = (expirations: CardBatch[]): Expiration[] => {
 export const mapExpirationMovements = (
 	movements: BatchMovement[],
 ): BatchMovementRow[] => {
-	return movements.map(({ movement, batchId }) => {
+	return movements.map(({ movement, batchId, amount }) => {
 		const { charge, transfer, type } = movement || {};
 		let voucherURL = '';
 		let number = '';
@@ -115,8 +115,8 @@ export const mapExpirationMovements = (
 			cardNumber: movement?.card?.code,
 			number,
 			date: movement?.createdAt,
-			currency: movement?.amount.currency,
-			amount: movement?.amount.value,
+			currency: amount.currency,
+			amount: amount.value,
 			dealer: charge?.cashier?.dealer?.name,
 			cashier: charge?.cashier?.fullName,
 			batch: `${batchId}`,
