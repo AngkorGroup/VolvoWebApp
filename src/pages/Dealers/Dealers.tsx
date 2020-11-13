@@ -3,6 +3,7 @@ import AddIcon from '@material-ui/icons/Add';
 import moment from 'moment';
 import {
 	BasicTable,
+	OnlyActiveFilter,
 	PageActionBar,
 	PageBody,
 	PageLoader,
@@ -27,9 +28,10 @@ import { useAlert } from 'react-alert';
 const Dealers: React.FC = () => {
 	const alert = useAlert();
 	const [query, setQuery] = useState('');
+	const [onlyActive, setOnlyActive] = useState(false);
 	const [showAddModal, setShowAddModal] = useState(false);
 	const [filtered, setFiltered] = useState<TableDealer[]>([]);
-	const { data, status } = useQuery('dealers', getDealers);
+	const { data, status } = useQuery([onlyActive], getDealers);
 	const dealers = useMemo(() => {
 		if (data?.ok) {
 			const rows = mapDealers(data?.data || []);
@@ -38,6 +40,10 @@ const Dealers: React.FC = () => {
 		}
 		return [];
 	}, [data, setFiltered]);
+
+	const onOnlyActiveChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+		setOnlyActive(e.target.checked);
+	};
 
 	const onFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const newQuery = e.target.value;
@@ -117,7 +123,13 @@ const Dealers: React.FC = () => {
 					<div>
 						<PageActionBar justifyContent='space-between'>
 							{dealers.length > 0 && (
-								<TableFilter value={query} onChange={onFilterChange} />
+								<div>
+									<TableFilter value={query} onChange={onFilterChange} />
+									<OnlyActiveFilter
+										checked={onlyActive}
+										onChange={onOnlyActiveChange}
+									/>
+								</div>
 							)}
 							<VolvoButton
 								text='Agregar'

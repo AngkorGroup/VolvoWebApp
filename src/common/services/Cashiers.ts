@@ -1,8 +1,8 @@
 import { CASHIERS_URL } from 'common/constants/api';
 import { api, Cashier } from 'common/utils';
 
-export const getCashiers = async (dealerId: string) => {
-	return await api.get<Cashier[]>(CASHIERS_URL, { dealerId });
+export const getCashiers = async (dealerId: string, onlyActive?: boolean) => {
+	return await api.get<Cashier[]>(CASHIERS_URL, { dealerId, onlyActive });
 };
 
 export const addCashier = async (dealer: Partial<Cashier>) => {

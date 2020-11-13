@@ -10,6 +10,7 @@ export { default as EmptyState } from './EmptyState/EmptyState';
 export { default as FilePicker } from './FilePicker/FilePicker';
 export { default as ImageModal } from './ImageModal/ImageModal';
 export { default as MultiTypeAhead } from './MultiTypeAhead/MultiTypeAhead';
+export { default as OnlyActiveFilter } from './OnlyActiveFilter/OnlyActiveFilter';
 export { default as PageActionBar } from './PageActionBar/PageActionBar';
 export { default as PageBody } from './PageBody/PageBody';
 export { default as PageLoader } from './PageLoader/PageLoader';

@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import AddIcon from '@material-ui/icons/Add';
 import {
+	OnlyActiveFilter,
 	PageActionBar,
 	PageBody,
 	PageLoader,
@@ -31,15 +32,16 @@ import {
 import { ADMIN_TYPE } from 'common/constants/constants';
 import { TABLE_ROWS_PER_PAGE } from 'common/constants/tableColumn';
 
-const Dealers: React.FC = () => {
+const Users: React.FC = () => {
 	const alert = useAlert();
 	const [loading, setLoading] = useState(false);
 	const [query, setQuery] = useState('');
 	const [page, setPage] = useState(0);
+	const [onlyActive, setOnlyActive] = useState(false);
 	const [rowsPerPage, setRowsPerPage] = useState(TABLE_ROWS_PER_PAGE);
 	const [showAddModal, setShowAddModal] = useState(false);
 	const [filtered, setFiltered] = useState<User[]>([]);
-	const { data, status } = useQuery('users', getUsers);
+	const { data, status } = useQuery(['getUsers', onlyActive], getUsers);
 	const users = useMemo(() => {
 		if (data?.ok) {
 			const rows = mapUserAdmins(data?.data || []);
@@ -48,6 +50,10 @@ const Dealers: React.FC = () => {
 		}
 		return [];
 	}, [data, setFiltered]);
+
+	const onOnlyActiveChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		setOnlyActive(e.target.checked);
+	};
 
 	const handleChangePage = (_: any, newPage: number) => {
 		setPage(newPage);
@@ -169,9 +175,17 @@ const Dealers: React.FC = () => {
 				{(status === 'loading' || loading) && <PageLoader />}
 				{(status === 'success' || !loading) && (
 					<div>
-						<PageActionBar justifyContent='space-between'>
+						<PageActionBar
+							justifyContent={users.length === 0 ? 'flex-end' : 'space-between'}
+						>
 							{users.length > 0 && (
-								<TableFilter value={query} onChange={onFilterChange} />
+								<div>
+									<TableFilter value={query} onChange={onFilterChange} />
+									<OnlyActiveFilter
+										checked={onlyActive}
+										onChange={onOnlyActiveChange}
+									/>
+								</div>
 							)}
 							<VolvoButton
 								text='Agregar'
@@ -214,4 +228,4 @@ const Dealers: React.FC = () => {
 	);
 };
 
-export default Dealers;
+export default Users;

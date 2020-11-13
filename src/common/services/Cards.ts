@@ -11,11 +11,18 @@ export const getCardsByFilter = async (query?: string) => {
 	return await api.get<Card[]>(`${CARDS_BY_FILTER}${pathQuery}`);
 };
 
-export const getCardsByClient = (byContact?: boolean) => async (
-	param: string,
+export const getCardsByClient = async (
+	clientId: string,
+	onlyActive?: boolean,
 ) => {
-	const pathParam = byContact ? { contactId: param } : { clientId: param };
-	return await api.get<Card[]>(CARDS_BY_CLIENT, pathParam);
+	return await api.get<Card[]>(CARDS_BY_CLIENT, { clientId, onlyActive });
+};
+
+export const getCardsByContact = async (
+	contactId: string,
+	onlyActive?: boolean,
+) => {
+	return await api.get<Card[]>(CARDS_BY_CLIENT, { contactId, onlyActive });
 };
 
 export const getCardsByClientCardType = async (

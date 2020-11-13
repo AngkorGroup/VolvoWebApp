@@ -4,6 +4,7 @@ import moment from 'moment';
 import {
 	AsyncTypeAhead,
 	BasicTable,
+	OnlyActiveFilter,
 	PageActionBar,
 	PageBody,
 	PageLoader,
@@ -40,13 +41,18 @@ const POS: React.FC = () => {
 	const [dealers, setDealers] = useState<Dealer[]>([]);
 	const [query, setQuery] = useState('');
 	const [showAddModal, setShowAddModal] = useState(false);
+	const [onlyActive, setOnlyActive] = useState(false);
 	const [posList, setPOSList] = useState<POSType[]>([]);
 	const [filtered, setFiltered] = useState<POSType[]>([]);
 	const alert = useAlert();
 
+	const onOnlyActiveChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+		setOnlyActive(e.target.checked);
+	};
+
 	useEffect(() => {
-		setLoadingOptions(true);
 		const fetchDealers = async () => {
+			setLoadingOptions(true);
 			const response = await getDealersByFilter();
 			if (response.ok) {
 				const data = response.data || [];
@@ -58,6 +64,24 @@ const POS: React.FC = () => {
 		fetchDealers();
 	}, []);
 
+	useEffect(() => {
+		const fetchCashiers = async () => {
+			if (dealer) {
+				setLoading(true);
+				const dealerId = `${dealer.id}`;
+				const response = await getCashiers(dealerId, onlyActive);
+				if (response.ok) {
+					const rows = mapCashiers(response.data || []);
+					setPOSList(rows);
+					setFiltered(rows);
+				}
+				setLoading(false);
+			}
+		};
+
+		fetchCashiers();
+	}, [onlyActive, dealer]);
+
 	const onFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const newQuery = e.target.value;
 		const filtered = filterRows(newQuery, posList);
@@ -65,18 +89,10 @@ const POS: React.FC = () => {
 		setFiltered(filtered);
 	};
 
-	const onDealerChange = async (_: any, newValue: string | Option) => {
-		setLoading(true);
+	const onDealerChange = (_: any, newValue: string | Option) => {
 		const dealerId = (newValue as Option).value;
 		const selectedDealer = dealers.find((d) => `${d.id}` === dealerId) || null;
 		setDealer(selectedDealer);
-		const response = await getCashiers(dealerId);
-		if (response.ok) {
-			const rows = mapCashiers(response.data || []);
-			setPOSList(rows);
-			setFiltered(rows);
-		}
-		setLoading(false);
 	};
 
 	const setAddModalVisible = (flag: boolean) => () => setShowAddModal(flag);
@@ -181,7 +197,13 @@ const POS: React.FC = () => {
 					<div>
 						<PageActionBar justifyContent='space-between'>
 							{posList.length > 0 && (
-								<TableFilter value={query} onChange={onFilterChange} />
+								<div>
+									<TableFilter value={query} onChange={onFilterChange} />
+									<OnlyActiveFilter
+										checked={onlyActive}
+										onChange={onOnlyActiveChange}
+									/>
+								</div>
 							)}
 							{posList.length < (dealer?.maxCashiers || 0) && (
 								<React.Fragment>
