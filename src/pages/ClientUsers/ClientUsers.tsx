@@ -3,6 +3,7 @@ import {
 	AsyncTypeAhead,
 	BasicTable,
 	EmptyState,
+	OnlyActiveFilter,
 	PageActionBar,
 	PageBody,
 	PageLoader,
@@ -25,11 +26,34 @@ import { useAlert } from 'react-alert';
 const ClientUsers: React.FC = () => {
 	const [loading, setLoading] = useState(false);
 	const [loadingOptions, setLoadingOptions] = useState(false);
+	const [selectedClient, setSelectedClient] = useState('');
+	const [onlyActive, setOnlyActive] = useState(false);
 	const [clients, setClients] = useState<Option[]>([]);
 	const [query, setQuery] = useState('');
 	const [clientUsers, setClientUsers] = useState<ClientUser[] | null>(null);
 	const [filtered, setFiltered] = useState<ClientUser[]>([]);
 	const alert = useAlert();
+
+	const onOnlyActiveChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		setOnlyActive(e.target.checked);
+	};
+
+	useEffect(() => {
+		const fetchContacts = async () => {
+			if (selectedClient) {
+				setLoading(true);
+				const response = await getContactsByClient(selectedClient, onlyActive);
+				if (response.ok) {
+					const data = mapContacts(response.data || []);
+					setClientUsers(data);
+					setFiltered(data);
+				}
+				setLoading(false);
+			}
+		};
+
+		fetchContacts();
+	}, [selectedClient, onlyActive]);
 
 	useEffect(() => {
 		setLoadingOptions(true);
@@ -62,16 +86,8 @@ const ClientUsers: React.FC = () => {
 		setLoadingOptions(false);
 	};
 
-	const onClientChange = async (_: any, newValue: string | Option) => {
-		setLoading(true);
-		const clientId = (newValue as Option).value;
-		const response = await getContactsByClient(clientId);
-		if (response.ok) {
-			const data = mapContacts(response.data || []);
-			setClientUsers(data);
-			setFiltered(data);
-		}
-		setLoading(false);
+	const onClientChange = (_: any, newValue: string | Option) => {
+		setSelectedClient((newValue as Option).value);
 	};
 
 	const onTurnUser = async (id: string) => {
@@ -118,6 +134,10 @@ const ClientUsers: React.FC = () => {
 					<React.Fragment>
 						<PageActionBar>
 							<TableFilter value={query} onChange={onFilterChange} />
+							<OnlyActiveFilter
+								checked={onlyActive}
+								onChange={onOnlyActiveChange}
+							/>
 						</PageActionBar>
 						<BasicTable columns={CLIENT_USER_COLUMNS}>
 							<React.Fragment>

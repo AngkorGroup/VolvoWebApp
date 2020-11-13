@@ -1,8 +1,8 @@
 import { CARD_TYPES_URL } from 'common/constants/api';
 import { api, CardType } from 'common/utils';
 
-export const getCardTypes = async () => {
-	return await api.get<CardType[]>(CARD_TYPES_URL);
+export const getCardTypes = async (onlyActive?: boolean) => {
+	return await api.get<CardType[]>(CARD_TYPES_URL, { onlyActive });
 };
 
 export const addCardType = async (cardType: Partial<CardType>) => {

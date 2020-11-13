@@ -4,6 +4,7 @@ import { createStyles, makeStyles } from '@material-ui/core';
 import { useQuery } from 'react-query';
 import {
 	BasicTable,
+	OnlyActiveFilter,
 	PageActionBar,
 	PageBody,
 	PageLoader,
@@ -29,16 +30,23 @@ const Clients: React.FC = () => {
 	const classes = useStyles();
 	const inputRef = useRef<HTMLInputElement>(null);
 	const [query, setQuery] = useState('');
+	const [onlyActive, setOnlyActive] = useState(false);
 	const [filtered, setFiltered] = useState<TableClient[]>([]);
 	const showUpload = false;
-
-	const { data, status } = useQuery(null, getClientsByPagination);
+	const { data, status } = useQuery(
+		['getClientsByPagination', '', onlyActive],
+		getClientsByPagination,
+	);
 	const clients = useMemo(() => {
 		if (data?.ok) {
 			return mapClients(data?.data || []);
 		}
 		return [];
 	}, [data]);
+
+	const onOnlyActiveChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		setOnlyActive(e.target.checked);
+	};
 
 	const onFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const newQuery = e.target.value;
@@ -64,7 +72,13 @@ const Clients: React.FC = () => {
 			{status === 'success' && clients.length > 0 && (
 				<PageBody>
 					<PageActionBar justifyContent='space-between'>
-						<TableFilter value={query} onChange={onFilterChange} />
+						<div>
+							<TableFilter value={query} onChange={onFilterChange} />
+							<OnlyActiveFilter
+								checked={onlyActive}
+								onChange={onOnlyActiveChange}
+							/>
+						</div>
 						<input
 							ref={inputRef}
 							className={classes.input}

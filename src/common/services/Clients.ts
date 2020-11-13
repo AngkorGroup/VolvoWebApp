@@ -13,8 +13,15 @@ export const getClients = async (query?: string) => {
 	return response;
 };
 
-export const getClientsByPagination = async (query?: string) => {
-	return await api.get<Client[]>(GET_CLIENT_BY_PAGINATION_URL, { query });
+export const getClientsByPagination = async (
+	key: string,
+	query?: string,
+	onlyActive?: boolean,
+) => {
+	return await api.get<Client[]>(GET_CLIENT_BY_PAGINATION_URL, {
+		query,
+		onlyActive,
+	});
 };
 
 export const getClientCardTypes = async (clientId: string) => {

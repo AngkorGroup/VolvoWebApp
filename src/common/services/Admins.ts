@@ -1,8 +1,8 @@
 import { USERS_URL, USER_ADMIN_URL } from 'common/constants/api';
 import { api, UserAdmin, Admin, Card } from 'common/utils';
 
-export const getUsers = async () => {
-	return await api.get<UserAdmin[]>(USERS_URL);
+export const getUsers = async (key: string, onlyActive?: boolean) => {
+	return await api.get<UserAdmin[]>(USERS_URL, { onlyActive });
 };
 
 export const addUser = async (user: Partial<Admin>) => {

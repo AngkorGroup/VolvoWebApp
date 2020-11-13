@@ -3,6 +3,7 @@ import moment from 'moment';
 import AddIcon from '@material-ui/icons/Add';
 import {
 	BasicTable,
+	OnlyActiveFilter,
 	PageActionBar,
 	PageBody,
 	PageLoader,
@@ -33,8 +34,9 @@ const CardTypes: React.FC = () => {
 	const alert = useAlert();
 	const [query, setQuery] = useState('');
 	const [showAddModal, setShowAddModal] = useState(false);
+	const [onlyActive, setOnlyActive] = useState(false);
 	const [filtered, setFiltered] = useState<TableCardType[]>([]);
-	const { data, status } = useQuery('cardTypes', getCardTypes);
+	const { data, status } = useQuery([onlyActive], getCardTypes);
 	const cardTypes = useMemo(() => {
 		if (data?.ok) {
 			const rows = mapCardTypes(data?.data || []);
@@ -43,6 +45,10 @@ const CardTypes: React.FC = () => {
 		}
 		return [];
 	}, [data, setFiltered]);
+
+	const onOnlyActiveChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+		setOnlyActive(e.target.checked);
+	};
 
 	const onFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const newQuery = e.target.value;
@@ -126,7 +132,13 @@ const CardTypes: React.FC = () => {
 					<div>
 						<PageActionBar justifyContent='space-between'>
 							{cardTypes.length > 0 && (
-								<TableFilter value={query} onChange={onFilterChange} />
+								<div>
+									<TableFilter value={query} onChange={onFilterChange} />
+									<OnlyActiveFilter
+										checked={onlyActive}
+										onChange={onOnlyActiveChange}
+									/>
+								</div>
 							)}
 							<VolvoButton
 								text='Agregar'
