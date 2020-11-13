@@ -98,8 +98,19 @@ export const parseCardTypes = (cardTypes: CardType[]): Option[] => {
 	}));
 };
 
-const PENDING_STATUS = 'P';
+const PENDING_STATUS = 'PENDING';
+const REJECTED_STATUS = 'REJECTED';
+const CANCELED_STATUS = 'CANCELED';
 
-export const getPendingStatus = (status: string) => {
-	return status && status[0] === PENDING_STATUS ? PENDING_STATUS : '';
+export const getKeyStatus = (status: string) => {
+	const lowered = status ? status.toUpperCase() : '';
+	switch (lowered) {
+		case PENDING_STATUS:
+			return PENDING_STATUS[0];
+		case REJECTED_STATUS:
+		case CANCELED_STATUS:
+			return REJECTED_STATUS[0];
+		default:
+			return '';
+	}
 };

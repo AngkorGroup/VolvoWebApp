@@ -2,8 +2,9 @@ import { TableCell, TableRow } from '@material-ui/core';
 import React, { useState } from 'react';
 import ReceiptIcon from '@material-ui/icons/Receipt';
 import { Amount, ImageModal, VolvoIconButton } from 'common/components';
+import CancelIcon from '@material-ui/icons/Cancel';
 import { CardMovement } from '../interface';
-import { getPendingStatus } from 'common/utils';
+import { getKeyStatus } from 'common/utils';
 
 interface MovementRowProps {
 	item: CardMovement;
@@ -25,7 +26,7 @@ const MovementRow = ({ item }: MovementRowProps) => {
 		voucherURL,
 		chargeStatus,
 	} = item;
-	const pendingStatus = getPendingStatus(chargeStatus);
+	const status = getKeyStatus(chargeStatus);
 	return (
 		<TableRow>
 			<TableCell>{type}</TableCell>
@@ -33,7 +34,8 @@ const MovementRow = ({ item }: MovementRowProps) => {
 			<TableCell>{operationDate}</TableCell>
 			<TableCell>{reason}</TableCell>
 			<TableCell align='right'>
-				{pendingStatus && `(${pendingStatus}) `}
+				{status === 'P' && `(${status}) `}
+				{status === 'R' && <CancelIcon color='error' titleAccess='Rechazado' />}
 				<Amount value={amount} />
 			</TableCell>
 			<TableCell>{dealerName}</TableCell>

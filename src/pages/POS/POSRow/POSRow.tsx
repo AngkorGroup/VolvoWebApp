@@ -1,14 +1,5 @@
-import {
-	createStyles,
-	makeStyles,
-	Menu,
-	MenuItem,
-	TableCell,
-	TableRow,
-} from '@material-ui/core';
+import { Menu, MenuItem, TableCell, TableRow } from '@material-ui/core';
 import React, { useState } from 'react';
-import CreateIcon from '@material-ui/icons/Create';
-import DeleteIcon from '@material-ui/icons/Delete';
 import SettingsIcon from '@material-ui/icons/Settings';
 import { ConfirmationModal, VolvoIconButton } from 'common/components';
 import { POS, POSForm } from '../interfaces';
@@ -21,17 +12,7 @@ interface POSRowProps {
 	onResetPassword: (id: string) => void;
 }
 
-const useStyles = makeStyles(() =>
-	createStyles({
-		actionButtons: {
-			display: 'flex',
-			justifyContent: 'space-evenly',
-		},
-	}),
-);
-
 const POSRow = ({ item, onEdit, onDelete, onResetPassword }: POSRowProps) => {
-	const classes = useStyles();
 	const [showEditModal, setShowEditModal] = useState(false);
 	const [showDeleteModal, setShowDeleteModal] = useState(false);
 	const [showPassModal, setShowPassModal] = useState(false);
