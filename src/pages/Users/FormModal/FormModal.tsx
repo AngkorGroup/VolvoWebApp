@@ -66,7 +66,7 @@ const FormModal: React.FC<FormModalProps> = ({
 	onConfirm,
 }: FormModalProps) => {
 	const classes = useStyles();
-	const { data, status } = useQuery('dealers', getDealers);
+	const { data, status } = useQuery([true], getDealers);
 	const dealers = useMemo(() => {
 		if (data?.ok) {
 			return parseDealers(data?.data || []);

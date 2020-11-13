@@ -47,7 +47,6 @@ export const mapUserAdmin = ({
 	let user = null;
 	let clientId = '';
 	let dealerId = '';
-	console.log({ contact, cashier, admin });
 	if (contact) {
 		user = contact;
 		clientId = `${contact.clientId}`;
@@ -57,7 +56,6 @@ export const mapUserAdmin = ({
 		user = admin;
 		dealerId = `${admin?.dealerId}`;
 	}
-	console.log({ user });
 
 	const {
 		id: innerId,

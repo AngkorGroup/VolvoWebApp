@@ -1,8 +1,8 @@
 import { DEALERS_URL, DEALERS_BY_FILTER_URL } from 'common/constants/api';
 import { api, Cashier, Charge, Dealer } from 'common/utils';
 
-export const getDealers = async () => {
-	return await api.get<Dealer[]>(DEALERS_URL);
+export const getDealers = async (onlyActive?: boolean) => {
+	return await api.get<Dealer[]>(DEALERS_URL, { onlyActive });
 };
 
 export const getDealersByFilter = async (query?: string) => {
