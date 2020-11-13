@@ -31,6 +31,7 @@ import {
 	getDealersByFilter,
 } from 'common/services';
 import { useAlert } from 'react-alert';
+import { resetUser } from 'common/services/Admins';
 
 const POS: React.FC = () => {
 	const [loading, setLoading] = useState(false);
@@ -138,6 +139,20 @@ const POS: React.FC = () => {
 		}
 	};
 
+	const onReestablishPassword = async (id: string) => {
+		setLoading(true);
+		const response = await resetUser(id);
+		setLoading(false);
+		if (response.ok) {
+			alert.success(
+				at(
+					'Contraseña restablecida',
+					`Se restableció la contraseña del usuario con id: ${id}`,
+				),
+			);
+		}
+	};
+
 	const onTypeDealer = async (e: React.ChangeEvent<HTMLInputElement>) => {
 		setLoadingOptions(true);
 		const response = await getDealersByFilter(e.target.value);
@@ -193,6 +208,7 @@ const POS: React.FC = () => {
 										item={item}
 										onEdit={onEditPOS}
 										onDelete={onDeletePOS}
+										onResetPassword={onReestablishPassword}
 									/>
 								))}
 							</React.Fragment>
