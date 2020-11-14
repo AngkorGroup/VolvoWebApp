@@ -10,10 +10,11 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 
 interface SidebarItemProps {
+	className?: string;
 	id: string;
 	title: string;
 	path: string;
-	icon: JSX.Element;
+	icon?: JSX.Element;
 }
 
 const useStyles = makeStyles(({ palette }: Theme) =>
@@ -30,17 +31,21 @@ const useStyles = makeStyles(({ palette }: Theme) =>
 	}),
 );
 
-const SidebarItem: React.FC<SidebarItemProps> = ({ icon, title, path }) => {
+const SidebarItem: React.FC<SidebarItemProps> = ({
+	className,
+	icon,
+	title,
+	path,
+}) => {
 	const classes = useStyles();
-
 	return (
 		<NavLink
 			className={classes.navItem}
 			to={path}
 			activeClassName={classes.selected}
 		>
-			<ListItem button key={title}>
-				<ListItemIcon>{icon} </ListItemIcon>
+			<ListItem className={className} button key={title}>
+				{icon && <ListItemIcon>{icon} </ListItemIcon>}
 				<ListItemText primary={title} />
 			</ListItem>
 		</NavLink>

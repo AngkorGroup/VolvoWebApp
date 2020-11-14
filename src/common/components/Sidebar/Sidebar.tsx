@@ -12,6 +12,7 @@ import React from 'react';
 import SidebarItem from '../SidebarItem/SidebarItem';
 import { SIDEBAR_WIDTH } from '../../Layout/Layout';
 import { MENU_ITEMS, MenuItem } from '../../constants/constants';
+import SidebarMultiItem from '../SidebarMultiItem/SidebarMultiItem';
 
 const useStyles = makeStyles(({ palette, breakpoints, mixins }: Theme) =>
 	createStyles({
@@ -46,15 +47,28 @@ const Sidebar: React.FC<SidebarProps> = ({
 			<div className={classes.toolbar} />
 			<Divider />
 			<List>
-				{MENU_ITEMS.map((item: MenuItem) => (
-					<SidebarItem
-						key={item.id}
-						id={item.id}
-						title={item.title}
-						path={item.path}
-						icon={<item.icon />}
-					/>
-				))}
+				{MENU_ITEMS.map((item: MenuItem) => {
+					if (item.path) {
+						return (
+							<SidebarItem
+								key={item.id}
+								id={item.id}
+								title={item.title}
+								path={item.path}
+								icon={item.icon && <item.icon />}
+							/>
+						);
+					}
+					return (
+						<SidebarMultiItem
+							key={item.id}
+							id={item.id}
+							title={item.title}
+							menuList={item.menuList || []}
+							icon={item.icon && <item.icon />}
+						/>
+					);
+				})}
 			</List>
 		</div>
 	);
