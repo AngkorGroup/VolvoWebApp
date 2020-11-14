@@ -10,6 +10,7 @@ import {
 	Theme,
 } from '@material-ui/core';
 import { VolvoButton } from 'common/components';
+import { CashierSchema } from 'common/validations';
 import { Field, Form, Formik } from 'formik';
 import React from 'react';
 import { POSForm } from '../interfaces';
@@ -63,28 +64,68 @@ const FormModal: React.FC<FormModalProps> = ({
 	return (
 		<Dialog open={show} onClose={onClose} aria-labelledby='form-dialog-title'>
 			<DialogTitle id='form-dialog-title'>{title}</DialogTitle>
-			<Formik initialValues={values || initialValues} onSubmit={handleSubmit}>
-				{() => (
+			<Formik
+				initialValues={values || initialValues}
+				onSubmit={handleSubmit}
+				validationSchema={CashierSchema}
+			>
+				{({ touched, errors }) => (
 					<Form className={classes.root}>
 						<DialogContent>
 							<Grid container spacing={1}>
 								<Grid item xs={4}>
-									<Field name='imei' label='IMEI' {...fieldProps} />
+									<Field
+										name='imei'
+										label='IMEI'
+										error={touched.imei && !!errors.imei}
+										helperText={touched.imei && errors.imei}
+										{...fieldProps}
+									/>
 								</Grid>
 								<Grid item xs={8}>
-									<Field name='phone' label='Celular' {...fieldProps} />
+									<Field
+										name='phone'
+										label='Celular'
+										error={touched.phone && !!errors.phone}
+										helperText={touched.phone && errors.phone}
+										{...fieldProps}
+									/>
 								</Grid>
 								<Grid item xs={12}>
-									<Field name='email' label='Correo' {...fieldProps} />
+									<Field
+										name='email'
+										label='Correo'
+										error={touched.email && !!errors.email}
+										helperText={touched.email && errors.email}
+										{...fieldProps}
+									/>
 								</Grid>
 								<Grid item xs={6}>
-									<Field name='firstName' label='Nombres' {...fieldProps} />
+									<Field
+										name='firstName'
+										label='Nombres'
+										error={touched.firstName && !!errors.firstName}
+										helperText={touched.firstName && errors.firstName}
+										{...fieldProps}
+									/>
 								</Grid>
 								<Grid item xs={6}>
-									<Field name='lastName' label='Apellidos' {...fieldProps} />
+									<Field
+										name='lastName'
+										label='Apellidos'
+										error={touched.lastName && !!errors.lastName}
+										helperText={touched.lastName && errors.lastName}
+										{...fieldProps}
+									/>
 								</Grid>
 								<Grid item xs={12}>
-									<Field name='tpCode' label='Código TP' {...fieldProps} />
+									<Field
+										name='tpCode'
+										label='Código TP'
+										error={touched.tpCode && !!errors.tpCode}
+										helperText={touched.tpCode && errors.tpCode}
+										{...fieldProps}
+									/>
 								</Grid>
 							</Grid>
 						</DialogContent>
