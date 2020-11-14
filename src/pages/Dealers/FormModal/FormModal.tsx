@@ -18,6 +18,7 @@ import React from 'react';
 import { VolvoButton } from 'common/components';
 import { DealerForm } from '../interfaces';
 import { Option } from 'common/utils';
+import { DealerSchema } from 'common/validations';
 
 interface FormModalProps {
 	show: boolean;
@@ -79,19 +80,41 @@ const FormModal: React.FC<FormModalProps> = ({
 	return (
 		<Dialog open={show} onClose={onClose} aria-labelledby='form-dialog-title'>
 			<DialogTitle id='form-dialog-title'>{title}</DialogTitle>
-			<Formik initialValues={values || initialValues} onSubmit={handleSubmit}>
-				{() => (
+			<Formik
+				initialValues={values || initialValues}
+				onSubmit={handleSubmit}
+				validationSchema={DealerSchema}
+			>
+				{({ touched, errors }) => (
 					<Form className={classes.root}>
 						<DialogContent>
 							<Grid container spacing={1}>
 								<Grid item xs={4}>
-									<Field name='code' label='Código' {...fieldProps} />
+									<Field
+										name='code'
+										label='Código'
+										error={touched.code && !!errors.code}
+										helperText={touched.code && errors.code}
+										{...fieldProps}
+									/>
 								</Grid>
 								<Grid item xs={8}>
-									<Field name='name' label='Nombre' {...fieldProps} />
+									<Field
+										name='name'
+										label='Nombre'
+										error={touched.name && !!errors.name}
+										helperText={touched.name && errors.name}
+										{...fieldProps}
+									/>
 								</Grid>
 								<Grid item xs={4}>
-									<Field name='ruc' label='RUC' {...fieldProps} />
+									<Field
+										name='ruc'
+										label='RUC'
+										error={touched.ruc && !!errors.ruc}
+										helperText={touched.ruc && errors.ruc}
+										{...fieldProps}
+									/>
 								</Grid>
 								<Grid item xs={4}>
 									<FormControl variant='outlined' fullWidth size='small'>
@@ -101,6 +124,7 @@ const FormModal: React.FC<FormModalProps> = ({
 											label='Tipo'
 											name='type'
 											as={Select}
+											error={touched.type && !!errors.type}
 										>
 											{DEALER_TYPES.map((d) => (
 												<MenuItem key={d.value} value={d.value}>
@@ -111,16 +135,40 @@ const FormModal: React.FC<FormModalProps> = ({
 									</FormControl>
 								</Grid>
 								<Grid item xs={4}>
-									<Field name='phone' label='Teléfono' {...fieldProps} />
+									<Field
+										name='phone'
+										label='Teléfono'
+										error={touched.phone && !!errors.phone}
+										helperText={touched.phone && errors.phone}
+										{...fieldProps}
+									/>
 								</Grid>
 								<Grid item xs={4}>
-									<Field name='zone' label='Zona' {...fieldProps} />
+									<Field
+										name='zone'
+										label='Zona'
+										error={touched.zone && !!errors.zone}
+										helperText={touched.zone && errors.zone}
+										{...fieldProps}
+									/>
 								</Grid>
 								<Grid item xs={8}>
-									<Field name='address' label='Dirección' {...fieldProps} />
+									<Field
+										name='address'
+										label='Dirección'
+										error={touched.address && !!errors.address}
+										helperText={touched.address && errors.address}
+										{...fieldProps}
+									/>
 								</Grid>
 								<Grid item xs={4}>
-									<Field name='maxCashiers' label='Max. POS' {...fieldProps} />
+									<Field
+										name='maxCashiers'
+										label='Max. POS'
+										error={touched.maxCashiers && !!errors.maxCashiers}
+										helperText={touched.maxCashiers && errors.maxCashiers}
+										{...fieldProps}
+									/>
 								</Grid>
 							</Grid>
 						</DialogContent>
