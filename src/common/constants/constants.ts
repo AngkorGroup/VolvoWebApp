@@ -113,3 +113,7 @@ export const USER_TYPES = [
 		label: CONTACT_TYPE,
 	},
 ];
+
+export const TEXT_MAX_LENGTH = 150;
+
+export const NUMERIC_FIELD_MESSAGE = 'El campo debe ser numérico';

@@ -18,6 +18,7 @@ import {
 import { PageLoader, VolvoButton } from 'common/components';
 import { getDealers } from 'common/services';
 import { parseDealers } from 'common/utils';
+import { UserSchema } from 'common/validations';
 import { Field, Form, Formik } from 'formik';
 import React, { useMemo, useState } from 'react';
 import { useQuery } from 'react-query';
@@ -94,19 +95,41 @@ const FormModal: React.FC<FormModalProps> = ({
 	return (
 		<Dialog open={show} onClose={onClose} aria-labelledby='form-dialog-title'>
 			<DialogTitle id='form-dialog-title'>{title}</DialogTitle>
-			<Formik initialValues={values || initialValues} onSubmit={handleSubmit}>
-				{({ setFieldValue }) => (
+			<Formik
+				initialValues={values || initialValues}
+				onSubmit={handleSubmit}
+				validationSchema={UserSchema}
+			>
+				{({ setFieldValue, errors, touched }) => (
 					<Form className={classes.root}>
 						<DialogContent>
 							<Grid container spacing={1}>
 								<Grid item xs={12}>
-									<Field name='firstName' label='Nombre' {...fieldProps} />
+									<Field
+										name='firstName'
+										label='Nombre'
+										helperText={touched.firstName && errors.firstName}
+										error={touched.firstName && !!errors.firstName}
+										{...fieldProps}
+									/>
 								</Grid>
 								<Grid item xs={12}>
-									<Field name='lastName' label='Apellido' {...fieldProps} />
+									<Field
+										name='lastName'
+										label='Apellido'
+										helperText={touched.lastName && errors.lastName}
+										error={touched.lastName && !!errors.lastName}
+										{...fieldProps}
+									/>
 								</Grid>
 								<Grid item xs={12}>
-									<Field name='email' label='Email' {...fieldProps} />
+									<Field
+										name='email'
+										label='Email'
+										helperText={touched.email && errors.email}
+										error={touched.email && !!errors.email}
+										{...fieldProps}
+									/>
 								</Grid>
 								{!values && (
 									<React.Fragment>
@@ -134,17 +157,24 @@ const FormModal: React.FC<FormModalProps> = ({
 									</React.Fragment>
 								)}
 								<Grid item xs={12}>
-									<Field name='phone' label='Teléfono' {...fieldProps} />
+									<Field
+										name='phone'
+										label='Teléfono'
+										helperText={touched.phone && errors.phone}
+										error={touched.phone && !!errors.phone}
+										{...fieldProps}
+									/>
 								</Grid>
 								<Grid item xs={12}>
 									{status === 'loading' && <PageLoader />}
 									{status === 'success' && (
 										<FormControl variant='outlined' fullWidth size='small'>
-											<InputLabel id='documentTypeLabel'>Dealer</InputLabel>
+											<InputLabel id='dealerLabel'>Dealer</InputLabel>
 											<Field
-												labelId='documentTypeLabel'
-												label='Tipo de Documento'
-												name='documentType'
+												labelId='dealerLabel'
+												label='Dealer'
+												name='dealerId'
+												error={touched.dealerId && !!errors.dealerId}
 												as={Select}
 											>
 												{dealers.map((d) => (

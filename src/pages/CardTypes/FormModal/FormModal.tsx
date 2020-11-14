@@ -18,6 +18,7 @@ import { VolvoButton } from 'common/components';
 import { Option } from 'common/utils';
 import React from 'react';
 import { CardTypeForm } from '../interfaces';
+import { CardTypeSchema } from 'common/validations';
 
 interface FormModalProps {
 	show: boolean;
@@ -38,9 +39,6 @@ const initialValues: CardTypeForm = {
 	currency: '',
 	term: '',
 	color: '',
-	createdAt: '16/10/2020',
-	status: 'Activo',
-	archiveAt: '',
 	tpCode: '',
 };
 
@@ -92,13 +90,23 @@ const FormModal: React.FC<FormModalProps> = ({
 	return (
 		<Dialog open={show} onClose={onClose} aria-labelledby='form-dialog-title'>
 			<DialogTitle id='form-dialog-title'>{title}</DialogTitle>
-			<Formik initialValues={values || initialValues} onSubmit={handleSubmit}>
-				{() => (
+			<Formik
+				initialValues={values || initialValues}
+				onSubmit={handleSubmit}
+				validationSchema={CardTypeSchema}
+			>
+				{({ touched, errors }) => (
 					<Form className={classes.root}>
 						<DialogContent>
 							<Grid container spacing={1}>
 								<Grid item xs={6}>
-									<Field name='type' label='Tipo de Tarjeta' {...fieldProps} />
+									<Field
+										name='type'
+										label='Tipo de Tarjeta'
+										error={touched.type && !!errors.type}
+										helperText={touched.type && errors.type}
+										{...fieldProps}
+									/>
 								</Grid>
 								<Grid item xs={6}>
 									<FormControl variant='outlined' fullWidth size='small'>
@@ -107,6 +115,8 @@ const FormModal: React.FC<FormModalProps> = ({
 											labelId='currencyLabel'
 											label='Moneda'
 											name='currency'
+											error={touched.currency && !!errors.currency}
+											helperText={touched.currency && errors.currency}
 											as={Select}
 										>
 											{CURRENCIES.map((d) => (
@@ -121,22 +131,38 @@ const FormModal: React.FC<FormModalProps> = ({
 									<Field
 										name='description'
 										label='Descripción'
+										error={touched.description && !!errors.description}
+										helperText={touched.description && errors.description}
 										{...fieldProps}
 									/>
 								</Grid>
 								<Grid item xs={4}>
-									<Field name='term' label='Plazo (meses)' {...fieldProps} />
+									<Field
+										name='term'
+										label='Plazo (meses)'
+										error={touched.term && !!errors.term}
+										helperText={touched.term && errors.term}
+										{...fieldProps}
+									/>
 								</Grid>
 								<Grid item xs={4}>
 									<Field
 										name='color'
 										label='Color'
+										error={touched.color && !!errors.color}
+										helperText={touched.color && errors.color}
 										{...fieldProps}
 										placeholder='#000000'
 									/>
 								</Grid>
 								<Grid item xs={4}>
-									<Field name='tpCode' label='Código TP' {...fieldProps} />
+									<Field
+										name='tpCode'
+										label='Código TP'
+										error={touched.tpCode && !!errors.tpCode}
+										helperText={touched.tpCode && errors.tpCode}
+										{...fieldProps}
+									/>
 								</Grid>
 							</Grid>
 						</DialogContent>
