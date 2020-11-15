@@ -21,8 +21,10 @@ export const deleteDealer = async (id: string) => {
 	return await api.delete(`${DEALERS_URL}/${id}`);
 };
 
-export const getDealerCashiers = async (id: string) => {
-	return await api.get<Cashier[]>(`${DEALERS_URL}/${id}/cashiers`);
+export const getDealerCashiers = async (id: string, onlyActive?: boolean) => {
+	return await api.get<Cashier[]>(`${DEALERS_URL}/${id}/cashiers`, {
+		onlyActive,
+	});
 };
 
 export const getDealerCharges = async (

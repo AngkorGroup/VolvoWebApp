@@ -34,7 +34,7 @@ const CardTypes: React.FC = () => {
 	const alert = useAlert();
 	const [query, setQuery] = useState('');
 	const [showAddModal, setShowAddModal] = useState(false);
-	const [onlyActive, setOnlyActive] = useState(false);
+	const [onlyActive, setOnlyActive] = useState(true);
 	const [filtered, setFiltered] = useState<TableCardType[]>([]);
 	const { data, status } = useQuery([onlyActive], getCardTypes);
 	const cardTypes = useMemo(() => {

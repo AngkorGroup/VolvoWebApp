@@ -28,7 +28,7 @@ import {
 	addCashier,
 	deleteCashier,
 	editCashier,
-	getCashiers,
+	getDealerCashiers,
 	getDealersByFilter,
 } from 'common/services';
 import { useAlert } from 'react-alert';
@@ -41,7 +41,7 @@ const POS: React.FC = () => {
 	const [dealers, setDealers] = useState<Dealer[]>([]);
 	const [query, setQuery] = useState('');
 	const [showAddModal, setShowAddModal] = useState(false);
-	const [onlyActive, setOnlyActive] = useState(false);
+	const [onlyActive, setOnlyActive] = useState(true);
 	const [posList, setPOSList] = useState<POSType[]>([]);
 	const [filtered, setFiltered] = useState<POSType[]>([]);
 	const alert = useAlert();
@@ -69,7 +69,7 @@ const POS: React.FC = () => {
 			if (dealer) {
 				setLoading(true);
 				const dealerId = `${dealer.id}`;
-				const response = await getCashiers(dealerId, onlyActive);
+				const response = await getDealerCashiers(dealerId, onlyActive);
 				if (response.ok) {
 					const rows = mapCashiers(response.data || []);
 					setPOSList(rows);
