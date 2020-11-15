@@ -6,11 +6,12 @@ import {
 import { api, CardTypeSummary, Client } from 'common/utils';
 
 export const getClients = async (query?: string) => {
-	const pathQuery = query ? `?query=${query}` : '';
-	const response = await api.get<Client[]>(
-		`${GET_CLIENT_BY_FILTER_URL}${pathQuery}`,
-	);
+	const response = await api.get<Client[]>(GET_CLIENT_BY_FILTER_URL, { query });
 	return response;
+};
+
+export const getQueryClients = async (key: string, query?: string) => {
+	return await getClients(query);
 };
 
 export const getClientsByPagination = async (
