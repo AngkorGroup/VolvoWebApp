@@ -37,7 +37,7 @@ const Users: React.FC = () => {
 	const [loading, setLoading] = useState(false);
 	const [query, setQuery] = useState('');
 	const [page, setPage] = useState(0);
-	const [onlyActive, setOnlyActive] = useState(false);
+	const [onlyActive, setOnlyActive] = useState(true);
 	const [rowsPerPage, setRowsPerPage] = useState(TABLE_ROWS_PER_PAGE);
 	const [showAddModal, setShowAddModal] = useState(false);
 	const [filtered, setFiltered] = useState<User[]>([]);

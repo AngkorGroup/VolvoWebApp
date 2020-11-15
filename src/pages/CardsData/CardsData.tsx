@@ -25,7 +25,7 @@ const CardsData: React.FC = () => {
 	const [loading, setLoading] = useState(false);
 	const [loadingClients, setLoadingClients] = useState(false);
 	const [loadingContacts, setLoadingContacts] = useState(false);
-	const [onlyActive, setOnlyActive] = useState(false);
+	const [onlyActive, setOnlyActive] = useState(true);
 	const [client, setClient] = useState('');
 	const [contact, setContact] = useState('');
 	const [clients, setClients] = useState<Option[]>([]);

@@ -30,7 +30,7 @@ const Clients: React.FC = () => {
 	const classes = useStyles();
 	const inputRef = useRef<HTMLInputElement>(null);
 	const [query, setQuery] = useState('');
-	const [onlyActive, setOnlyActive] = useState(false);
+	const [onlyActive, setOnlyActive] = useState(true);
 	const [filtered, setFiltered] = useState<TableClient[]>([]);
 	const showUpload = false;
 	const { data, status } = useQuery(

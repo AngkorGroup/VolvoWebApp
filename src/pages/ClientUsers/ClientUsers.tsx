@@ -27,7 +27,7 @@ const ClientUsers: React.FC = () => {
 	const [loading, setLoading] = useState(false);
 	const [loadingOptions, setLoadingOptions] = useState(false);
 	const [selectedClient, setSelectedClient] = useState('');
-	const [onlyActive, setOnlyActive] = useState(false);
+	const [onlyActive, setOnlyActive] = useState(true);
 	const [clients, setClients] = useState<Option[]>([]);
 	const [query, setQuery] = useState('');
 	const [clientUsers, setClientUsers] = useState<ClientUser[] | null>(null);

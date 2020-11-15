@@ -28,7 +28,7 @@ import { useAlert } from 'react-alert';
 const Dealers: React.FC = () => {
 	const alert = useAlert();
 	const [query, setQuery] = useState('');
-	const [onlyActive, setOnlyActive] = useState(false);
+	const [onlyActive, setOnlyActive] = useState(true);
 	const [showAddModal, setShowAddModal] = useState(false);
 	const [filtered, setFiltered] = useState<TableDealer[]>([]);
 	const { data, status } = useQuery([onlyActive], getDealers);
