@@ -72,88 +72,10 @@ const PageUsers = (props: any) => {
 	return <LayoutUsers {...props} />;
 };
 
-const PageChargesByClient = (props: any) => {
-	const ChargesByClient = lazy(() => import('./pages/Reports/ChargesByClient'));
-	const LayoutChargesByClient = HOCLayout(ChargesByClient);
-	return <LayoutChargesByClient {...props} />;
-};
-
-const PageChargesByDealer = (props: any) => {
-	const ChargesByDealer = lazy(() => import('./pages/Reports/ChargesByDealer'));
-	const LayoutChargesByDealer = HOCLayout(ChargesByDealer);
-	return <LayoutChargesByDealer {...props} />;
-};
-
-const PageChargesRanking = (props: any) => {
-	const ChargesRanking = lazy(() => import('./pages/Reports/ChargesRanking'));
-	const LayoutChargesRanking = HOCLayout(ChargesRanking);
-	return <LayoutChargesRanking {...props} />;
-};
-
-const PageClientConsumesByDealer = (props: any) => {
-	const ClientConsumesByDealer = lazy(
-		() => import('./pages/Reports/ClientConsumesByDealer'),
-	);
-	const LayoutClientConsumesByDealer = HOCLayout(ClientConsumesByDealer);
-	return <LayoutClientConsumesByDealer {...props} />;
-};
-
-const PageClientsCardExpiration = (props: any) => {
-	const ClientsCardExpiration = lazy(
-		() => import('./pages/Reports/ClientsCardExpiration'),
-	);
-	const LayoutClientsCardExpiration = HOCLayout(ClientsCardExpiration);
-	return <LayoutClientsCardExpiration {...props} />;
-};
-
-const PageClientsCardUse = (props: any) => {
-	const ClientsCardUse = lazy(() => import('./pages/Reports/ClientsCardUse'));
-	const LayoutClientsCardUse = HOCLayout(ClientsCardUse);
-	return <LayoutClientsCardUse {...props} />;
-};
-
-const PageConsumesByBusinessArea = (props: any) => {
-	const ConsumesByBusinessArea = lazy(
-		() => import('./pages/Reports/ConsumesByBusinessArea'),
-	);
-	const LayoutConsumesByBusinessArea = HOCLayout(ConsumesByBusinessArea);
-	return <LayoutConsumesByBusinessArea {...props} />;
-};
-
-const PageConsumesByEconomic = (props: any) => {
-	const ConsumesByEconomic = lazy(
-		() => import('./pages/Reports/ConsumesByEconomic'),
-	);
-	const LayoutConsumesByEconomic = HOCLayout(ConsumesByEconomic);
-	return <LayoutConsumesByEconomic {...props} />;
-};
-
-const PageConsumesRanking = (props: any) => {
-	const ConsumesRanking = lazy(() => import('./pages/Reports/ConsumesRanking'));
-	const LayoutConsumesRanking = HOCLayout(ConsumesRanking);
-	return <LayoutConsumesRanking {...props} />;
-};
-
-const PagePendingChargesRefund = (props: any) => {
-	const PendingChargesRefund = lazy(
-		() => import('./pages/Reports/PendingChargesRefund'),
-	);
-	const LayoutPendingChargesRefund = HOCLayout(PendingChargesRefund);
-	return <LayoutPendingChargesRefund {...props} />;
-};
-
-const PageRefunds = (props: any) => {
-	const Refunds = lazy(() => import('./pages/Reports/Refunds'));
-	const LayoutRefunds = HOCLayout(Refunds);
-	return <LayoutRefunds {...props} />;
-};
-
-const PageConsumesByClient = (props: any) => {
-	const ConsumesByClient = lazy(
-		() => import('./pages/Reports/ConsumesByClient'),
-	);
-	const LayoutConsumesByClient = HOCLayout(ConsumesByClient);
-	return <LayoutConsumesByClient {...props} />;
+const PageReports = (props: any) => {
+	const Reports = lazy(() => import('./pages/Reports/Reports'));
+	const LayoutReports = HOCLayout(Reports);
+	return <LayoutReports {...props} />;
 };
 
 export interface Route {
@@ -182,71 +104,7 @@ export const guarded: Route[] = [
 	{ id: 'Loads', path: '/loads', component: PageLoads },
 	{ id: 'POS', path: '/pos', component: PagePOS },
 	{ id: 'Users', path: '/users', component: PageUsers },
-	{
-		id: 'ConsumesByClient',
-		path: '/reports/consumes_by_client',
-		component: () => PageConsumesByClient({ id: 'ConsumesByClient' }),
-	},
-	{
-		id: 'ChargesByClient',
-		path: '/reports/charges_by_client',
-		component: PageChargesByClient,
-	},
-	{
-		id: 'ChargesRanking',
-		path: '/reports/charges_ranking',
-		component: PageChargesRanking,
-	},
-	{
-		id: 'ClientConsumesByDealer',
-		path: '/reports/client_consumes_by_dealer',
-		component: PageClientConsumesByDealer,
-	},
-	{
-		id: 'ClientsCardExpiration',
-		path: '/reports/clients_card_expiration',
-		component: PageClientsCardExpiration,
-	},
-	{
-		id: 'ClientsCardUse',
-		path: '/reports/clients_card_use',
-		component: PageClientsCardUse,
-	},
-	{
-		id: 'ConsumesByBusinessArea',
-		path: '/reports/consumes_by_business_area',
-		component: PageConsumesByBusinessArea,
-	},
-	{
-		id: 'ConsumesByClient',
-		path: '/reports/consumes_by_client',
-		component: PageConsumesByClient,
-	},
-	{
-		id: 'ConsumesByEconomic',
-		path: '/reports/consumes_by_economic',
-		component: PageConsumesByEconomic,
-	},
-	{
-		id: 'ConsumesRanking',
-		path: '/reports/consumes_ranking',
-		component: PageConsumesRanking,
-	},
-	{
-		id: 'PendingChargesRefund',
-		path: '/reports/pending_charges_refund',
-		component: PagePendingChargesRefund,
-	},
-	{
-		id: 'Refunds',
-		path: '/reports/refunds',
-		component: PageRefunds,
-	},
-	{
-		id: 'ChargesByDealer',
-		path: '/reports/charges_by_dealer',
-		component: PageChargesByDealer,
-	},
+	{ id: 'Reports', path: '/reports', component: PageReports },
 ];
 
 export const routes: Route[] = [{ id: 'SignIn', path: '/', component: SignIn }];

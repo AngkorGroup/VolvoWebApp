@@ -1,4 +1,4 @@
-import { Grid } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core';
 import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date';
 import { DatePicker } from 'common/components';
 import React, { useContext, useEffect, useState } from 'react';
@@ -6,7 +6,15 @@ import ReportMakerContext from '../ReportMakerContext';
 
 type Date = MaterialUiPickersDate;
 
+const useStyles = makeStyles(() => ({
+	container: {
+		display: 'flex',
+		justifyContent: 'space-between',
+	},
+}));
+
 const FilterDateRange = () => {
+	const classes = useStyles();
 	const { updateState } = useContext(ReportMakerContext);
 	const [startDate, setStartDate] = useState<Date>(null);
 	const [endDate, setEndDate] = useState<Date>(null);
@@ -21,23 +29,19 @@ const FilterDateRange = () => {
 		}
 	}, [startDate, endDate, updateState]);
 	return (
-		<Grid container spacing={1}>
-			<Grid item xs={6}>
-				<DatePicker
-					label='Fecha Inicio'
-					value={startDate}
-					onChange={onStartDateChange}
-				/>
-			</Grid>
-			<Grid item xs={6}>
-				<DatePicker
-					label='Fecha Fin'
-					minDate={startDate}
-					value={endDate}
-					onChange={onEndDateChange}
-				/>
-			</Grid>
-		</Grid>
+		<div className={classes.container}>
+			<DatePicker
+				label='Fecha Inicio'
+				value={startDate}
+				onChange={onStartDateChange}
+			/>
+			<DatePicker
+				label='Fecha Fin'
+				minDate={startDate}
+				value={endDate}
+				onChange={onEndDateChange}
+			/>
+		</div>
 	);
 };
 
