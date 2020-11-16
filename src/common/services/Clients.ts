@@ -5,13 +5,20 @@ import {
 } from 'common/constants/api';
 import { api, CardTypeSummary, Client } from 'common/utils';
 
-export const getClients = async (query?: string) => {
-	const response = await api.get<Client[]>(GET_CLIENT_BY_FILTER_URL, { query });
+export const getClients = async (query?: string, onlyActive?: boolean) => {
+	const response = await api.get<Client[]>(GET_CLIENT_BY_FILTER_URL, {
+		query,
+		onlyActive,
+	});
 	return response;
 };
 
-export const getQueryClients = async (key: string, query?: string) => {
-	return await getClients(query);
+export const getQueryClients = async (
+	key: string,
+	query?: string,
+	onlyActive?: boolean,
+) => {
+	return await getClients(query, onlyActive);
 };
 
 export const getClientsByPagination = async (

@@ -246,3 +246,14 @@ export interface CommonValue {
 	id: number;
 	name: string;
 }
+
+export interface Filter {
+	filterClient?: boolean;
+	filterDateRange?: boolean;
+	filterCardType?: boolean;
+	filterDealer?: boolean;
+	filterEconomicGroup?: boolean;
+	filterBusinessArea?: boolean;
+	filterRechargeType?: boolean;
+	filterSector?: boolean;
+}

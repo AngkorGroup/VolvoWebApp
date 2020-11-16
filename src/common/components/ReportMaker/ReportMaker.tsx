@@ -1,4 +1,4 @@
-import { Grid } from '@material-ui/core';
+import { Grid, makeStyles, SvgIcon } from '@material-ui/core';
 import {
 	FilterParams,
 	getQueryBusinessAreas,
@@ -8,6 +8,8 @@ import {
 } from 'common/services';
 import { parseCardTypes, parseCommonValue } from 'common/utils';
 import React, { useContext } from 'react';
+import { ReactComponent as ExcelIcon } from 'common/icons/excel.svg';
+import PictureAsPdfOutlinedIcon from '@material-ui/icons/PictureAsPdfOutlined';
 import VolvoButton from '../VolvoButton/VolvoButton';
 import {
 	FilterClients,
@@ -30,6 +32,15 @@ interface ReportMakerProps {
 	endpoint: (params: FilterParams) => any;
 }
 
+const useStyles = makeStyles(() => ({
+	buttons: {
+		marginTop: '15px',
+		'& button': {
+			margin: '0 5px',
+		},
+	},
+}));
+
 const InnerComponent: React.FC<ReportMakerProps> = ({
 	filterClient,
 	filterDateRange,
@@ -41,6 +52,7 @@ const InnerComponent: React.FC<ReportMakerProps> = ({
 	filterSector,
 	endpoint,
 }) => {
+	const classes = useStyles();
 	const params = useContext(ReportMakerContext);
 	const exportPDF = async () => await endpoint({ type: 'pdf', ...params });
 	const exportExcel = async () => await endpoint({ type: 'excel', ...params });
@@ -48,20 +60,22 @@ const InnerComponent: React.FC<ReportMakerProps> = ({
 		<div>
 			<Grid container spacing={1}>
 				{filterClient && (
-					<Grid item xs={6}>
+					<Grid item xs={12}>
 						<FilterClients />
 					</Grid>
 				)}
 				{filterDealer && (
-					<Grid item xs={6}>
+					<Grid item xs={12}>
 						<FilterDealers />
 					</Grid>
 				)}
-				<Grid item xs={6}>
-					{filterDateRange && <FilterDateRange />}
-				</Grid>
-				<Grid item xs={6}>
-					{filterCardType && (
+				{filterDateRange && (
+					<Grid item xs={12}>
+						<FilterDateRange />
+					</Grid>
+				)}
+				{filterCardType && (
+					<Grid item xs={12}>
 						<FilterMultiSelect
 							label={'Tipos de Tarjeta'}
 							param={'cardTypes'}
@@ -69,45 +83,57 @@ const InnerComponent: React.FC<ReportMakerProps> = ({
 							paramsEndpoint={[true]}
 							parser={parseCardTypes}
 						/>
-					)}
-				</Grid>
-				<Grid item xs={6}>
-					{filterEconomicGroup && <FilterEconomicGroup />}
-				</Grid>
-				<Grid item xs={6}>
-					{filterBusinessArea && (
+					</Grid>
+				)}
+				{filterEconomicGroup && (
+					<Grid item xs={12}>
+						<FilterEconomicGroup />
+					</Grid>
+				)}
+				{filterBusinessArea && (
+					<Grid item xs={12}>
 						<FilterMultiSelect
 							label={'Área de Negocio'}
 							param={'businessAreas'}
 							getEndpoint={getQueryBusinessAreas}
 							parser={parseCommonValue}
 						/>
-					)}
-				</Grid>
-				<Grid item xs={6}>
-					{filterRechargeType && (
+					</Grid>
+				)}
+				{filterRechargeType && (
+					<Grid item xs={12}>
 						<FilterMultiSelect
 							label={'Tipo de Recarga'}
 							param={'chargeTypes'}
 							getEndpoint={getQueryRechargeTypes}
 							parser={parseCommonValue}
 						/>
-					)}
-				</Grid>
-				<Grid item xs={6}>
-					{filterSector && (
+					</Grid>
+				)}
+				{filterSector && (
+					<Grid item xs={12}>
 						<FilterMultiSelect
 							label={'Sector'}
 							param={'sectors'}
 							getEndpoint={getQuerySectors}
 							parser={parseCommonValue}
 						/>
-					)}
-				</Grid>
+					</Grid>
+				)}
 			</Grid>
-			<div>
-				<VolvoButton text='PDF' onClick={exportPDF} color='primary' />
-				<VolvoButton text='Excel' onClick={exportExcel} color='primary' />
+			<div className={classes.buttons}>
+				<VolvoButton
+					icon={<PictureAsPdfOutlinedIcon />}
+					text='PDF'
+					onClick={exportPDF}
+					color='primary'
+				/>
+				<VolvoButton
+					icon={<SvgIcon component={ExcelIcon} />}
+					text='Excel'
+					onClick={exportExcel}
+					color='primary'
+				/>
 			</div>
 		</div>
 	);

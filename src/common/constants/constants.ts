@@ -96,69 +96,112 @@ export const MENU_ITEMS: MenuItem[] = [
 	{
 		id: 'Reports',
 		title: 'Reportes',
+		path: '/reports',
 		icon: LibraryBooksIcon,
-		menuList: [
-			{
-				id: 'ConsumesByClient',
-				title: 'Consumos por Cliente',
-				path: `${REPORT_PATH_SOURCE}/consumes_by_client`,
-			},
-			{
-				id: 'ChargesByDealer',
-				title: 'Cobros por Dealer y Grupo Económico',
-				path: `${REPORT_PATH_SOURCE}/charges_by_dealer`,
-			},
-			{
-				id: 'ConsumesRanking',
-				title: 'Ranking de Consumos',
-				path: `${REPORT_PATH_SOURCE}/consumes_ranking`,
-			},
-			{
-				id: 'ChargesRanking',
-				title: 'Ranking de Cobros',
-				path: `${REPORT_PATH_SOURCE}/charges_ranking`,
-			},
-			{
-				id: 'ChargesByClient',
-				title: 'Recargas por Cliente y Area de Negocio',
-				path: `${REPORT_PATH_SOURCE}/charges_by_client`,
-			},
-			{
-				id: 'ClientsCardUse',
-				title: 'Clientes VS Uso de tarjeta',
-				path: `${REPORT_PATH_SOURCE}/clients_card_use`,
-			},
-			{
-				id: 'ClientsCardExpiration',
-				title: 'Clientes con tarjetas próximas a vencer',
-				path: `${REPORT_PATH_SOURCE}/clients_card_expiration`,
-			},
-			{
-				id: 'ConsumesByBusinessArea',
-				title: 'Consumo por Area de Negocio',
-				path: `${REPORT_PATH_SOURCE}/consumes_by_business_area`,
-			},
-			{
-				id: 'ConsumesByEconomic',
-				title: 'Consumo por Sector Económico del cliente',
-				path: `${REPORT_PATH_SOURCE}/consumes_by_economic`,
-			},
-			{
-				id: 'ClientConsumesByDealer',
-				title: 'Consumo del Cliente por Dealer',
-				path: `${REPORT_PATH_SOURCE}/client_consumes_by_dealer`,
-			},
-			{
-				id: 'Refunds',
-				title: 'Reporte de Reembolsos',
-				path: `${REPORT_PATH_SOURCE}/refunds`,
-			},
-			{
-				id: 'PendingChargesRefund',
-				title: 'Cobros pendientes de reembolso',
-				path: `${REPORT_PATH_SOURCE}/pending_charges_refund`,
-			},
-		],
+	},
+];
+
+export const REPORT_OPTIONS = [
+	{
+		id: 'ConsumesByClient',
+		title: 'Consumos por Cliente',
+		filters: {
+			filterClient: true,
+			filterDateRange: true,
+			filterCardType: true,
+		},
+	},
+	{
+		id: 'ChargesByDealer',
+		title: 'Cobros por Dealer y Grupo Económico',
+		filters: {
+			filterDateRange: true,
+			filterCardType: true,
+			filterDealer: true,
+		},
+	},
+	{
+		id: 'ConsumesRanking',
+		title: 'Ranking de Consumos',
+		filters: {
+			filterDateRange: true,
+			filterCardType: true,
+		},
+	},
+	{
+		id: 'ChargesRanking',
+		title: 'Ranking de Cobros',
+		filters: {
+			filterDateRange: true,
+			filterCardType: true,
+			filterEconomicGroup: true,
+		},
+	},
+	{
+		id: 'ChargesByClient',
+		title: 'Recargas por Cliente y Area de Negocio',
+		filters: {
+			filterClient: true,
+			filterDateRange: true,
+			filterCardType: true,
+			filterBusinessArea: true,
+			filterRechargeType: true,
+		},
+	},
+	{
+		id: 'ClientsCardUse',
+		title: 'Clientes VS Uso de tarjeta',
+		filters: {
+			filterCardType: true,
+		},
+	},
+	{
+		id: 'ClientsCardExpiration',
+		title: 'Clientes con tarjetas próximas a vencer',
+		filters: {
+			filterCardType: true,
+		},
+	},
+	{
+		id: 'ConsumesByBusinessArea',
+		title: 'Consumo por Area de Negocio',
+		filters: {
+			filterCardType: true,
+		},
+	},
+	{
+		id: 'ConsumesByEconomic',
+		title: 'Consumo por Sector Económico del cliente',
+		filters: {
+			filterDateRange: true,
+			filterCardType: true,
+			filterBusinessArea: true,
+		},
+	},
+	{
+		id: 'ClientConsumesByDealer',
+		title: 'Consumo del Cliente por Dealer',
+		filters: {
+			filterDateRange: true,
+			filterCardType: true,
+			filterSector: true,
+		},
+	},
+	{
+		id: 'Refunds',
+		title: 'Reporte de Reembolsos',
+		filters: {
+			filterDateRange: true,
+			filterDealer: true,
+		},
+	},
+	{
+		id: 'PendingChargesRefund',
+		title: 'Cobros pendientes de reembolso',
+		filters: {
+			filterDateRange: true,
+			filterDealer: true,
+		},
 	},
 ];
 

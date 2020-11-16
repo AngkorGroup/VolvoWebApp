@@ -9,7 +9,7 @@ const FilterClients = () => {
 	const { updateState } = useContext(ReportMakerContext);
 	const [query, setQuery] = useState('');
 	const { data, status } = useQuery(
-		['getQueryClients', query],
+		['getQueryClients', query, true],
 		getQueryClients,
 	);
 	const clients = useMemo(() => {
