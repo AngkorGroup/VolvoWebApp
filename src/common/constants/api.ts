@@ -22,3 +22,7 @@ export const DEALERS_BY_FILTER_URL = `${DEALERS_URL}/by_filter`;
 export const CASHIERS_URL = '/cashiers';
 export const USERS_URL = '/users';
 export const USER_ADMIN_URL = `${USERS_URL}/admins`;
+export const GET_BUSINESS_AREAS = '/business_areas';
+export const GET_RECHARGE_TYPES = '/recharge_types';
+export const GET_SECTORS = '/sectors';
+export const REPORT_URL = '/reports';

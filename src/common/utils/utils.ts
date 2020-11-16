@@ -6,10 +6,13 @@ import {
 	CardType,
 	Cashier,
 	Client,
+	CommonValue,
 	Contact,
 	Dealer,
 	Option,
 } from './types';
+
+const ALL_OPTION = { value: 'all', label: 'Todos' };
 
 // TODO: research about iterating over keys of generic types
 export const filterRows = (query: string, rows: any[] | null) => {
@@ -47,13 +50,22 @@ export const filterDateRangeRows = (
 	});
 };
 
-export const parseClients = (clients: Client[]): Option[] => {
-	return clients.map(({ id, ruc, name, balance }) => ({
+const optionsWithAll = (options: Option[]): Option[] => [
+	ALL_OPTION,
+	...options,
+];
+
+export const parseClients = (
+	clients: Client[],
+	withAll?: boolean,
+): Option[] => {
+	const options = clients.map(({ id, ruc, name, balance }) => ({
 		value: `${id}`,
 		label: `RUC: ${ruc} ${name} - ${balance.currency} ${formatNumber(
 			balance.value,
 		)}`,
 	}));
+	return withAll ? optionsWithAll(options) : options;
 };
 
 const renderContactLabel = (client: string, phone: string, fullName: string) =>
@@ -75,11 +87,15 @@ export const parseCards = (cards: Card[]): Option[] => {
 	}));
 };
 
-export const parseDealers = (dealers: Dealer[]): Option[] => {
-	return dealers.map(({ id, ruc, tpCode, name, maxCashiers }) => ({
+export const parseDealers = (
+	dealers: Dealer[],
+	withAll?: boolean,
+): Option[] => {
+	const options = dealers.map(({ id, ruc, tpCode, name, maxCashiers }) => ({
 		value: `${id}`,
 		label: `${tpCode} - ${name} RUC: ${ruc} - MÁX. CAJEROS: ${maxCashiers}`,
 	}));
+	return withAll ? optionsWithAll(options) : options;
 };
 
 export const parseCashiers = (cashiers: Cashier[]): Option[] => {
@@ -96,6 +112,17 @@ export const parseCardTypes = (cardTypes: CardType[]): Option[] => {
 		value: `${ct.id}`,
 		label: ct.displayName,
 	}));
+};
+
+export const parseCommonValue = (
+	values: CommonValue[],
+	withAll?: boolean,
+): Option[] => {
+	const options = values.map((v) => ({
+		value: `${v.id}`,
+		label: v.name,
+	}));
+	return withAll ? optionsWithAll(options) : options;
 };
 
 const PENDING_STATUS = 'PENDING';
