@@ -185,7 +185,7 @@ export const guarded: Route[] = [
 	{
 		id: 'ConsumesByClient',
 		path: '/reports/consumes_by_client',
-		component: PageConsumesByClient,
+		component: () => PageConsumesByClient({ id: 'ConsumesByClient' }),
 	},
 	{
 		id: 'ChargesByClient',

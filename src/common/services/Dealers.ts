@@ -5,8 +5,19 @@ export const getDealers = async (onlyActive?: boolean) => {
 	return await api.get<Dealer[]>(DEALERS_URL, { onlyActive });
 };
 
-export const getDealersByFilter = async (query?: string) => {
-	return await api.get<Dealer[]>(DEALERS_BY_FILTER_URL, { query });
+export const getQueryDealers = async (
+	key: string,
+	query?: string,
+	onlyActive?: boolean,
+) => {
+	return await getDealersByFilter(query, onlyActive);
+};
+
+export const getDealersByFilter = async (
+	query?: string,
+	onlyActive?: boolean,
+) => {
+	return await api.get<Dealer[]>(DEALERS_BY_FILTER_URL, { query, onlyActive });
 };
 
 export const addDealer = async (dealer: Partial<Dealer>) => {

@@ -241,3 +241,8 @@ export interface BatchMovement {
 	movementId: number;
 	movement: Movement;
 }
+
+export interface CommonValue {
+	id: number;
+	name: string;
+}

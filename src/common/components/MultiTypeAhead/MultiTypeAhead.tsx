@@ -18,6 +18,8 @@ interface MultiTypeAheadProps {
 	label: string;
 	limitTags?: number;
 	placeholder: string;
+	value?: Option[];
+	loading?: boolean;
 	options: Option[];
 	onChange: ChangeFunction;
 }
@@ -26,6 +28,8 @@ const MultiTypeAhead: React.FC<MultiTypeAheadProps> = ({
 	label,
 	limitTags,
 	placeholder,
+	value,
+	loading,
 	options,
 	onChange,
 }: MultiTypeAheadProps) => {
@@ -37,9 +41,12 @@ const MultiTypeAhead: React.FC<MultiTypeAheadProps> = ({
 				limitTags={limitTags || 2}
 				options={options}
 				getOptionLabel={(option) => option.label}
+				getOptionSelected={(option, val) => option.value === val.value}
 				defaultValue={options}
 				filterSelectedOptions
 				onChange={onChange}
+				loading={loading}
+				value={value}
 				renderInput={(params) => (
 					<TextField
 						{...params}
