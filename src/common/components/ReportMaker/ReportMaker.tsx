@@ -1,6 +1,7 @@
 import { Grid, makeStyles, SvgIcon } from '@material-ui/core';
 import {
 	FilterParams,
+	ReportType,
 	getQueryBanks,
 	getQueryBusinessAreas,
 	getQueryCardTypes,
@@ -22,6 +23,7 @@ import {
 import ReportMakerContext, { ReportMakerProvider } from './ReportMakerContext';
 
 interface ReportMakerProps {
+	id: string;
 	filterClient?: boolean;
 	filterDateRange?: boolean;
 	filterCardType?: boolean;
@@ -43,7 +45,24 @@ const useStyles = makeStyles(() => ({
 	},
 }));
 
+const EXTENSIONS: Record<string, string> = {
+	pdf: 'pdf',
+	excel: 'xls',
+};
+
+const getFilename = (id: string, ext: string, content: any) => {
+	if (content) {
+		return content
+			.split(';')
+			.find((n: any) => n.includes('filename='))
+			.replace('filename=', '')
+			.trim();
+	}
+	return `${id}.${ext}`;
+};
+
 const InnerComponent: React.FC<ReportMakerProps> = ({
+	id,
 	filterClient,
 	filterDateRange,
 	filterCardType,
@@ -57,8 +76,21 @@ const InnerComponent: React.FC<ReportMakerProps> = ({
 }) => {
 	const classes = useStyles();
 	const params = useContext(ReportMakerContext);
-	const exportPDF = async () => await endpoint({ type: 'pdf', ...params });
-	const exportExcel = async () => await endpoint({ type: 'excel', ...params });
+	const exportPDF = async () => await exportFile('pdf');
+	const exportExcel = async () => await exportFile('excel');
+
+	const exportFile = async (type: ReportType) => {
+		const { data, headers } = await endpoint({ type, ...params });
+		const ext = EXTENSIONS[type];
+		const filename = getFilename(id, ext, headers['content-disposition']);
+		const url = window.URL.createObjectURL(new Blob([data]));
+		const link = document.createElement('a');
+		link.href = url;
+		link.setAttribute('download', filename);
+		document.body.appendChild(link);
+		link.click();
+		document.body.removeChild(link);
+	};
 	return (
 		<div>
 			<Grid container spacing={1}>
