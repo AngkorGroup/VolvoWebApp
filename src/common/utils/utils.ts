@@ -107,11 +107,15 @@ export const parseCashiers = (cashiers: Cashier[]): Option[] => {
 	return [defaultOption, ...options];
 };
 
-export const parseCardTypes = (cardTypes: CardType[]): Option[] => {
-	return cardTypes.map((ct) => ({
+export const parseCardTypes = (
+	cardTypes: CardType[],
+	withAll?: boolean,
+): Option[] => {
+	const options = cardTypes.map((ct) => ({
 		value: `${ct.id}`,
 		label: ct.displayName,
 	}));
+	return withAll ? optionsWithAll(options) : options;
 };
 
 export const parseCommonValue = (
