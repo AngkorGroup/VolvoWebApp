@@ -26,3 +26,4 @@ export const GET_BUSINESS_AREAS = '/business_areas';
 export const GET_RECHARGE_TYPES = '/recharge_types';
 export const GET_SECTORS = '/sectors';
 export const REPORT_URL = '/reports';
+export const GET_BANKS = '/banks';

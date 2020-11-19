@@ -1,6 +1,7 @@
 import { Grid, makeStyles, SvgIcon } from '@material-ui/core';
 import {
 	FilterParams,
+	getQueryBanks,
 	getQueryBusinessAreas,
 	getQueryCardTypes,
 	getQueryRechargeTypes,
@@ -29,6 +30,7 @@ interface ReportMakerProps {
 	filterBusinessArea?: boolean;
 	filterRechargeType?: boolean;
 	filterSector?: boolean;
+	filterBank?: boolean;
 	endpoint: (params: FilterParams) => any;
 }
 
@@ -50,6 +52,7 @@ const InnerComponent: React.FC<ReportMakerProps> = ({
 	filterBusinessArea,
 	filterRechargeType,
 	filterSector,
+	filterBank,
 	endpoint,
 }) => {
 	const classes = useStyles();
@@ -116,6 +119,16 @@ const InnerComponent: React.FC<ReportMakerProps> = ({
 							label={'Sector'}
 							param={'sectors'}
 							getEndpoint={getQuerySectors}
+							parser={parseCommonValue}
+						/>
+					</Grid>
+				)}
+				{filterBank && (
+					<Grid item xs={12}>
+						<FilterMultiSelect
+							label={'Banco'}
+							param={'banks'}
+							getEndpoint={getQueryBanks}
 							parser={parseCommonValue}
 						/>
 					</Grid>
