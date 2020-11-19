@@ -152,6 +152,7 @@ export const REPORT_OPTIONS = [
 		id: 'ClientsCardUse',
 		title: 'Clientes VS Uso de tarjeta',
 		filters: {
+			filterClient: true,
 			filterCardType: true,
 		},
 	},
@@ -160,6 +161,7 @@ export const REPORT_OPTIONS = [
 		title: 'Clientes con tarjetas próximas a vencer',
 		filters: {
 			filterCardType: true,
+			filterClient: true,
 		},
 	},
 	{
