@@ -4,6 +4,7 @@ import { DatePicker } from 'common/components';
 import React, { useContext, useEffect, useState } from 'react';
 import ReportMakerContext from '../ReportMakerContext';
 import moment from 'moment';
+import { DEFAULT_END_DATE, DEFAULT_START_DATE } from 'common/constants';
 
 type Date = MaterialUiPickersDate;
 
@@ -20,8 +21,8 @@ const useStyles = makeStyles(() => ({
 const FilterDateRange = () => {
 	const classes = useStyles();
 	const { updateState } = useContext(ReportMakerContext);
-	const [startDate, setStartDate] = useState<Date>(null);
-	const [endDate, setEndDate] = useState<Date>(null);
+	const [startDate, setStartDate] = useState<Date>(DEFAULT_START_DATE);
+	const [endDate, setEndDate] = useState<Date>(DEFAULT_END_DATE);
 	const [error, setError] = useState('');
 	const onStartDateChange = (date: Date) => setStartDate(date);
 	const onEndDateChange = (date: Date) => setEndDate(date);

@@ -11,6 +11,7 @@ import PlaylistAddIcon from '@material-ui/icons/PlaylistAdd';
 import ListAltIcon from '@material-ui/icons/ListAlt';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import LibraryBooksIcon from '@material-ui/icons/LibraryBooks';
+import moment from 'moment';
 
 type MaterialIcon = OverridableComponent<SvgIconTypeMap<{}, 'svg'>>;
 
@@ -21,6 +22,9 @@ export interface MenuItem {
 	icon?: MaterialIcon;
 	menuList?: MenuItem[];
 }
+
+export const DEFAULT_START_DATE = moment().subtract(1, 'months');
+export const DEFAULT_END_DATE = moment();
 
 export const DEFAULT_DATE_FORMAT = 'DD/MM/YYYY';
 
