@@ -27,10 +27,10 @@ const FilterDateRange = () => {
 	const onEndDateChange = (date: Date) => setEndDate(date);
 	useEffect(() => {
 		if (startDate) {
-			updateState({ startDate: startDate.format('DD/mm/yyyy') });
+			updateState({ startDate: startDate.format('DD/MM/yyyy') });
 		}
 		if (endDate) {
-			updateState({ endDate: endDate.format('DD/mm/yyyy') });
+			updateState({ endDate: endDate.format('DD/MM/yyyy') });
 		}
 		const months = moment(startDate).diff(endDate, 'months', true);
 		if (Math.abs(months) > MAX_MONTH_DATE_RAGE) {
