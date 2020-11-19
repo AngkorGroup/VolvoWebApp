@@ -31,6 +31,7 @@ export interface ClientCardRow {
 	cardId: string;
 	number: string;
 	contact: string;
+	phone: string;
 	currency: string;
 	balance: number;
 }

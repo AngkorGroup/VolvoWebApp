@@ -16,6 +16,7 @@ const LoadRow = ({ item }: LoadRowProps) => {
 		chassis,
 		invoice,
 		amount,
+		balance,
 		currency,
 		type,
 		reason,
@@ -30,10 +31,13 @@ const LoadRow = ({ item }: LoadRowProps) => {
 			<TableCell>{date}</TableCell>
 			<TableCell>{chassis}</TableCell>
 			<TableCell>{invoice}</TableCell>
+			<TableCell>{currency}</TableCell>
 			<TableCell>
 				<Amount value={amount} />
 			</TableCell>
-			<TableCell>{currency}</TableCell>
+			<TableCell>
+				<Amount value={balance} />
+			</TableCell>
 			<TableCell>{type}</TableCell>
 			<TableCell>{reason}</TableCell>
 			<TableCell>{card}</TableCell>

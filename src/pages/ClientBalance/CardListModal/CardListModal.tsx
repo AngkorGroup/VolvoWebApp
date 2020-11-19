@@ -47,6 +47,7 @@ const mapCardList = (data: Card[]): ClientCardRow[] => {
 		cardId: `${id}`,
 		number: code,
 		contact: contact?.fullName,
+		phone: contact?.phone,
 		currency: balance?.currency,
 		balance: balance?.value,
 	}));

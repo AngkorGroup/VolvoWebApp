@@ -13,6 +13,7 @@ export interface TableLoad {
 	reason: string;
 	card: string;
 	tpNumber: string;
+	balance: number;
 }
 
 export const mapLoads = (loads: Load[]): TableLoad[] => {
@@ -23,11 +24,12 @@ export const mapLoads = (loads: Load[]): TableLoad[] => {
 		date: l.tpContractDate,
 		chassis: l.tpChasis,
 		invoice: l.tpInvoiceCode,
-		amount: l.amount.value,
-		currency: l.amount.currency,
-		type: l.tpContractType,
-		reason: l.businessDescription,
+		amount: l.amount?.value,
+		currency: l.amount?.currency,
+		type: l.rechargeType?.name,
+		reason: l.businessArea?.name,
 		card: l.cardType.name,
 		tpNumber: l.tpContractBatchNumber,
+		balance: l.balance?.value,
 	}));
 };

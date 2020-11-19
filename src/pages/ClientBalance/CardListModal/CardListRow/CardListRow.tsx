@@ -12,7 +12,7 @@ interface CardListRowProps {
 
 const CardListRow = ({ item, cardData }: CardListRowProps) => {
 	const [showModal, setShowModal] = useState(false);
-	const { cardId, number, contact, currency, balance } = item;
+	const { cardId, number, contact, phone, currency, balance } = item;
 	const onOpenModal = () => setShowModal(true);
 	const onCloseModal = () => setShowModal(false);
 
@@ -26,6 +26,7 @@ const CardListRow = ({ item, cardData }: CardListRowProps) => {
 		<TableRow>
 			<TableCell>{number}</TableCell>
 			<TableCell>{contact}</TableCell>
+			<TableCell>{phone}</TableCell>
 			<TableCell>{currency}</TableCell>
 			<TableCell align='right'>
 				<Amount value={balance} />
