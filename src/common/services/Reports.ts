@@ -1,7 +1,7 @@
 import { REPORT_URL } from 'common/constants';
 import { api } from 'common/utils';
 
-type ReportType = 'excel' | 'pdf';
+export type ReportType = 'excel' | 'pdf';
 
 export interface FilterParams {
 	type: ReportType;
@@ -17,7 +17,9 @@ export interface FilterParams {
 }
 
 const performRequest = (url: string) => async (body: FilterParams) => {
-	return await api.post(`${REPORT_URL}/${url}`, body);
+	return await api.post(`${REPORT_URL}/${url}`, body, {
+		responseType: 'blob',
+	});
 };
 
 export const REPORT_ENDPOINTS: Record<string, any> = {

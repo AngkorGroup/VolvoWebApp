@@ -39,7 +39,7 @@ const ReportModal: React.FC<ReportModalProps> = ({
 				<Typography variant='subtitle1' align='left'>
 					Filtros
 				</Typography>
-				<ReportMaker {...filters} endpoint={REPORT_ENDPOINTS[id]} />
+				<ReportMaker id={id} {...filters} endpoint={REPORT_ENDPOINTS[id]} />
 			</DialogContent>
 			<DialogActions>
 				<VolvoButton onClick={onClose} variant='text' text='Cancelar' />
