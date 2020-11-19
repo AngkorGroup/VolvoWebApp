@@ -19,6 +19,7 @@ interface ContextProps {
 	businessAreas?: string[];
 	chargeTypes?: string[];
 	sectors?: string[];
+	banks?: string[];
 	updateState: Function;
 }
 
@@ -32,6 +33,7 @@ const initialState: ContextProps = {
 	businessAreas: undefined,
 	chargeTypes: undefined,
 	sectors: undefined,
+	banks: undefined,
 	updateState: Function.prototype,
 };
 

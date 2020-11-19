@@ -166,7 +166,9 @@ export const REPORT_OPTIONS = [
 		id: 'ConsumesByBusinessArea',
 		title: 'Consumo por Area de Negocio',
 		filters: {
+			filterDateRange: true,
 			filterCardType: true,
+			filterBusinessArea: true,
 		},
 	},
 	{
@@ -175,7 +177,7 @@ export const REPORT_OPTIONS = [
 		filters: {
 			filterDateRange: true,
 			filterCardType: true,
-			filterBusinessArea: true,
+			filterSector: true,
 		},
 	},
 	{
@@ -184,7 +186,7 @@ export const REPORT_OPTIONS = [
 		filters: {
 			filterDateRange: true,
 			filterCardType: true,
-			filterSector: true,
+			filterClient: true,
 		},
 	},
 	{
@@ -193,6 +195,7 @@ export const REPORT_OPTIONS = [
 		filters: {
 			filterDateRange: true,
 			filterDealer: true,
+			filterBank: true,
 		},
 	},
 	{

@@ -8,6 +8,8 @@ interface DatePickerProps {
 	label: string;
 	minDate?: ParsableDate;
 	value: ParsableDate;
+	error?: boolean;
+	errorMessage?: string;
 	onChange: (
 		date: MaterialUiPickersDate,
 		value?: string | null | undefined,
@@ -18,6 +20,8 @@ const DatePicker: React.FC<DatePickerProps> = ({
 	label,
 	minDate,
 	value,
+	error,
+	errorMessage,
 	onChange,
 }: DatePickerProps) => {
 	return (
@@ -32,6 +36,8 @@ const DatePicker: React.FC<DatePickerProps> = ({
 			minDate={minDate}
 			value={value}
 			onChange={onChange}
+			error={error}
+			helperText={errorMessage}
 		/>
 	);
 };

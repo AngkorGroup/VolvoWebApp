@@ -1,4 +1,5 @@
 import {
+	GET_BANKS,
 	GET_BUSINESS_AREAS,
 	GET_RECHARGE_TYPES,
 	GET_SECTORS,
@@ -15,4 +16,8 @@ export const getQueryRechargeTypes = async (key: string) => {
 
 export const getQuerySectors = async (key: string) => {
 	return await api.get<CommonValue[]>(GET_SECTORS);
+};
+
+export const getQueryBanks = async (key: string) => {
+	return await api.get<CommonValue[]>(GET_BANKS);
 };

@@ -16,5 +16,5 @@ export const UserSchema = yup.object<UserForm>({
 	email: yup.string().max(TEXT_MAX_LENGTH).email().required(),
 	password: yup.string(),
 	phone: yup.string().max(9).matches(/^\d+$/, NUMERIC_FIELD_MESSAGE).required(),
-	dealerId: yup.string().required(),
+	dealerId: yup.string(),
 });
