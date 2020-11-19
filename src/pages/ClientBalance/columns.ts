@@ -25,6 +25,7 @@ export const EXPIRATION_COLUMNS = [
 export const CARD_LIST_COLUMNS = [
 	{ title: 'Número' },
 	{ title: 'Contacto' },
+	{ title: 'Teléfono' },
 	{ title: 'Moneda' },
 	{ title: 'Saldo', props: { align: COLUMN_CENTER } },
 	ACTIONS_COLUMN,

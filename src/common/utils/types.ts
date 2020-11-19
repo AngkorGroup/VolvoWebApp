@@ -80,6 +80,7 @@ export interface CardType {
 export interface Load {
 	id: number;
 	amount: Amount;
+	balance: Amount;
 	expiresAt: string;
 	expiresAtExtent: string;
 	tpContractDate: string;
@@ -97,6 +98,8 @@ export interface Load {
 	businessDescription: string;
 	cardTypeId: number;
 	cardType: CardType;
+	rechargeType: CommonValue;
+	businessArea: CommonValue;
 }
 
 export interface LoadError {
@@ -245,6 +248,8 @@ export interface BatchMovement {
 export interface CommonValue {
 	id: number;
 	name: string;
+	status: string;
+	tpCode: string;
 }
 
 export interface Filter {
