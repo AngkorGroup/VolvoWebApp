@@ -119,6 +119,7 @@ const ClientBalance: React.FC = () => {
 		const filtered = filterRows(newQuery, cards);
 		setQueryCard(newQuery);
 		setFilteredCards(filtered);
+		setExpPage(0);
 	};
 
 	const onExpirationFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {

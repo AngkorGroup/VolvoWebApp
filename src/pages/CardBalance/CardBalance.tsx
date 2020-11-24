@@ -144,6 +144,7 @@ const CardBalance: React.FC = () => {
 		const filtered = filterRows(newQuery, movements);
 		setQueryMovement(newQuery);
 		setFilteredMovements(filtered);
+		setMovPage(0);
 	};
 
 	const onExpirationFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -151,6 +152,7 @@ const CardBalance: React.FC = () => {
 		const filtered = filterRows(newQuery, expirations);
 		setQueryExpiration(newQuery);
 		setFilteredExpirations(filtered);
+		setExpPage(0);
 	};
 
 	const movRows = useMemo(

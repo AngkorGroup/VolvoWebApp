@@ -76,6 +76,7 @@ const Users: React.FC = () => {
 		const filtered = filterRows(newQuery, users);
 		setQuery(newQuery);
 		setFiltered(filtered);
+		setPage(0);
 	};
 
 	const setAddModalVisible = (flag: boolean) => () => setShowAddModal(flag);
