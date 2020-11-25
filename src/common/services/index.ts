@@ -8,4 +8,5 @@ export * from './Contacts';
 export * from './Dealers';
 export * from './Loads';
 export * from './Movements';
+export * from './Refunds';
 export * from './Reports';

@@ -262,3 +262,12 @@ export interface Filter {
 	filterRechargeType?: boolean;
 	filterSector?: boolean;
 }
+
+export interface Refund {
+	id: number;
+	settlement: number;
+	dealer: Dealer;
+	amount: Amount;
+	date: string;
+	status: string;
+}

@@ -27,3 +27,5 @@ export const GET_RECHARGE_TYPES = '/recharge_types';
 export const GET_SECTORS = '/sectors';
 export const REPORT_URL = '/reports';
 export const GET_BANKS = '/banks';
+export const REFUNDS_URL = '/refunds';
+export const ANNULATE_REFUND = `${REFUNDS_URL}/annulate`;
