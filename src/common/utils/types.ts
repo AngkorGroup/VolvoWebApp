@@ -259,6 +259,7 @@ export interface CommonValue {
 	name: string;
 	status: string;
 	tpCode: string;
+	abbreviation: string;
 }
 
 export interface Filter {

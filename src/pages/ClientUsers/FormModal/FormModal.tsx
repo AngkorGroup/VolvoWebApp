@@ -13,11 +13,11 @@ import {
 	TextField,
 	Theme,
 } from '@material-ui/core';
+import AppContext from 'AppContext';
 import { VolvoButton } from 'common/components';
-import { Option } from 'common/utils';
 import { ClientUserSchema } from 'common/validations/ClientUser';
 import { Field, Form, Formik } from 'formik';
-import React from 'react';
+import React, { useContext } from 'react';
 import { ClientUser } from '../interfaces';
 
 interface FormModalProps {
@@ -48,11 +48,6 @@ const useStyles = makeStyles((theme: Theme) =>
 	}),
 );
 
-const DOCUMENT_TYPES: Option[] = [
-	{ value: 'DNI', label: 'DNI' },
-	{ value: 'CARNET DE EXTRANJERÍA', label: 'CARNET DE EXTRANJERÍA' },
-];
-
 const FormModal: React.FC<FormModalProps> = ({
 	show,
 	title,
@@ -61,6 +56,7 @@ const FormModal: React.FC<FormModalProps> = ({
 	onConfirm,
 }: FormModalProps) => {
 	const classes = useStyles();
+	const { documentTypes } = useContext(AppContext);
 	const handleSubmit = (data: ClientUser) => {
 		onConfirm(data);
 		onClose();
@@ -89,7 +85,7 @@ const FormModal: React.FC<FormModalProps> = ({
 											error={touched.documentType && !!errors.documentType}
 											as={Select}
 										>
-											{DOCUMENT_TYPES.map((d) => (
+											{documentTypes.map((d) => (
 												<MenuItem key={d.value} value={d.value}>
 													{d.label}
 												</MenuItem>
