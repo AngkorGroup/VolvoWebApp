@@ -9,11 +9,11 @@ export const getQueryCardTypes = async (key: string, onlyActive?: boolean) => {
 	return await getCardTypes(onlyActive);
 };
 
-export const addCardType = async (cardType: Partial<CardType>) => {
+export const addCardType = async (cardType: any) => {
 	return await api.post<CardType>(CARD_TYPES_URL, cardType);
 };
 
-export const editCardType = async (cardType: Partial<CardType>) => {
+export const editCardType = async (cardType: any) => {
 	return await api.put<CardType>(CARD_TYPES_URL, cardType);
 };
 

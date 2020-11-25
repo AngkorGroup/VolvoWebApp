@@ -40,7 +40,7 @@ export const mapExpirations = (batches: CardBatch[]): Expiration[] => {
 		type: card?.cardType?.name,
 		number: card?.code,
 		batch: `${batchId}`,
-		currency: balance.currency?.symbol,
+		currency: balance.currency?.symbol || balance.currencySymbol,
 		balance: balance.value,
 		expirationDate: expiresAt,
 	}));

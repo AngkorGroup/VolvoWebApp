@@ -41,6 +41,7 @@ export interface Amount {
 	value: number;
 	currency: Currency;
 	label: string;
+	currencySymbol: string;
 }
 
 export interface Contact {
@@ -76,7 +77,7 @@ export interface CardType {
 	id: number;
 	name: string;
 	displayName: string;
-	currency: string;
+	currency: Currency;
 	color: string;
 	term: number;
 	tpCode: string;

@@ -25,7 +25,7 @@ export const mapLoads = (loads: Load[]): TableLoad[] => {
 		chassis: l.tpChasis,
 		invoice: l.tpInvoiceCode,
 		amount: l.amount?.value,
-		currency: l.amount?.currency?.symbol,
+		currency: l.amount?.currency?.symbol || l.amount?.currencySymbol,
 		type: l.rechargeType?.name,
 		reason: l.businessArea?.name,
 		card: l.cardType.name,

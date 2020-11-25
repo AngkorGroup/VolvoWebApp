@@ -19,7 +19,7 @@ export const mapCardType = (cardTypes: CardType): TableCardType => ({
 	id: `${cardTypes.id}`,
 	type: cardTypes.name,
 	description: cardTypes.displayName,
-	currency: cardTypes.currency,
+	currency: cardTypes.currency?.symbol,
 	term: `${cardTypes.term}`,
 	color: cardTypes.color,
 	createdAt: cardTypes.createdAt,

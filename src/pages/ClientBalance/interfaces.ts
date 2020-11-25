@@ -76,7 +76,7 @@ export const mapCardType = (cardTypes: CardTypeSummary[]): CardType[] => {
 		cardName: ct.displayName,
 		cardColor: ct.color,
 		cardType: ct.name,
-		currency: ct.sum.currency?.symbol,
+		currency: ct.sum.currency?.symbol || ct.sum.currencySymbol,
 		balance: ct.sum.value,
 	}));
 };
@@ -91,7 +91,7 @@ export const mapExpirations = (expirations: CardBatch[]): Expiration[] => {
 		cardColor: card.cardType?.color,
 		batch: `${batchId}`,
 		expiration: expiresAt,
-		currency: balance.currency?.symbol,
+		currency: balance.currency?.symbol || balance.currencySymbol,
 		balance: balance.value,
 		contactName: card?.contact?.fullName,
 		contactPhone: card?.contact?.phone,
@@ -116,7 +116,7 @@ export const mapExpirationMovements = (
 			cardNumber: movement?.card?.code,
 			number,
 			date: movement?.createdAt,
-			currency: amount.currency?.symbol,
+			currency: amount.currency?.symbol || amount.currencySymbol,
 			amount: amount.value,
 			dealer: charge?.cashier?.dealer?.name,
 			cashier: charge?.cashier?.fullName,

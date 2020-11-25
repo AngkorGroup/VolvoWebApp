@@ -60,7 +60,7 @@ const CardTypes: React.FC = () => {
 	const setAddModalVisible = (flag: boolean) => () => setShowAddModal(flag);
 
 	const onAddCardType = async (cardType: CardTypeForm) => {
-		const body: Partial<CardType> = {
+		const body = {
 			name: cardType.type || '',
 			displayName: cardType.description || '',
 			currency: cardType.currency || '',
@@ -82,7 +82,7 @@ const CardTypes: React.FC = () => {
 	};
 
 	const onEditCardType = async (cardType: CardTypeForm) => {
-		const body: Partial<CardType> = {
+		const body = {
 			id: parseInt(cardType.id || '0', 10),
 			name: cardType.type || '',
 			displayName: cardType.description || '',
