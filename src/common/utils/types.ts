@@ -41,6 +41,7 @@ export interface Amount {
 	value: number;
 	currency: Currency;
 	label: string;
+	currencySymbol: string;
 }
 
 export interface Contact {

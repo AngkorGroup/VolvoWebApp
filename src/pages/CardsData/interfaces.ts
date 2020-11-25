@@ -1,11 +1,5 @@
 import { Card } from 'common/utils';
 
-interface Contact {
-	id: string;
-	name: string;
-	type: string;
-}
-
 export interface CardData {
 	type: string;
 	number: string;
@@ -26,7 +20,7 @@ export const mapCardData = (cards: Card[]): CardData[] => {
 			number: code,
 			tpNumber: tpCode,
 			createdAt: createdAt,
-			currency: balance?.currency?.symbol,
+			currency: balance?.currency?.symbol || balance?.currencySymbol,
 			contactName: contact?.fullName,
 			contactType: contact?.type,
 			contactPhone: contact?.phone,

@@ -79,9 +79,7 @@ export const parseContacts = (contacts: Contact[]): Option[] => {
 export const parseCards = (cards: Card[]): Option[] => {
 	return cards.map(({ id, code, contact, balance, cardType }: Card) => ({
 		value: `${id}`,
-		label: `${cardType?.name}:${code} - RUC:${contact?.client?.ruc} - C:${
-			contact?.phone
-		} - ${balance?.currency} ${formatNumber(balance?.value)}`,
+		label: `${cardType?.name}:${code} - RUC:${contact?.client?.ruc} - C:${contact?.phone} - ${balance?.label}`,
 	}));
 };
 

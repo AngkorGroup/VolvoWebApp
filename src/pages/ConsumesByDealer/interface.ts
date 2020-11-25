@@ -39,7 +39,7 @@ export const mapCharges = (charges: Charge[]): Consume[] => {
 			client: card?.contact?.client?.name,
 			date: createdAt,
 			contact: card?.contact?.fullName,
-			currency: amount.currency?.symbol,
+			currency: amount.currency?.symbol || amount.currencySymbol,
 			amount: amount.value,
 			voucherURL: imageUrl,
 		}),
