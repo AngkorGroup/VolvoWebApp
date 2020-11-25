@@ -28,9 +28,18 @@ export interface Admin {
 	dealerId: number;
 }
 
+export interface Currency {
+	abbreviation: string;
+	id: number;
+	name: string;
+	status: string;
+	symbol: string;
+	tpCode: string;
+}
+
 export interface Amount {
 	value: number;
-	currency: string;
+	currency: Currency;
 	label: string;
 }
 
@@ -250,6 +259,7 @@ export interface CommonValue {
 	name: string;
 	status: string;
 	tpCode: string;
+	abbreviation: string;
 }
 
 export interface Filter {
@@ -261,4 +271,13 @@ export interface Filter {
 	filterBusinessArea?: boolean;
 	filterRechargeType?: boolean;
 	filterSector?: boolean;
+}
+
+export interface Refund {
+	id: number;
+	settlement: number;
+	dealer: Dealer;
+	amount: Amount;
+	date: string;
+	status: string;
 }

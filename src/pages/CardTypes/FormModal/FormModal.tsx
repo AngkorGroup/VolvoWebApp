@@ -16,9 +16,10 @@ import {
 import { Field, Form, Formik } from 'formik';
 import { VolvoButton } from 'common/components';
 import { Option } from 'common/utils';
-import React from 'react';
+import React, { useContext } from 'react';
 import { CardTypeForm } from '../interfaces';
 import { CardTypeSchema } from 'common/validations';
+import AppContext from 'AppContext';
 
 interface FormModalProps {
 	show: boolean;
@@ -27,11 +28,6 @@ interface FormModalProps {
 	onClose: () => void;
 	onConfirm: (data: CardTypeForm) => void;
 }
-
-const CURRENCIES: Option[] = [
-	{ value: 'USD', label: 'US$' },
-	{ value: 'PEN', label: 'S/.' },
-];
 
 const initialValues: CardTypeForm = {
 	type: '',
@@ -83,6 +79,7 @@ const FormModal: React.FC<FormModalProps> = ({
 	onConfirm,
 }: FormModalProps) => {
 	const classes = useStyles();
+	const { currencies } = useContext(AppContext);
 	const handleSubmit = (data: CardTypeForm) => {
 		onConfirm(data);
 		onClose();
@@ -119,7 +116,7 @@ const FormModal: React.FC<FormModalProps> = ({
 											helperText={touched.currency && errors.currency}
 											as={Select}
 										>
-											{CURRENCIES.map((d) => (
+											{currencies.map((d) => (
 												<MenuItem key={d.value} value={d.value}>
 													{d.label}
 												</MenuItem>

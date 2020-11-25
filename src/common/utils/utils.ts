@@ -61,9 +61,7 @@ export const parseClients = (
 ): Option[] => {
 	const options = clients.map(({ id, ruc, name, balance }) => ({
 		value: `${id}`,
-		label: `RUC: ${ruc} ${name} - ${balance.currency} ${formatNumber(
-			balance.value,
-		)}`,
+		label: `RUC: ${ruc} ${name} - ${balance.label}`,
 	}));
 	return withAll ? optionsWithAll(options) : options;
 };
@@ -114,6 +112,17 @@ export const parseCardTypes = (
 	const options = cardTypes.map((ct) => ({
 		value: `${ct.id}`,
 		label: ct.displayName,
+	}));
+	return withAll ? optionsWithAll(options) : options;
+};
+
+export const parseListValues = (
+	values: CommonValue[],
+	withAll?: boolean,
+): Option[] => {
+	const options = values.map((v) => ({
+		value: `${v.id}`,
+		label: `${v.abbreviation} - ${v.name}`,
 	}));
 	return withAll ? optionsWithAll(options) : options;
 };

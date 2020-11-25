@@ -11,6 +11,7 @@ import PlaylistAddIcon from '@material-ui/icons/PlaylistAdd';
 import ListAltIcon from '@material-ui/icons/ListAlt';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import LibraryBooksIcon from '@material-ui/icons/LibraryBooks';
+import MonetizationOnIcon from '@material-ui/icons/MonetizationOn';
 import moment from 'moment';
 
 type MaterialIcon = OverridableComponent<SvgIconTypeMap<{}, 'svg'>>;
@@ -96,6 +97,12 @@ export const MENU_ITEMS: MenuItem[] = [
 		title: 'Usuarios',
 		path: '/users',
 		icon: AccountCircleIcon,
+	},
+	{
+		id: 'Refunds',
+		title: 'Pago de Reembolsos',
+		path: '/refunds',
+		icon: MonetizationOnIcon,
 	},
 	{
 		id: 'Reports',
@@ -240,3 +247,24 @@ export const USER_TYPES = [
 export const TEXT_MAX_LENGTH = 150;
 
 export const NUMERIC_FIELD_MESSAGE = 'El campo debe ser numérico';
+
+export const REFUND_GENERATED = 'GENERADO';
+
+export const REFUND_STATUSES = [
+	{
+		value: REFUND_GENERATED,
+		label: REFUND_GENERATED,
+	},
+	{
+		value: 'ANULADO',
+		label: 'ANULADO',
+	},
+	{
+		value: 'PROGRAMADO',
+		label: 'PROGRAMADO',
+	},
+	{
+		value: 'PAGADO',
+		label: 'PAGADO',
+	},
+];

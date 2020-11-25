@@ -44,7 +44,7 @@ const mapCardBatchList = (data: CardBatch[]): CardBatchRow[] => {
 		number: card.code,
 		batch: `${batchId}`,
 		expiration: expiresAt,
-		currency: balance.currency,
+		currency: balance.currency?.symbol,
 		balance: balance.value,
 	}));
 };

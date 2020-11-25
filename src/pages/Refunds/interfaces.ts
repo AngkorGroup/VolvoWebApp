@@ -1,4 +1,14 @@
-import { Charge } from 'common/utils';
+import { Charge, Refund } from 'common/utils';
+
+export interface RefundColumn {
+	id: string;
+	settlement: string;
+	dealer: string;
+	currency: string;
+	amount: number;
+	date: string;
+	status: string;
+}
 
 export interface Consume {
 	id: string;
@@ -15,6 +25,18 @@ export interface Consume {
 	amount: number;
 	voucherURL: string;
 }
+
+export const mapRefunds = (refunds: Refund[]): RefundColumn[] => {
+	return refunds.map((r) => ({
+		id: `${r.id}`,
+		settlement: `${r.settlement}`,
+		dealer: `${r.dealer?.tpCode} - ${r.dealer?.name}`,
+		currency: r.amount?.currency?.symbol,
+		amount: r.amount?.value,
+		date: r.date,
+		status: r.status,
+	}));
+};
 
 export const mapCharges = (charges: Charge[]): Consume[] => {
 	return charges.map(

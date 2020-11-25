@@ -31,7 +31,7 @@ export const mapUserCards = (cards: Card[]): UserCard[] => {
 		number: c.code,
 		createdAt: c.createdAt,
 		type: c.cardType.name,
-		currency: c.balance.currency,
+		currency: c.balance.currency?.symbol,
 		balance: c.balance.value,
 	}));
 };
