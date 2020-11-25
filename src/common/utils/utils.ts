@@ -61,7 +61,7 @@ export const parseClients = (
 ): Option[] => {
 	const options = clients.map(({ id, ruc, name, balance }) => ({
 		value: `${id}`,
-		label: `RUC: ${ruc} ${name} - ${balance.currency} ${formatNumber(
+		label: `RUC: ${ruc} ${name} - ${balance.currency?.symbol} ${formatNumber(
 			balance.value,
 		)}`,
 	}));

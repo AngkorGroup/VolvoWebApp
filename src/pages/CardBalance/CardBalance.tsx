@@ -193,7 +193,7 @@ const CardBalance: React.FC = () => {
 							title={card?.cardType?.displayName}
 							number={card.code}
 							balance={card.balance.value}
-							currency={card.balance.currency}
+							currency={card.balance.currency?.symbol}
 							color={card?.cardType?.color}
 						/>
 					)}

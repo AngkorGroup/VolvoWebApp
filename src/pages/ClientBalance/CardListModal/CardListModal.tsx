@@ -48,7 +48,7 @@ const mapCardList = (data: Card[]): ClientCardRow[] => {
 		number: code,
 		contact: contact?.fullName,
 		phone: contact?.phone,
-		currency: balance?.currency,
+		currency: balance?.currency?.symbol,
 		balance: balance?.value,
 	}));
 };

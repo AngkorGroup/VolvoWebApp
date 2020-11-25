@@ -26,7 +26,7 @@ export const mapCardData = (cards: Card[]): CardData[] => {
 			number: code,
 			tpNumber: tpCode,
 			createdAt: createdAt,
-			currency: balance?.currency,
+			currency: balance?.currency?.symbol,
 			contactName: contact?.fullName,
 			contactType: contact?.type,
 			contactPhone: contact?.phone,

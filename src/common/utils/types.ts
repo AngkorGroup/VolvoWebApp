@@ -28,9 +28,18 @@ export interface Admin {
 	dealerId: number;
 }
 
+export interface Currency {
+	abbreviation: string;
+	id: number;
+	name: string;
+	status: string;
+	symbol: string;
+	tpCode: string;
+}
+
 export interface Amount {
 	value: number;
-	currency: string;
+	currency: Currency;
 	label: string;
 }
 
