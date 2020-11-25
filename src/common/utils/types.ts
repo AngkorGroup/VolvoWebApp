@@ -77,7 +77,7 @@ export interface CardType {
 	id: number;
 	name: string;
 	displayName: string;
-	currency: string;
+	currency: Currency;
 	color: string;
 	term: number;
 	tpCode: string;
