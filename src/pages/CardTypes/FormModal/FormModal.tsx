@@ -15,7 +15,6 @@ import {
 } from '@material-ui/core';
 import { Field, Form, Formik } from 'formik';
 import { VolvoButton } from 'common/components';
-import { Option } from 'common/utils';
 import React, { useContext } from 'react';
 import { CardTypeForm } from '../interfaces';
 import { CardTypeSchema } from 'common/validations';
