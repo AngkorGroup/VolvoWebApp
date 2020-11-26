@@ -152,3 +152,14 @@ export const getKeyStatus = (status: string) => {
 			return '';
 	}
 };
+
+export const getFilename = (id: string, ext: string, content: any) => {
+	if (content) {
+		return content
+			.split(';')
+			.find((n: any) => n.includes('filename='))
+			.replace('filename=', '')
+			.trim();
+	}
+	return `${id}.${ext}`;
+};

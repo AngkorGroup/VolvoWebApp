@@ -5,10 +5,10 @@ import {
 	DialogTitle,
 } from '@material-ui/core';
 import { BasicTable, PageLoader, VolvoButton } from 'common/components';
-import { getRefundConsumes } from 'common/services';
+import { getQueryRefundConsumes } from 'common/services';
 import React, { useMemo } from 'react';
 import { useQuery } from 'react-query';
-import { REFUNDS_COLUMNS } from '../columns';
+import { CHARGES_COLUMNS } from '../columns';
 import ConsumeRow from '../ConsumeRow/ConsumeRow';
 import { mapCharges } from '../interfaces';
 
@@ -24,8 +24,8 @@ const DetailModal: React.FC<DetailModalProps> = ({
 	onClose,
 }: DetailModalProps) => {
 	const { data, status } = useQuery(
-		['getRefundConsumes', id],
-		getRefundConsumes,
+		['getQueryRefundConsumes', id],
+		getQueryRefundConsumes,
 	);
 	const consumes = useMemo(() => {
 		if (data?.ok) {
@@ -47,7 +47,7 @@ const DetailModal: React.FC<DetailModalProps> = ({
 			<DialogContent>
 				{status === 'loading' && <PageLoader />}
 				{status === 'success' && (
-					<BasicTable columns={REFUNDS_COLUMNS}>
+					<BasicTable columns={CHARGES_COLUMNS}>
 						<React.Fragment>
 							{consumes.map((item, i: number) => (
 								<ConsumeRow key={i} item={item} />

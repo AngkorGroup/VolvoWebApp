@@ -13,6 +13,7 @@ import {
 	PageTitle,
 	PaginatedTable,
 	TableFilter,
+	VolvoButton,
 } from 'common/components';
 import {
 	REFUND_GENERATED,
@@ -22,12 +23,23 @@ import {
 import React, { useMemo, useState } from 'react';
 import moment from 'moment';
 import { useQuery } from 'react-query';
-import { annulateRefund, getQueryRefunds } from 'common/services';
-import { mapRefunds, RefundColumn } from './interfaces';
-import { buildAlertBody as at, filterRows } from 'common/utils';
+import {
+	annulateRefund,
+	getQueryRefunds,
+	payRefund,
+	scheduleRefunds,
+} from 'common/services';
+import {
+	isGenerated,
+	isScheduled,
+	mapRefunds,
+	RefundColumn,
+} from './interfaces';
+import { buildAlertBody as at, filterRows, getFilename } from 'common/utils';
 import { REFUNDS_COLUMNS } from './columns';
 import RefundRow from './RefundRow/RefundRow';
 import { useAlert } from 'react-alert';
+import ScheduleModal from './ScheduleModal/ScheduleModal';
 
 type Event = React.ChangeEvent<{
 	name?: string | undefined;
@@ -37,7 +49,9 @@ type Event = React.ChangeEvent<{
 const Refunds: React.FC = () => {
 	const alert = useAlert();
 	const [date, setDate] = useState<MaterialUiPickersDate>(moment());
+	const [selectedIds, setSelectedIds] = useState<string[]>([]);
 	const [refundStatus, setRefundStatus] = useState(REFUND_GENERATED);
+	const [showScheduleModal, setShowScheduleModal] = useState(false);
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(TABLE_ROWS_PER_PAGE);
 	const [query, setQuery] = useState('');
@@ -86,10 +100,71 @@ const Refunds: React.FC = () => {
 		}
 	};
 
+	const onPay = async (id: string, date: string, voucher: string) => {
+		const response = await payRefund(id, date, voucher);
+		if (response.ok) {
+			setFiltered((old) => old.filter((r) => r.id !== id));
+			alert.success(
+				at(
+					'Reembolso Pagado',
+					'En breve se descargará el archivo del reembolso pagado',
+				),
+			);
+		}
+	};
+
+	const onSchedule = async (bankId: string, bankAccountId: string) => {
+		const { data, ok, headers } = await scheduleRefunds(
+			bankId,
+			bankAccountId,
+			selectedIds.map((id) => +id),
+		);
+		if (ok) {
+			setFiltered((old) =>
+				old.filter((r) => selectedIds.some((sId) => sId !== r.id)),
+			);
+			alert.success(
+				at(
+					'Reembolsos Programados',
+					'Se programaron los reembolsos correctamente',
+				),
+			);
+			if (headers) {
+				const filename = getFilename(
+					bankId,
+					'txt',
+					headers['content-disposition'],
+				);
+				const url = window.URL.createObjectURL(new Blob([data]));
+				const link = document.createElement('a');
+				link.href = url;
+				link.setAttribute('download', filename);
+				document.body.appendChild(link);
+				link.click();
+				document.body.removeChild(link);
+			}
+		}
+	};
+
+	const openScheduleModal = () => setShowScheduleModal(true);
+	const closeScheduleModal = () => setShowScheduleModal(false);
+
+	const onSelectId = (id: string) => {
+		setSelectedIds((ids) => [...ids, id]);
+	};
+	const onRemoveId = (id: string) => {
+		setSelectedIds((ids) => ids.filter((selected) => selected !== id));
+	};
+
 	const rows = useMemo(
 		() => filtered.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
 		[page, rowsPerPage, filtered],
 	);
+
+	const columns =
+		isGenerated(refundStatus) || isScheduled(refundStatus)
+			? [{ title: '' }, ...REFUNDS_COLUMNS]
+			: REFUNDS_COLUMNS;
 
 	return (
 		<div>
@@ -128,7 +203,7 @@ const Refunds: React.FC = () => {
 							<TableFilter value={query} onChange={onFilterChange} />
 						</PageActionBar>
 						<PaginatedTable
-							columns={REFUNDS_COLUMNS}
+							columns={columns}
 							count={refunds.length}
 							page={page}
 							rowsPerPage={rowsPerPage}
@@ -137,10 +212,36 @@ const Refunds: React.FC = () => {
 						>
 							<React.Fragment>
 								{rows.map((item, i: number) => (
-									<RefundRow key={i} item={item} onAnnulate={onAnnulate} />
+									<RefundRow
+										key={i}
+										item={item}
+										status={refundStatus}
+										onAnnulate={onAnnulate}
+										onPay={onPay}
+										onSelectId={onSelectId}
+										onRemoveId={onRemoveId}
+									/>
 								))}
 							</React.Fragment>
 						</PaginatedTable>
+						{isGenerated(refundStatus) ||
+							(isScheduled(refundStatus) && (
+								<PageActionBar justifyContent='flex-end'>
+									<VolvoButton
+										disabled={selectedIds.length === 0}
+										onClick={openScheduleModal}
+										color='success'
+										text='Programar'
+									/>
+								</PageActionBar>
+							))}
+						{showScheduleModal && (
+							<ScheduleModal
+								show={showScheduleModal}
+								onClose={closeScheduleModal}
+								onSchedule={onSchedule}
+							/>
+						)}
 					</React.Fragment>
 				)}
 			</div>

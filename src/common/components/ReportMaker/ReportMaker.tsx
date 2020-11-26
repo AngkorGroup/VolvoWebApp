@@ -8,7 +8,7 @@ import {
 	getQueryRechargeTypes,
 	getQuerySectors,
 } from 'common/services';
-import { parseCardTypes, parseCommonValue } from 'common/utils';
+import { getFilename, parseCardTypes, parseCommonValue } from 'common/utils';
 import React, { useContext } from 'react';
 import { ReactComponent as ExcelIcon } from 'common/icons/excel.svg';
 import PictureAsPdfOutlinedIcon from '@material-ui/icons/PictureAsPdfOutlined';
@@ -48,17 +48,6 @@ const useStyles = makeStyles(() => ({
 const EXTENSIONS: Record<string, string> = {
 	pdf: 'pdf',
 	excel: 'xls',
-};
-
-const getFilename = (id: string, ext: string, content: any) => {
-	if (content) {
-		return content
-			.split(';')
-			.find((n: any) => n.includes('filename='))
-			.replace('filename=', '')
-			.trim();
-	}
-	return `${id}.${ext}`;
 };
 
 const InnerComponent: React.FC<ReportMakerProps> = ({
