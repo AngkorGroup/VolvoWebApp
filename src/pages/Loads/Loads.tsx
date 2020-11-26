@@ -13,12 +13,18 @@ import {
 	VolvoButton,
 } from 'common/components';
 import { buildAlertBody as at, filterRows, LoadError } from 'common/utils';
-import { mapLoads, TableLoad } from './interfaces';
+import { mapLoads, mapPreLoads, TableLoad } from './interfaces';
 import LoadRow from './LoadRow/LoadRow';
 import { LOAD_COLUMNS } from './columns';
-import { getLoadErrors, getLoads, massiveUpload } from 'common/services';
+import {
+	getLoadErrors,
+	getLoads,
+	massiveUpload,
+	preMassiveUpload,
+} from 'common/services';
 import { useAlert } from 'react-alert';
 import ErrorModal from './ErrorModal/ErrorModal';
+import PreviewModal from './PreviewModal/PreviewModal';
 
 const useStyles = makeStyles(() =>
 	createStyles({
@@ -40,7 +46,10 @@ const Loads: React.FC = () => {
 	const inputRef = useRef<HTMLInputElement>(null);
 	const [loading, setLoading] = useState(true);
 	const [showErrors, setShowErrors] = useState(false);
+	const [showPreview, setShowPreview] = useState(false);
+	const [file, setFile] = useState<File | null>(null);
 	const [errors, setErrors] = useState<LoadError[]>([]);
+	const [previewList, setPreviewList] = useState<TableLoad[]>([]);
 	const [query, setQuery] = useState('');
 	const [filtered, setFiltered] = useState<TableLoad[]>([]);
 	const alert = useAlert();
@@ -91,10 +100,23 @@ const Loads: React.FC = () => {
 	const onSelectFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
 		const files = e.target.files || [];
 		if (files.length > 0) {
+			setFile(files[0]);
+			const response = await preMassiveUpload(files[0]);
+			if (response.ok) {
+				const rows = mapPreLoads(response?.data || []);
+				setPreviewList(rows);
+				setShowPreview(true);
+			}
+		}
+	};
+
+	const onMassiveUpload = async () => {
+		if (file) {
 			setLoading(true);
-			const response = await massiveUpload(files[0]);
+			const response = await massiveUpload(file);
 			if (response.ok) {
 				const loadErrors = response.data;
+				setFile(null);
 				if (loadErrors?.length) {
 					alert.error(
 						at(
@@ -122,6 +144,8 @@ const Loads: React.FC = () => {
 			}
 		}
 	};
+
+	const onClosePreview = () => setShowPreview(false);
 
 	useEffect(() => {
 		if (loads.length > 0) {
@@ -165,6 +189,14 @@ const Loads: React.FC = () => {
 							/>
 						</div>
 					</PageActionBar>
+					{showPreview && (
+						<PreviewModal
+							show={showPreview}
+							previewItems={previewList}
+							onClose={onClosePreview}
+							onMassiveUpload={onMassiveUpload}
+						/>
+					)}
 					{showErrors && (
 						<ErrorModal
 							show={showErrors}
