@@ -282,9 +282,11 @@ export interface Refund {
 	amount: Amount;
 	date: string;
 	status: string;
-	liquidationStatus: number;
+	liquidationStatus: string;
 	paymentDate: string;
 	voucher: string;
+	dealerBankAccount: string;
+	companyBankAccount: string;
 }
 
 export interface Account {

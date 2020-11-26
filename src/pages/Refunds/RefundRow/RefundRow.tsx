@@ -36,7 +36,20 @@ const RefundRow = ({
 	const [showPayModal, setShowPayModal] = useState(false);
 	const [showDeleteModal, setShowDeleteModal] = useState(false);
 	const [checked, setChecked] = useState(false);
-	const { id, settlement, dealer, currency, amount, date } = item;
+	const {
+		id,
+		settlement,
+		dealer,
+		currency,
+		amount,
+		date,
+		liquidationStatus,
+		paymentDate,
+		source,
+		target,
+		voucher,
+		chargesCount,
+	} = item;
 
 	const onOpenMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
 		setAnchorEl(event.currentTarget);
@@ -85,6 +98,12 @@ const RefundRow = ({
 					<Amount value={amount} />
 				</TableCell>
 				<TableCell>{date}</TableCell>
+				<TableCell>{liquidationStatus}</TableCell>
+				<TableCell>{paymentDate}</TableCell>
+				<TableCell>{source}</TableCell>
+				<TableCell>{target}</TableCell>
+				<TableCell>{voucher}</TableCell>
+				<TableCell>{chargesCount}</TableCell>
 				<TableCell align='center'>
 					<VolvoIconButton
 						aria-controls='options'
