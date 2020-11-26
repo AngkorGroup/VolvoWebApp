@@ -1,6 +1,7 @@
 export const LOGIN_URL = '/login';
 export const BATCHES_URL = '/batches';
 export const MASSIVE_UPLOAD = `${BATCHES_URL}/massive_load`;
+export const PRE_MASSIVE_UPLOAD = `${BATCHES_URL}/pre_massive_load`;
 export const BATCHES_BY_CLIENT_URL = `${BATCHES_URL}/by_client`;
 export const BATCHES_BY_CARD_URL = `${BATCHES_URL}/by_card`;
 export const BATCHES_ERRORS_URL = `${BATCHES_URL}/errors`;

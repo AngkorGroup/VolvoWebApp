@@ -112,6 +112,16 @@ export interface Load {
 	businessArea: CommonValue;
 }
 
+export interface PreLoad {
+	batch: Batch;
+	card: Card;
+	client: Client;
+	contact: Contact;
+	rowIndex: number;
+	errorMessage: string;
+	lineContent: string;
+}
+
 export interface LoadError {
 	rowIndex: number;
 	errorMessage: string;
@@ -161,6 +171,8 @@ export interface Batch {
 	cardTypeId: number;
 	lineContent: string;
 	createdAt: string;
+	rechargeType: CommonValue;
+	businessArea: CommonValue;
 }
 
 export interface CardBatch {

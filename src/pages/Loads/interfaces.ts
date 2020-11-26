@@ -1,6 +1,7 @@
-import { Load } from 'common/utils';
+import { Load, PreLoad } from 'common/utils';
 
 export interface TableLoad {
+	index?: number;
 	number: string;
 	ruc: string;
 	name: string;
@@ -14,6 +15,8 @@ export interface TableLoad {
 	card: string;
 	tpNumber: string;
 	balance: number;
+	errorMessage?: string;
+	lineContent?: string;
 }
 
 export const mapLoads = (loads: Load[]): TableLoad[] => {
@@ -28,8 +31,32 @@ export const mapLoads = (loads: Load[]): TableLoad[] => {
 		currency: l.amount?.currency?.symbol || l.amount?.currencySymbol,
 		type: l.rechargeType?.name,
 		reason: l.businessArea?.name,
-		card: l.cardType.name,
+		card: l.cardType?.name,
 		tpNumber: l.tpContractBatchNumber,
 		balance: l.balance?.value,
 	}));
+};
+
+export const mapPreLoads = (loads: PreLoad[]): TableLoad[] => {
+	return loads.map(
+		({ rowIndex, batch, contact, card, errorMessage, lineContent }) => ({
+			index: rowIndex,
+			number: batch?.tpContractNumber,
+			ruc: contact?.client?.ruc,
+			name: contact?.client?.name,
+			date: batch?.tpContractDate,
+			chassis: batch?.tpChasis,
+			invoice: batch?.tpInvoiceCode,
+			amount: batch?.amount?.value,
+			currency:
+				batch?.amount?.currency?.symbol || batch?.amount?.currencySymbol,
+			type: batch?.rechargeType?.name,
+			reason: batch?.businessArea?.name,
+			card: card?.cardType?.name,
+			tpNumber: batch?.tpContractBatchNumber,
+			balance: card?.balance?.value,
+			errorMessage,
+			lineContent,
+		}),
+	);
 };
