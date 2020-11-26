@@ -6,6 +6,12 @@ export const REFUNDS_COLUMNS = [
 	{ title: 'Moneda' },
 	{ title: 'Monto', props: { align: COLUMN_CENTER } },
 	{ title: 'Fecha' },
+	{ title: 'Estado de Liquidación' },
+	{ title: 'Fecha Pago' },
+	{ title: 'Origen' },
+	{ title: 'Destino' },
+	{ title: 'Voucher' },
+	{ title: 'Consumos' },
 	ACTIONS_COLUMN,
 ];
 

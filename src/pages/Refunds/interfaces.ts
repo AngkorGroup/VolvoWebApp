@@ -8,6 +8,12 @@ export interface RefundColumn {
 	currency: string;
 	amount: number;
 	date: string;
+	chargesCount: string;
+	liquidationStatus: string;
+	paymentDate: string;
+	voucher: string;
+	target: string;
+	source: string;
 }
 
 export interface Consume {
@@ -34,6 +40,12 @@ export const mapRefunds = (refunds: Refund[]): RefundColumn[] => {
 		currency: r.amount?.currency?.symbol || r.amount.currencySymbol,
 		amount: r.amount?.value,
 		date: r.date,
+		chargesCount: `${r.chargesCount}`,
+		liquidationStatus: r.liquidationStatus,
+		paymentDate: r.paymentDate,
+		voucher: r.voucher,
+		source: r.companyBankAccount,
+		target: r.dealerBankAccount,
 	}));
 };
 
