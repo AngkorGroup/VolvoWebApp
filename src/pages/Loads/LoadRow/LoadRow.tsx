@@ -1,4 +1,10 @@
-import { TableCell, TableRow } from '@material-ui/core';
+import {
+	createStyles,
+	makeStyles,
+	TableCell,
+	TableRow,
+	Theme,
+} from '@material-ui/core';
 import { Amount } from 'common/components';
 import React from 'react';
 import { TableLoad } from '../interfaces';
@@ -7,7 +13,16 @@ interface LoadRowProps {
 	item: TableLoad;
 }
 
+const useStyles = makeStyles(({ palette }: Theme) =>
+	createStyles({
+		errorColumn: {
+			color: palette.error.main,
+		},
+	}),
+);
+
 const LoadRow = ({ item }: LoadRowProps) => {
+	const classes = useStyles();
 	const {
 		index,
 		number,
@@ -29,11 +44,13 @@ const LoadRow = ({ item }: LoadRowProps) => {
 
 	return (
 		<TableRow>
-			<TableCell>{index}</TableCell>
 			{errorMessage && lineContent ? (
 				<React.Fragment>
-					<TableCell>{errorMessage}</TableCell>
-					<TableCell colSpan={12}>{lineContent}</TableCell>
+					<TableCell className={classes.errorColumn}>{index}</TableCell>
+					<TableCell className={classes.errorColumn}>{errorMessage}</TableCell>
+					<TableCell className={classes.errorColumn} colSpan={12}>
+						{lineContent}
+					</TableCell>
 				</React.Fragment>
 			) : (
 				<React.Fragment>
