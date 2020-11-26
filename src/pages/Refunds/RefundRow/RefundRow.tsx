@@ -69,16 +69,15 @@ const RefundRow = ({
 	return (
 		<React.Fragment>
 			<TableRow>
-				{isGenerated(status) ||
-					(isScheduled(status) && (
-						<TableCell>
-							<Checkbox
-								checked={checked}
-								onChange={handleSelect}
-								color='primary'
-							/>
-						</TableCell>
-					))}
+				{(isGenerated(status) || isScheduled(status)) && (
+					<TableCell>
+						<Checkbox
+							checked={checked}
+							onChange={handleSelect}
+							color='primary'
+						/>
+					</TableCell>
+				)}
 				<TableCell>{settlement}</TableCell>
 				<TableCell>{dealer}</TableCell>
 				<TableCell>{currency}</TableCell>
