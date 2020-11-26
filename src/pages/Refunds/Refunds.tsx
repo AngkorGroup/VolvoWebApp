@@ -224,17 +224,16 @@ const Refunds: React.FC = () => {
 								))}
 							</React.Fragment>
 						</PaginatedTable>
-						{isGenerated(refundStatus) ||
-							(isScheduled(refundStatus) && (
-								<PageActionBar justifyContent='flex-end'>
-									<VolvoButton
-										disabled={selectedIds.length === 0}
-										onClick={openScheduleModal}
-										color='success'
-										text='Programar'
-									/>
-								</PageActionBar>
-							))}
+						{(isGenerated(refundStatus) || isScheduled(refundStatus)) && (
+							<PageActionBar justifyContent='flex-end'>
+								<VolvoButton
+									disabled={selectedIds.length === 0}
+									onClick={openScheduleModal}
+									color='success'
+									text='Programar'
+								/>
+							</PageActionBar>
+						)}
 						{showScheduleModal && (
 							<ScheduleModal
 								show={showScheduleModal}
