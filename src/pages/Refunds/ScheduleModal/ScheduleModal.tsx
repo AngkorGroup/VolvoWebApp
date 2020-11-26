@@ -99,7 +99,7 @@ const ScheduleModal: React.FC<ScheduleModalProps> = ({
 					disabled={!bank || !account}
 					onClick={onConfirm}
 					color='success'
-					text='Guardar'
+					text='Generar TXT'
 				/>
 			</DialogActions>
 		</Dialog>
