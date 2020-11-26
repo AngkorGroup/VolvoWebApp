@@ -276,9 +276,24 @@ export interface Filter {
 
 export interface Refund {
 	id: number;
-	settlement: number;
+	bankAccountId: number;
+	chargesCount: number;
 	dealer: Dealer;
 	amount: Amount;
 	date: string;
 	status: string;
+	liquidationStatus: number;
+	paymentDate: string;
+	voucher: string;
+}
+
+export interface Account {
+	id: number;
+	account: string;
+	currencyId: number;
+	isDefault: boolean;
+	bankAccountTypeId: number;
+	bankAccountType: CommonValue;
+	bankId: number;
+	status: number;
 }

@@ -12,11 +12,11 @@ import {
 	TableRow,
 } from '@material-ui/core';
 import { TABLE_ROWS_OPTIONS } from 'common/constants/tableColumn';
-import React from 'react';
+import React, { ReactNode } from 'react';
 import TablePaginationActions from './TablePaginationActions/TablePaginationActions';
 
 interface Column {
-	title: string;
+	title: string | ReactNode;
 	props?: TableCellProps;
 }
 

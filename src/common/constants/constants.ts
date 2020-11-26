@@ -248,23 +248,24 @@ export const TEXT_MAX_LENGTH = 150;
 
 export const NUMERIC_FIELD_MESSAGE = 'El campo debe ser numérico';
 
-export const REFUND_GENERATED = 'GENERADO';
+export const REFUND_GENERATED = 'Generated';
+export const REFUND_SCHEDULED = 'Scheduled';
 
 export const REFUND_STATUSES = [
 	{
 		value: REFUND_GENERATED,
-		label: REFUND_GENERATED,
+		label: 'GENERADO',
 	},
 	{
-		value: 'ANULADO',
+		value: 'Canceled',
 		label: 'ANULADO',
 	},
 	{
-		value: 'PROGRAMADO',
+		value: REFUND_SCHEDULED,
 		label: 'PROGRAMADO',
 	},
 	{
-		value: 'PAGADO',
+		value: 'Paid',
 		label: 'PAGADO',
 	},
 ];

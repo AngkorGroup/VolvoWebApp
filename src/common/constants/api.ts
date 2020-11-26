@@ -29,5 +29,6 @@ export const REPORT_URL = '/reports';
 export const GET_BANKS = '/banks';
 export const GET_CURRENCIES = '/currencies';
 export const GET_DOCUMENT_TYPES = '/document_types';
-export const REFUNDS_URL = '/refunds';
+export const REFUNDS_URL = '/liquidations';
 export const ANNULATE_REFUND = `${REFUNDS_URL}/annulate`;
+export const SCHEDULE_REFUNDS = `${REFUNDS_URL}/schedule`;

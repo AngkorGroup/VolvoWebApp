@@ -1,4 +1,5 @@
-import { Charge, Refund } from 'common/utils';
+import { REFUND_GENERATED, REFUND_SCHEDULED } from 'common/constants';
+import { Account, Charge, Refund } from 'common/utils';
 
 export interface RefundColumn {
 	id: string;
@@ -7,7 +8,6 @@ export interface RefundColumn {
 	currency: string;
 	amount: number;
 	date: string;
-	status: string;
 }
 
 export interface Consume {
@@ -29,12 +29,11 @@ export interface Consume {
 export const mapRefunds = (refunds: Refund[]): RefundColumn[] => {
 	return refunds.map((r) => ({
 		id: `${r.id}`,
-		settlement: `${r.settlement}`,
+		settlement: `${r.id}`,
 		dealer: `${r.dealer?.tpCode} - ${r.dealer?.name}`,
 		currency: r.amount?.currency?.symbol || r.amount.currencySymbol,
 		amount: r.amount?.value,
 		date: r.date,
-		status: r.status,
 	}));
 };
 
@@ -57,7 +56,7 @@ export const mapCharges = (charges: Charge[]): Consume[] => {
 			status: status,
 			cardType: card?.cardType?.name,
 			cardNumber: card?.code,
-			cashier: cashier.fullName,
+			cashier: cashier?.fullName,
 			client: card?.contact?.client?.name,
 			date: createdAt,
 			contact: card?.contact?.fullName,
@@ -67,3 +66,14 @@ export const mapCharges = (charges: Charge[]): Consume[] => {
 		}),
 	);
 };
+
+export const mapBankAccounts = (accounts: Account[]) => {
+	return accounts.map((a) => ({
+		value: `${a.id}`,
+		label: `${a.bankAccountType?.name} ${a.account}`,
+	}));
+};
+
+export const isGenerated = (status: string) => status === REFUND_GENERATED;
+
+export const isScheduled = (status: string) => status === REFUND_SCHEDULED;
