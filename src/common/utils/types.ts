@@ -290,6 +290,7 @@ export interface Refund {
 export interface Account {
 	id: number;
 	account: string;
+	currency: Currency;
 	currencyId: number;
 	isDefault: boolean;
 	bankAccountTypeId: number;

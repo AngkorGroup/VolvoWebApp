@@ -70,7 +70,7 @@ export const mapCharges = (charges: Charge[]): Consume[] => {
 export const mapBankAccounts = (accounts: Account[]) => {
 	return accounts.map((a) => ({
 		value: `${a.id}`,
-		label: `${a.bankAccountType?.name} ${a.account}`,
+		label: `${a.bankAccountType?.name} ${a.currency?.symbol} ${a.account}`,
 	}));
 };
 
