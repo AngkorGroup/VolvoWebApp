@@ -6,7 +6,7 @@ import {
 } from '@material-ui/core';
 import { BasicTable, VolvoButton } from 'common/components';
 import React from 'react';
-import { LOAD_COLUMNS } from '../columns';
+import { PRE_LOAD_COLUMNS } from '../columns';
 import { TableLoad } from '../interfaces';
 import LoadRow from '../LoadRow/LoadRow';
 
@@ -32,7 +32,7 @@ const PreviewModal: React.FC<PreviewModalProps> = ({
 		<Dialog fullWidth maxWidth='xl' open={show} onClose={onClose}>
 			<DialogTitle id='alert-dialog-title'>Pre Carga</DialogTitle>
 			<DialogContent>
-				<BasicTable columns={[{ title: 'Línea' }, ...LOAD_COLUMNS]}>
+				<BasicTable columns={PRE_LOAD_COLUMNS}>
 					<React.Fragment>
 						{previewItems.map((item, i: number) => (
 							<LoadRow key={i} item={item} />

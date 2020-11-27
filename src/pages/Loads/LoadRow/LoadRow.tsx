@@ -11,6 +11,7 @@ import { TableLoad } from '../interfaces';
 
 interface LoadRowProps {
 	item: TableLoad;
+	isMain?: boolean;
 }
 
 const useStyles = makeStyles(({ palette }: Theme) =>
@@ -21,7 +22,7 @@ const useStyles = makeStyles(({ palette }: Theme) =>
 	}),
 );
 
-const LoadRow = ({ item }: LoadRowProps) => {
+const LoadRow = ({ item, isMain }: LoadRowProps) => {
 	const classes = useStyles();
 	const {
 		index,
@@ -40,6 +41,8 @@ const LoadRow = ({ item }: LoadRowProps) => {
 		tpNumber,
 		errorMessage,
 		lineContent,
+		createdAt,
+		createdBy,
 	} = item;
 
 	return (
@@ -72,6 +75,8 @@ const LoadRow = ({ item }: LoadRowProps) => {
 					<TableCell>{reason}</TableCell>
 					<TableCell>{card}</TableCell>
 					<TableCell>{tpNumber}</TableCell>
+					{isMain && <TableCell>{createdBy}</TableCell>}
+					{isMain && <TableCell>{createdAt}</TableCell>}
 				</React.Fragment>
 			)}
 		</TableRow>

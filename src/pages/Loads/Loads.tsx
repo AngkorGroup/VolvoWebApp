@@ -1,7 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import PublishIcon from '@material-ui/icons/Publish';
 import ErrorIcon from '@material-ui/icons/Error';
-import { useQuery } from 'react-query';
 import { createStyles, makeStyles } from '@material-ui/core';
 import {
 	BasicTable,
@@ -25,6 +24,7 @@ import {
 import { useAlert } from 'react-alert';
 import ErrorModal from './ErrorModal/ErrorModal';
 import PreviewModal from './PreviewModal/PreviewModal';
+import { useQuery } from 'react-query';
 
 const useStyles = makeStyles(() =>
 	createStyles({
@@ -53,8 +53,7 @@ const Loads: React.FC = () => {
 	const [query, setQuery] = useState('');
 	const [filtered, setFiltered] = useState<TableLoad[]>([]);
 	const alert = useAlert();
-
-	const { data, status } = useQuery('loads', getLoads);
+	const { data, status, refetch } = useQuery('loads', getLoads);
 	const loads = useMemo(() => {
 		if (data?.ok) {
 			return mapLoads(data?.data || []);
@@ -134,6 +133,7 @@ const Loads: React.FC = () => {
 							'Se realizó la carga masiva de datos correctamente',
 						),
 					);
+					refetch();
 				}
 			} else {
 				alert.error(
@@ -208,7 +208,7 @@ const Loads: React.FC = () => {
 						<BasicTable columns={LOAD_COLUMNS}>
 							<React.Fragment>
 								{filtered.map((item, i: number) => (
-									<LoadRow key={i} item={item} />
+									<LoadRow key={i} item={item} isMain />
 								))}
 							</React.Fragment>
 						</BasicTable>
