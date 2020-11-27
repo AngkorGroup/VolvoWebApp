@@ -2,6 +2,7 @@ import {
 	FormControl,
 	Grid,
 	InputLabel,
+	makeStyles,
 	MenuItem,
 	Select,
 } from '@material-ui/core';
@@ -25,6 +26,7 @@ import moment from 'moment';
 import { useQuery } from 'react-query';
 import {
 	annulateRefund,
+	generateLiquidations,
 	getQueryRefunds,
 	payRefund,
 	scheduleRefunds,
@@ -46,7 +48,14 @@ type Event = React.ChangeEvent<{
 	value: unknown;
 }>;
 
+const useStyles = makeStyles({
+	actionButton: {
+		marginLeft: '10px',
+	},
+});
+
 const Refunds: React.FC = () => {
+	const classes = useStyles();
 	const alert = useAlert();
 	const [date, setDate] = useState<MaterialUiPickersDate>(moment());
 	const [selectedIds, setSelectedIds] = useState<string[]>([]);
@@ -149,6 +158,17 @@ const Refunds: React.FC = () => {
 	const openScheduleModal = () => setShowScheduleModal(true);
 	const closeScheduleModal = () => setShowScheduleModal(false);
 
+	const onGenerate = async () => {
+		await generateLiquidations();
+		alert.success(
+			at(
+				'Generación Exitosa',
+				'Se han generado las liquidaciones de manera exitosa',
+			),
+		);
+		setRefundStatus(REFUND_GENERATED);
+	};
+
 	const onSelectId = (id: string) => {
 		setSelectedIds((ids) => [...ids, id]);
 	};
@@ -224,16 +244,23 @@ const Refunds: React.FC = () => {
 								))}
 							</React.Fragment>
 						</PaginatedTable>
-						{(isGenerated(refundStatus) || isScheduled(refundStatus)) && (
-							<PageActionBar justifyContent='flex-end'>
+						<PageActionBar justifyContent='flex-end'>
+							{(isGenerated(refundStatus) || isScheduled(refundStatus)) && (
 								<VolvoButton
+									className={classes.actionButton}
 									disabled={selectedIds.length === 0}
 									onClick={openScheduleModal}
 									color='success'
 									text='Programar'
 								/>
-							</PageActionBar>
-						)}
+							)}
+							<VolvoButton
+								className={classes.actionButton}
+								onClick={onGenerate}
+								color='success'
+								text='Generar Liquidaciones'
+							/>
+						</PageActionBar>
 						{showScheduleModal && (
 							<ScheduleModal
 								show={showScheduleModal}

@@ -1,5 +1,6 @@
 import {
 	ANNULATE_REFUND,
+	GENERATE_REFUNDS,
 	REFUNDS_URL,
 	SCHEDULE_REFUNDS,
 } from 'common/constants/api';
@@ -15,6 +16,10 @@ export const getRefundConsumes = async (id: string) => {
 
 export const annulateRefund = async (refundId: string) => {
 	return await api.post(ANNULATE_REFUND, { refundId });
+};
+
+export const generateLiquidations = async () => {
+	return await api.get(GENERATE_REFUNDS);
 };
 
 export const scheduleRefunds = async (

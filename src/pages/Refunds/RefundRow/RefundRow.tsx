@@ -121,7 +121,7 @@ const RefundRow = ({
 						onClose={onCloseMenu}
 					>
 						<MenuItem onClick={setDetailModalVisible(true)}>
-							Ver Detalle
+							Ver Consumos
 						</MenuItem>
 						{isScheduled(status) && (
 							<MenuItem onClick={setPayModalVisible(true)}>Pagar</MenuItem>
