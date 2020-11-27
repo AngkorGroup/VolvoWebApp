@@ -6,7 +6,7 @@ import {
 } from '@material-ui/core';
 import { BasicTable, VolvoButton } from 'common/components';
 import React from 'react';
-import { LOAD_COLUMNS } from '../columns';
+import { PRE_LOAD_COLUMNS } from '../columns';
 import { TableLoad } from '../interfaces';
 import LoadRow from '../LoadRow/LoadRow';
 
@@ -27,11 +27,12 @@ const PreviewModal: React.FC<PreviewModalProps> = ({
 		onMassiveUpload();
 		onClose();
 	};
+	const isError = previewItems.every((item) => !!item.errorMessage);
 	return (
 		<Dialog fullWidth maxWidth='xl' open={show} onClose={onClose}>
 			<DialogTitle id='alert-dialog-title'>Pre Carga</DialogTitle>
 			<DialogContent>
-				<BasicTable columns={[{ title: 'Línea' }, ...LOAD_COLUMNS]}>
+				<BasicTable columns={PRE_LOAD_COLUMNS}>
 					<React.Fragment>
 						{previewItems.map((item, i: number) => (
 							<LoadRow key={i} item={item} />
@@ -41,7 +42,12 @@ const PreviewModal: React.FC<PreviewModalProps> = ({
 			</DialogContent>
 			<DialogActions>
 				<VolvoButton onClick={onClose} variant='text' text='Cerrar' />
-				<VolvoButton onClick={onConfirm} color='success' text='Confirmar' />
+				<VolvoButton
+					disabled={isError}
+					onClick={onConfirm}
+					color='success'
+					text='Confirmar'
+				/>
 			</DialogActions>
 		</Dialog>
 	);

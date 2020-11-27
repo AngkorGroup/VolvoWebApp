@@ -11,7 +11,7 @@ export const REFUNDS_COLUMNS = [
 	{ title: 'Origen' },
 	{ title: 'Destino' },
 	{ title: 'Voucher' },
-	{ title: 'Consumos' },
+	{ title: '#Consumos' },
 	ACTIONS_COLUMN,
 ];
 

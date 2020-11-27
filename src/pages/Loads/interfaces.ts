@@ -15,13 +15,15 @@ export interface TableLoad {
 	card: string;
 	tpNumber: string;
 	balance: number;
+	createdBy?: string;
+	createdAt?: string;
 	errorMessage?: string;
 	lineContent?: string;
 }
 
 export const mapLoads = (loads: Load[]): TableLoad[] => {
 	return loads.map((l) => ({
-		number: l.tpContractNumber,
+		number: l.tpContractBatchNumber,
 		ruc: l.client?.ruc,
 		name: l.client?.name,
 		date: l.tpContractDate,
@@ -32,8 +34,10 @@ export const mapLoads = (loads: Load[]): TableLoad[] => {
 		type: l.rechargeType?.name,
 		reason: l.businessArea?.name,
 		card: l.cardType?.name,
-		tpNumber: l.tpContractBatchNumber,
+		tpNumber: l.tpContractNumber,
 		balance: l.balance?.value,
+		createdBy: l.createdBy,
+		createdAt: l.createdAt,
 	}));
 };
 
@@ -41,7 +45,7 @@ export const mapPreLoads = (loads: PreLoad[]): TableLoad[] => {
 	return loads.map(
 		({ rowIndex, batch, contact, card, errorMessage, lineContent }) => ({
 			index: rowIndex,
-			number: batch?.tpContractNumber,
+			number: batch?.tpContractBatchNumber,
 			ruc: contact?.client?.ruc,
 			name: contact?.client?.name,
 			date: batch?.tpContractDate,
@@ -53,7 +57,7 @@ export const mapPreLoads = (loads: PreLoad[]): TableLoad[] => {
 			type: batch?.rechargeType?.name,
 			reason: batch?.businessArea?.name,
 			card: card?.cardType?.name,
-			tpNumber: batch?.tpContractBatchNumber,
+			tpNumber: batch?.tpContractNumber,
 			balance: card?.balance?.value,
 			errorMessage,
 			lineContent,

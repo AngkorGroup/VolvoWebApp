@@ -110,6 +110,8 @@ export interface Load {
 	cardType: CardType;
 	rechargeType: CommonValue;
 	businessArea: CommonValue;
+	createdBy: string;
+	createdAt: string;
 }
 
 export interface PreLoad {

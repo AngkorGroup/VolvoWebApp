@@ -13,7 +13,26 @@ export const LOAD_COLUMNS = [
 	{ title: 'Tipo' },
 	{ title: 'Motivo' },
 	{ title: 'Tipo Tarjeta' },
-	{ title: '#TopPerú' },
+	{ title: 'Referencia' },
+	{ title: 'Creado Por' },
+	{ title: 'Creado el' },
+];
+
+export const PRE_LOAD_COLUMNS = [
+	{ title: 'Línea' },
+	{ title: 'Contrato' },
+	{ title: 'RUC' },
+	{ title: 'Razón Social' },
+	{ title: 'Fecha' },
+	{ title: 'Chasis' },
+	{ title: 'Factura' },
+	{ title: 'Moneda' },
+	{ title: 'Importe' },
+	{ title: 'Saldo' },
+	{ title: 'Tipo' },
+	{ title: 'Motivo' },
+	{ title: 'Tipo Tarjeta' },
+	{ title: 'Referencia' },
 ];
 
 export const ERROR_COLUMNS = [
