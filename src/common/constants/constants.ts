@@ -30,6 +30,7 @@ export const DEFAULT_WEEK_START_DATE = moment().subtract(1, 'week');
 export const DEFAULT_NOW_DATE = moment();
 
 export const DEFAULT_DATE_FORMAT = 'DD/MM/YYYY';
+export const DEFAULT_MOMENT_FORMAT = 'DD/MM/yyyy';
 
 export const REPORT_PATH_SOURCE = '/reports';
 

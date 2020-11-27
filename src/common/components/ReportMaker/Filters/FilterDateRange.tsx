@@ -4,7 +4,11 @@ import { DatePicker } from 'common/components';
 import React, { useContext, useEffect, useState } from 'react';
 import ReportMakerContext from '../ReportMakerContext';
 import moment from 'moment';
-import { DEFAULT_NOW_DATE, DEFAULT_MONTH_START_DATE } from 'common/constants';
+import {
+	DEFAULT_NOW_DATE,
+	DEFAULT_MONTH_START_DATE,
+	DEFAULT_MOMENT_FORMAT,
+} from 'common/constants';
 
 type Date = MaterialUiPickersDate;
 
@@ -28,10 +32,10 @@ const FilterDateRange = () => {
 	const onEndDateChange = (date: Date) => setEndDate(date);
 	useEffect(() => {
 		if (startDate) {
-			updateState({ startDate: startDate.format('DD/MM/yyyy') });
+			updateState({ startDate: startDate.format(DEFAULT_MOMENT_FORMAT) });
 		}
 		if (endDate) {
-			updateState({ endDate: endDate.format('DD/MM/yyyy') });
+			updateState({ endDate: endDate.format(DEFAULT_MOMENT_FORMAT) });
 		}
 		const months = moment(startDate).diff(endDate, 'months', true);
 		if (Math.abs(months) > MAX_MONTH_DATE_RAGE) {

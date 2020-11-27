@@ -10,6 +10,7 @@ import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date';
 import { DatePicker, VolvoButton } from 'common/components';
 import React, { useState } from 'react';
 import moment from 'moment';
+import { DEFAULT_MOMENT_FORMAT } from 'common/constants';
 
 interface PayModalProps {
 	show: boolean;
@@ -29,7 +30,7 @@ const PayModal: React.FC<PayModalProps> = ({
 	const onDateChange = (date: MaterialUiPickersDate) => setDate(date);
 	const onVoucherChange = (e: any) => setVoucher(e.target.value);
 	const onConfirm = () => {
-		onPay(id, date?.format('DD/MM/yyyy') || '', voucher);
+		onPay(id, date?.format(DEFAULT_MOMENT_FORMAT) || '', voucher);
 		onClose();
 	};
 	return (
