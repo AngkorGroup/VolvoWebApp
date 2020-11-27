@@ -31,7 +31,7 @@ interface FormModalProps {
 const initialValues: CardTypeForm = {
 	type: '',
 	description: '',
-	currency: '',
+	currencyId: '',
 	term: '',
 	color: '',
 	tpCode: '',
@@ -110,9 +110,8 @@ const FormModal: React.FC<FormModalProps> = ({
 										<Field
 											labelId='currencyLabel'
 											label='Moneda'
-											name='currency'
-											error={touched.currency && !!errors.currency}
-											helperText={touched.currency && errors.currency}
+											name='currencyId'
+											error={touched.currencyId && !!errors.currencyId}
 											as={Select}
 										>
 											{currencies.map((d) => (

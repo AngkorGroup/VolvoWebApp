@@ -5,6 +5,7 @@ export interface TableCardType {
 	type: string;
 	description: string;
 	currency: string;
+	currencyId: string;
 	term: string;
 	color: string;
 	createdAt: string;
@@ -20,6 +21,7 @@ export const mapCardType = (cardTypes: CardType): TableCardType => ({
 	type: cardTypes.name,
 	description: cardTypes.displayName,
 	currency: cardTypes.currency?.symbol,
+	currencyId: `${cardTypes.currency?.id}`,
 	term: `${cardTypes.term}`,
 	color: cardTypes.color,
 	createdAt: cardTypes.createdAt,
