@@ -54,6 +54,7 @@ const LoadRow = ({ item }: LoadRowProps) => {
 				</React.Fragment>
 			) : (
 				<React.Fragment>
+					{index && <TableCell>{index}</TableCell>}
 					<TableCell>{number}</TableCell>
 					<TableCell>{ruc}</TableCell>
 					<TableCell>{name}</TableCell>

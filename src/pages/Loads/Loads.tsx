@@ -108,6 +108,7 @@ const Loads: React.FC = () => {
 				setShowPreview(true);
 			}
 		}
+		(inputRef?.current || { value: '' }).value = '';
 	};
 
 	const onMassiveUpload = async () => {
@@ -168,7 +169,6 @@ const Loads: React.FC = () => {
 						<input
 							ref={inputRef}
 							className={classes.input}
-							multiple
 							type='file'
 							onChange={onSelectFile}
 						/>

@@ -27,6 +27,7 @@ const PreviewModal: React.FC<PreviewModalProps> = ({
 		onMassiveUpload();
 		onClose();
 	};
+	const isError = previewItems.every((item) => !!item.errorMessage);
 	return (
 		<Dialog fullWidth maxWidth='xl' open={show} onClose={onClose}>
 			<DialogTitle id='alert-dialog-title'>Pre Carga</DialogTitle>
@@ -41,7 +42,12 @@ const PreviewModal: React.FC<PreviewModalProps> = ({
 			</DialogContent>
 			<DialogActions>
 				<VolvoButton onClick={onClose} variant='text' text='Cerrar' />
-				<VolvoButton onClick={onConfirm} color='success' text='Confirmar' />
+				<VolvoButton
+					disabled={isError}
+					onClick={onConfirm}
+					color='success'
+					text='Confirmar'
+				/>
 			</DialogActions>
 		</Dialog>
 	);
