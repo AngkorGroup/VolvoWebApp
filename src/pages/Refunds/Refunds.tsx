@@ -24,6 +24,7 @@ import {
 	REFUND_GENERATED,
 	REFUND_STATUSES,
 	TABLE_ROWS_PER_PAGE,
+	DEFAULT_MOMENT_FORMAT,
 } from 'common/constants';
 import React, { useMemo, useState } from 'react';
 import { useQuery } from 'react-query';
@@ -76,8 +77,8 @@ const Refunds: React.FC = () => {
 	const { data, status, refetch } = useQuery(
 		[
 			'getQueryRefunds',
-			startDate?.format('DD/MM/yyyy'),
-			endDate?.format('DD/MM/yyyy'),
+			startDate?.format(DEFAULT_MOMENT_FORMAT),
+			endDate?.format(DEFAULT_MOMENT_FORMAT),
 			refundStatus,
 		],
 		getQueryRefunds,

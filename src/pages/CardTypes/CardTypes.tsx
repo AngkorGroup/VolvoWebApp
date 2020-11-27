@@ -1,5 +1,4 @@
 import React, { useMemo, useState } from 'react';
-import moment from 'moment';
 import AddIcon from '@material-ui/icons/Add';
 import {
 	BasicTable,
@@ -11,14 +10,9 @@ import {
 	TableFilter,
 	VolvoButton,
 } from 'common/components';
-import { buildAlertBody as at, CardType, filterRows } from 'common/utils';
+import { buildAlertBody as at, filterRows } from 'common/utils';
 import FormModal from './FormModal/FormModal';
-import {
-	TableCardType,
-	CardTypeForm,
-	mapCardType,
-	mapCardTypes,
-} from './interfaces';
+import { TableCardType, CardTypeForm, mapCardTypes } from './interfaces';
 import CardTypeRow from './CardTypeRow/CardTypeRow';
 import { CARD_TYPE_COLUMNS } from './columns';
 import { useQuery } from 'react-query';
@@ -36,7 +30,7 @@ const CardTypes: React.FC = () => {
 	const [showAddModal, setShowAddModal] = useState(false);
 	const [onlyActive, setOnlyActive] = useState(true);
 	const [filtered, setFiltered] = useState<TableCardType[]>([]);
-	const { data, status } = useQuery([onlyActive], getCardTypes);
+	const { data, status, refetch } = useQuery([onlyActive], getCardTypes);
 	const cardTypes = useMemo(() => {
 		if (data?.ok) {
 			const rows = mapCardTypes(data?.data || []);
@@ -63,15 +57,14 @@ const CardTypes: React.FC = () => {
 		const body = {
 			name: cardType.type || '',
 			displayName: cardType.description || '',
-			currency: cardType.currency || '',
+			currencyId: cardType.currencyId || '',
 			color: cardType.color || '',
 			tpCode: cardType.tpCode || '',
 			term: parseInt(cardType.term || '0', 10),
 		};
 		const response = await addCardType(body);
 		if (response.ok) {
-			const newRows = mapCardType(response.data || ({} as CardType));
-			setFiltered((old) => [...old, newRows]);
+			refetch();
 			alert.success(
 				at(
 					'Tipo de Tarjeta Agregado',
@@ -86,16 +79,14 @@ const CardTypes: React.FC = () => {
 			id: parseInt(cardType.id || '0', 10),
 			name: cardType.type || '',
 			displayName: cardType.description || '',
-			currency: cardType.currency || '',
+			currencyId: cardType.currencyId || '',
 			color: cardType.color || '',
 			tpCode: cardType.tpCode || '',
 			term: parseInt(cardType.term || '0', 10),
 		};
 		const response = await editCardType(body);
 		if (response.ok) {
-			const newData = mapCardType(response.data || ({} as CardType));
-			const newRows = cardTypes.map((c) => (c.id === newData.id ? newData : c));
-			setFiltered(newRows);
+			refetch();
 			alert.success(
 				at(
 					'Tipo de Tarjeta Editado',
@@ -108,11 +99,7 @@ const CardTypes: React.FC = () => {
 	const onDeleteCardType = async (id: string) => {
 		const response = await deleteCardType(id);
 		if (response.ok) {
-			const archiveAt = moment().format('DD/MM/YYYY h:mm:ss');
-			const newRows = cardTypes.map((c) =>
-				c.id === id ? { ...c, archiveAt } : c,
-			);
-			setFiltered(newRows);
+			refetch();
 			alert.success(
 				at(
 					'Tipo de Tarjeta Desactivado',
