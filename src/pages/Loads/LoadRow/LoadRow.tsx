@@ -25,6 +25,7 @@ const useStyles = makeStyles(({ palette }: Theme) =>
 const LoadRow = ({ item, isMain }: LoadRowProps) => {
 	const classes = useStyles();
 	const {
+		id,
 		index,
 		number,
 		ruc,
@@ -57,6 +58,7 @@ const LoadRow = ({ item, isMain }: LoadRowProps) => {
 				</React.Fragment>
 			) : (
 				<React.Fragment>
+					{isMain && <TableCell>{id}</TableCell>}
 					{index && <TableCell>{index}</TableCell>}
 					<TableCell>{number}</TableCell>
 					<TableCell>{ruc}</TableCell>
@@ -68,9 +70,11 @@ const LoadRow = ({ item, isMain }: LoadRowProps) => {
 					<TableCell>
 						<Amount value={amount} />
 					</TableCell>
-					<TableCell>
-						<Amount value={balance} />
-					</TableCell>
+					{isMain && (
+						<TableCell>
+							<Amount value={balance || 0} />
+						</TableCell>
+					)}
 					<TableCell>{type}</TableCell>
 					<TableCell>{reason}</TableCell>
 					<TableCell>{card}</TableCell>

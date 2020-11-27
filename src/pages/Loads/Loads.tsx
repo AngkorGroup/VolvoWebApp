@@ -116,25 +116,13 @@ const Loads: React.FC = () => {
 			const response = await massiveUpload(file);
 			if (response.ok) {
 				const loadErrors = response.data;
+				refetch();
 				setFile(null);
-				if (loadErrors?.length) {
-					alert.error(
-						at(
-							'Errores en el archivo',
-							'Se han presentado algunos errores en el archivo subido',
-						),
-					);
-					setShowErrors(true);
-					setErrors(loadErrors);
-				} else {
-					alert.success(
-						at(
-							'Carga Masiva Exitosa',
-							'Se realizó la carga masiva de datos correctamente',
-						),
-					);
-					refetch();
-				}
+				const alertTitle = 'Carga Masiva Exitosa';
+				const alertBody = loadErrors?.length
+					? 'Se realizó la carga masiva de recargas de los registros sin errores'
+					: 'Se realizó la carga masiva de recargas correctamente';
+				alert.success(at(alertTitle, alertBody));
 			} else {
 				alert.error(
 					at(

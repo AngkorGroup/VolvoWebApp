@@ -1,6 +1,7 @@
 import { COLUMN_CENTER } from 'common/constants/tableColumn';
 
 export const LOAD_COLUMNS = [
+	{ title: 'Id' },
 	{ title: 'Contrato' },
 	{ title: 'RUC' },
 	{ title: 'Razón Social' },
@@ -28,7 +29,6 @@ export const PRE_LOAD_COLUMNS = [
 	{ title: 'Factura' },
 	{ title: 'Moneda' },
 	{ title: 'Importe' },
-	{ title: 'Saldo' },
 	{ title: 'Tipo' },
 	{ title: 'Motivo' },
 	{ title: 'Tipo Tarjeta' },

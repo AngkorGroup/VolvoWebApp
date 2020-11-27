@@ -68,8 +68,8 @@ const ConsumesByDealer: React.FC = () => {
 	};
 
 	const onApplyFilters = async () => {
-		const start = startDate?.format('DD/mm/yyyy') || '';
-		const end = endDate?.format('DD/mm/yyyy') || '';
+		const start = startDate?.format('DD/MM/yyyy') || '';
+		const end = endDate?.format('DD/MM/yyyy') || '';
 		const selectedCashier = cashier === 'all' ? '' : cashier;
 		const list = cardTypes.map((c) => c.value);
 		setLoading(true);

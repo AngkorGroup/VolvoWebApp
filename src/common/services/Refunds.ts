@@ -1,13 +1,16 @@
 import {
-	ANNULATE_REFUND,
 	GENERATE_REFUNDS,
 	REFUNDS_URL,
 	SCHEDULE_REFUNDS,
 } from 'common/constants/api';
 import { api, Refund, Charge } from 'common/utils';
 
-export const getRefunds = async (date: string, status: string) => {
-	return await api.get<Refund[]>(REFUNDS_URL, { date, status });
+export const getRefunds = async (
+	beginDate: string,
+	endDate: string,
+	status: string,
+) => {
+	return await api.get<Refund[]>(REFUNDS_URL, { beginDate, endDate, status });
 };
 
 export const getRefundConsumes = async (id: string) => {
@@ -15,7 +18,7 @@ export const getRefundConsumes = async (id: string) => {
 };
 
 export const annulateRefund = async (refundId: string) => {
-	return await api.post(ANNULATE_REFUND, { refundId });
+	return await api.post(`${REFUNDS_URL}/${refundId}/cancel`);
 };
 
 export const generateLiquidations = async () => {
@@ -50,9 +53,10 @@ export const payRefund = async (
 
 export const getQueryRefunds = async (
 	key: string,
-	date: string,
+	beginDate: string,
+	endDate: string,
 	status: string,
-) => await getRefunds(date, status);
+) => await getRefunds(beginDate, endDate, status);
 
 export const getQueryRefundConsumes = async (key: string, refundId: string) =>
 	await getRefundConsumes(refundId);

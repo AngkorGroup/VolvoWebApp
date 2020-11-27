@@ -31,6 +31,6 @@ export const GET_BANKS = '/banks';
 export const GET_CURRENCIES = '/currencies';
 export const GET_DOCUMENT_TYPES = '/document_types';
 export const REFUNDS_URL = '/liquidations';
-export const ANNULATE_REFUND = `${REFUNDS_URL}/annulate`;
+export const ANNULATE_REFUND = `${REFUNDS_URL}/cancel`;
 export const SCHEDULE_REFUNDS = `${REFUNDS_URL}/schedule`;
 export const GENERATE_REFUNDS = `${REFUNDS_URL}/generate`;

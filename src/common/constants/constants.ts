@@ -24,8 +24,10 @@ export interface MenuItem {
 	menuList?: MenuItem[];
 }
 
-export const DEFAULT_START_DATE = moment().subtract(1, 'months');
-export const DEFAULT_END_DATE = moment();
+export const DEFAULT_MONTH_START_DATE = moment().subtract(1, 'months');
+export const DEFAULT_WEEK_START_DATE = moment().subtract(1, 'week');
+
+export const DEFAULT_NOW_DATE = moment();
 
 export const DEFAULT_DATE_FORMAT = 'DD/MM/YYYY';
 
@@ -250,6 +252,7 @@ export const NUMERIC_FIELD_MESSAGE = 'El campo debe ser numérico';
 
 export const REFUND_GENERATED = 'Generated';
 export const REFUND_SCHEDULED = 'Scheduled';
+export const REFUND_PAID = 'Paid';
 
 export const REFUND_STATUSES = [
 	{
@@ -265,7 +268,7 @@ export const REFUND_STATUSES = [
 		label: 'PROGRAMADO',
 	},
 	{
-		value: 'Paid',
+		value: REFUND_PAID,
 		label: 'PAGADO',
 	},
 ];

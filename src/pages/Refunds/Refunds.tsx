@@ -17,12 +17,15 @@ import {
 	VolvoButton,
 } from 'common/components';
 import {
+	DEFAULT_NOW_DATE,
+	DEFAULT_WEEK_START_DATE,
+	REFUND_SCHEDULED,
+	REFUND_PAID,
 	REFUND_GENERATED,
 	REFUND_STATUSES,
 	TABLE_ROWS_PER_PAGE,
 } from 'common/constants';
 import React, { useMemo, useState } from 'react';
-import moment from 'moment';
 import { useQuery } from 'react-query';
 import {
 	annulateRefund,
@@ -57,7 +60,12 @@ const useStyles = makeStyles({
 const Refunds: React.FC = () => {
 	const classes = useStyles();
 	const alert = useAlert();
-	const [date, setDate] = useState<MaterialUiPickersDate>(moment());
+	const [startDate, setStartDate] = useState<MaterialUiPickersDate>(
+		DEFAULT_WEEK_START_DATE,
+	);
+	const [endDate, setEndDate] = useState<MaterialUiPickersDate>(
+		DEFAULT_NOW_DATE,
+	);
 	const [selectedIds, setSelectedIds] = useState<string[]>([]);
 	const [refundStatus, setRefundStatus] = useState(REFUND_GENERATED);
 	const [showScheduleModal, setShowScheduleModal] = useState(false);
@@ -65,8 +73,13 @@ const Refunds: React.FC = () => {
 	const [rowsPerPage, setRowsPerPage] = useState(TABLE_ROWS_PER_PAGE);
 	const [query, setQuery] = useState('');
 	const [filtered, setFiltered] = useState<RefundColumn[]>([]);
-	const { data, status } = useQuery(
-		['getQueryRefunds', date?.format('DD/MM/yyyy'), refundStatus],
+	const { data, status, refetch } = useQuery(
+		[
+			'getQueryRefunds',
+			startDate?.format('DD/MM/yyyy'),
+			endDate?.format('DD/MM/yyyy'),
+			refundStatus,
+		],
 		getQueryRefunds,
 	);
 	const refunds = useMemo(() => {
@@ -78,7 +91,8 @@ const Refunds: React.FC = () => {
 		return [];
 	}, [data, setFiltered]);
 
-	const onDateChange = (date: MaterialUiPickersDate) => setDate(date);
+	const onStartDateChange = (date: MaterialUiPickersDate) => setStartDate(date);
+	const onEndDateChange = (date: MaterialUiPickersDate) => setEndDate(date);
 	const onStatusChange = (e: Event) =>
 		setRefundStatus(e.target.value as string);
 	const onFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -106,18 +120,16 @@ const Refunds: React.FC = () => {
 			alert.success(
 				at('Reembolso Anulado', 'Se anuló un reembolso correctamente'),
 			);
+			refetch();
 		}
 	};
 
 	const onPay = async (id: string, date: string, voucher: string) => {
 		const response = await payRefund(id, date, voucher);
 		if (response.ok) {
-			setFiltered((old) => old.filter((r) => r.id !== id));
+			setRefundStatus(REFUND_PAID);
 			alert.success(
-				at(
-					'Reembolso Pagado',
-					'En breve se descargará el archivo del reembolso pagado',
-				),
+				at('Liquidación Pagada', 'Se registró el pago correctamente'),
 			);
 		}
 	};
@@ -129,13 +141,12 @@ const Refunds: React.FC = () => {
 			selectedIds.map((id) => +id),
 		);
 		if (ok) {
-			setFiltered((old) =>
-				old.filter((r) => selectedIds.some((sId) => sId !== r.id)),
-			);
+			setRefundStatus(REFUND_SCHEDULED);
+			setSelectedIds([]);
 			alert.success(
 				at(
-					'Reembolsos Programados',
-					'Se programaron los reembolsos correctamente',
+					'Liquidaciones Programadas',
+					'Se programaron las liquidaciones correctamente, en breve se descargará el archivo de texto para el banco',
 				),
 			);
 			if (headers) {
@@ -166,7 +177,7 @@ const Refunds: React.FC = () => {
 				'Se han generado las liquidaciones de manera exitosa',
 			),
 		);
-		setRefundStatus(REFUND_GENERATED);
+		refetch();
 	};
 
 	const onSelectId = (id: string) => {
@@ -193,7 +204,19 @@ const Refunds: React.FC = () => {
 				<PageActionBar>
 					<Grid container spacing={1}>
 						<Grid item xs={2}>
-							<DatePicker label='Fecha' value={date} onChange={onDateChange} />
+							<DatePicker
+								label='Fecha Inicio'
+								value={startDate}
+								onChange={onStartDateChange}
+							/>
+						</Grid>
+						<Grid item xs={2}>
+							<DatePicker
+								minDate={startDate}
+								label='Fecha Fin'
+								value={endDate}
+								onChange={onEndDateChange}
+							/>
 						</Grid>
 						<Grid item xs={2}>
 							<FormControl variant='outlined' fullWidth size='small'>
@@ -219,8 +242,16 @@ const Refunds: React.FC = () => {
 				{status === 'loading' && <PageLoader />}
 				{status === 'success' && (
 					<React.Fragment>
-						<PageActionBar>
+						<PageActionBar justifyContent='space-between'>
 							<TableFilter value={query} onChange={onFilterChange} />
+							{isGenerated(refundStatus) && (
+								<VolvoButton
+									className={classes.actionButton}
+									onClick={onGenerate}
+									color='success'
+									text='Generar Liquidaciones'
+								/>
+							)}
 						</PageActionBar>
 						<PaginatedTable
 							columns={columns}
@@ -251,15 +282,11 @@ const Refunds: React.FC = () => {
 									disabled={selectedIds.length === 0}
 									onClick={openScheduleModal}
 									color='success'
-									text='Programar'
+									text={`${
+										isScheduled(refundStatus) ? 'Reprogramar' : 'Programar'
+									} pago`}
 								/>
 							)}
-							<VolvoButton
-								className={classes.actionButton}
-								onClick={onGenerate}
-								color='success'
-								text='Generar Liquidaciones'
-							/>
 						</PageActionBar>
 						{showScheduleModal && (
 							<ScheduleModal

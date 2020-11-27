@@ -62,7 +62,7 @@ const PayModal: React.FC<PayModalProps> = ({
 					disabled={!date || !voucher}
 					onClick={onConfirm}
 					color='success'
-					text='Guardar'
+					text='Pagar'
 				/>
 			</DialogActions>
 		</Dialog>

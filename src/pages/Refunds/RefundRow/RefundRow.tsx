@@ -98,12 +98,12 @@ const RefundRow = ({
 					<Amount value={amount} />
 				</TableCell>
 				<TableCell>{date}</TableCell>
-				<TableCell>{liquidationStatus}</TableCell>
-				<TableCell>{paymentDate}</TableCell>
+				<TableCell align='center'>{chargesCount}</TableCell>
 				<TableCell>{source}</TableCell>
 				<TableCell>{target}</TableCell>
+				<TableCell>{paymentDate}</TableCell>
 				<TableCell>{voucher}</TableCell>
-				<TableCell>{chargesCount}</TableCell>
+				<TableCell>{liquidationStatus}</TableCell>
 				<TableCell align='center'>
 					<VolvoIconButton
 						aria-controls='options'

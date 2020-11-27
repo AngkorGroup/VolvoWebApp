@@ -1,6 +1,7 @@
 import { Load, PreLoad } from 'common/utils';
 
 export interface TableLoad {
+	id?: string;
 	index?: number;
 	number: string;
 	ruc: string;
@@ -14,7 +15,7 @@ export interface TableLoad {
 	reason: string;
 	card: string;
 	tpNumber: string;
-	balance: number;
+	balance?: number;
 	createdBy?: string;
 	createdAt?: string;
 	errorMessage?: string;
@@ -23,6 +24,7 @@ export interface TableLoad {
 
 export const mapLoads = (loads: Load[]): TableLoad[] => {
 	return loads.map((l) => ({
+		id: `${l.id}`,
 		number: l.tpContractBatchNumber,
 		ruc: l.client?.ruc,
 		name: l.client?.name,
@@ -42,25 +44,21 @@ export const mapLoads = (loads: Load[]): TableLoad[] => {
 };
 
 export const mapPreLoads = (loads: PreLoad[]): TableLoad[] => {
-	return loads.map(
-		({ rowIndex, batch, contact, card, errorMessage, lineContent }) => ({
-			index: rowIndex,
-			number: batch?.tpContractBatchNumber,
-			ruc: contact?.client?.ruc,
-			name: contact?.client?.name,
-			date: batch?.tpContractDate,
-			chassis: batch?.tpChasis,
-			invoice: batch?.tpInvoiceCode,
-			amount: batch?.amount?.value,
-			currency:
-				batch?.amount?.currency?.symbol || batch?.amount?.currencySymbol,
-			type: batch?.rechargeType?.name,
-			reason: batch?.businessArea?.name,
-			card: card?.cardType?.name,
-			tpNumber: batch?.tpContractNumber,
-			balance: card?.balance?.value,
-			errorMessage,
-			lineContent,
-		}),
-	);
+	return loads.map(({ rowIndex, batch, card, errorMessage, lineContent }) => ({
+		index: rowIndex,
+		number: batch?.tpContractBatchNumber,
+		ruc: batch?.client?.ruc,
+		name: batch?.client?.name,
+		date: batch?.tpContractDate,
+		chassis: batch?.tpChasis,
+		invoice: batch?.tpInvoiceCode,
+		amount: batch?.amount?.value,
+		currency: batch?.amount?.currency?.symbol || batch?.amount?.currencySymbol,
+		type: batch?.rechargeType?.name,
+		reason: batch?.businessArea?.name,
+		card: card?.cardType?.name,
+		tpNumber: batch?.tpContractNumber,
+		errorMessage,
+		lineContent,
+	}));
 };
