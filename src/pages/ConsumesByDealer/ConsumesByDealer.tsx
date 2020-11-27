@@ -36,6 +36,7 @@ import {
 	getDealersByFilter,
 } from 'common/services';
 import { TABLE_ROWS_PER_PAGE } from 'common/constants/tableColumn';
+import { DEFAULT_MOMENT_FORMAT } from 'common/constants';
 
 type SelectEvent = React.ChangeEvent<{
 	name?: string | undefined;
@@ -68,8 +69,8 @@ const ConsumesByDealer: React.FC = () => {
 	};
 
 	const onApplyFilters = async () => {
-		const start = startDate?.format('DD/mm/yyyy') || '';
-		const end = endDate?.format('DD/mm/yyyy') || '';
+		const start = startDate?.format(DEFAULT_MOMENT_FORMAT) || '';
+		const end = endDate?.format(DEFAULT_MOMENT_FORMAT) || '';
 		const selectedCashier = cashier === 'all' ? '' : cashier;
 		const list = cardTypes.map((c) => c.value);
 		setLoading(true);

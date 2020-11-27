@@ -4,7 +4,11 @@ import { DatePicker } from 'common/components';
 import React, { useContext, useEffect, useState } from 'react';
 import ReportMakerContext from '../ReportMakerContext';
 import moment from 'moment';
-import { DEFAULT_END_DATE, DEFAULT_START_DATE } from 'common/constants';
+import {
+	DEFAULT_NOW_DATE,
+	DEFAULT_MONTH_START_DATE,
+	DEFAULT_MOMENT_FORMAT,
+} from 'common/constants';
 
 type Date = MaterialUiPickersDate;
 
@@ -21,17 +25,17 @@ const useStyles = makeStyles(() => ({
 const FilterDateRange = () => {
 	const classes = useStyles();
 	const { updateState } = useContext(ReportMakerContext);
-	const [startDate, setStartDate] = useState<Date>(DEFAULT_START_DATE);
-	const [endDate, setEndDate] = useState<Date>(DEFAULT_END_DATE);
+	const [startDate, setStartDate] = useState<Date>(DEFAULT_NOW_DATE);
+	const [endDate, setEndDate] = useState<Date>(DEFAULT_MONTH_START_DATE);
 	const [error, setError] = useState('');
 	const onStartDateChange = (date: Date) => setStartDate(date);
 	const onEndDateChange = (date: Date) => setEndDate(date);
 	useEffect(() => {
 		if (startDate) {
-			updateState({ startDate: startDate.format('DD/MM/yyyy') });
+			updateState({ startDate: startDate.format(DEFAULT_MOMENT_FORMAT) });
 		}
 		if (endDate) {
-			updateState({ endDate: endDate.format('DD/MM/yyyy') });
+			updateState({ endDate: endDate.format(DEFAULT_MOMENT_FORMAT) });
 		}
 		const months = moment(startDate).diff(endDate, 'months', true);
 		if (Math.abs(months) > MAX_MONTH_DATE_RAGE) {

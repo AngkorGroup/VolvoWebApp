@@ -175,6 +175,8 @@ export interface Batch {
 	createdAt: string;
 	rechargeType: CommonValue;
 	businessArea: CommonValue;
+	client: Client;
+	balance: Amount;
 }
 
 export interface CardBatch {

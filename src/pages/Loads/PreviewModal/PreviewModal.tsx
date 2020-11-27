@@ -42,12 +42,14 @@ const PreviewModal: React.FC<PreviewModalProps> = ({
 			</DialogContent>
 			<DialogActions>
 				<VolvoButton onClick={onClose} variant='text' text='Cerrar' />
-				<VolvoButton
-					disabled={isError}
-					onClick={onConfirm}
-					color='success'
-					text='Confirmar'
-				/>
+				{!isError && (
+					<VolvoButton
+						disabled={isError}
+						onClick={onConfirm}
+						color='success'
+						text='Confirmar'
+					/>
+				)}
 			</DialogActions>
 		</Dialog>
 	);
