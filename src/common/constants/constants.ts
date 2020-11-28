@@ -1,17 +1,12 @@
 import { SvgIconTypeMap } from '@material-ui/core';
 import { OverridableComponent } from '@material-ui/core/OverridableComponent';
 import CreditCardIcon from '@material-ui/icons/CreditCard';
-import CardMembershipIcon from '@material-ui/icons/CardMembership';
 import PersonIcon from '@material-ui/icons/Person';
-import AddToHomeScreenIcon from '@material-ui/icons/AddToHomeScreen';
-import PeopleAltIcon from '@material-ui/icons/PeopleAlt';
 import StoreIcon from '@material-ui/icons/Store';
-import LocalAtmIcon from '@material-ui/icons/LocalAtm';
-import PlaylistAddIcon from '@material-ui/icons/PlaylistAdd';
+import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
 import ListAltIcon from '@material-ui/icons/ListAlt';
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import LibraryBooksIcon from '@material-ui/icons/LibraryBooks';
-import MonetizationOnIcon from '@material-ui/icons/MonetizationOn';
+import SettingsIcon from '@material-ui/icons/Settings';
 import moment from 'moment';
 
 type MaterialIcon = OverridableComponent<SvgIconTypeMap<{}, 'svg'>>;
@@ -36,88 +31,179 @@ export const REPORT_PATH_SOURCE = '/reports';
 
 export const MENU_ITEMS: MenuItem[] = [
 	{
-		id: 'ClientBalance',
-		title: 'Saldos Cliente',
-		path: '/client_balance',
-		icon: LocalAtmIcon,
+		id: 'Configuration',
+		title: 'Configuración',
+		icon: SettingsIcon,
+		menuList: [
+			{
+				id: 'CardTypes',
+				title: 'Tipos de Tarjeta',
+				path: '/configuration/card_types',
+			},
+		],
 	},
 	{
-		id: 'CardBalance',
-		title: 'Saldos Tarjeta',
-		path: '/card_balance',
-		icon: LocalAtmIcon,
-	},
-	{
-		id: 'Loads',
-		title: 'Cargas y Recargas',
-		path: '/loads',
-		icon: PlaylistAddIcon,
+		id: 'Cards',
+		title: 'Tarjetas',
+		icon: CreditCardIcon,
+		menuList: [
+			{
+				id: 'CardBalance',
+				title: 'Saldos Tarjeta',
+				path: '/cards/card_balance',
+			},
+			{
+				id: 'CardsData',
+				title: 'Datos de Tarjetas',
+				path: '/cards/cards_data',
+			},
+		],
 	},
 	{
 		id: 'Clients',
 		title: 'Clientes',
-		path: '/clients',
 		icon: PersonIcon,
-	},
-	{
-		id: 'ClientUsers',
-		title: 'Contactos por Cliente',
-		path: '/client_users',
-		icon: PeopleAltIcon,
-	},
-	{
-		id: 'CardsData',
-		title: 'Datos de Tarjetas',
-		path: '/cards_data',
-		icon: CreditCardIcon,
+		menuList: [
+			{
+				id: 'Clients',
+				title: 'Clientes',
+				path: '/clients/list',
+			},
+			{
+				id: 'ClientUsers',
+				title: 'Contactos',
+				path: '/clients/client_users',
+			},
+			{
+				id: 'ClientBalance',
+				title: 'Saldos Cliente',
+				path: '/clients/client_balance',
+			},
+		],
 	},
 	{
 		id: 'Dealers',
 		title: 'Dealers',
-		path: '/dealers',
 		icon: StoreIcon,
+		menuList: [
+			{
+				id: 'Dealers',
+				title: 'Dealers',
+				path: '/dealers/list',
+			},
+			{
+				id: 'POS',
+				title: 'POS',
+				path: '/dealers/pos',
+			},
+			{
+				id: 'ConsumesByDealer',
+				title: 'Operaciones por Dealer',
+				path: '/dealers/consumes_by_dealer',
+			},
+		],
 	},
 	{
-		id: 'CardTypes',
-		title: 'Tipos de Tarjeta',
-		path: '/card_types',
-		icon: CardMembershipIcon,
-	},
-	{
-		id: 'POS',
-		title: 'POS',
-		path: '/pos',
-		icon: AddToHomeScreenIcon,
-	},
-	{
-		id: 'ConsumesByDealer',
-		title: 'Operaciones por Dealer',
-		path: '/consumes_by_dealer',
+		id: 'Operations',
+		title: 'Operaciones',
 		icon: ListAltIcon,
-	},
-	{
-		id: 'Users',
-		title: 'Usuarios',
-		path: '/users',
-		icon: AccountCircleIcon,
-	},
-	{
-		id: 'Refunds',
-		title: 'Pago de Reembolsos',
-		path: '/refunds',
-		icon: MonetizationOnIcon,
+		menuList: [
+			{
+				id: 'Loads',
+				title: 'Cargas y Recargas',
+				path: '/operations/loads',
+			},
+			{
+				id: 'Liquidations',
+				title: 'Liquidaciones',
+				path: '/operations/liquidations',
+			},
+		],
 	},
 	{
 		id: 'Reports',
 		title: 'Reportes',
-		path: '/reports',
 		icon: LibraryBooksIcon,
+		menuList: [
+			{
+				id: 'ConsumesByClient',
+				title: 'Consumos por Cliente',
+				path: `${REPORT_PATH_SOURCE}/consumes_by_client`,
+			},
+			{
+				id: 'ChargesByDealer',
+				title: 'Cobros por Dealer y Grupo Económico',
+				path: `${REPORT_PATH_SOURCE}/charges_by_dealer`,
+			},
+			{
+				id: 'ConsumesRanking',
+				title: 'Ranking de Consumos',
+				path: `${REPORT_PATH_SOURCE}/consumes_ranking`,
+			},
+			{
+				id: 'ChargesRanking',
+				title: 'Ranking de Cobros',
+				path: `${REPORT_PATH_SOURCE}/charges_ranking`,
+			},
+			{
+				id: 'ChargesByClient',
+				title: 'Recargas por Cliente y Area de Negocio',
+				path: `${REPORT_PATH_SOURCE}/charges_by_client`,
+			},
+			{
+				id: 'ClientsCardUse',
+				title: 'Clientes vs uso de tarjeta',
+				path: `${REPORT_PATH_SOURCE}/clients_card_use`,
+			},
+			{
+				id: 'ClientsCardExpiration',
+				title: 'Clientes con tarjetas próximas a vencer',
+				path: `${REPORT_PATH_SOURCE}/clients_card_expiration`,
+			},
+			{
+				id: 'ConsumesByBusinessArea',
+				title: 'Consumos por Area de Negocio',
+				path: `${REPORT_PATH_SOURCE}/consumes_by_business_area`,
+			},
+			{
+				id: 'ConsumesByEconomic',
+				title: 'Consumo por Sector Económico del cliente',
+				path: `${REPORT_PATH_SOURCE}/consumes_by_economic`,
+			},
+			{
+				id: 'ClientConsumesByDealer',
+				title: 'Consumo del cliente por Dealer',
+				path: `${REPORT_PATH_SOURCE}/client_consumes_by_dealer`,
+			},
+			{
+				id: 'Refunds',
+				title: 'Reporte de Reembolsos',
+				path: `${REPORT_PATH_SOURCE}/refunds`,
+			},
+			{
+				id: 'PendingChargesRefund',
+				title: 'Cobros pendientes de reembolsos',
+				path: `${REPORT_PATH_SOURCE}/pending_charges_refund`,
+			},
+		],
+	},
+	{
+		id: 'Security',
+		title: 'Seguridad',
+		icon: VerifiedUserIcon,
+		menuList: [
+			{
+				id: 'Users',
+				title: 'Usuarios',
+				path: '/security/users',
+			},
+		],
 	},
 ];
 
 export const REPORT_OPTIONS = [
 	{
-		id: 'ConsumesByClient',
+		id: 'consumes_by_client',
 		title: 'Consumos por Cliente',
 		filters: {
 			filterClient: true,
@@ -126,7 +212,7 @@ export const REPORT_OPTIONS = [
 		},
 	},
 	{
-		id: 'ChargesByDealer',
+		id: 'charges_by_dealer',
 		title: 'Cobros por Dealer y Grupo Económico',
 		filters: {
 			filterDateRange: true,
@@ -135,7 +221,7 @@ export const REPORT_OPTIONS = [
 		},
 	},
 	{
-		id: 'ConsumesRanking',
+		id: 'consumes_ranking',
 		title: 'Ranking de Consumos',
 		filters: {
 			filterDateRange: true,
@@ -143,7 +229,7 @@ export const REPORT_OPTIONS = [
 		},
 	},
 	{
-		id: 'ChargesRanking',
+		id: 'charges_ranking',
 		title: 'Ranking de Cobros',
 		filters: {
 			filterDateRange: true,
@@ -152,7 +238,7 @@ export const REPORT_OPTIONS = [
 		},
 	},
 	{
-		id: 'ChargesByClient',
+		id: 'charges_by_client',
 		title: 'Recargas por Cliente y Area de Negocio',
 		filters: {
 			filterClient: true,
@@ -163,7 +249,7 @@ export const REPORT_OPTIONS = [
 		},
 	},
 	{
-		id: 'ClientsCardUse',
+		id: 'clients_card_use',
 		title: 'Clientes VS Uso de tarjeta',
 		filters: {
 			filterClient: true,
@@ -171,7 +257,7 @@ export const REPORT_OPTIONS = [
 		},
 	},
 	{
-		id: 'ClientsCardExpiration',
+		id: 'clients_card_expiration',
 		title: 'Clientes con tarjetas próximas a vencer',
 		filters: {
 			filterCardType: true,
@@ -179,7 +265,7 @@ export const REPORT_OPTIONS = [
 		},
 	},
 	{
-		id: 'ConsumesByBusinessArea',
+		id: 'consumes_by_business_area',
 		title: 'Consumo por Area de Negocio',
 		filters: {
 			filterDateRange: true,
@@ -188,7 +274,7 @@ export const REPORT_OPTIONS = [
 		},
 	},
 	{
-		id: 'ConsumesByEconomic',
+		id: 'consumes_by_economic',
 		title: 'Consumo por Sector Económico del cliente',
 		filters: {
 			filterDateRange: true,
@@ -197,7 +283,7 @@ export const REPORT_OPTIONS = [
 		},
 	},
 	{
-		id: 'ClientConsumesByDealer',
+		id: 'client_consumes_by_dealer',
 		title: 'Consumo del Cliente por Dealer',
 		filters: {
 			filterDateRange: true,
@@ -206,7 +292,7 @@ export const REPORT_OPTIONS = [
 		},
 	},
 	{
-		id: 'Refunds',
+		id: 'refunds',
 		title: 'Reporte de Reembolsos',
 		filters: {
 			filterDateRange: true,
@@ -215,7 +301,7 @@ export const REPORT_OPTIONS = [
 		},
 	},
 	{
-		id: 'PendingChargesRefund',
+		id: 'pending_charges_refund',
 		title: 'Cobros pendientes de reembolso',
 		filters: {
 			filterDateRange: true,

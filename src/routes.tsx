@@ -91,27 +91,84 @@ export interface Route {
 }
 
 export const guarded: Route[] = [
-	{ id: 'CardBalance', path: '/card_balance', component: PageCardBalance },
-	{ id: 'CardsData', path: '/cards_data', component: PageCardsData },
-	{ id: 'CardTypes', path: '/card_types', component: PageCardTypes },
+	// Configuration
+	{
+		id: 'CardTypes',
+		path: '/configuration/card_types',
+		component: PageCardTypes,
+	},
+
+	// Cards
+	{
+		id: 'CardBalance',
+		path: '/cards/card_balance',
+		component: PageCardBalance,
+	},
+	{
+		id: 'CardsData',
+		path: '/cards/cards_data',
+		component: PageCardsData,
+	},
+
+	// Clients
+	{
+		id: 'Clients',
+		path: '/clients/list',
+		component: PageClients,
+	},
+	{
+		id: 'ClientUsers',
+		path: '/clients/client_users',
+		component: PageClientUsers,
+	},
 	{
 		id: 'ClientBalance',
-		path: '/client_balance',
+		path: '/clients/client_balance',
 		component: PageClientBalance,
 	},
-	{ id: 'Clients', path: '/clients', component: PageClients },
-	{ id: 'ClientUsers', path: '/client_users', component: PageClientUsers },
+
+	// Dealers
+	{
+		id: 'Dealers',
+		path: '/dealers/list',
+		component: PageDealers,
+	},
+	{
+		id: 'POS',
+		path: '/dealers/pos',
+		component: PagePOS,
+	},
 	{
 		id: 'ConsumesByDealer',
-		path: '/consumes_by_dealer',
+		path: '/dealers/consumes_by_dealer',
 		component: PageConsumesByDealer,
 	},
-	{ id: 'Dealers', path: '/dealers', component: PageDealers },
-	{ id: 'Loads', path: '/loads', component: PageLoads },
-	{ id: 'POS', path: '/pos', component: PagePOS },
-	{ id: 'Users', path: '/users', component: PageUsers },
-	{ id: 'Refunds', path: '/refunds', component: PageRefunds },
-	{ id: 'Reports', path: '/reports', component: PageReports },
+
+	// Operations
+	{
+		id: 'Loads',
+		path: '/operations/loads',
+		component: PageLoads,
+	},
+	{
+		id: 'Refunds',
+		path: '/operations/liquidations',
+		component: PageRefunds,
+	},
+
+	// Reports
+	{
+		id: 'Reports',
+		path: '/reports/:id',
+		component: PageReports,
+	},
+
+	// Security
+	{
+		id: 'Users',
+		path: '/security/users',
+		component: PageUsers,
+	},
 ];
 
 export const routes: Route[] = [{ id: 'SignIn', path: '/', component: SignIn }];

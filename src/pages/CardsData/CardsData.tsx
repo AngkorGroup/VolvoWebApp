@@ -140,7 +140,7 @@ const CardsData: React.FC = () => {
 	return (
 		<div>
 			<div>
-				<PageTitle title='Tarjetas' />
+				<PageTitle title='Datos de Tarjetas' />
 				<Grid container spacing={1}>
 					<Grid item xs={6}>
 						<AsyncTypeAhead

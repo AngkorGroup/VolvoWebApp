@@ -9,7 +9,7 @@ import {
 	Theme,
 } from '@material-ui/core';
 import { ExpandLess, ExpandMore } from '@material-ui/icons';
-import { MenuItem, REPORT_PATH_SOURCE } from 'common/constants';
+import { MenuItem } from 'common/constants';
 import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import SidebarItem from '../SidebarItem/SidebarItem';
@@ -42,13 +42,14 @@ const useStyles = makeStyles(({ palette, spacing }: Theme) =>
 	}),
 );
 const SidebarMultiItem: React.FC<SidebarMultiItemProps> = ({
+	id,
 	icon,
 	title,
 	menuList,
 }) => {
 	const { pathname } = useLocation();
 	const classes = useStyles();
-	const [open, setOpen] = useState(pathname.includes(REPORT_PATH_SOURCE));
+	const [open, setOpen] = useState(pathname.includes(`/${id?.toLowerCase()}`));
 	const handleClick = () => setOpen((prevOpen) => !prevOpen);
 	return (
 		<React.Fragment>
