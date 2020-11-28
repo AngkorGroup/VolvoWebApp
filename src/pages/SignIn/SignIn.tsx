@@ -66,7 +66,7 @@ const SignIn = () => {
 			if (admin && authToken && setAppUser) {
 				setAppUser(admin, authToken);
 				setAuthToken(authToken);
-				push('/client_balance');
+				push('/clients/client_balance');
 			}
 		} else {
 			alert.error(
@@ -80,7 +80,7 @@ const SignIn = () => {
 
 	useEffect(() => {
 		if (user) {
-			push('/client_balance');
+			push('/clients/client_balance');
 		}
 		// eslint-disable-next-line
 	}, []);

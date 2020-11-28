@@ -23,16 +23,16 @@ const performRequest = (url: string) => async (body: FilterParams) => {
 };
 
 export const REPORT_ENDPOINTS: Record<string, any> = {
-	ConsumesByClient: performRequest('consumes_by_client'),
-	ChargesByDealer: performRequest('charges_by_dealer'),
-	ConsumesRanking: performRequest('consumes_ranking'),
-	ChargesRanking: performRequest('charges_ranking'),
-	ChargesByClient: performRequest('charges_by_client'),
-	ClientsCardUse: performRequest('clients_card_use'),
-	ClientsCardExpiration: performRequest('clients_card_expiration'),
-	ConsumesByBusinessArea: performRequest('consumes_by_business_area'),
-	ConsumesByEconomic: performRequest('consumes_by_economic'),
-	ClientConsumesByDealer: performRequest('client_consumes_by_dealer'),
-	Refunds: performRequest('refunds'),
-	PendingChargesRefund: performRequest('pending_charges_refund'),
+	consumes_by_client: performRequest('consumes_by_client'),
+	charges_by_dealer: performRequest('charges_by_dealer'),
+	consumes_ranking: performRequest('consumes_ranking'),
+	charges_ranking: performRequest('charges_ranking'),
+	charges_by_client: performRequest('charges_by_client'),
+	clients_card_use: performRequest('clients_card_use'),
+	clients_card_expiration: performRequest('clients_card_expiration'),
+	consumes_by_business_area: performRequest('consumes_by_business_area'),
+	consumes_by_economic: performRequest('consumes_by_economic'),
+	client_consumes_by_dealer: performRequest('client_consumes_by_dealer'),
+	refunds: performRequest('refunds'),
+	pending_charges_refund: performRequest('pending_charges_refund'),
 };

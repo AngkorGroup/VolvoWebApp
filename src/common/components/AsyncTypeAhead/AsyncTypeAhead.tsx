@@ -41,7 +41,7 @@ const AsyncTypeAhead: React.FC<AsyncTypeAheadProps> = ({
 						{...params}
 						size='small'
 						label={placeholder}
-						margin='normal'
+						margin='none'
 						variant='outlined'
 						InputProps={{
 							...params.InputProps,

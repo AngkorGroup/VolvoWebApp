@@ -84,22 +84,22 @@ const InnerComponent: React.FC<ReportMakerProps> = ({
 		<div>
 			<Grid container spacing={1}>
 				{filterClient && (
-					<Grid item xs={12}>
+					<Grid item xs={4}>
 						<FilterClients />
 					</Grid>
 				)}
 				{filterDealer && (
-					<Grid item xs={12}>
+					<Grid item xs={4}>
 						<FilterDealers />
 					</Grid>
 				)}
 				{filterDateRange && (
-					<Grid item xs={12}>
+					<Grid item xs={4}>
 						<FilterDateRange />
 					</Grid>
 				)}
 				{filterCardType && (
-					<Grid item xs={12}>
+					<Grid item xs={4}>
 						<FilterMultiSelect
 							label={'Tipos de Tarjeta'}
 							param={'cardTypes'}
@@ -110,12 +110,12 @@ const InnerComponent: React.FC<ReportMakerProps> = ({
 					</Grid>
 				)}
 				{filterEconomicGroup && (
-					<Grid item xs={12}>
+					<Grid item xs={4}>
 						<FilterEconomicGroup />
 					</Grid>
 				)}
 				{filterBusinessArea && (
-					<Grid item xs={12}>
+					<Grid item xs={4}>
 						<FilterMultiSelect
 							label={'Área de Negocio'}
 							param={'businessAreas'}
@@ -125,7 +125,7 @@ const InnerComponent: React.FC<ReportMakerProps> = ({
 					</Grid>
 				)}
 				{filterRechargeType && (
-					<Grid item xs={12}>
+					<Grid item xs={4}>
 						<FilterMultiSelect
 							label={'Tipo de Recarga'}
 							param={'chargeTypes'}
@@ -135,7 +135,7 @@ const InnerComponent: React.FC<ReportMakerProps> = ({
 					</Grid>
 				)}
 				{filterSector && (
-					<Grid item xs={12}>
+					<Grid item xs={4}>
 						<FilterMultiSelect
 							label={'Sector'}
 							param={'sectors'}
@@ -145,7 +145,7 @@ const InnerComponent: React.FC<ReportMakerProps> = ({
 					</Grid>
 				)}
 				{filterBank && (
-					<Grid item xs={12}>
+					<Grid item xs={4}>
 						<FilterMultiSelect
 							label={'Banco'}
 							param={'banks'}

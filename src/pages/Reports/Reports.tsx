@@ -1,46 +1,43 @@
-import { Grid, makeStyles, Theme, useMediaQuery } from '@material-ui/core';
+import { makeStyles, Typography } from '@material-ui/core';
 import { PageTitle } from 'common/components';
+import ReportMaker from 'common/components/ReportMaker/ReportMaker';
 import { REPORT_OPTIONS } from 'common/constants';
+import { REPORT_ENDPOINTS } from 'common/services';
 import React from 'react';
-import ReportCard from './ReportCard/ReportCard';
-
-const getColumnSize = (isMobile: boolean, isLarge: boolean) => {
-	if (isMobile) {
-		return 12;
-	}
-	if (isLarge) {
-		return 3;
-	}
-	return 4;
-};
+import { useParams } from 'react-router-dom';
 
 const useStyles = makeStyles({
 	header: {
 		marginBottom: 10,
 	},
+	filter: {
+		marginBottom: 15,
+	},
 });
+
+interface PathParams {
+	id: string;
+}
 
 const Reports = () => {
 	const classes = useStyles();
-	const isMobile = !useMediaQuery(({ breakpoints }: Theme) =>
-		breakpoints.up('md'),
-	);
-	const isLarge = useMediaQuery(({ breakpoints }: Theme) =>
-		breakpoints.up('lg'),
-	);
+	const { id } = useParams<PathParams>();
+
+	const report = REPORT_OPTIONS.find((r) => r.id === id);
+	const title = report?.title || '';
+	const filters = report?.filters || {};
 
 	return (
 		<div>
 			<div className={classes.header}>
-				<PageTitle title='Reportes' />
+				<PageTitle title={title} />
 			</div>
-			<Grid container spacing={2}>
-				{REPORT_OPTIONS.map(({ id, title, filters }) => (
-					<Grid key={id} item xs={getColumnSize(isMobile, isLarge)}>
-						<ReportCard id={id} title={title} filters={filters} />
-					</Grid>
-				))}
-			</Grid>
+			<div>
+				<Typography className={classes.filter} variant='subtitle1' align='left'>
+					Filtros
+				</Typography>
+				<ReportMaker id={id} {...filters} endpoint={REPORT_ENDPOINTS[id]} />
+			</div>
 		</div>
 	);
 };
