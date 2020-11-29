@@ -5,31 +5,31 @@ import {
 	DialogTitle,
 } from '@material-ui/core';
 import { BasicTable, PageLoader, VolvoButton } from 'common/components';
-import { getQueryRefundConsumes } from 'common/services';
+import { getQueryRefundLiquidations } from 'common/services';
+import { LIQUIDATIONS_COLUMNS } from 'pages/Liquidations/columns';
+import { mapLiquidations } from 'pages/Liquidations/interfaces';
 import React, { useMemo } from 'react';
 import { useQuery } from 'react-query';
-import { CHARGES_COLUMNS } from '../columns';
-import ConsumeRow from '../ConsumeRow/ConsumeRow';
-import { mapCharges } from '../interfaces';
+import LiquidationRow from '../LiquidationRow/LiquidationRow';
 
-interface DetailModalProps {
+interface LiquidationsModalProps {
 	show: boolean;
 	id: string;
 	onClose: () => void;
 }
 
-const DetailModal: React.FC<DetailModalProps> = ({
+const LiquidationsModal: React.FC<LiquidationsModalProps> = ({
 	show,
 	id,
 	onClose,
-}: DetailModalProps) => {
+}: LiquidationsModalProps) => {
 	const { data, status } = useQuery(
-		['getQueryRefundConsumes', id],
-		getQueryRefundConsumes,
+		['getQueryRefundLiquidations', id],
+		getQueryRefundLiquidations,
 	);
-	const consumes = useMemo(() => {
+	const liquidations = useMemo(() => {
 		if (data?.ok) {
-			return mapCharges(data.data || []);
+			return mapLiquidations(data.data || []);
 		}
 		return [];
 	}, [data]);
@@ -47,10 +47,10 @@ const DetailModal: React.FC<DetailModalProps> = ({
 			<DialogContent>
 				{status === 'loading' && <PageLoader />}
 				{status === 'success' && (
-					<BasicTable columns={CHARGES_COLUMNS}>
+					<BasicTable columns={LIQUIDATIONS_COLUMNS}>
 						<React.Fragment>
-							{consumes.map((item, i: number) => (
-								<ConsumeRow key={i} item={item} />
+							{liquidations.map((item, i: number) => (
+								<LiquidationRow key={i} item={item} />
 							))}
 						</React.Fragment>
 					</BasicTable>
@@ -63,4 +63,4 @@ const DetailModal: React.FC<DetailModalProps> = ({
 	);
 };
 
-export default DetailModal;
+export default LiquidationsModal;
