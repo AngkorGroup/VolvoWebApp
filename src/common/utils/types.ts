@@ -305,14 +305,29 @@ export interface Liquidation {
 	companyBankAccount: string;
 }
 
+export interface Refund {
+	id: number;
+	amount: Amount;
+	date: string;
+	refundStatus: string;
+	liquidationsCount: number;
+	bankAccountId: number;
+	bankAccount: Account;
+	companyBankAccount: string;
+	paymentDate: string;
+	voucher: string;
+}
+
 export interface Account {
 	id: number;
 	account: string;
+	cci: string;
 	currency: Currency;
 	currencyId: number;
 	isDefault: boolean;
 	bankAccountTypeId: number;
 	bankAccountType: CommonValue;
 	bankId: number;
+	bank: CommonValue;
 	status: number;
 }

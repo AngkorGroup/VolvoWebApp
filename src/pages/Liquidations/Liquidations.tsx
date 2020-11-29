@@ -19,9 +19,9 @@ import {
 import {
 	DEFAULT_NOW_DATE,
 	DEFAULT_WEEK_START_DATE,
-	LIQUIDATION_SCHEDULED,
-	LIQUIDATION_PAID,
-	LIQUIDATION_GENERATED,
+	OPERATION_SCHEDULED,
+	OPERATION_PAID,
+	OPERATION_GENERATED,
 	LIQUIDATION_STATUSES,
 	TABLE_ROWS_PER_PAGE,
 	DEFAULT_MOMENT_FORMAT,
@@ -64,7 +64,7 @@ const Liquidations: React.FC = () => {
 	);
 	const [selectedIds, setSelectedIds] = useState<string[]>([]);
 	const [liquidationStatus, setLiquidationStatus] = useState(
-		LIQUIDATION_GENERATED,
+		OPERATION_GENERATED,
 	);
 	const [showScheduleModal, setShowScheduleModal] = useState(false);
 	const [page, setPage] = useState(0);
@@ -125,7 +125,7 @@ const Liquidations: React.FC = () => {
 	const onPay = async (id: string, date: string, voucher: string) => {
 		const response = await payLiquidation(id, date, voucher);
 		if (response.ok) {
-			setLiquidationStatus(LIQUIDATION_PAID);
+			setLiquidationStatus(OPERATION_PAID);
 			alert.success(
 				at('Liquidación Pagada', 'Se registró el pago correctamente'),
 			);
@@ -139,7 +139,7 @@ const Liquidations: React.FC = () => {
 			selectedIds.map((id) => +id),
 		);
 		if (ok) {
-			setLiquidationStatus(LIQUIDATION_SCHEDULED);
+			setLiquidationStatus(OPERATION_SCHEDULED);
 			setSelectedIds([]);
 			alert.success(
 				at(

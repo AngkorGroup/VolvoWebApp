@@ -1,4 +1,4 @@
-import { LIQUIDATION_GENERATED } from 'common/constants';
+import { OPERATION_GENERATED } from 'common/constants';
 import { Account, Charge, Liquidation } from 'common/utils';
 
 export interface LiquidationColumn {
@@ -88,4 +88,4 @@ export const mapBankAccounts = (accounts: Account[]) => {
 	}));
 };
 
-export const isGenerated = (status: string) => status === LIQUIDATION_GENERATED;
+export const isGenerated = (status: string) => status === OPERATION_GENERATED;

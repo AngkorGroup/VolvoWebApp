@@ -118,6 +118,11 @@ export const MENU_ITEMS: MenuItem[] = [
 				title: 'Liquidaciones',
 				path: '/operations/liquidations',
 			},
+			{
+				id: 'Refunds',
+				title: 'Reembolsos',
+				path: '/operations/refunds',
+			},
 		],
 	},
 	{
@@ -337,25 +342,41 @@ export const TEXT_MAX_LENGTH = 150;
 
 export const NUMERIC_FIELD_MESSAGE = 'El campo debe ser numérico';
 
-export const LIQUIDATION_GENERATED = 'Generated';
-export const LIQUIDATION_SCHEDULED = 'Scheduled';
-export const LIQUIDATION_PAID = 'Paid';
+export const OPERATION_CANCELED = 'Canceled';
+export const OPERATION_GENERATED = 'Generated';
+export const OPERATION_SCHEDULED = 'Scheduled';
+export const OPERATION_PAID = 'Paid';
 
-export const LIQUIDATION_STATUSES = [
+export const REFUND_STATUSES = [
 	{
-		value: 'Canceled',
+		value: OPERATION_CANCELED,
 		label: 'ANULADO',
 	},
 	{
-		value: LIQUIDATION_GENERATED,
-		label: 'GENERADO',
-	},
-	{
-		value: LIQUIDATION_SCHEDULED,
+		value: OPERATION_SCHEDULED,
 		label: 'PROGRAMADO',
 	},
 	{
-		value: LIQUIDATION_PAID,
+		value: OPERATION_PAID,
+		label: 'PAGADO',
+	},
+];
+
+export const LIQUIDATION_STATUSES = [
+	{
+		value: OPERATION_CANCELED,
+		label: 'ANULADO',
+	},
+	{
+		value: OPERATION_GENERATED,
+		label: 'GENERADO',
+	},
+	{
+		value: OPERATION_SCHEDULED,
+		label: 'PROGRAMADO',
+	},
+	{
+		value: OPERATION_PAID,
 		label: 'PAGADO',
 	},
 ];
