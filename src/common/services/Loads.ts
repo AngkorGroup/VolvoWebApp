@@ -6,8 +6,16 @@ import {
 } from 'common/constants/api';
 import { api, Load, LoadError, PreLoad } from 'common/utils';
 
-export const getLoads = async () => {
-	return await api.get<Load[]>(BATCHES_URL);
+export const getLoads = async (beginDate?: string, endDate?: string) => {
+	return await api.get<Load[]>(BATCHES_URL, { beginDate, endDate });
+};
+
+export const getQueryLoads = async (
+	key: string,
+	beginDate?: string,
+	endDate?: string,
+) => {
+	return await api.get<Load[]>(BATCHES_URL, { beginDate, endDate });
 };
 
 export const getLoadErrors = async () => {

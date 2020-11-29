@@ -25,6 +25,7 @@ const useStyles = makeStyles(({ palette }: Theme) =>
 const LoadRow = ({ item, isMain }: LoadRowProps) => {
 	const classes = useStyles();
 	const {
+		id,
 		index,
 		number,
 		ruc,
@@ -51,13 +52,14 @@ const LoadRow = ({ item, isMain }: LoadRowProps) => {
 				<React.Fragment>
 					<TableCell className={classes.errorColumn}>{index}</TableCell>
 					<TableCell className={classes.errorColumn}>{errorMessage}</TableCell>
-					<TableCell className={classes.errorColumn} colSpan={14}>
+					<TableCell className={classes.errorColumn} colSpan={12}>
 						{lineContent}
 					</TableCell>
 				</React.Fragment>
 			) : (
 				<React.Fragment>
-					<TableCell>{index}</TableCell>
+					{isMain && <TableCell>{id}</TableCell>}
+					{index && <TableCell>{index}</TableCell>}
 					<TableCell>{number}</TableCell>
 					<TableCell>{ruc}</TableCell>
 					<TableCell>{name}</TableCell>
