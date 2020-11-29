@@ -337,25 +337,25 @@ export const TEXT_MAX_LENGTH = 150;
 
 export const NUMERIC_FIELD_MESSAGE = 'El campo debe ser numérico';
 
-export const REFUND_GENERATED = 'Generated';
-export const REFUND_SCHEDULED = 'Scheduled';
-export const REFUND_PAID = 'Paid';
+export const LIQUIDATION_GENERATED = 'Generated';
+export const LIQUIDATION_SCHEDULED = 'Scheduled';
+export const LIQUIDATION_PAID = 'Paid';
 
-export const REFUND_STATUSES = [
-	{
-		value: REFUND_GENERATED,
-		label: 'GENERADO',
-	},
+export const LIQUIDATION_STATUSES = [
 	{
 		value: 'Canceled',
 		label: 'ANULADO',
 	},
 	{
-		value: REFUND_SCHEDULED,
+		value: LIQUIDATION_GENERATED,
+		label: 'GENERADO',
+	},
+	{
+		value: LIQUIDATION_SCHEDULED,
 		label: 'PROGRAMADO',
 	},
 	{
-		value: REFUND_PAID,
+		value: LIQUIDATION_PAID,
 		label: 'PAGADO',
 	},
 ];

@@ -19,31 +19,26 @@ import {
 import {
 	DEFAULT_NOW_DATE,
 	DEFAULT_WEEK_START_DATE,
-	REFUND_SCHEDULED,
-	REFUND_PAID,
-	REFUND_GENERATED,
-	REFUND_STATUSES,
+	LIQUIDATION_SCHEDULED,
+	LIQUIDATION_PAID,
+	LIQUIDATION_GENERATED,
+	LIQUIDATION_STATUSES,
 	TABLE_ROWS_PER_PAGE,
 	DEFAULT_MOMENT_FORMAT,
 } from 'common/constants';
 import React, { useMemo, useState } from 'react';
 import { useQuery } from 'react-query';
 import {
-	annulateRefund,
+	annulateLiquidation,
 	generateLiquidations,
-	getQueryRefunds,
-	payRefund,
-	scheduleRefunds,
+	getQueryLiquidations,
+	payLiquidation,
+	scheduleLiquidations,
 } from 'common/services';
-import {
-	isGenerated,
-	isScheduled,
-	mapRefunds,
-	RefundColumn,
-} from './interfaces';
+import { isGenerated, mapLiquidations, LiquidationColumn } from './interfaces';
 import { buildAlertBody as at, filterRows, getFilename } from 'common/utils';
-import { REFUNDS_COLUMNS } from './columns';
-import RefundRow from './RefundRow/RefundRow';
+import { LIQUIDATIONS_COLUMNS } from './columns';
+import LiquidationRow from './LiquidationRow/LiquidationRow';
 import { useAlert } from 'react-alert';
 import ScheduleModal from './ScheduleModal/ScheduleModal';
 
@@ -58,7 +53,7 @@ const useStyles = makeStyles({
 	},
 });
 
-const Refunds: React.FC = () => {
+const Liquidations: React.FC = () => {
 	const classes = useStyles();
 	const alert = useAlert();
 	const [startDate, setStartDate] = useState<MaterialUiPickersDate>(
@@ -68,24 +63,26 @@ const Refunds: React.FC = () => {
 		DEFAULT_NOW_DATE,
 	);
 	const [selectedIds, setSelectedIds] = useState<string[]>([]);
-	const [refundStatus, setRefundStatus] = useState(REFUND_GENERATED);
+	const [liquidationStatus, setLiquidationStatus] = useState(
+		LIQUIDATION_GENERATED,
+	);
 	const [showScheduleModal, setShowScheduleModal] = useState(false);
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(TABLE_ROWS_PER_PAGE);
 	const [query, setQuery] = useState('');
-	const [filtered, setFiltered] = useState<RefundColumn[]>([]);
+	const [filtered, setFiltered] = useState<LiquidationColumn[]>([]);
 	const { data, status, refetch } = useQuery(
 		[
-			'getQueryRefunds',
+			'getQueryLiquidations',
 			startDate?.format(DEFAULT_MOMENT_FORMAT),
 			endDate?.format(DEFAULT_MOMENT_FORMAT),
-			refundStatus,
+			liquidationStatus,
 		],
-		getQueryRefunds,
+		getQueryLiquidations,
 	);
-	const refunds = useMemo(() => {
+	const liquidations = useMemo(() => {
 		if (data?.ok) {
-			const rows = mapRefunds(data?.data || []);
+			const rows = mapLiquidations(data?.data || []);
 			setFiltered(rows);
 			return rows;
 		}
@@ -95,10 +92,10 @@ const Refunds: React.FC = () => {
 	const onStartDateChange = (date: MaterialUiPickersDate) => setStartDate(date);
 	const onEndDateChange = (date: MaterialUiPickersDate) => setEndDate(date);
 	const onStatusChange = (e: Event) =>
-		setRefundStatus(e.target.value as string);
+		setLiquidationStatus(e.target.value as string);
 	const onFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const newQuery = e.target.value;
-		const filteredRows = filterRows(newQuery, refunds);
+		const filteredRows = filterRows(newQuery, liquidations);
 		setQuery(newQuery);
 		setFiltered(filteredRows);
 	};
@@ -115,7 +112,7 @@ const Refunds: React.FC = () => {
 	};
 
 	const onAnnulate = async (id: string) => {
-		const response = await annulateRefund(id);
+		const response = await annulateLiquidation(id);
 		if (response.ok) {
 			setFiltered((old) => old.filter((r) => r.id !== id));
 			alert.success(
@@ -126,9 +123,9 @@ const Refunds: React.FC = () => {
 	};
 
 	const onPay = async (id: string, date: string, voucher: string) => {
-		const response = await payRefund(id, date, voucher);
+		const response = await payLiquidation(id, date, voucher);
 		if (response.ok) {
-			setRefundStatus(REFUND_PAID);
+			setLiquidationStatus(LIQUIDATION_PAID);
 			alert.success(
 				at('Liquidación Pagada', 'Se registró el pago correctamente'),
 			);
@@ -136,13 +133,13 @@ const Refunds: React.FC = () => {
 	};
 
 	const onSchedule = async (bankId: string, bankAccountId: string) => {
-		const { data, ok, headers } = await scheduleRefunds(
+		const { data, ok, headers } = await scheduleLiquidations(
 			bankId,
 			bankAccountId,
 			selectedIds.map((id) => +id),
 		);
 		if (ok) {
-			setRefundStatus(REFUND_SCHEDULED);
+			setLiquidationStatus(LIQUIDATION_SCHEDULED);
 			setSelectedIds([]);
 			alert.success(
 				at(
@@ -193,15 +190,14 @@ const Refunds: React.FC = () => {
 		[page, rowsPerPage, filtered],
 	);
 
-	const columns =
-		isGenerated(refundStatus) || isScheduled(refundStatus)
-			? [{ title: '' }, ...REFUNDS_COLUMNS]
-			: REFUNDS_COLUMNS;
+	const columns = isGenerated(liquidationStatus)
+		? [{ title: '' }, ...LIQUIDATIONS_COLUMNS]
+		: LIQUIDATIONS_COLUMNS;
 
 	return (
 		<div>
 			<div>
-				<PageTitle title='Generación y Pago de Reembolsos' />
+				<PageTitle title='Liquidaciones' />
 				<PageActionBar>
 					<Grid container spacing={1}>
 						<Grid item xs={2}>
@@ -225,10 +221,10 @@ const Refunds: React.FC = () => {
 								<Select
 									labelId='statusLabel'
 									label='Estado'
-									value={refundStatus}
+									value={liquidationStatus}
 									onChange={onStatusChange}
 								>
-									{REFUND_STATUSES.map((d) => (
+									{LIQUIDATION_STATUSES.map((d) => (
 										<MenuItem key={d.value} value={d.value}>
 											{d.label}
 										</MenuItem>
@@ -245,7 +241,7 @@ const Refunds: React.FC = () => {
 					<React.Fragment>
 						<PageActionBar justifyContent='space-between'>
 							<TableFilter value={query} onChange={onFilterChange} />
-							{isGenerated(refundStatus) && (
+							{isGenerated(liquidationStatus) && (
 								<VolvoButton
 									className={classes.actionButton}
 									onClick={onGenerate}
@@ -256,7 +252,7 @@ const Refunds: React.FC = () => {
 						</PageActionBar>
 						<PaginatedTable
 							columns={columns}
-							count={refunds.length}
+							count={liquidations.length}
 							page={page}
 							rowsPerPage={rowsPerPage}
 							onChangePage={handleChangePage}
@@ -264,10 +260,10 @@ const Refunds: React.FC = () => {
 						>
 							<React.Fragment>
 								{rows.map((item, i: number) => (
-									<RefundRow
+									<LiquidationRow
 										key={i}
 										item={item}
-										status={refundStatus}
+										status={liquidationStatus}
 										onAnnulate={onAnnulate}
 										onPay={onPay}
 										onSelectId={onSelectId}
@@ -277,15 +273,13 @@ const Refunds: React.FC = () => {
 							</React.Fragment>
 						</PaginatedTable>
 						<PageActionBar justifyContent='flex-end'>
-							{(isGenerated(refundStatus) || isScheduled(refundStatus)) && (
+							{isGenerated(liquidationStatus) && (
 								<VolvoButton
 									className={classes.actionButton}
 									disabled={selectedIds.length === 0}
 									onClick={openScheduleModal}
 									color='success'
-									text={`${
-										isScheduled(refundStatus) ? 'Reprogramar' : 'Programar'
-									} pago`}
+									text='Programar Pago'
 								/>
 							)}
 						</PageActionBar>
@@ -303,4 +297,4 @@ const Refunds: React.FC = () => {
 	);
 };
 
-export default Refunds;
+export default Liquidations;

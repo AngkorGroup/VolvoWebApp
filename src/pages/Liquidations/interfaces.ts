@@ -1,7 +1,7 @@
-import { REFUND_GENERATED, REFUND_SCHEDULED } from 'common/constants';
-import { Account, Charge, Refund } from 'common/utils';
+import { LIQUIDATION_GENERATED } from 'common/constants';
+import { Account, Charge, Liquidation } from 'common/utils';
 
-export interface RefundColumn {
+export interface LiquidationColumn {
 	id: string;
 	settlement: string;
 	dealer: string;
@@ -32,8 +32,10 @@ export interface Consume {
 	voucherURL: string;
 }
 
-export const mapRefunds = (refunds: Refund[]): RefundColumn[] => {
-	return refunds.map((r) => ({
+export const mapLiquidations = (
+	liquidations: Liquidation[],
+): LiquidationColumn[] => {
+	return liquidations.map((r) => ({
 		id: `${r.id}`,
 		settlement: `${r.id}`,
 		dealer: `${r.dealer?.tpCode} - ${r.dealer?.name}`,
@@ -86,6 +88,4 @@ export const mapBankAccounts = (accounts: Account[]) => {
 	}));
 };
 
-export const isGenerated = (status: string) => status === REFUND_GENERATED;
-
-export const isScheduled = (status: string) => status === REFUND_SCHEDULED;
+export const isGenerated = (status: string) => status === LIQUIDATION_GENERATED;

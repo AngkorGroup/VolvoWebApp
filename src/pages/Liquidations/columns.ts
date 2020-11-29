@@ -1,6 +1,6 @@
 import { ACTIONS_COLUMN, COLUMN_CENTER } from 'common/constants';
 
-export const REFUNDS_COLUMNS = [
+export const LIQUIDATIONS_COLUMNS = [
 	{ title: '#Liquidación' },
 	{ title: 'Dealer' },
 	{ title: 'Moneda' },

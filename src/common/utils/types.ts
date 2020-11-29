@@ -290,7 +290,7 @@ export interface Filter {
 	filterSector?: boolean;
 }
 
-export interface Refund {
+export interface Liquidation {
 	id: number;
 	bankAccountId: number;
 	chargesCount: number;

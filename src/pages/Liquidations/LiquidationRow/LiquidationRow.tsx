@@ -8,12 +8,12 @@ import {
 import React, { useState } from 'react';
 import SettingsIcon from '@material-ui/icons/Settings';
 import { Amount, ConfirmationModal, VolvoIconButton } from 'common/components';
-import { isGenerated, isScheduled, RefundColumn } from '../interfaces';
+import { isGenerated, LiquidationColumn } from '../interfaces';
 import DetailModal from '../DetailModal/DetailModal';
 import PayModal from '../PayModal/PayModal';
 
-interface RefundRowProps {
-	item: RefundColumn;
+interface LiquidationRowProps {
+	item: LiquidationColumn;
 	status: string;
 	onAnnulate: (id: string) => void;
 	onPay: (id: string, date: string, voucher: string) => void;
@@ -23,14 +23,14 @@ interface RefundRowProps {
 
 type CheckEvent = React.ChangeEvent<HTMLInputElement>;
 
-const RefundRow = ({
+const LiquidationRow = ({
 	item,
 	status,
 	onAnnulate,
 	onPay,
 	onSelectId,
 	onRemoveId,
-}: RefundRowProps) => {
+}: LiquidationRowProps) => {
 	const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 	const [showDetailModal, setShowDetailModal] = useState(false);
 	const [showPayModal, setShowPayModal] = useState(false);
@@ -82,7 +82,7 @@ const RefundRow = ({
 	return (
 		<React.Fragment>
 			<TableRow>
-				{(isGenerated(status) || isScheduled(status)) && (
+				{isGenerated(status) && (
 					<TableCell>
 						<Checkbox
 							checked={checked}
@@ -123,9 +123,6 @@ const RefundRow = ({
 						<MenuItem onClick={setDetailModalVisible(true)}>
 							Ver Consumos
 						</MenuItem>
-						{isScheduled(status) && (
-							<MenuItem onClick={setPayModalVisible(true)}>Pagar</MenuItem>
-						)}
 						{isGenerated(status) && (
 							<MenuItem onClick={setDelModalVisible(true)}>Anular</MenuItem>
 						)}
@@ -151,8 +148,8 @@ const RefundRow = ({
 				<ConfirmationModal
 					show={showDeleteModal}
 					id={id}
-					title='Anular Reembolso'
-					body='¿Está seguro que desea anular el siguiente reembolso?'
+					title='Anular Liquidación'
+					body='¿Está seguro que desea anular la siguiente liquidación?'
 					onClose={setDelModalVisible(false)}
 					onConfirm={onAnnulate}
 				/>
@@ -161,4 +158,4 @@ const RefundRow = ({
 	);
 };
 
-export default RefundRow;
+export default LiquidationRow;

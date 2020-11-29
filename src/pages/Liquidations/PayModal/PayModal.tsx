@@ -35,7 +35,7 @@ const PayModal: React.FC<PayModalProps> = ({
 	};
 	return (
 		<Dialog fullWidth maxWidth='sm' open={show} onClose={onClose}>
-			<DialogTitle id='alert-dialog-title'>Pagar Reembolso</DialogTitle>
+			<DialogTitle id='alert-dialog-title'>Pagar Liquidación</DialogTitle>
 			<DialogContent>
 				<Grid container spacing={1}>
 					<Grid item xs={6}>

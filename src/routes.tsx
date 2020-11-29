@@ -72,10 +72,10 @@ const PageUsers = (props: any) => {
 	return <LayoutUsers {...props} />;
 };
 
-const PageRefunds = (props: any) => {
-	const Refunds = lazy(() => import('./pages/Refunds/Refunds'));
-	const LayoutRefunds = HOCLayout(Refunds);
-	return <LayoutRefunds {...props} />;
+const PageLiquidations = (props: any) => {
+	const Liquidations = lazy(() => import('./pages/Liquidations/Liquidations'));
+	const LayoutLiquidations = HOCLayout(Liquidations);
+	return <LayoutLiquidations {...props} />;
 };
 
 const PageReports = (props: any) => {
@@ -151,9 +151,9 @@ export const guarded: Route[] = [
 		component: PageLoads,
 	},
 	{
-		id: 'Refunds',
+		id: 'Liquidations',
 		path: '/operations/liquidations',
-		component: PageRefunds,
+		component: PageLiquidations,
 	},
 
 	// Reports

@@ -5,7 +5,7 @@ import {
 	DialogTitle,
 } from '@material-ui/core';
 import { BasicTable, PageLoader, VolvoButton } from 'common/components';
-import { getQueryRefundConsumes } from 'common/services';
+import { getQueryLiquidationConsumes } from 'common/services';
 import React, { useMemo } from 'react';
 import { useQuery } from 'react-query';
 import { CHARGES_COLUMNS } from '../columns';
@@ -24,8 +24,8 @@ const DetailModal: React.FC<DetailModalProps> = ({
 	onClose,
 }: DetailModalProps) => {
 	const { data, status } = useQuery(
-		['getQueryRefundConsumes', id],
-		getQueryRefundConsumes,
+		['getQueryLiquidationConsumes', id],
+		getQueryLiquidationConsumes,
 	);
 	const consumes = useMemo(() => {
 		if (data?.ok) {
