@@ -110,8 +110,13 @@ export const MENU_ITEMS: MenuItem[] = [
 		menuList: [
 			{
 				id: 'Loads',
-				title: 'Cargas y Recargas',
+				title: 'Carga Masiva',
 				path: '/operations/loads',
+			},
+			{
+				id: 'ConsultLoads',
+				title: 'Consulta de Cargas y Recargas',
+				path: '/operations/consult_loads',
 			},
 			{
 				id: 'Liquidations',
