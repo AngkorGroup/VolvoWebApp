@@ -38,3 +38,7 @@ export const getQueryRefunds = async (
 export const getQueryRefundLiquidations = async (key: string, id: string) => {
 	return await getRefundLiquidations(id);
 };
+
+export const cancelRefund = async (id: string) => {
+	return await api.post(`${REFUNDS_URL}/${id}/cancel`);
+};

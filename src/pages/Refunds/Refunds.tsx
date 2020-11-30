@@ -22,7 +22,7 @@ import {
 	DEFAULT_MOMENT_FORMAT as FORMAT,
 	TABLE_ROWS_PER_PAGE,
 } from 'common/constants';
-import { getQueryRefunds, payRefund } from 'common/services';
+import { cancelRefund, getQueryRefunds, payRefund } from 'common/services';
 import { filterRows, buildAlertBody as at } from 'common/utils';
 import React, { useMemo, useState } from 'react';
 import { useAlert } from 'react-alert';
@@ -89,6 +89,16 @@ const Refunds = () => {
 			refetch();
 			alert.success(
 				at('Reembolso Pagado', 'Se registró el pago correctamente'),
+			);
+		}
+	};
+
+	const onCancel = async (id: string) => {
+		const response = await cancelRefund(id);
+		if (response.ok) {
+			refetch();
+			alert.success(
+				at('Reembolso Anulado', 'Se anuló el reembolso correctamente'),
 			);
 		}
 	};
@@ -160,6 +170,7 @@ const Refunds = () => {
 										item={item}
 										status={refundStatus}
 										onPay={onPay}
+										onCancel={onCancel}
 									/>
 								))}
 							</React.Fragment>
