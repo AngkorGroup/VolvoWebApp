@@ -7,5 +7,5 @@ export const ACTIONS_COLUMN = {
 	props: { align: COLUMN_CENTER },
 };
 
-export const TABLE_ROWS_OPTIONS = [5, 7, 10];
+export const TABLE_ROWS_OPTIONS = [10, 15, 30];
 export const TABLE_ROWS_PER_PAGE = 5;
