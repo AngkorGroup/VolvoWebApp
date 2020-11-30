@@ -12,6 +12,7 @@ export interface LiquidationColumn {
 	liquidationStatus: string;
 	paymentDate: string;
 	voucher: string;
+	refundId: string;
 	target: string;
 	source: string;
 }
@@ -46,6 +47,7 @@ export const mapLiquidations = (
 		liquidationStatus: r.liquidationStatus,
 		paymentDate: r.paymentDate,
 		voucher: r.voucher,
+		refundId: `${r.refundId}`,
 		source: r.companyBankAccount,
 		target: r.dealerBankAccount,
 	}));

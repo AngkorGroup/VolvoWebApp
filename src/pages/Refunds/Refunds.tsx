@@ -21,6 +21,7 @@ import {
 	OPERATION_SCHEDULED,
 	DEFAULT_MOMENT_FORMAT as FORMAT,
 	TABLE_ROWS_PER_PAGE,
+	OPERATION_PAID,
 } from 'common/constants';
 import { cancelRefund, getQueryRefunds, payRefund } from 'common/services';
 import { filterRows, buildAlertBody as at } from 'common/utils';
@@ -86,7 +87,7 @@ const Refunds = () => {
 	const onPay = async (id: string, date: string, voucher: string) => {
 		const response = await payRefund(id, date, voucher);
 		if (response.ok) {
-			refetch();
+			setRefundStatus(OPERATION_PAID);
 			alert.success(
 				at('Reembolso Pagado', 'Se registró el pago correctamente'),
 			);

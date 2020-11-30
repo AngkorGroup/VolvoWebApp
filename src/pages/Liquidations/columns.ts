@@ -11,6 +11,7 @@ export const LIQUIDATIONS_COLUMNS = [
 	{ title: 'Destino' },
 	{ title: 'Fecha Pago' },
 	{ title: 'Voucher' },
+	{ title: '#Reembolso' },
 	{ title: 'Estado' },
 	ACTIONS_COLUMN,
 ];

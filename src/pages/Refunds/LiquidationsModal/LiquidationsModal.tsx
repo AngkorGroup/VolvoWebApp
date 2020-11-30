@@ -6,10 +6,10 @@ import {
 } from '@material-ui/core';
 import { BasicTable, PageLoader, VolvoButton } from 'common/components';
 import { getQueryRefundLiquidations } from 'common/services';
-import { LIQUIDATIONS_COLUMNS } from 'pages/Liquidations/columns';
 import { mapLiquidations } from 'pages/Liquidations/interfaces';
 import React, { useMemo } from 'react';
 import { useQuery } from 'react-query';
+import { LIQUIDATIONS_COLUMNS } from '../columns';
 import LiquidationRow from '../LiquidationRow/LiquidationRow';
 
 interface LiquidationsModalProps {
@@ -35,14 +35,7 @@ const LiquidationsModal: React.FC<LiquidationsModalProps> = ({
 	}, [data]);
 
 	return (
-		<Dialog
-			fullWidth
-			maxWidth='lg'
-			open={show}
-			onClose={onClose}
-			aria-labelledby='alert-dialog-title'
-			aria-describedby='alert-dialog-description'
-		>
+		<Dialog fullWidth maxWidth='xl' open={show} onClose={onClose}>
 			<DialogTitle id='alert-dialog-title'>Consumos</DialogTitle>
 			<DialogContent>
 				{status === 'loading' && <PageLoader />}
