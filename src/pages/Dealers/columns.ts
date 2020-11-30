@@ -13,3 +13,15 @@ export const DEALER_COLUMNS = [
 	{ title: 'Fecha Baja' },
 	ACTIONS_COLUMN,
 ];
+
+export const ACCOUNT_COLUMNS = [
+	{ title: 'Id' },
+	{ title: 'Cuenta Bancaria' },
+	{ title: 'CCI' },
+	{ title: 'Moneda' },
+	{ title: 'Por defecto' },
+	{ title: 'Tipo de Cuenta' },
+	{ title: 'Banco' },
+	{ title: 'Fecha Baja' },
+	ACTIONS_COLUMN,
+];

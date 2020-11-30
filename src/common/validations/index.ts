@@ -1,3 +1,4 @@
+export * from './BankAccount';
 export * from './Cashier';
 export * from './CardType';
 export * from './Dealer';

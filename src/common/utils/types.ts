@@ -330,4 +330,5 @@ export interface Account {
 	bankId: number;
 	bank: CommonValue;
 	status: number;
+	archiveAt: string;
 }

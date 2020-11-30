@@ -35,3 +35,4 @@ export const ANNULATE_LIQUIDATION = `${LIQUIDATIONS_URL}/cancel`;
 export const SCHEDULE_LIQUIDATIONS = `${LIQUIDATIONS_URL}/schedule`;
 export const GENERATE_LIQUIDATIONS = `${LIQUIDATIONS_URL}/generate`;
 export const REFUNDS_URL = '/refunds';
+export const BANK_ACCOUNTS_URL = '/bank_accounts';

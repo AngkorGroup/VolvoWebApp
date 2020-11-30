@@ -2,6 +2,7 @@ import moment, { Moment } from 'moment';
 import numeral from 'numeral';
 import { DEFAULT_DATE_FORMAT } from '../constants/constants';
 import {
+	Account,
 	Card,
 	CardType,
 	Cashier,
@@ -162,4 +163,11 @@ export const getFilename = (id: string, ext: string, content: any) => {
 			.trim();
 	}
 	return `${id}.${ext}`;
+};
+
+export const parseBankAccounts = (accounts: Account[]) => {
+	return accounts.map((a) => ({
+		value: `${a.id}`,
+		label: `${a.bankAccountType?.name} ${a.currency?.symbol} ${a.account}`,
+	}));
 };

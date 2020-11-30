@@ -1,4 +1,5 @@
-import { Dealer } from 'common/utils';
+import { Account, Dealer } from 'common/utils';
+import { AccountForm } from 'common/validations';
 
 export interface TableDealer {
 	id: string;
@@ -16,6 +17,22 @@ export interface TableDealer {
 
 export type DealerForm = Partial<TableDealer>;
 
+export interface TableAccount {
+	id: string;
+	account: string;
+	cci: string;
+	currency: string;
+	isDefault: boolean;
+	bankAccountType: string;
+	bank: string;
+	archiveAt: string;
+	currencyId: string;
+	bankAccountTypeId: string;
+	bankId: string;
+}
+
+export type BankAccountForm = { id?: string; dealerId?: string } & AccountForm;
+
 export const mapDealer = (dealers: Dealer): TableDealer => ({
 	id: `${dealers.id}`,
 	code: dealers.tpCode,
@@ -32,4 +49,20 @@ export const mapDealer = (dealers: Dealer): TableDealer => ({
 
 export const mapDealers = (dealers: Dealer[]): TableDealer[] => {
 	return dealers.map(mapDealer);
+};
+
+export const mapAccounts = (accounts: Account[]): TableAccount[] => {
+	return accounts.map((acc) => ({
+		id: `${acc.id}`,
+		account: acc.account,
+		cci: acc.cci,
+		currency: acc.currency?.symbol,
+		isDefault: acc.isDefault,
+		bankAccountType: acc.bankAccountType?.name,
+		bank: acc.bank?.name,
+		archiveAt: acc.archiveAt,
+		currencyId: `${acc.currencyId}`,
+		bankAccountTypeId: `${acc.bankAccountTypeId}`,
+		bankId: `${acc.bankId}`,
+	}));
 };
