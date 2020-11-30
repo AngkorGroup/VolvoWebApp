@@ -13,7 +13,7 @@ import { VolvoButton } from 'common/components';
 import React, { useMemo, useState } from 'react';
 import { Option, parseCommonValue } from 'common/utils';
 import { useQuery } from 'react-query';
-import { getBankAccounts, getQueryBanks } from 'common/services';
+import { getCommonBankAccounts, getQueryBanks } from 'common/services';
 import { mapBankAccounts } from '../interfaces';
 
 interface ScheduleModalProps {
@@ -41,7 +41,7 @@ const ScheduleModal: React.FC<ScheduleModalProps> = ({
 		const bankId = e.target.value;
 		setBank(bankId);
 		setAccount('');
-		const response = await getBankAccounts(bankId);
+		const response = await getCommonBankAccounts(bankId);
 		if (response.ok) {
 			const accounts = mapBankAccounts(response?.data || []);
 			setAccountOptions(accounts);

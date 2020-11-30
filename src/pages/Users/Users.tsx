@@ -88,6 +88,7 @@ const Users: React.FC = () => {
 			phone: user.phone,
 			password: user.password,
 			email: user.email,
+			dealerId: +(user.dealerId || '0'),
 		};
 		const response = await addUser(newUser);
 		if (response.ok) {
@@ -113,6 +114,7 @@ const Users: React.FC = () => {
 			lastName: user.lastName,
 			phone: user.phone,
 			email: user.email,
+			dealerId: +(user.dealerId || '0'),
 		};
 		const response = await editUser(newUser);
 		if (response.ok) {

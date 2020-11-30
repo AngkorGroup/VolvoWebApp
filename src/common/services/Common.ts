@@ -32,10 +32,10 @@ export const getQueryDocumentTypes = async (key?: string) => {
 	return await api.get<CommonValue[]>(GET_DOCUMENT_TYPES);
 };
 
-export const getBankAccounts = async (id: string) => {
+export const getCommonBankAccounts = async (id: string) => {
 	return await api.get<Account[]>(`${GET_BANKS}/${id}/accounts`);
 };
 
-export const getQueryBankAccounts = async (key: string, id: string) => {
-	return await getBankAccounts(id);
+export const getQueryCommonBankAccounts = async (key: string, id: string) => {
+	return await getCommonBankAccounts(id);
 };

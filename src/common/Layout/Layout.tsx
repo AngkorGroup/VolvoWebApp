@@ -12,7 +12,9 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import React, { useContext } from 'react';
 import Sidebar from '../components/Sidebar/Sidebar';
 import AppContext from 'AppContext';
-import { removeAuthToken } from 'common/utils';
+import { removeAuthToken, buildAlertBody as at } from 'common/utils';
+import { logout } from 'common/services';
+import { useAlert } from 'react-alert';
 
 interface LayoutProps {
 	menu?: JSX.Element;
@@ -52,6 +54,7 @@ const useStyles = makeStyles((theme) =>
 );
 
 const Layout: React.FC<LayoutProps> = (props) => {
+	const alert = useAlert();
 	const classes = useStyles();
 	const [mobileOpen, setMobileOpen] = React.useState(false);
 	const { setAppUser } = useContext(AppContext);
@@ -60,11 +63,18 @@ const Layout: React.FC<LayoutProps> = (props) => {
 		setMobileOpen(!mobileOpen);
 	};
 
-	const onLogout = () => {
-		if (setAppUser) {
-			// Perform the logout API call
+	const onLogout = async () => {
+		const response = await logout();
+		if (response.ok) {
 			setAppUser(null);
 			removeAuthToken();
+		} else {
+			alert.error(
+				at(
+					'Error al salir',
+					'Ocurrió un error al intentar salir, por favor intente nuevamente.',
+				),
+			);
 		}
 	};
 

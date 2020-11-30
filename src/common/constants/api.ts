@@ -1,4 +1,5 @@
 export const LOGIN_URL = '/login';
+export const LOGOUT_URL = '/logout';
 export const BATCHES_URL = '/batches';
 export const MASSIVE_UPLOAD = `${BATCHES_URL}/massive_load`;
 export const PRE_MASSIVE_UPLOAD = `${BATCHES_URL}/pre_massive_load`;
