@@ -48,6 +48,7 @@ const LiquidationRow = ({
 		source,
 		target,
 		voucher,
+		refundId,
 		chargesCount,
 	} = item;
 
@@ -103,6 +104,7 @@ const LiquidationRow = ({
 				<TableCell>{target}</TableCell>
 				<TableCell>{paymentDate}</TableCell>
 				<TableCell>{voucher}</TableCell>
+				<TableCell>{refundId === '0' ? '' : refundId}</TableCell>
 				<TableCell>{liquidationStatus}</TableCell>
 				<TableCell align='center'>
 					<VolvoIconButton

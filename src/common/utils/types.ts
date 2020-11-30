@@ -308,6 +308,7 @@ export interface Liquidation {
 	voucher: string;
 	dealerBankAccount: string;
 	companyBankAccount: string;
+	refundId: number;
 }
 
 export interface Refund {

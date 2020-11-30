@@ -17,12 +17,12 @@ import {
 } from '@material-ui/core';
 import AppContext from 'AppContext';
 import { VolvoButton } from 'common/components';
-import { getCommonBankAccounts, getQueryBanks } from 'common/services';
-import { Option, parseBankAccounts, parseCommonValue } from 'common/utils';
+import { getQueryBankAccountTypes, getQueryBanks } from 'common/services';
+import { parseCommonValue } from 'common/utils';
 import { BankAccountSchema } from 'common/validations';
 import { Field, Form, Formik } from 'formik';
 import { BankAccountForm } from 'pages/Dealers/interfaces';
-import React, { useContext, useEffect, useMemo, useState } from 'react';
+import React, { useContext, useMemo } from 'react';
 import { useQuery } from 'react-query';
 
 interface FormModalProps {
@@ -71,37 +71,24 @@ const FormModal: React.FC<FormModalProps> = ({
 }) => {
 	const { currencies } = useContext(AppContext);
 	const classes = useStyles();
-	const [accountOptions, setAccountOptions] = useState<Option[]>([]);
-	const { data } = useQuery('getQueryBanks', getQueryBanks);
+	const { data: banksData } = useQuery('getQueryBanks', getQueryBanks);
 	const bankOptions = useMemo(() => {
-		if (data?.ok) {
-			return parseCommonValue(data?.data || []);
+		if (banksData?.ok) {
+			return parseCommonValue(banksData?.data || []);
 		}
 		return [];
-	}, [data]);
+	}, [banksData]);
 
-	const onBankChange = (setFieldValue: any) => async (e: any) => {
-		const bankId = e.target.value;
-		setFieldValue('bankId', bankId);
-		const response = await getCommonBankAccounts(bankId);
-		if (response.ok) {
-			const accounts = parseBankAccounts(response?.data || []);
-			setAccountOptions(accounts);
+	const { data: typesData } = useQuery(
+		'getQueryBankAccountTypes',
+		getQueryBankAccountTypes,
+	);
+	const accountOptions = useMemo(() => {
+		if (typesData?.ok) {
+			return parseCommonValue(typesData?.data || []);
 		}
-	};
-
-	useEffect(() => {
-		const fetchBankAccounts = async (bankId: string) => {
-			const response = await getCommonBankAccounts(bankId);
-			if (response.ok) {
-				const accounts = parseBankAccounts(response?.data || []);
-				setAccountOptions(accounts);
-			}
-		};
-		if (values?.bankId) {
-			fetchBankAccounts(values.bankId);
-		}
-	}, [values]);
+		return [];
+	}, [typesData]);
 
 	const handleSubmit = (data: BankAccountForm) => {
 		onConfirm(data);
@@ -175,7 +162,6 @@ const FormModal: React.FC<FormModalProps> = ({
 											labelId='bankLabel'
 											label='Banco'
 											name='bankId'
-											onChange={onBankChange(setFieldValue)}
 											as={Select}
 										>
 											{bankOptions.map((d) => (
@@ -188,10 +174,10 @@ const FormModal: React.FC<FormModalProps> = ({
 								</Grid>
 								<Grid item xs={6}>
 									<FormControl variant='outlined' fullWidth size='small'>
-										<InputLabel id='accountLabel'>Cuenta</InputLabel>
+										<InputLabel id='accountLabel'>Tipo de Cuenta</InputLabel>
 										<Field
 											labelId='accountLabel'
-											label='Cuenta'
+											label='Tipo de Cuenta'
 											name='bankAccountTypeId'
 											as={Select}
 										>
