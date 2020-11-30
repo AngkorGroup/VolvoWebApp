@@ -35,3 +35,7 @@ export const getQueryDocumentTypes = async (key?: string) => {
 export const getBankAccounts = async (id: string) => {
 	return await api.get<Account[]>(`${GET_BANKS}/${id}/accounts`);
 };
+
+export const getQueryBankAccounts = async (key: string, id: string) => {
+	return await getBankAccounts(id);
+};

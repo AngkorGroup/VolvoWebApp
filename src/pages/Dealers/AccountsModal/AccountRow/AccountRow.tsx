@@ -1,36 +1,30 @@
 import { Menu, MenuItem, TableCell, TableRow } from '@material-ui/core';
 import React, { useState } from 'react';
 import SettingsIcon from '@material-ui/icons/Settings';
-import { VolvoIconButton } from 'common/components';
-import { DealerForm, TableDealer } from '../interfaces';
+import { ConfirmationModal, VolvoIconButton } from 'common/components';
+import { TableAccount } from 'pages/Dealers/interfaces';
 import FormModal from '../FormModal/FormModal';
-import DeleteModal from '../DeleteModal/DeleteModal';
-import AccountsModal from '../AccountsModal/AccountsModal';
 
-interface DealerRowProps {
-	item: TableDealer;
-	onEdit: (data: DealerForm) => void;
+interface AccountRowProps {
+	item: TableAccount;
+	onEdit: (data: any) => void;
 	onDelete: (id: string) => void;
 }
 
 type Event = React.MouseEvent<HTMLButtonElement>;
 
-const DealerRow = ({ item, onEdit, onDelete }: DealerRowProps) => {
+const AccountRow = ({ item, onEdit, onDelete }: AccountRowProps) => {
 	const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 	const [showEditModal, setShowEditModal] = useState(false);
-	const [showAccountsModal, setShowAccounts] = useState(false);
 	const [showDeleteModal, setShowDeleteModal] = useState(false);
 	const {
 		id,
-		code,
-		name,
-		ruc,
-		address,
-		status,
-		type,
-		phone,
-		zone,
-		maxCashiers,
+		account,
+		cci,
+		currency,
+		isDefault,
+		bankAccountType,
+		bank,
 		archiveAt,
 	} = item;
 
@@ -38,28 +32,25 @@ const DealerRow = ({ item, onEdit, onDelete }: DealerRowProps) => {
 		func();
 		onCloseMenu();
 	};
+
 	const onOpenMenu = (event: Event) => setAnchorEl(event.currentTarget);
 	const onCloseMenu = () => setAnchorEl(null);
 
 	const setEditModalVisible = (flag: boolean) =>
 		withCloseMenu(() => setShowEditModal(flag));
-	const setAccountsVisible = (flag: boolean) =>
-		withCloseMenu(() => setShowAccounts(flag));
 	const setDelModalVisible = (flag: boolean) =>
 		withCloseMenu(() => setShowDeleteModal(flag));
 
 	return (
 		<React.Fragment>
 			<TableRow>
-				<TableCell>{code}</TableCell>
-				<TableCell>{name}</TableCell>
-				<TableCell>{ruc}</TableCell>
-				<TableCell>{address}</TableCell>
-				<TableCell>{status}</TableCell>
-				<TableCell>{type}</TableCell>
-				<TableCell>{phone}</TableCell>
-				<TableCell align='center'>{maxCashiers}</TableCell>
-				<TableCell>{zone}</TableCell>
+				<TableCell>{id}</TableCell>
+				<TableCell>{account}</TableCell>
+				<TableCell>{cci}</TableCell>
+				<TableCell>{currency}</TableCell>
+				<TableCell>{isDefault ? 'Si' : 'No'}</TableCell>
+				<TableCell>{bankAccountType}</TableCell>
+				<TableCell>{bank}</TableCell>
 				<TableCell>{archiveAt}</TableCell>
 				<TableCell align='center'>
 					{!archiveAt && (
@@ -80,9 +71,6 @@ const DealerRow = ({ item, onEdit, onDelete }: DealerRowProps) => {
 								onClose={onCloseMenu}
 							>
 								<MenuItem onClick={setEditModalVisible(true)}>Editar</MenuItem>
-								<MenuItem onClick={setAccountsVisible(true)}>
-									Cuentas Bancarias
-								</MenuItem>
 								<MenuItem onClick={setDelModalVisible(true)}>Eliminar</MenuItem>
 							</Menu>
 						</>
@@ -91,25 +79,19 @@ const DealerRow = ({ item, onEdit, onDelete }: DealerRowProps) => {
 			</TableRow>
 			{showEditModal && (
 				<FormModal
-					title='Editar Dealer'
+					title='Editar Cuenta Bancaria'
 					show={showEditModal}
 					values={item}
 					onClose={setEditModalVisible(false)}
 					onConfirm={onEdit}
 				/>
 			)}
-			{showAccountsModal && (
-				<AccountsModal
-					show={showAccountsModal}
-					id={id}
-					onClose={setAccountsVisible(false)}
-				/>
-			)}
 			{showDeleteModal && (
-				<DeleteModal
+				<ConfirmationModal
 					show={showDeleteModal}
 					id={id}
-					name={name}
+					title='Eliminar Cuenta Bancaria'
+					body='¿Está seguro que desea eliminar esta cuenta bancaria del dealer?'
 					onClose={setDelModalVisible(false)}
 					onConfirm={onDelete}
 				/>
@@ -118,4 +100,4 @@ const DealerRow = ({ item, onEdit, onDelete }: DealerRowProps) => {
 	);
 };
 
-export default DealerRow;
+export default AccountRow;
