@@ -4,6 +4,8 @@ import { Option } from 'common/utils/types';
 import React, { useState } from 'react';
 
 interface AsyncTypeAheadProps {
+	disabled?: boolean;
+	value?: any;
 	placeholder: string;
 	options: Option[];
 	loading: boolean;
@@ -12,6 +14,8 @@ interface AsyncTypeAheadProps {
 }
 
 const AsyncTypeAhead: React.FC<AsyncTypeAheadProps> = ({
+	disabled,
+	value,
 	placeholder,
 	options,
 	loading,
@@ -25,6 +29,7 @@ const AsyncTypeAhead: React.FC<AsyncTypeAheadProps> = ({
 	return (
 		<div>
 			<Autocomplete
+				disabled={disabled}
 				disableClearable
 				open={open}
 				onOpen={onOpen}
@@ -36,6 +41,7 @@ const AsyncTypeAhead: React.FC<AsyncTypeAheadProps> = ({
 				loading={loading}
 				loadingText='Cargando...'
 				noOptionsText='No hay resultados.'
+				value={value}
 				renderInput={(params) => (
 					<TextField
 						{...params}

@@ -7,6 +7,7 @@ import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
 import ListAltIcon from '@material-ui/icons/ListAlt';
 import LibraryBooksIcon from '@material-ui/icons/LibraryBooks';
 import SettingsIcon from '@material-ui/icons/Settings';
+import WorkIcon from '@material-ui/icons/Work';
 import moment from 'moment';
 
 type MaterialIcon = OverridableComponent<SvgIconTypeMap<{}, 'svg'>>;
@@ -194,6 +195,28 @@ export const MENU_ITEMS: MenuItem[] = [
 				id: 'PendingChargesRefund',
 				title: 'Cobros pendientes de reembolsos',
 				path: `${REPORT_PATH_SOURCE}/pending_charges_refund`,
+			},
+		],
+	},
+	{
+		id: 'Portal',
+		title: 'Portal',
+		icon: WorkIcon,
+		menuList: [
+			{
+				id: 'POSOperations',
+				title: 'Mantener POS',
+				path: '/portal/pos',
+			},
+			{
+				id: 'ConsultOperations',
+				title: 'Consultar Operaciones',
+				path: '/portal/consult_operations',
+			},
+			{
+				id: 'ConsultLiquidations',
+				title: 'Consultar Liquidaciones',
+				path: '/portal/consult_liquidations',
 			},
 		],
 	},
