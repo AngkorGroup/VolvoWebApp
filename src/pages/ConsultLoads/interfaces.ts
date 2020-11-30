@@ -1,8 +1,7 @@
-import { Load, PreLoad } from 'common/utils';
+import { Load } from 'common/utils';
 
 export interface TableLoad {
-	id?: string;
-	index?: number;
+	id: string;
 	number: string;
 	ruc: string;
 	name: string;
@@ -40,25 +39,5 @@ export const mapLoads = (loads: Load[]): TableLoad[] => {
 		balance: l.balance?.value,
 		createdBy: l.createdBy,
 		createdAt: l.createdAt,
-	}));
-};
-
-export const mapPreLoads = (loads: PreLoad[]): TableLoad[] => {
-	return loads.map(({ rowIndex, batch, card, errorMessage, lineContent }) => ({
-		index: rowIndex,
-		number: batch?.tpContractBatchNumber,
-		ruc: batch?.client?.ruc,
-		name: batch?.client?.name,
-		date: batch?.tpContractDate,
-		chassis: batch?.tpChasis,
-		invoice: batch?.tpInvoiceCode,
-		amount: batch?.amount?.value,
-		currency: batch?.amount?.currency?.symbol || batch?.amount?.currencySymbol,
-		type: batch?.rechargeType?.name,
-		reason: batch?.businessArea?.name,
-		card: card?.cardType?.name,
-		tpNumber: batch?.tpContractNumber,
-		errorMessage,
-		lineContent,
 	}));
 };

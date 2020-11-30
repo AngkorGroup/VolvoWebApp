@@ -8,6 +8,7 @@ export { default as CustomTabs } from './CustomTabs/CustomTabs';
 export { default as DatePicker } from './DatePicker/DatePicker';
 export { default as EmptyState } from './EmptyState/EmptyState';
 export { default as FilePicker } from './FilePicker/FilePicker';
+export { default as GenericTable } from './GenericTable/GenericTable';
 export { default as ImageModal } from './ImageModal/ImageModal';
 export { default as MultiTypeAhead } from './MultiTypeAhead/MultiTypeAhead';
 export { default as OnlyActiveFilter } from './OnlyActiveFilter/OnlyActiveFilter';

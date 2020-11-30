@@ -1,44 +1,70 @@
-import { COLUMN_CENTER } from 'common/constants/tableColumn';
+import { formatNumber } from 'common/utils';
 
 export const LOAD_COLUMNS = [
-	{ title: 'Id' },
-	{ title: 'Contrato' },
-	{ title: 'RUC' },
-	{ title: 'Razón Social' },
-	{ title: 'Fecha' },
-	{ title: 'Chasis' },
-	{ title: 'Factura' },
-	{ title: 'Moneda' },
-	{ title: 'Importe' },
-	{ title: 'Saldo' },
-	{ title: 'Tipo' },
-	{ title: 'Motivo' },
-	{ title: 'Tipo Tarjeta' },
-	{ title: 'Referencia' },
-	{ title: 'Creado Por' },
-	{ title: 'Creado el' },
-];
-
-export const PRE_LOAD_COLUMNS = [
-	{ title: 'Línea' },
-	{ title: 'Contrato' },
-	{ title: 'RUC' },
-	{ title: 'Razón Social' },
-	{ title: 'Fecha' },
-	{ title: 'Chasis' },
-	{ title: 'Factura' },
-	{ title: 'Moneda' },
-	{ title: 'Importe' },
-	{ title: 'Tipo' },
-	{ title: 'Motivo' },
-	{ title: 'Tipo Tarjeta' },
-	{ title: 'Referencia' },
-];
-
-export const ERROR_COLUMNS = [
-	{ title: 'Fila', props: { align: COLUMN_CENTER } },
-	{ title: 'Error' },
-	{ title: 'Archivo' },
-	{ title: 'Línea' },
-	{ title: 'Fecha' },
+	{
+		Header: 'Id',
+		accessor: 'id',
+	},
+	{
+		Header: 'Contrato',
+		accessor: 'number',
+	},
+	{
+		Header: 'RUC',
+		accessor: 'ruc',
+	},
+	{
+		Header: 'Razón Social',
+		accessor: 'name',
+	},
+	{
+		Header: 'Fecha',
+		accessor: 'date',
+	},
+	{
+		Header: 'Chasis',
+		accessor: 'chassis',
+	},
+	{
+		Header: 'Factura',
+		accessor: 'invoice',
+	},
+	{
+		Header: 'Moneda',
+		accessor: 'currency',
+	},
+	{
+		Header: 'Importe',
+		accessor: 'amount',
+		Cell: (cell: any) => formatNumber(cell.value),
+	},
+	{
+		Header: 'Saldo',
+		accessor: 'balance',
+		Cell: (cell: any) => formatNumber(cell.value),
+	},
+	{
+		Header: 'Tipo',
+		accessor: 'type',
+	},
+	{
+		Header: 'Motivo',
+		accessor: 'reason',
+	},
+	{
+		Header: 'Tipo Tarjeta',
+		accessor: 'card',
+	},
+	{
+		Header: 'Referencia',
+		accessor: 'tpNumber',
+	},
+	{
+		Header: 'Creado Por',
+		accessor: 'createdBy',
+	},
+	{
+		Header: 'Creado el',
+		accessor: 'createdAt',
+	},
 ];
