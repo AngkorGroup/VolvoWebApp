@@ -1,3 +1,5 @@
+export * from './Auth';
+export * from './BankAccounts';
 export * from './Batches';
 export * from './Cards';
 export * from './CardTypes';

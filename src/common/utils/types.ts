@@ -3,6 +3,11 @@ export interface Option {
 	label: string;
 }
 
+export interface LoginResponse {
+	admin: Admin;
+	authToken: string;
+}
+
 export interface UserAdmin {
 	id: number;
 	type: string;

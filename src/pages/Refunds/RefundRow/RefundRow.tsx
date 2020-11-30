@@ -1,7 +1,7 @@
 import { Menu, MenuItem, TableCell, TableRow } from '@material-ui/core';
 import React, { useState } from 'react';
 import SettingsIcon from '@material-ui/icons/Settings';
-import { Amount, VolvoIconButton } from 'common/components';
+import { Amount, ConfirmationModal, VolvoIconButton } from 'common/components';
 import { isCanceled, isPaid, isScheduled, RefundColumn } from '../interfaces';
 import LiquidationsModal from '../LiquidationsModal/LiquidationsModal';
 import PayModal from '../PayModal/PayModal';
@@ -10,12 +10,14 @@ interface RefundRowProps {
 	item: RefundColumn;
 	status: string;
 	onPay: (id: string, date: string, voucher: string) => void;
+	onCancel: (id: string) => void;
 }
 
-const RefundRow = ({ item, status, onPay }: RefundRowProps) => {
+const RefundRow = ({ item, status, onPay, onCancel }: RefundRowProps) => {
 	const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 	const [showLiquidationsModal, setShowLiquidationsModal] = useState(false);
 	const [showPayModal, setShowPayModal] = useState(false);
+	const [showCancelModal, setShowCancelModal] = useState(false);
 	const {
 		id,
 		bank,
@@ -44,6 +46,8 @@ const RefundRow = ({ item, status, onPay }: RefundRowProps) => {
 		withCloseMenu(() => setShowLiquidationsModal(flag));
 	const setPayModalVisible = (flag: boolean) =>
 		withCloseMenu(() => setShowPayModal(flag));
+	const setCancelModalVisible = (flag: boolean) =>
+		withCloseMenu(() => setShowCancelModal(flag));
 
 	return (
 		<React.Fragment>
@@ -86,6 +90,11 @@ const RefundRow = ({ item, status, onPay }: RefundRowProps) => {
 										Ver Liquidaciones
 									</MenuItem>
 								)}
+								{isScheduled(status) && (
+									<MenuItem onClick={setCancelModalVisible(true)}>
+										Anular
+									</MenuItem>
+								)}
 							</Menu>
 						</React.Fragment>
 					)}
@@ -104,6 +113,16 @@ const RefundRow = ({ item, status, onPay }: RefundRowProps) => {
 					id={id}
 					onClose={setPayModalVisible(false)}
 					onPay={onPay}
+				/>
+			)}
+			{showCancelModal && (
+				<ConfirmationModal
+					show={showCancelModal}
+					id={id}
+					title='Anular Reembolso'
+					body={`¿Está seguro que desea anular el siguiente reembolso?`}
+					onClose={setCancelModalVisible(false)}
+					onConfirm={onCancel}
 				/>
 			)}
 		</React.Fragment>

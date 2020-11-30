@@ -13,9 +13,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { useHistory } from 'react-router-dom';
 import AppContext from 'AppContext';
-import { LOGIN_URL } from 'common/constants/api';
-import { api, Admin, setAuthToken, buildAlertBody as at } from 'common/utils';
+import { setAuthToken, buildAlertBody as at } from 'common/utils';
 import { useAlert } from 'react-alert';
+import { login } from 'common/services';
 
 type FormEvent = React.FormEvent<HTMLFormElement>;
 
@@ -39,11 +39,6 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-interface LoginResponse {
-	admin: Admin;
-	authToken: string;
-}
-
 const SignIn = () => {
 	const classes = useStyles();
 	const alert = useAlert();
@@ -57,10 +52,7 @@ const SignIn = () => {
 
 	const handleSubmit = async (e: FormEvent) => {
 		e.preventDefault();
-		const response = await api.post<LoginResponse>(LOGIN_URL, {
-			email,
-			password,
-		});
+		const response = await login(email, password);
 		if (response.ok) {
 			const { admin, authToken } = response.data || {};
 			if (admin && authToken && setAppUser) {

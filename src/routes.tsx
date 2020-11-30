@@ -96,6 +96,28 @@ const PageReports = (props: any) => {
 	return <LayoutReports {...props} />;
 };
 
+const PagePOSOperations = (props: any) => {
+	const POSOperations = lazy(() => import('./pages/POSOperations/POS'));
+	const LayoutPOSOperations = HOCLayout(POSOperations);
+	return <LayoutPOSOperations {...props} />;
+};
+
+const PageConsultOperations = (props: any) => {
+	const ConsultOperations = lazy(
+		() => import('./pages/ConsultOperations/ConsumesByDealer'),
+	);
+	const LayoutConsultOperations = HOCLayout(ConsultOperations);
+	return <LayoutConsultOperations {...props} />;
+};
+
+const PageConsultLiquidations = (props: any) => {
+	const ConsultLiquidations = lazy(
+		() => import('./pages/ConsultLiquidations/Liquidations'),
+	);
+	const LayoutConsultLiquidations = HOCLayout(ConsultLiquidations);
+	return <LayoutConsultLiquidations {...props} />;
+};
+
 export interface Route {
 	id: string;
 	path: string;
@@ -183,6 +205,23 @@ export const guarded: Route[] = [
 		id: 'Reports',
 		path: '/reports/:id',
 		component: PageReports,
+	},
+
+	// Portal
+	{
+		id: 'POSOperations',
+		path: '/portal/pos',
+		component: PagePOSOperations,
+	},
+	{
+		id: 'ConsultOperations',
+		path: '/portal/consult_operations',
+		component: PageConsultOperations,
+	},
+	{
+		id: 'ConsultLiquidations',
+		path: '/portal/consult_liquidations',
+		component: PageConsultLiquidations,
 	},
 
 	// Security

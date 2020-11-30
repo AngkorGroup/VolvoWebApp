@@ -17,7 +17,7 @@ import {
 } from '@material-ui/core';
 import AppContext from 'AppContext';
 import { VolvoButton } from 'common/components';
-import { getBankAccounts, getQueryBanks } from 'common/services';
+import { getCommonBankAccounts, getQueryBanks } from 'common/services';
 import { Option, parseBankAccounts, parseCommonValue } from 'common/utils';
 import { BankAccountSchema } from 'common/validations';
 import { Field, Form, Formik } from 'formik';
@@ -83,7 +83,7 @@ const FormModal: React.FC<FormModalProps> = ({
 	const onBankChange = (setFieldValue: any) => async (e: any) => {
 		const bankId = e.target.value;
 		setFieldValue('bankId', bankId);
-		const response = await getBankAccounts(bankId);
+		const response = await getCommonBankAccounts(bankId);
 		if (response.ok) {
 			const accounts = parseBankAccounts(response?.data || []);
 			setAccountOptions(accounts);
@@ -92,7 +92,7 @@ const FormModal: React.FC<FormModalProps> = ({
 
 	useEffect(() => {
 		const fetchBankAccounts = async (bankId: string) => {
-			const response = await getBankAccounts(bankId);
+			const response = await getCommonBankAccounts(bankId);
 			if (response.ok) {
 				const accounts = parseBankAccounts(response?.data || []);
 				setAccountOptions(accounts);

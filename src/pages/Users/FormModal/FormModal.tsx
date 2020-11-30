@@ -16,7 +16,7 @@ import {
 	Theme,
 } from '@material-ui/core';
 import { PageLoader, VolvoButton } from 'common/components';
-import { getDealers } from 'common/services';
+import { getQueryOnlyDealers } from 'common/services';
 import { parseDealers } from 'common/utils';
 import { UserSchema } from 'common/validations';
 import { Field, Form, Formik } from 'formik';
@@ -76,8 +76,11 @@ const FormModal: React.FC<FormModalProps> = ({
 	onConfirm,
 }: FormModalProps) => {
 	const classes = useStyles();
-	const { data, status } = useQuery([true], getDealers);
 	const [generate, setGenerate] = useState(true);
+	const { data, status } = useQuery(
+		['getQueryOnlyDealers', true],
+		getQueryOnlyDealers,
+	);
 	const dealers = useMemo(() => {
 		if (data?.ok) {
 			return parseDealers(data?.data || []);

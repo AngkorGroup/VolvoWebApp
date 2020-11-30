@@ -15,48 +15,52 @@ import {
 	TableFilter,
 } from 'common/components';
 import {
-	DEFAULT_NOW_DATE as END_DATE,
-	DEFAULT_WEEK_START_DATE as START_DATE,
-	REFUND_STATUSES,
-	OPERATION_SCHEDULED,
-	DEFAULT_MOMENT_FORMAT as FORMAT,
+	DEFAULT_NOW_DATE,
+	DEFAULT_WEEK_START_DATE,
+	OPERATION_GENERATED,
+	LIQUIDATION_STATUSES,
 	TABLE_ROWS_PER_PAGE,
+	DEFAULT_MOMENT_FORMAT,
 } from 'common/constants';
-import { cancelRefund, getQueryRefunds, payRefund } from 'common/services';
-import { filterRows, buildAlertBody as at } from 'common/utils';
 import React, { useMemo, useState } from 'react';
-import { useAlert } from 'react-alert';
 import { useQuery } from 'react-query';
-import { REFUNDS_COLUMNS } from './columns';
-import { mapRefunds, RefundColumn } from './interfaces';
-import RefundRow from './RefundRow/RefundRow';
+import { getQueryLiquidations } from 'common/services';
+import { mapLiquidations, LiquidationColumn } from './interfaces';
+import { filterRows } from 'common/utils';
+import { LIQUIDATIONS_COLUMNS } from './columns';
+import LiquidationRow from './LiquidationRow/LiquidationRow';
 
 type Event = React.ChangeEvent<{
 	name?: string | undefined;
 	value: unknown;
 }>;
 
-const Refunds = () => {
-	const alert = useAlert();
-	const [startDate, setStartDate] = useState<MaterialUiPickersDate>(START_DATE);
-	const [endDate, setEndDate] = useState<MaterialUiPickersDate>(END_DATE);
+const Liquidations: React.FC = () => {
+	const [startDate, setStartDate] = useState<MaterialUiPickersDate>(
+		DEFAULT_WEEK_START_DATE,
+	);
+	const [endDate, setEndDate] = useState<MaterialUiPickersDate>(
+		DEFAULT_NOW_DATE,
+	);
+	const [liquidationStatus, setLiquidationStatus] = useState(
+		OPERATION_GENERATED,
+	);
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(TABLE_ROWS_PER_PAGE);
 	const [query, setQuery] = useState('');
-	const [refundStatus, setRefundStatus] = useState(OPERATION_SCHEDULED);
-	const [filtered, setFiltered] = useState<RefundColumn[]>([]);
-	const { data, status, refetch } = useQuery(
+	const [filtered, setFiltered] = useState<LiquidationColumn[]>([]);
+	const { data, status } = useQuery(
 		[
-			'getQueryRefunds',
-			startDate?.format(FORMAT),
-			endDate?.format(FORMAT),
-			refundStatus,
+			'getQueryLiquidations',
+			startDate?.format(DEFAULT_MOMENT_FORMAT),
+			endDate?.format(DEFAULT_MOMENT_FORMAT),
+			liquidationStatus,
 		],
-		getQueryRefunds,
+		getQueryLiquidations,
 	);
-	const refunds = useMemo(() => {
+	const liquidations = useMemo(() => {
 		if (data?.ok) {
-			const rows = mapRefunds(data?.data || []);
+			const rows = mapLiquidations(data?.data || []);
 			setFiltered(rows);
 			return rows;
 		}
@@ -65,13 +69,15 @@ const Refunds = () => {
 
 	const onStartDateChange = (date: MaterialUiPickersDate) => setStartDate(date);
 	const onEndDateChange = (date: MaterialUiPickersDate) => setEndDate(date);
-	const onStatusChange = (e: Event) => setRefundStatus(`${e.target.value}`);
+	const onStatusChange = (e: Event) =>
+		setLiquidationStatus(e.target.value as string);
 	const onFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const newQuery = e.target.value;
-		const filteredRows = filterRows(newQuery, refunds);
+		const filteredRows = filterRows(newQuery, liquidations);
 		setQuery(newQuery);
 		setFiltered(filteredRows);
 	};
+
 	const handleChangePage = (_: any, newPage: number) => {
 		setPage(newPage);
 	};
@@ -83,34 +89,15 @@ const Refunds = () => {
 		setPage(0);
 	};
 
-	const onPay = async (id: string, date: string, voucher: string) => {
-		const response = await payRefund(id, date, voucher);
-		if (response.ok) {
-			refetch();
-			alert.success(
-				at('Reembolso Pagado', 'Se registró el pago correctamente'),
-			);
-		}
-	};
-
-	const onCancel = async (id: string) => {
-		const response = await cancelRefund(id);
-		if (response.ok) {
-			refetch();
-			alert.success(
-				at('Reembolso Anulado', 'Se anuló el reembolso correctamente'),
-			);
-		}
-	};
-
 	const rows = useMemo(
 		() => filtered.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
 		[page, rowsPerPage, filtered],
 	);
+
 	return (
 		<div>
 			<div>
-				<PageTitle title='Reembolsos' />
+				<PageTitle title='Liquidaciones' />
 				<PageActionBar>
 					<Grid container spacing={1}>
 						<Grid item xs={2}>
@@ -134,10 +121,10 @@ const Refunds = () => {
 								<Select
 									labelId='statusLabel'
 									label='Estado'
-									value={refundStatus}
+									value={liquidationStatus}
 									onChange={onStatusChange}
 								>
-									{REFUND_STATUSES.map((d) => (
+									{LIQUIDATION_STATUSES.map((d) => (
 										<MenuItem key={d.value} value={d.value}>
 											{d.label}
 										</MenuItem>
@@ -156,8 +143,8 @@ const Refunds = () => {
 							<TableFilter value={query} onChange={onFilterChange} />
 						</PageActionBar>
 						<PaginatedTable
-							columns={REFUNDS_COLUMNS}
-							count={refunds.length}
+							columns={LIQUIDATIONS_COLUMNS}
+							count={liquidations.length}
 							page={page}
 							rowsPerPage={rowsPerPage}
 							onChangePage={handleChangePage}
@@ -165,13 +152,7 @@ const Refunds = () => {
 						>
 							<React.Fragment>
 								{rows.map((item, i: number) => (
-									<RefundRow
-										key={i}
-										item={item}
-										status={refundStatus}
-										onPay={onPay}
-										onCancel={onCancel}
-									/>
+									<LiquidationRow key={i} item={item} />
 								))}
 							</React.Fragment>
 						</PaginatedTable>
@@ -182,4 +163,4 @@ const Refunds = () => {
 	);
 };
 
-export default Refunds;
+export default Liquidations;

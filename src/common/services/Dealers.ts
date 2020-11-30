@@ -5,6 +5,13 @@ export const getDealers = async (onlyActive?: boolean) => {
 	return await api.get<Dealer[]>(DEALERS_URL, { onlyActive });
 };
 
+export const getQueryOnlyDealers = async (
+	key: string,
+	onlyActive?: boolean,
+) => {
+	return await getDealers(onlyActive);
+};
+
 export const getQueryDealers = async (
 	key: string,
 	query?: string,
