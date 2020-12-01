@@ -2,7 +2,6 @@ import {
 	GET_BANKS,
 	GET_BUSINESS_AREAS,
 	GET_CURRENCIES,
-	GET_DOCUMENT_TYPES,
 	GET_RECHARGE_TYPES,
 	GET_SECTORS,
 } from 'common/constants';
@@ -26,10 +25,6 @@ export const getQueryBanks = async (key?: string) => {
 
 export const getQueryCurrencies = async (key?: string) => {
 	return await api.get<CommonValue[]>(GET_CURRENCIES);
-};
-
-export const getQueryDocumentTypes = async (key?: string) => {
-	return await api.get<CommonValue[]>(GET_DOCUMENT_TYPES);
 };
 
 export const getCommonBankAccounts = async (id: string) => {
