@@ -41,6 +41,11 @@ export const MENU_ITEMS: MenuItem[] = [
 				title: 'Tipos de Tarjeta',
 				path: '/configuration/card_types',
 			},
+			{
+				id: 'Banks',
+				title: 'Bancos',
+				path: '/configuration/banks',
+			},
 		],
 	},
 	{
