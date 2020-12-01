@@ -1,10 +1,12 @@
 import { createStyles, makeStyles, Theme } from '@material-ui/core';
+import { CSSProperties } from '@material-ui/core/styles/withStyles';
 import React from 'react';
 import { colors } from 'theme';
 import Amount from '../Amount/Amount';
 
 interface VolvoCardProps {
-	title: string;
+	customStyle?: CSSProperties;
+	title?: string;
 	balance?: number | string;
 	currency?: string;
 	number?: string;
@@ -63,6 +65,7 @@ const useStyles = makeStyles(({ palette }: Theme) =>
 );
 
 const VolvoCard: React.FC<VolvoCardProps> = ({
+	customStyle,
 	title,
 	balance,
 	currency,
@@ -74,7 +77,10 @@ const VolvoCard: React.FC<VolvoCardProps> = ({
 	const colorStyle = color ? { backgroundColor: color } : {};
 	const sizeClass = isThumbnail ? classes.thumbnail : classes.normal;
 	return (
-		<div className={`${classes.card} ${sizeClass}`} style={colorStyle}>
+		<div
+			className={`${classes.card} ${sizeClass}`}
+			style={{ ...colorStyle, ...customStyle }}
+		>
 			<div className={classes.title}>
 				<div className={classes.cardName}>{title}</div>
 				<div className={classes.number}>{number}</div>
