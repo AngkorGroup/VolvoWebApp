@@ -1,5 +1,5 @@
 import UserRepository from 'common/repository/UserRepository';
-import { getQueryCurrencies, getQueryDocumentTypes } from 'common/services';
+import { getDocumentTypes, getQueryCurrencies } from 'common/services';
 import { Admin, Option, parseListValues } from 'common/utils';
 import React, { ReactElement, useState, useCallback, useEffect } from 'react';
 
@@ -33,7 +33,7 @@ const AppProvider = ({ children }: AppProviderProps) => {
 	useEffect(() => {
 		const getListValues = async () => {
 			const curResponse = await getQueryCurrencies();
-			const docResponse = await getQueryDocumentTypes();
+			const docResponse = await getDocumentTypes();
 			if (curResponse.ok && docResponse.ok) {
 				const currencies = parseListValues(curResponse.data || []);
 				const documentTypes = parseListValues(docResponse.data || []);

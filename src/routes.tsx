@@ -118,6 +118,14 @@ const PageConsultLiquidations = (props: any) => {
 	return <LayoutConsultLiquidations {...props} />;
 };
 
+const PageDocumentTypes = (props: any) => {
+	const DocumentTypes = lazy(
+		() => import('./pages/DocumentTypes/DocumentTypes'),
+	);
+	const LayoutDocumentTypes = HOCLayout(DocumentTypes);
+	return <LayoutDocumentTypes {...props} />;
+};
+
 export interface Route {
 	id: string;
 	path: string;
@@ -130,6 +138,11 @@ export const guarded: Route[] = [
 		id: 'CardTypes',
 		path: '/configuration/card_types',
 		component: PageCardTypes,
+	},
+	{
+		id: 'DocumentTypes',
+		path: '/configuration/document_types',
+		component: PageDocumentTypes,
 	},
 
 	// Cards

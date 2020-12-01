@@ -41,6 +41,11 @@ export const MENU_ITEMS: MenuItem[] = [
 				title: 'Tipos de Tarjeta',
 				path: '/configuration/card_types',
 			},
+			{
+				id: 'DocumentTypes',
+				title: 'Tipos de Documento',
+				path: '/configuration/document_types',
+			},
 		],
 	},
 	{

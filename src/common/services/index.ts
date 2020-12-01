@@ -9,6 +9,7 @@ export * from './Clients';
 export * from './Common';
 export * from './Contacts';
 export * from './Dealers';
+export * from './DocumentTypes';
 export * from './Liquidations';
 export * from './Loads';
 export * from './Movements';
