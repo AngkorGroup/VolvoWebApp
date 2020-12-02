@@ -51,6 +51,7 @@ const DealerRow = ({ item, onEdit, onDelete }: DealerRowProps) => {
 	return (
 		<React.Fragment>
 			<TableRow>
+				<TableCell>{id}</TableCell>
 				<TableCell>{code}</TableCell>
 				<TableCell>{name}</TableCell>
 				<TableCell>{ruc}</TableCell>
