@@ -56,6 +56,11 @@ export const MENU_ITEMS: MenuItem[] = [
 				title: 'Bancos',
 				path: '/configuration/banks',
 			},
+			{
+				id: 'RechargeTypes',
+				title: 'Tipos de Recarga',
+				path: '/configuration/recharge_types',
+			},
 		],
 	},
 	{
