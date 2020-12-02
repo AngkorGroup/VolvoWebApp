@@ -351,9 +351,9 @@ export interface Account {
 	archiveAt: string;
 }
 
-export interface RechargeType{
-	id:number;
-	name:string;
+export interface RechargeType {
+	id: number;
+	name: string;
 	tpCode: string;
 	archiveAt: string;
 	status: string;
