@@ -96,8 +96,8 @@ const Banks: React.FC = () => {
             refetch();
             alert.success(
                 at(
-                    'Banco Desactivado',
-                    'Se desactivó un banco correctamente',
+                    'Banco Eliminado',
+                    'Se eliminó un banco correctamente',
                 ),
             );
         }

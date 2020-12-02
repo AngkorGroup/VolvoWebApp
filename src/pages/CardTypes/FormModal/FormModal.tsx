@@ -98,7 +98,7 @@ const FormModal: React.FC<FormModalProps> = ({
 								<Grid item xs={6}>
 									<Field
 										name='type'
-										label='Tipo de Tarjeta!'
+										label='Tipo de Tarjeta'
 										error={touched.type && !!errors.type}
 										helperText={touched.type && errors.type}
 										{...fieldProps}
