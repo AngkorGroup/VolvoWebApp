@@ -46,6 +46,11 @@ export const MENU_ITEMS: MenuItem[] = [
 				title: 'Tipos de Documento',
 				path: '/configuration/document_types',
 			},
+			{
+				id:'RechargeTypes',
+				title:'Tipos de Recarga',
+				path:'/configuration/recharge_types',
+			},
 		],
 	},
 	{

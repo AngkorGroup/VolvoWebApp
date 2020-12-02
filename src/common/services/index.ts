@@ -13,5 +13,6 @@ export * from './DocumentTypes';
 export * from './Liquidations';
 export * from './Loads';
 export * from './Movements';
+export * from './RechargeTypes';
 export * from './Refunds';
 export * from './Reports';

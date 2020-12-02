@@ -126,6 +126,14 @@ const PageDocumentTypes = (props: any) => {
 	return <LayoutDocumentTypes {...props} />;
 };
 
+const PageRechargeTypes=(props: any)=>{
+	const RechargeTypes = lazy(
+		()=>import('./pages/RechargeTypes/RechargeTypes'),
+	);
+	const LayoutRechargeTypes = HOCLayout(RechargeTypes);
+	return <LayoutRechargeTypes {...props} />;
+}
+
 export interface Route {
 	id: string;
 	path: string;
@@ -143,6 +151,11 @@ export const guarded: Route[] = [
 		id: 'DocumentTypes',
 		path: '/configuration/document_types',
 		component: PageDocumentTypes,
+	},
+	{
+		id:'RechargeTypes',
+		path:'/configuration/recharge_types',
+		component: PageRechargeTypes,
 	},
 
 	// Cards
