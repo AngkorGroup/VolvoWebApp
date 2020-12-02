@@ -20,7 +20,7 @@ import {
     addCurrency,
     deleteCurrency,
     editCurrency,
-    getCurrencies,
+    getNewQueryCurrencies
 } from 'common/services';
 import { useAlert } from 'react-alert';
 
@@ -30,7 +30,7 @@ const Currencies: React.FC = () => {
     const [showAddModal, setShowAddModal] = useState(false);
     const [onlyActive, setOnlyActive] = useState(true);
     const [filtered, setFiltered] = useState<TableCurrency[]>([]);
-    const { data, status, refetch } = useQuery([onlyActive], getCurrencies);
+    const { data, status, refetch } = useQuery(['getCurrencies', onlyActive], getNewQueryCurrencies);
     const currencies = useMemo(() => {
         if (data?.ok) {
             const rows = mapCurrencies(data?.data || []);
@@ -98,8 +98,8 @@ const Currencies: React.FC = () => {
             refetch();
             alert.success(
                 at(
-                    'Moneda Desactivada',
-                    'Se desactivó una moneda correctamente',
+                    'Moneda Eliminada',
+                    'Se eliminó una moneda correctamente',
                 ),
             );
         }
