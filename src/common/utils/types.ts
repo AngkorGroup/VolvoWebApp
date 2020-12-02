@@ -93,6 +93,15 @@ export interface CardType {
 	archiveAt: string;
 }
 
+export interface Bank {
+	id: number;
+	name: string;
+	abbreviation: string;
+	tpCode: string;
+	status: string;
+	archiveAt: string;
+}
+
 export interface Load {
 	id: number;
 	amount: Amount;

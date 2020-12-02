@@ -19,6 +19,7 @@ export const CARDS_BY_CLIENT_CARD_TYPE = `${CARD_URL}/by_client_and_card_type`;
 export const MOVEMENTS_URL = '/movements';
 export const GET_MOVEMENTS_BY_CARD_URL = `${MOVEMENTS_URL}/by_card`;
 export const CARD_TYPES_URL = '/cardtypes';
+export const BANKS_URL = '/banks';
 export const DEALERS_URL = '/dealers';
 export const DEALERS_BY_FILTER_URL = `${DEALERS_URL}/by_filter`;
 export const CASHIERS_URL = '/cashiers';

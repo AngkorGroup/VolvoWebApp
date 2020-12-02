@@ -51,6 +51,11 @@ export const MENU_ITEMS: MenuItem[] = [
 				title: 'Monedas',
 				path: '/configuration/currencies',
 			},
+			{
+				id: 'Banks',
+				title: 'Bancos',
+				path: '/configuration/banks',
+			},
 		],
 	},
 	{
