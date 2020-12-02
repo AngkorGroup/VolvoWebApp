@@ -165,21 +165,19 @@ export const guarded: Route[] = [
 		component: PageDocumentTypes,
 	},
 	{
-<<<<<<< HEAD
 		id:'RechargeTypes',
 		path:'/configuration/recharge_types',
 		component: PageRechargeTypes,
-=======
+	},
+	{
 		id: 'Currencies',
 		path: '/configuration/currencies',
 		component: PageCurrencies,
 	},
-
 	{
 		id: 'Banks',
 		path: '/configuration/banks',
 		component: PageBanks,
->>>>>>> 072f8ddcdf108d9915a618a9f73bdb03b79ef63f
 	},
 
 	// Cards

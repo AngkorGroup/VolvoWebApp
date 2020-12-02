@@ -50,7 +50,7 @@ export const MENU_ITEMS: MenuItem[] = [
 				id:'RechargeTypes',
 				title:'Tipos de Recarga',
 				path:'/configuration/recharge_types',
-			}
+			},
 			{
 				id: 'Currencies',
 				title: 'Monedas',
