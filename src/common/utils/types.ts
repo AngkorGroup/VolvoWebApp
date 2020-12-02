@@ -40,6 +40,7 @@ export interface Currency {
 	status: string;
 	symbol: string;
 	tpCode: string;
+	archiveAt: string;
 }
 
 export interface Amount {
@@ -88,6 +89,15 @@ export interface CardType {
 	tpCode: string;
 	createdAt: string;
 	createdBy: string;
+	status: string;
+	archiveAt: string;
+}
+
+export interface Bank {
+	id: number;
+	name: string;
+	abbreviation: string;
+	tpCode: string;
 	status: string;
 	archiveAt: string;
 }

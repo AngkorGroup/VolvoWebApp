@@ -29,6 +29,8 @@ interface GenericTableProps {
 	size?: 'small' | 'medium' | undefined;
 	columns: any[];
 	data: any[];
+	customFilters?: React.ReactNode;
+	rightButton?: React.ReactNode;
 }
 
 type ChangeEvent = React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>;
@@ -50,6 +52,8 @@ const GenericTable: React.FC<GenericTableProps> = ({
 	size,
 	columns,
 	data,
+	customFilters,
+	rightButton,
 }: GenericTableProps) => {
 	const classes = useStyles();
 	const theme = useTheme();
@@ -127,10 +131,14 @@ const GenericTable: React.FC<GenericTableProps> = ({
 	return (
 		<>
 			<PageActionBar justifyContent='space-between'>
-				<GenericFilter
-					globalFilter={globalFilter}
-					setGlobalFilter={setGlobalFilter}
-				/>
+				<div>
+					<GenericFilter
+						globalFilter={globalFilter}
+						setGlobalFilter={setGlobalFilter}
+					/>
+					{customFilters}
+				</div>
+				{rightButton}
 			</PageActionBar>
 			<TableContainer className={containerClass} component={Paper}>
 				<Table className={classes.table} size={size} {...getTableProps()}>
@@ -138,7 +146,10 @@ const GenericTable: React.FC<GenericTableProps> = ({
 						{headerGroups.map((hg: any) => (
 							<TableRow {...hg.getHeaderGroupProps()}>
 								{hg.headers.map((column: any) => (
-									<TableCell {...column.getHeaderProps()}>
+									<TableCell
+										{...column.getHeaderProps()}
+										{...column.headerProps}
+									>
 										{column.render('Header')}
 									</TableCell>
 								))}
@@ -152,7 +163,10 @@ const GenericTable: React.FC<GenericTableProps> = ({
 								<TableRow {...row.getRowProps()}>
 									{row.cells.map((cell: any) => {
 										return (
-											<TableCell {...cell.getCellProps()}>
+											<TableCell
+												{...cell.getCellProps()}
+												{...cell.column.props}
+											>
 												{cell.render('Cell')}
 											</TableCell>
 										);

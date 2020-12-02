@@ -42,6 +42,7 @@ export const LOAD_COLUMNS = [
 		Header: 'Saldo',
 		accessor: 'balance',
 		Cell: (cell: any) => formatNumber(cell.value),
+		props: { align: 'right' },
 	},
 	{
 		Header: 'Tipo',

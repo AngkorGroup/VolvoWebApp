@@ -1,54 +1,50 @@
 import React, { useMemo, useState } from 'react';
 import AddIcon from '@material-ui/icons/Add';
 import {
-	BasicTable,
+	GenericTable,
 	OnlyActiveFilter,
-	PageActionBar,
 	PageBody,
 	PageLoader,
 	PageTitle,
-	TableFilter,
 	VolvoButton,
+	VolvoCard,
 } from 'common/components';
-import { buildAlertBody as at, filterRows } from 'common/utils';
+import { buildAlertBody as at } from 'common/utils';
 import FormModal from './FormModal/FormModal';
-import { TableCardType, CardTypeForm, mapCardTypes } from './interfaces';
-import CardTypeRow from './CardTypeRow/CardTypeRow';
+import { CardTypeForm, mapCardTypes } from './interfaces';
 import { CARD_TYPE_COLUMNS } from './columns';
 import { useQuery } from 'react-query';
 import {
 	addCardType,
 	deleteCardType,
 	editCardType,
-	getCardTypes,
+	getQueryCardTypes,
 } from 'common/services';
 import { useAlert } from 'react-alert';
+import CardTypeActions from './CardTypeActions/CardTypeActions';
+import { ACTIONS_COLUMN_V2 } from 'common/constants';
+
+export const renderCardColor = (color: string) => (
+	<VolvoCard isThumbnail color={color} customStyle={{ margin: 'auto' }} />
+);
 
 const CardTypes: React.FC = () => {
 	const alert = useAlert();
-	const [query, setQuery] = useState('');
 	const [showAddModal, setShowAddModal] = useState(false);
 	const [onlyActive, setOnlyActive] = useState(true);
-	const [filtered, setFiltered] = useState<TableCardType[]>([]);
-	const { data, status, refetch } = useQuery([onlyActive], getCardTypes);
+	const { data, status, refetch } = useQuery(
+		['getQueryCardTypes', onlyActive],
+		getQueryCardTypes,
+	);
 	const cardTypes = useMemo(() => {
 		if (data?.ok) {
-			const rows = mapCardTypes(data?.data || []);
-			setFiltered(rows);
-			return rows;
+			return mapCardTypes(data?.data || []);
 		}
 		return [];
-	}, [data, setFiltered]);
+	}, [data]);
 
 	const onOnlyActiveChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
 		setOnlyActive(e.target.checked);
-	};
-
-	const onFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const newQuery = e.target.value;
-		const filtered = filterRows(newQuery, cardTypes);
-		setQuery(newQuery);
-		setFiltered(filtered);
 	};
 
 	const setAddModalVisible = (flag: boolean) => () => setShowAddModal(flag);
@@ -108,6 +104,24 @@ const CardTypes: React.FC = () => {
 			);
 		}
 	};
+
+	const columns = useMemo(
+		() => [
+			...CARD_TYPE_COLUMNS,
+			{
+				...ACTIONS_COLUMN_V2,
+				Cell: (cell: any) => (
+					<CardTypeActions
+						item={cell?.row?.original}
+						onEdit={onEditCardType}
+						onDelete={onDeleteCardType}
+					/>
+				),
+			},
+		],
+		// eslint-disable-next-line
+		[],
+	);
 	return (
 		<div>
 			<div>
@@ -116,47 +130,36 @@ const CardTypes: React.FC = () => {
 			<PageBody>
 				{status === 'loading' && <PageLoader />}
 				{status === 'success' && (
-					<div>
-						<PageActionBar justifyContent='space-between'>
-							{cardTypes.length > 0 && (
-								<div>
-									<TableFilter value={query} onChange={onFilterChange} />
-									<OnlyActiveFilter
-										checked={onlyActive}
-										onChange={onOnlyActiveChange}
-									/>
-								</div>
-							)}
-							<VolvoButton
-								text='Agregar'
-								icon={<AddIcon />}
-								color='primary'
-								onClick={setAddModalVisible(true)}
-							/>
-							<FormModal
-								title='Agregar Tipo de Tarjeta'
-								show={showAddModal}
-								onClose={setAddModalVisible(false)}
-								onConfirm={onAddCardType}
-							/>
-						</PageActionBar>
-						{cardTypes.length > 0 && (
-							<BasicTable columns={CARD_TYPE_COLUMNS}>
-								<React.Fragment>
-									{filtered.map((item, i: number) => (
-										<CardTypeRow
-											key={i}
-											item={item}
-											onEdit={onEditCardType}
-											onDelete={onDeleteCardType}
-										/>
-									))}
-								</React.Fragment>
-							</BasicTable>
-						)}
-					</div>
+					<PageBody>
+						<GenericTable
+							columns={columns}
+							data={cardTypes}
+							customFilters={
+								<OnlyActiveFilter
+									checked={onlyActive}
+									onChange={onOnlyActiveChange}
+								/>
+							}
+							rightButton={
+								<VolvoButton
+									text='Agregar'
+									icon={<AddIcon />}
+									color='primary'
+									onClick={setAddModalVisible(true)}
+								/>
+							}
+						/>
+					</PageBody>
 				)}
 			</PageBody>
+			{showAddModal && (
+				<FormModal
+					title='Agregar Tipo de Tarjeta'
+					show={showAddModal}
+					onClose={setAddModalVisible(false)}
+					onConfirm={onAddCardType}
+				/>
+			)}
 		</div>
 	);
 };

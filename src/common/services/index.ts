@@ -16,3 +16,5 @@ export * from './Movements';
 export * from './RechargeTypes';
 export * from './Refunds';
 export * from './Reports';
+export * from './Banks';
+export * from './Currencies';
