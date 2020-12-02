@@ -65,7 +65,11 @@ const Loads: React.FC = () => {
 			{status === 'loading' && <PageLoader />}
 			{status === 'success' && (
 				<PageBody>
-					<GenericTable columns={columns} data={loads} />
+					<GenericTable
+						filename='Consulta_Cargas_Recargas'
+						columns={columns}
+						data={loads}
+					/>
 				</PageBody>
 			)}
 		</div>

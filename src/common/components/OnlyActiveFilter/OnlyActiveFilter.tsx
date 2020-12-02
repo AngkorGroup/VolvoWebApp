@@ -1,7 +1,7 @@
 import { Checkbox, FormControlLabel, makeStyles } from '@material-ui/core';
-import React from 'react';
+import React, { memo } from 'react';
 
-interface OnlyActiveFilterProps {
+interface Props {
 	checked: boolean;
 	onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
@@ -12,20 +12,20 @@ const useStyles = makeStyles({
 	},
 });
 
-const OnlyActiveFilter: React.FC<OnlyActiveFilterProps> = ({
-	checked,
-	onChange,
-}: OnlyActiveFilterProps) => {
-	const classes = useStyles();
-	return (
-		<FormControlLabel
-			className={classes.container}
-			control={
-				<Checkbox checked={checked} onChange={onChange} color='primary' />
-			}
-			label='Solo Activos'
-		/>
-	);
-};
+const OnlyActiveFilter: React.FC<Props> = memo(
+	({ checked, onChange }: Props) => {
+		const classes = useStyles();
+		return (
+			<FormControlLabel
+				className={classes.container}
+				control={
+					<Checkbox checked={checked} onChange={onChange} color='primary' />
+				}
+				label='Solo Activos'
+			/>
+		);
+	},
+	(prev: Props, next: Props) => prev.checked === next.checked,
+);
 
 export default OnlyActiveFilter;

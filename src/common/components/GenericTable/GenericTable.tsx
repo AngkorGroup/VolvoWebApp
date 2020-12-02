@@ -23,6 +23,8 @@ import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import LastPageIcon from '@material-ui/icons/LastPage';
 import GenericFilter from './GenericFilter/GenericFilter';
 import PageActionBar from '../PageActionBar/PageActionBar';
+import DownloadExcel from '../DownloadExcel/DownloadExcel';
+import { parseExportColumns } from 'common/utils';
 
 interface GenericTableProps {
 	containerClass?: string;
@@ -31,6 +33,7 @@ interface GenericTableProps {
 	data: any[];
 	customFilters?: React.ReactNode;
 	rightButton?: React.ReactNode;
+	filename: string;
 }
 
 type ChangeEvent = React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>;
@@ -44,6 +47,11 @@ const useStyles = makeStyles((theme: Theme) =>
 			flexShrink: 0,
 			marginLeft: theme.spacing(2.5),
 		},
+		right: {
+			'& > span': {
+				marginRight: theme.spacing(2),
+			},
+		},
 	}),
 );
 
@@ -54,9 +62,11 @@ const GenericTable: React.FC<GenericTableProps> = ({
 	data,
 	customFilters,
 	rightButton,
+	filename,
 }: GenericTableProps) => {
 	const classes = useStyles();
 	const theme = useTheme();
+	const excelColumns = parseExportColumns(columns);
 	const {
 		getTableProps,
 		getTableBodyProps,
@@ -138,7 +148,12 @@ const GenericTable: React.FC<GenericTableProps> = ({
 					/>
 					{customFilters}
 				</div>
-				{rightButton}
+				<div className={classes.right}>
+					{filename && (
+						<DownloadExcel name={filename} columns={excelColumns} data={data} />
+					)}
+					{rightButton}
+				</div>
 			</PageActionBar>
 			<TableContainer className={containerClass} component={Paper}>
 				<Table className={classes.table} size={size} {...getTableProps()}>

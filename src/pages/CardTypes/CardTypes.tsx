@@ -132,6 +132,7 @@ const CardTypes: React.FC = () => {
 				{status === 'success' && (
 					<PageBody>
 						<GenericTable
+							filename='Tipos_de_tarjeta'
 							columns={columns}
 							data={cardTypes}
 							customFilters={
