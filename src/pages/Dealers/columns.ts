@@ -1,7 +1,8 @@
 import { ACTIONS_COLUMN } from '../../common/constants/tableColumn';
 
 export const DEALER_COLUMNS = [
-	{ title: 'Código' },
+	{ title: 'Id' },
+	{ title: '#TopPerú' },
 	{ title: 'Nombre' },
 	{ title: 'RUC' },
 	{ title: 'Dirección' },

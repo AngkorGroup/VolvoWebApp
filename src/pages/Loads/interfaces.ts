@@ -15,8 +15,6 @@ export interface TableLoad {
 	card: string;
 	tpNumber: string;
 	balance?: number;
-	createdBy?: string;
-	createdAt?: string;
 	errorMessage?: string;
 	lineContent?: string;
 }

@@ -13,6 +13,4 @@ export const LOAD_COLUMNS = [
 	{ title: 'Motivo' },
 	{ title: 'Tipo Tarjeta' },
 	{ title: 'Referencia' },
-	{ title: 'Creado Por' },
-	{ title: 'Creado el' },
 ];
