@@ -169,7 +169,6 @@ export const guarded: Route[] = [
 		path: '/configuration/currencies',
 		component: PageCurrencies,
 	},
-
 	{
 		id: 'Banks',
 		path: '/configuration/banks',
