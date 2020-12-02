@@ -24,7 +24,7 @@ const PageBanks = (props: any) => {
 	const Banks = lazy(() => import('./pages/Banks/Banks'));
 	const LayoutBanks = HOCLayout(Banks);
 	return <LayoutBanks {...props} />;
-}
+};
 
 const PageCurrencies = (props: any) => {
 	const Currencies = lazy(() => import('./pages/Currencies/Currencies'));
@@ -138,6 +138,14 @@ const PageDocumentTypes = (props: any) => {
 	return <LayoutDocumentTypes {...props} />;
 };
 
+const PageRechargeTypes = (props: any) => {
+	const RechargeTypes = lazy(
+		() => import('./pages/RechargeTypes/RechargeTypes'),
+	);
+	const LayoutRechargeTypes = HOCLayout(RechargeTypes);
+	return <LayoutRechargeTypes {...props} />;
+};
+
 export interface Route {
 	id: string;
 	path: string;
@@ -166,6 +174,11 @@ export const guarded: Route[] = [
 		id: 'Banks',
 		path: '/configuration/banks',
 		component: PageBanks,
+	},
+	{
+		id: 'RechargeTypes',
+		path: '/configuration/recharge_types',
+		component: PageRechargeTypes,
 	},
 
 	// Cards

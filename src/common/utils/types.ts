@@ -350,3 +350,11 @@ export interface Account {
 	status: number;
 	archiveAt: string;
 }
+
+export interface RechargeType{
+	id:number;
+	name:string;
+	tpCode: string;
+	archiveAt: string;
+	status: string;
+}
