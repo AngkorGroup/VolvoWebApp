@@ -1,3 +1,4 @@
+import { ACTIONS_LABEL, TableColumn } from 'common/constants';
 import moment, { Moment } from 'moment';
 import numeral from 'numeral';
 import { DEFAULT_DATE_FORMAT } from '../constants/constants';
@@ -170,4 +171,13 @@ export const parseBankAccounts = (accounts: Account[]) => {
 		value: `${a.id}`,
 		label: `${a.bankAccountType?.name} ${a.currency?.symbol} ${a.account}`,
 	}));
+};
+
+export const parseExportColumns = (cols: any[]): TableColumn[] => {
+	return cols
+		.filter((col) => col.Header !== ACTIONS_LABEL)
+		.map((col) => ({
+			title: col.Header,
+			value: col.accessor,
+		}));
 };

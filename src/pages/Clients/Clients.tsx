@@ -96,7 +96,12 @@ const Clients: React.FC = () => {
 						)}
 					</PageActionBar>
 					<div>
-						<BasicTable columns={CLIENT_COLUMNS}>
+						<BasicTable
+							columns={CLIENT_COLUMNS}
+							data={clients}
+							name='Clientes'
+							exportExcel
+						>
 							<React.Fragment>
 								{filtered.map((item, i: number) => (
 									<ClientRow key={i} item={item} />

@@ -31,6 +31,11 @@ import {
 } from 'common/services';
 import { TABLE_ROWS_PER_PAGE } from 'common/constants/tableColumn';
 
+interface ClientRuc {
+	id: number;
+	ruc: string;
+}
+
 const useStyles = makeStyles({
 	cardsTable: {
 		width: '650px',
@@ -43,6 +48,7 @@ const ClientBalance: React.FC = () => {
 	const [loading, setLoading] = useState(false);
 	const [loadingClients, setLoadingClients] = useState(false);
 	const [selectedClient, setSelectedClient] = useState('');
+	const [clientRUCList, setClientRUCList] = useState<ClientRuc[]>([]);
 	const [clients, setClients] = useState<Option[]>([]);
 	const [queryCard, setQueryCard] = useState('');
 	const [queryExpiration, setQueryExpiration] = useState('');
@@ -90,8 +96,10 @@ const ClientBalance: React.FC = () => {
 		const response = await getClients(query);
 		setLoadingClients(false);
 		if (response.ok) {
-			const data = parseClients(response.data || []);
-			setClients(data);
+			const data = response.data || [];
+			const options = parseClients(data);
+			setClientRUCList(data.map((d) => ({ id: d.id, ruc: d.ruc })));
+			setClients(options);
 		}
 	};
 
@@ -138,6 +146,9 @@ const ClientBalance: React.FC = () => {
 			),
 		[expPage, rowsPerPage, filteredExpirations],
 	);
+
+	const curClient = clientRUCList.find((c) => `${c.id}` === selectedClient);
+	const clientRUC = curClient && curClient.ruc;
 
 	return (
 		<div>
@@ -197,6 +208,9 @@ const ClientBalance: React.FC = () => {
 									rowsPerPage={rowsPerPage}
 									onChangePage={handleChangePage}
 									onChangeRowsPerPage={handleChangeRowsPerPage}
+									data={expirations}
+									name={`Saldos Cliente Vencimientos ${clientRUC}`}
+									exportExcel
 								>
 									<React.Fragment>
 										{expRows.map((item, i: number) => (
