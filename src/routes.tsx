@@ -20,6 +20,12 @@ const PageCardTypes = (props: any) => {
 	return <LayoutCardTypes {...props} />;
 };
 
+const PageCurrencies = (props: any) => {
+	const Currencies = lazy(() => import('./pages/Currencies/Currencies'));
+	const LayoutCurrencies = HOCLayout(Currencies);
+	return <LayoutCurrencies {...props} />;
+};
+
 const PageClientBalance = (props: any) => {
 	const ClientBalance = lazy(
 		() => import('./pages/ClientBalance/ClientBalance'),
@@ -143,6 +149,11 @@ export const guarded: Route[] = [
 		id: 'DocumentTypes',
 		path: '/configuration/document_types',
 		component: PageDocumentTypes,
+	},
+	{
+		id: 'Currencies',
+		path: '/configuration/currencies',
+		component: PageCurrencies,
 	},
 
 	// Cards

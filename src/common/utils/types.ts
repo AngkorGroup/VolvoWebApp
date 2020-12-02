@@ -40,6 +40,7 @@ export interface Currency {
 	status: string;
 	symbol: string;
 	tpCode: string;
+	archiveAt: string;
 }
 
 export interface Amount {
