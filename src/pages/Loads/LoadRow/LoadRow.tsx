@@ -41,8 +41,6 @@ const LoadRow = ({ item, isMain }: LoadRowProps) => {
 		tpNumber,
 		errorMessage,
 		lineContent,
-		createdAt,
-		createdBy,
 	} = item;
 
 	return (
@@ -77,8 +75,6 @@ const LoadRow = ({ item, isMain }: LoadRowProps) => {
 					<TableCell>{reason}</TableCell>
 					<TableCell>{card}</TableCell>
 					<TableCell>{tpNumber}</TableCell>
-					{isMain && <TableCell>{createdBy}</TableCell>}
-					{isMain && <TableCell>{createdAt}</TableCell>}
 				</React.Fragment>
 			)}
 		</TableRow>
