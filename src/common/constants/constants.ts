@@ -46,6 +46,11 @@ export const MENU_ITEMS: MenuItem[] = [
 				title: 'Tipos de Documento',
 				path: '/configuration/document_types',
 			},
+			{
+				id: 'Currencies',
+				title: 'Monedas',
+				path: '/configuration/Currencies',
+			},
 		],
 	},
 	{

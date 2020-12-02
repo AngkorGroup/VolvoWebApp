@@ -15,3 +15,4 @@ export * from './Loads';
 export * from './Movements';
 export * from './Refunds';
 export * from './Reports';
+export * from './Currencies';
