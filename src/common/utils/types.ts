@@ -40,6 +40,7 @@ export interface Currency {
 	status: string;
 	symbol: string;
 	tpCode: string;
+	archiveAt: string;
 }
 
 export interface Amount {
@@ -291,6 +292,8 @@ export interface CommonValue {
 	status: string;
 	tpCode: string;
 	abbreviation: string;
+	sunatCode: string;
+	archiveAt: string;
 }
 
 export interface Filter {

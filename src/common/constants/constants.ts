@@ -42,6 +42,16 @@ export const MENU_ITEMS: MenuItem[] = [
 				path: '/configuration/card_types',
 			},
 			{
+				id: 'DocumentTypes',
+				title: 'Tipos de Documento',
+				path: '/configuration/document_types',
+			},
+			{
+				id: 'Currencies',
+				title: 'Monedas',
+				path: '/configuration/currencies',
+			},
+			{
 				id: 'Banks',
 				title: 'Bancos',
 				path: '/configuration/banks',
