@@ -78,6 +78,12 @@ const PageConsultLoads = (props: any) => {
 	return <LayoutConsultLoads {...props} />;
 };
 
+const PageAmplitudes = (props: any) => {
+	const Amplitudes = lazy(() => import('./pages/Amplitudes/Amplitudes'));
+	const LayoutAmplitudes = HOCLayout(Amplitudes);
+	return <LayoutAmplitudes {...props} />;
+};
+
 const PagePOS = (props: any) => {
 	const POS = lazy(() => import('./pages/POS/POS'));
 	const LayoutPOS = HOCLayout(POS);
@@ -236,6 +242,11 @@ export const guarded: Route[] = [
 		id: 'ConsultLoads',
 		path: '/operations/consult_loads',
 		component: PageConsultLoads,
+	},
+	{
+		id: 'Amplitudes',
+		path: '/operations/extend_expirations',
+		component: PageAmplitudes,
 	},
 	{
 		id: 'Liquidations',
