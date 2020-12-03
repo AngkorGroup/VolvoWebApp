@@ -140,6 +140,11 @@ export const MENU_ITEMS: MenuItem[] = [
 				path: '/operations/consult_loads',
 			},
 			{
+				id: 'Amplitudes',
+				title: 'Ampliar Vencimientos',
+				path: '/operations/extend_expirations',
+			},
+			{
 				id: 'Liquidations',
 				title: 'Liquidaciones',
 				path: '/operations/liquidations',
