@@ -100,6 +100,11 @@ export const MENU_ITEMS: MenuItem[] = [
 				title: 'Saldos Cliente',
 				path: '/clients/client_balance',
 			},
+			{
+				id:'ClientSector',
+				title:'Sector',
+				path: '/clients/client_sector',
+			},
 		],
 	},
 	{

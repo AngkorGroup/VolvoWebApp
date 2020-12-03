@@ -152,6 +152,14 @@ export interface Route {
 	component: (props: any) => JSX.Element;
 }
 
+const PageClientSectors = (props: any) => {
+	const Sectors = lazy(
+		() => import('./pages/Sectors/Sectors'),
+	);
+	const LayoutSectors = HOCLayout(Sectors);
+	return <LayoutSectors {...props} />;
+};
+
 export const guarded: Route[] = [
 	// Configuration
 	{
@@ -207,6 +215,11 @@ export const guarded: Route[] = [
 		id: 'ClientBalance',
 		path: '/clients/client_balance',
 		component: PageClientBalance,
+	},
+	{
+		id:'ClientSector',
+		path: '/clients/client_sector',
+		component: PageClientSectors,
 	},
 
 	// Dealers
