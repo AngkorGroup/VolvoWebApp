@@ -25,8 +25,8 @@ const useStyles = makeStyles(() => ({
 const FilterDateRange = () => {
 	const classes = useStyles();
 	const { updateState } = useContext(ReportMakerContext);
-	const [startDate, setStartDate] = useState<Date>(DEFAULT_NOW_DATE);
-	const [endDate, setEndDate] = useState<Date>(DEFAULT_MONTH_START_DATE);
+	const [startDate, setStartDate] = useState<Date>(DEFAULT_MONTH_START_DATE);
+	const [endDate, setEndDate] = useState<Date>(DEFAULT_NOW_DATE);
 	const [error, setError] = useState('');
 	const onStartDateChange = (date: Date) => setStartDate(date);
 	const onEndDateChange = (date: Date) => setEndDate(date);
