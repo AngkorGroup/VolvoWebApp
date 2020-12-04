@@ -18,3 +18,4 @@ export * from './Refunds';
 export * from './Reports';
 export * from './Banks';
 export * from './Currencies';
+export * from './BusinessAreas';

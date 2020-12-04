@@ -152,6 +152,14 @@ const PageRechargeTypes = (props: any) => {
 	return <LayoutRechargeTypes {...props} />;
 };
 
+const PageBusinessAreas = (props: any) => {
+	const BusinessAreas = lazy(
+		() => import('./pages/BusinessAreas/BusinessAreas'),
+	);
+	const LayoutBusinessAreas = HOCLayout(BusinessAreas);
+	return <LayoutBusinessAreas {...props} />;
+};
+
 export interface Route {
 	id: string;
 	path: string;
@@ -164,6 +172,16 @@ export const guarded: Route[] = [
 		id: 'CardTypes',
 		path: '/configuration/card_types',
 		component: PageCardTypes,
+	},
+	{
+		id: 'RechargeTypes',
+		path: '/configuration/recharge_types',
+		component: PageRechargeTypes,
+	},
+	{
+		id:'BusinessAreas',
+		path:'/configuration/business_areas',
+		component: PageBusinessAreas,
 	},
 	{
 		id: 'DocumentTypes',
@@ -179,11 +197,6 @@ export const guarded: Route[] = [
 		id: 'Banks',
 		path: '/configuration/banks',
 		component: PageBanks,
-	},
-	{
-		id: 'RechargeTypes',
-		path: '/configuration/recharge_types',
-		component: PageRechargeTypes,
 	},
 
 	// Cards
@@ -214,6 +227,7 @@ export const guarded: Route[] = [
 		path: '/clients/client_balance',
 		component: PageClientBalance,
 	},
+	
 
 	// Dealers
 	{
