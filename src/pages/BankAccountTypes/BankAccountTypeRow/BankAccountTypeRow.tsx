@@ -46,6 +46,7 @@ const BankAccountTypeRow = ({ item, onEdit, onDelete }: BankAccountTypeRowProps)
     return (
         <React.Fragment>
             <TableRow>
+                <TableCell>{id}</TableCell>
                 <TableCell>{name}</TableCell>
                 <TableCell>{status}</TableCell>
                 <TableCell>{archiveAt}</TableCell>

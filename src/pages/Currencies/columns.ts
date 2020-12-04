@@ -3,6 +3,7 @@ import {
 } from '../../common/constants/tableColumn';
 
 export const CURRENCY_COLUMNS = [
+    { title: 'Id' },
     { title: 'Nombre' },
     { title: '#TopPerú' },
     { title: 'Abreviatura' },

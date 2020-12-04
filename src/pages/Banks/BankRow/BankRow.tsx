@@ -48,6 +48,7 @@ const BankRow = ({ item, onEdit, onDelete }: BankRowProps) => {
     return (
         <React.Fragment>
             <TableRow>
+                <TableCell>{id}</TableCell>
                 <TableCell>{name}</TableCell>
                 <TableCell>{tpCode}</TableCell>
                 <TableCell>{abbreviation}</TableCell>

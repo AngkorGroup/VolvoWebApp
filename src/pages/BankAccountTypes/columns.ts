@@ -3,6 +3,7 @@ import {
 } from '../../common/constants/tableColumn';
 
 export const CARD_TYPE_COLUMNS = [
+    { title: 'Id' },
     { title: 'Nombre' },
     { title: 'Estado' },
     { title: 'Fecha Baja' },
