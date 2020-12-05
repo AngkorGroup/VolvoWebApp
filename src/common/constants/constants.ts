@@ -48,7 +48,7 @@ export const MENU_ITEMS: MenuItem[] = [
 			},
 			{
 				id: 'BUSINESS_AREAS',
-				title: 'Areas de negocio',
+				title: 'Áreas de negocio',
 				path: '/configuration/business_areas',
 			},
 			{
@@ -198,7 +198,7 @@ export const MENU_ITEMS: MenuItem[] = [
 			},
 			{
 				id: 'CHARGES_BY_CLIENT',
-				title: 'Recargas por Cliente y Area de Negocio',
+				title: 'Recargas por Cliente y Área de Negocio',
 				path: `${REPORT_PATH_SOURCE}/charges_by_client`,
 			},
 			{
@@ -213,7 +213,7 @@ export const MENU_ITEMS: MenuItem[] = [
 			},
 			{
 				id: 'CONSUMES_BY_BUSINESS_AREA',
-				title: 'Consumos por Area de Negocio',
+				title: 'Consumos por Área de Negocio',
 				path: `${REPORT_PATH_SOURCE}/consumes_by_business_area`,
 			},
 			{
@@ -312,7 +312,7 @@ export const REPORT_OPTIONS = [
 	},
 	{
 		id: 'charges_by_client',
-		title: 'Recargas por Cliente y Area de Negocio',
+		title: 'Recargas por Cliente y Área de Negocio',
 		filters: {
 			filterClient: true,
 			filterDateRange: true,
@@ -339,7 +339,7 @@ export const REPORT_OPTIONS = [
 	},
 	{
 		id: 'consumes_by_business_area',
-		title: 'Consumo por Area de Negocio',
+		title: 'Consumo por Área de Negocio',
 		filters: {
 			filterDateRange: true,
 			filterCardType: true,
