@@ -28,7 +28,7 @@ import {
 	editUser,
 	getUsers,
 	resetUser,
-} from 'common/services/Admins';
+} from 'common/services';
 import { ADMIN_TYPE } from 'common/constants/constants';
 import { TABLE_ROWS_PER_PAGE } from 'common/constants/tableColumn';
 

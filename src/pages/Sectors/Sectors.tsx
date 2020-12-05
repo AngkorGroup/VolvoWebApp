@@ -22,7 +22,7 @@ import { SECTORS_COLUMNS } from './columns';
 import { filterRows, buildAlertBody as at } from 'common/utils';
 import SectorRow from './SectorRow/SectorRow';
 import { useAlert } from 'react-alert';
-import { SectorForm } from 'common/validations/Sector';
+import { SectorForm } from 'common/validations';
 import FormModal from './FormModal/FormModal';
 
 const Sectors: React.FC = () => {

@@ -12,10 +12,7 @@ import {
 import { Field, Form, Formik } from 'formik';
 import { VolvoButton } from 'common/components';
 import React from 'react';
-import {
-	RechargeTypeForm,
-	RechargeTypeSchema,
-} from 'common/validations/RechargeType';
+import { RechargeTypeForm, RechargeTypeSchema } from 'common/validations';
 
 interface FormModalProps {
 	show: boolean;

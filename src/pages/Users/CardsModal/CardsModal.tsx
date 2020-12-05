@@ -5,7 +5,7 @@ import {
 	DialogTitle,
 } from '@material-ui/core';
 import { BasicTable, PageLoader, VolvoButton } from 'common/components';
-import { getUserCards } from 'common/services/Admins';
+import { getUserCards } from 'common/services';
 import React, { useMemo } from 'react';
 import { useQuery } from 'react-query';
 import { BATCH_COLUMNS } from '../columns';

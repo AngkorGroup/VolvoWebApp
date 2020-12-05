@@ -22,7 +22,7 @@ import { DOCUMENT_TYPES_COLUMNS } from './columns';
 import { filterRows, buildAlertBody as at } from 'common/utils';
 import DocumentTypeRow from './DocumentTypeRow/DocumentTypeRow';
 import { useAlert } from 'react-alert';
-import { DocumentTypeForm } from 'common/validations/DocumentType';
+import { DocumentTypeForm } from 'common/validations';
 import FormModal from './FormModal/FormModal';
 
 const DocumentTypes: React.FC = () => {

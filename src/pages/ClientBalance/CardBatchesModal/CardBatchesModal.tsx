@@ -19,7 +19,7 @@ import CardBatchesRow from './CardBatchesRow/CardBatchesRow';
 import { CardBatchRow, VolvoCardData } from '../interfaces';
 import { CARD_BATCH_COLUMNS } from '../columns';
 import { useQuery } from 'react-query';
-import { getCardBatches } from 'common/services/Batches';
+import { getCardBatches } from 'common/services';
 import { TABLE_ROWS_PER_PAGE } from 'common/constants/tableColumn';
 
 interface CardBatchesModalProps {
