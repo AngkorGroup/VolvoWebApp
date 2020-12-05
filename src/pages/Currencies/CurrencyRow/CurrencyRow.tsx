@@ -49,6 +49,7 @@ const CurrencyRow = ({ item, onEdit, onDelete }: CurrencyRowProps) => {
     return (
         <React.Fragment>
             <TableRow>
+                <TableCell>{id}</TableCell>
                 <TableCell>{name}</TableCell>
                 <TableCell>{tpCode}</TableCell>
                 <TableCell>{abbreviation}</TableCell>
