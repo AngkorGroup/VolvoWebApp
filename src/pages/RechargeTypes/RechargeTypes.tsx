@@ -132,7 +132,7 @@ const RechargeTypes: React.FC = () => {
 							/>
 							{showAddModal && (
 								<FormModal
-									title='Agregar Tipo de Documento'
+									title='Agregar Tipo de Recarga'
 									show={showAddModal}
 									onClose={setAddModalVisible(false)}
 									onConfirm={onAdd}
