@@ -184,78 +184,78 @@ const PageSectors = (props: any) => {
 export const guarded: Route[] = [
 	// Configuration
 	{
-		id: 'CardTypes',
+		id: 'CARD_TYPES',
 		path: '/configuration/card_types',
 		component: PageCardTypes,
 	},
 	{
-		id: 'RechargeTypes',
+		id: 'RECHARGE_TYPES',
 		path: '/configuration/recharge_types',
 		component: PageRechargeTypes,
 	},
 	{
-		id: 'BusinessAreas',
+		id: 'BUSINESS_AREAS',
 		path: '/configuration/business_areas',
 		component: PageBusinessAreas,
 	},
 	{
-		id: 'DocumentTypes',
+		id: 'DOCUMENT_TYPES',
 		path: '/configuration/document_types',
 		component: PageDocumentTypes,
 	},
 	{
-		id: 'Sectors',
+		id: 'SECTORS',
 		path: '/configuration/sectors',
 		component: PageSectors,
 	},
 	{
-		id: 'Currencies',
+		id: 'CURRENCIES',
 		path: '/configuration/currencies',
 		component: PageCurrencies,
 	},
 	{
-		id: 'Banks',
+		id: 'BANKS',
 		path: '/configuration/banks',
 		component: PageBanks,
 	},
 	{
-		id: 'BankAccountTypes',
+		id: 'BANK_ACCOUNT_TYPES',
 		path: '/configuration/bank_account_types',
 		component: PageBankAccountTypes,
 	},
 
 	// Cards
 	{
-		id: 'CardBalance',
+		id: 'CARD_BALANCE',
 		path: '/cards/card_balance',
 		component: PageCardBalance,
 	},
 	{
-		id: 'CardsData',
+		id: 'CARDS_DATA',
 		path: '/cards/cards_data',
 		component: PageCardsData,
 	},
 
 	// Clients
 	{
-		id: 'Clients',
+		id: 'CLIENT_LIST',
 		path: '/clients/list',
 		component: PageClients,
 	},
 	{
-		id: 'ClientUsers',
+		id: 'CLIENT_USERS',
 		path: '/clients/client_users',
 		component: PageClientUsers,
 	},
 	{
-		id: 'ClientBalance',
+		id: 'CLIENT_BALANCE',
 		path: '/clients/client_balance',
 		component: PageClientBalance,
 	},
 
 	// Dealers
 	{
-		id: 'Dealers',
+		id: 'DEALER_LIST',
 		path: '/dealers/list',
 		component: PageDealers,
 	},
@@ -265,71 +265,79 @@ export const guarded: Route[] = [
 		component: PagePOS,
 	},
 	{
-		id: 'ConsumesByDealer',
+		id: 'CONSUMES_BY_DEALERS',
 		path: '/dealers/consumes_by_dealer',
 		component: PageConsumesByDealer,
 	},
 
 	// Operations
 	{
-		id: 'Loads',
+		id: 'LOADS',
 		path: '/operations/loads',
 		component: PageLoads,
 	},
 	{
-		id: 'ConsultLoads',
+		id: 'CONSULT_LOADS',
 		path: '/operations/consult_loads',
 		component: PageConsultLoads,
 	},
 	{
-		id: 'Amplitudes',
+		id: 'AMPLITUDES',
 		path: '/operations/extend_expirations',
 		component: PageAmplitudes,
 	},
 	{
-		id: 'Liquidations',
+		id: 'LIQUIDATIONS',
 		path: '/operations/liquidations',
 		component: PageLiquidations,
 	},
 	{
-		id: 'Refunds',
+		id: 'REFUNDS',
 		path: '/operations/refunds',
 		component: PageRefunds,
 	},
 
 	// Reports
 	{
-		id: 'Reports',
+		id: 'REPORTS',
 		path: '/reports/:id',
 		component: PageReports,
 	},
 
 	// Portal
 	{
-		id: 'POSOperations',
+		id: 'POS_OPERATIONS',
 		path: '/portal/pos',
 		component: PagePOSOperations,
 	},
 	{
-		id: 'ConsultOperations',
+		id: 'CONSULT_OPERATIONS',
 		path: '/portal/consult_operations',
 		component: PageConsultOperations,
 	},
 	{
-		id: 'ConsultLiquidations',
+		id: 'CONSULT_LIQUIDATIONS',
 		path: '/portal/consult_liquidations',
 		component: PageConsultLiquidations,
 	},
 
 	// Security
 	{
-		id: 'Users',
+		id: 'USERS',
 		path: '/security/users',
 		component: PageUsers,
 	},
 ];
 
 export const routes: Route[] = [
-	{ id: 'SignIn', path: '/', component: SignIn },
-	{ id: 'ForgotPassword', path: '/forgot_password', component: ForgotPassword },
+	{
+		id: 'SIGN_IN',
+		path: '/',
+		component: SignIn,
+	},
+	{
+		id: 'FORGOT_PASSWORD',
+		path: '/forgot_password',
+		component: ForgotPassword,
+	},
 ];

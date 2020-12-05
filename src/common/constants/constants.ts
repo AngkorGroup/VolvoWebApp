@@ -32,98 +32,98 @@ export const REPORT_PATH_SOURCE = '/reports';
 
 export const MENU_ITEMS: MenuItem[] = [
 	{
-		id: 'Configuration',
+		id: 'CONFIGURATION',
 		title: 'Configuración',
 		icon: SettingsIcon,
 		menuList: [
 			{
-				id: 'CardTypes',
+				id: 'CARD_TYPES',
 				title: 'Tipos de Tarjeta',
 				path: '/configuration/card_types',
 			},
 			{
-				id: 'RechargeTypes',
+				id: 'RECHARGE_TYPES',
 				title: 'Tipos de Recarga',
 				path: '/configuration/recharge_types',
 			},
 			{
-				id: 'BusinessAreas',
+				id: 'BUSINESS_AREAS',
 				title: 'Areas de negocio',
 				path: '/configuration/business_areas',
 			},
 			{
-				id: 'DocumentTypes',
+				id: 'DOCUMENT_TYPES',
 				title: 'Tipos de Documento',
 				path: '/configuration/document_types',
 			},
 			{
-				id: 'Sectors',
+				id: 'SECTORS',
 				title: 'Sectores de Clientes',
 				path: '/configuration/sectors',
 			},
 			{
-				id: 'Currencies',
+				id: 'CURRENCIES',
 				title: 'Monedas',
 				path: '/configuration/currencies',
 			},
 			{
-				id: 'Banks',
+				id: 'BANKS',
 				title: 'Bancos',
 				path: '/configuration/banks',
 			},
 			{
-				id: 'BankAccountTypes',
+				id: 'BANK_ACCOUNT_TYPES',
 				title: 'Tipos de Cuenta Bancarias',
 				path: '/configuration/bank_account_types',
 			},
 		],
 	},
 	{
-		id: 'Cards',
+		id: 'CARDS',
 		title: 'Tarjetas',
 		icon: CreditCardIcon,
 		menuList: [
 			{
-				id: 'CardBalance',
+				id: 'CARD_BALANCE',
 				title: 'Saldos Tarjeta',
 				path: '/cards/card_balance',
 			},
 			{
-				id: 'CardsData',
+				id: 'CARDS_DATA',
 				title: 'Datos de Tarjetas',
 				path: '/cards/cards_data',
 			},
 		],
 	},
 	{
-		id: 'Clients',
+		id: 'CLIENTS',
 		title: 'Clientes',
 		icon: PersonIcon,
 		menuList: [
 			{
-				id: 'Clients',
+				id: 'CLIENT_LIST',
 				title: 'Clientes',
 				path: '/clients/list',
 			},
 			{
-				id: 'ClientUsers',
+				id: 'CLIENT_USERS',
 				title: 'Contactos',
 				path: '/clients/client_users',
 			},
 			{
-				id: 'ClientBalance',
+				id: 'CLIENT_BALANCE',
 				title: 'Saldos Cliente',
 				path: '/clients/client_balance',
 			},
 		],
 	},
 	{
-		id: 'Dealers',
+		id: 'DEALERS',
 		title: 'Dealers',
 		icon: StoreIcon,
 		menuList: [
 			{
-				id: 'Dealers',
+				id: 'DEALER_LIST',
 				title: 'Dealers',
 				path: '/dealers/list',
 			},
@@ -133,140 +133,140 @@ export const MENU_ITEMS: MenuItem[] = [
 				path: '/dealers/pos',
 			},
 			{
-				id: 'ConsumesByDealer',
+				id: 'CONSUMES_BY_DEALERS',
 				title: 'Operaciones por Dealer',
 				path: '/dealers/consumes_by_dealer',
 			},
 		],
 	},
 	{
-		id: 'Operations',
+		id: 'OPERATIONS',
 		title: 'Operaciones',
 		icon: ListAltIcon,
 		menuList: [
 			{
-				id: 'Loads',
+				id: 'LOADS',
 				title: 'Carga Masiva',
 				path: '/operations/loads',
 			},
 			{
-				id: 'ConsultLoads',
+				id: 'CONSULT_LOADS',
 				title: 'Consulta de Cargas y Recargas',
 				path: '/operations/consult_loads',
 			},
 			{
-				id: 'Amplitudes',
+				id: 'AMPLITUDES',
 				title: 'Ampliar Vencimientos',
 				path: '/operations/extend_expirations',
 			},
 			{
-				id: 'Liquidations',
+				id: 'LIQUIDATIONS',
 				title: 'Liquidaciones',
 				path: '/operations/liquidations',
 			},
 			{
-				id: 'Refunds',
+				id: 'REFUNDS',
 				title: 'Reembolsos',
 				path: '/operations/refunds',
 			},
 		],
 	},
 	{
-		id: 'Reports',
+		id: 'REPORTS',
 		title: 'Reportes',
 		icon: LibraryBooksIcon,
 		menuList: [
 			{
-				id: 'ConsumesByClient',
+				id: 'CONSUMES_BY_CLIENT',
 				title: 'Consumos por Cliente',
 				path: `${REPORT_PATH_SOURCE}/consumes_by_client`,
 			},
 			{
-				id: 'ChargesByDealer',
+				id: 'CHARGES_BY_DEALER',
 				title: 'Cobros por Dealer y Grupo Económico',
 				path: `${REPORT_PATH_SOURCE}/charges_by_dealer`,
 			},
 			{
-				id: 'ConsumesRanking',
+				id: 'CONSUMES_RANKING',
 				title: 'Ranking de Consumos',
 				path: `${REPORT_PATH_SOURCE}/consumes_ranking`,
 			},
 			{
-				id: 'ChargesRanking',
+				id: 'CHARGES_RANKING',
 				title: 'Ranking de Cobros',
 				path: `${REPORT_PATH_SOURCE}/charges_ranking`,
 			},
 			{
-				id: 'ChargesByClient',
+				id: 'CHARGES_BY_CLIENT',
 				title: 'Recargas por Cliente y Area de Negocio',
 				path: `${REPORT_PATH_SOURCE}/charges_by_client`,
 			},
 			{
-				id: 'ClientsCardUse',
+				id: 'CLIENTS_CARD_USE',
 				title: 'Clientes vs uso de tarjeta',
 				path: `${REPORT_PATH_SOURCE}/clients_card_use`,
 			},
 			{
-				id: 'ClientsCardExpiration',
+				id: 'CLIENTS_CARD_EXPIRATION',
 				title: 'Clientes con tarjetas próximas a vencer',
 				path: `${REPORT_PATH_SOURCE}/clients_card_expiration`,
 			},
 			{
-				id: 'ConsumesByBusinessArea',
+				id: 'CONSUMES_BY_BUSINESS_AREA',
 				title: 'Consumos por Area de Negocio',
 				path: `${REPORT_PATH_SOURCE}/consumes_by_business_area`,
 			},
 			{
-				id: 'ConsumesByEconomic',
+				id: 'CONSUMES_BY_ECONOMIC',
 				title: 'Consumo por Sector Económico del cliente',
 				path: `${REPORT_PATH_SOURCE}/consumes_by_economic`,
 			},
 			{
-				id: 'ClientConsumesByDealer',
+				id: 'CLIENT_CONSUMES_BY_DEALER',
 				title: 'Consumo del cliente por Dealer',
 				path: `${REPORT_PATH_SOURCE}/client_consumes_by_dealer`,
 			},
 			{
-				id: 'Refunds',
+				id: 'REPORT_REFUNDS',
 				title: 'Reporte de Reembolsos',
 				path: `${REPORT_PATH_SOURCE}/refunds`,
 			},
 			{
-				id: 'PendingChargesRefund',
+				id: 'PENDING_CHARGES_REFUND',
 				title: 'Cobros pendientes de reembolsos',
 				path: `${REPORT_PATH_SOURCE}/pending_charges_refund`,
 			},
 		],
 	},
 	{
-		id: 'Portal',
+		id: 'PORTAL',
 		title: 'Portal',
 		icon: WorkIcon,
 		menuList: [
 			{
-				id: 'POSOperations',
+				id: 'POS_OPERATIONS',
 				title: 'Mantener POS',
 				path: '/portal/pos',
 			},
 			{
-				id: 'ConsultOperations',
+				id: 'CONSULT_OPERATIONS',
 				title: 'Consultar Operaciones',
 				path: '/portal/consult_operations',
 			},
 			{
-				id: 'ConsultLiquidations',
+				id: 'CONSULT_LIQUIDATIONS',
 				title: 'Consultar Liquidaciones',
 				path: '/portal/consult_liquidations',
 			},
 		],
 	},
 	{
-		id: 'Security',
+		id: 'SECURITY',
 		title: 'Seguridad',
 		icon: VerifiedUserIcon,
 		menuList: [
 			{
-				id: 'Users',
+				id: 'USERS',
 				title: 'Usuarios',
 				path: '/security/users',
 			},
