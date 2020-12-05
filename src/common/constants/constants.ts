@@ -47,6 +47,11 @@ export const MENU_ITEMS: MenuItem[] = [
 				path: '/configuration/recharge_types',
 			},
 			{
+				id:'BusinessAreas',
+				title:'Areas de negocios',
+				path:'/configuration/business_areas',
+			},
+			{
 				id: 'DocumentTypes',
 				title: 'Tipos de Documento',
 				path: '/configuration/document_types',
@@ -67,11 +72,10 @@ export const MENU_ITEMS: MenuItem[] = [
 				path: '/configuration/banks',
 			},
 			{
-				id: 'RechargeTypes',
-				title: 'Tipos de Cuenta Bancarias',
-				path: '/configuration/bank_account_types',
+				id:'BankAccountTypes',
+				title: 'Tipos de Cuenta de Bancos',
+				path: '/configuration/bankaccount'
 			},
-
 		],
 	},
 	{
