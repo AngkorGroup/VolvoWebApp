@@ -105,6 +105,12 @@ const PageUsers = (props: any) => {
 	return <LayoutUsers {...props} />;
 };
 
+const PageRoles = (props: any) => {
+	const Roles = lazy(() => import('./pages/Roles/Roles'));
+	const LayoutRoles = HOCLayout(Roles);
+	return <LayoutRoles {...props} />;
+};
+
 const PageLiquidations = (props: any) => {
 	const Liquidations = lazy(() => import('./pages/Liquidations/Liquidations'));
 	const LayoutLiquidations = HOCLayout(Liquidations);
@@ -326,6 +332,11 @@ export const guarded: Route[] = [
 		id: 'USERS',
 		path: '/security/users',
 		component: PageUsers,
+	},
+	{
+		id: 'ROLES',
+		path: '/security/roles',
+		component: PageRoles,
 	},
 ];
 

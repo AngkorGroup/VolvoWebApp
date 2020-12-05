@@ -21,6 +21,7 @@ interface MultiTypeAheadProps {
 	value?: Option[];
 	loading?: boolean;
 	options: Option[];
+	name?: string;
 	onChange: ChangeFunction;
 }
 
@@ -31,6 +32,7 @@ const MultiTypeAhead: React.FC<MultiTypeAheadProps> = ({
 	value,
 	loading,
 	options,
+	name,
 	onChange,
 }: MultiTypeAheadProps) => {
 	return (
@@ -40,6 +42,7 @@ const MultiTypeAhead: React.FC<MultiTypeAheadProps> = ({
 				size='small'
 				limitTags={limitTags || 2}
 				options={options}
+				noOptionsText='No hay más valores'
 				getOptionLabel={(option) => option.label}
 				getOptionSelected={(option, val) => option.value === val.value}
 				defaultValue={options}
@@ -53,6 +56,7 @@ const MultiTypeAhead: React.FC<MultiTypeAheadProps> = ({
 						variant='outlined'
 						label={label}
 						placeholder={placeholder}
+						name={name}
 					/>
 				)}
 			/>

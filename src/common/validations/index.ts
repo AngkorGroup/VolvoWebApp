@@ -10,5 +10,6 @@ export * from './Currency';
 export * from './Dealer';
 export * from './DocumentType';
 export * from './RechargeType';
+export * from './Role';
 export * from './Sector';
 export * from './User';
