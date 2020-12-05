@@ -22,7 +22,7 @@ import { BUSINESS_AREAS_COLUMNS } from './columns';
 import { filterRows, buildAlertBody as at } from 'common/utils';
 import BusinessAreaRow from './BusinessAreaRow/BusinessAreaRow';
 import { useAlert } from 'react-alert';
-import { BusinessAreaForm } from 'common/validations/BusinessArea';
+import { BusinessAreaForm } from 'common/validations';
 import FormModal from './FormModal/FormModal';
 
 const BusinessAreas: React.FC = () => {

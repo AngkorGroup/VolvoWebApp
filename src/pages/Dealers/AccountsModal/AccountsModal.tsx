@@ -22,7 +22,7 @@ import {
 	addBankAccount,
 	deleteBankAccount,
 	editBankAccount,
-} from 'common/services/BankAccounts';
+} from 'common/services';
 import FormModal from './FormModal/FormModal';
 import { useAlert } from 'react-alert';
 

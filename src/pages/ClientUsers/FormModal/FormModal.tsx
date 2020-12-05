@@ -15,7 +15,7 @@ import {
 } from '@material-ui/core';
 import AppContext from 'AppContext';
 import { VolvoButton } from 'common/components';
-import { ClientUserSchema } from 'common/validations/ClientUser';
+import { ClientUserSchema } from 'common/validations';
 import { Field, Form, Formik } from 'formik';
 import React, { useContext } from 'react';
 import { ClientUser } from '../interfaces';

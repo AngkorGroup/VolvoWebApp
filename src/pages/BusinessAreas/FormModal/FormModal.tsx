@@ -12,10 +12,7 @@ import {
 import { Field, Form, Formik } from 'formik';
 import { VolvoButton } from 'common/components';
 import React from 'react';
-import {
-	BusinessAreaForm,
-	BusinessAreaSchema,
-} from 'common/validations/BusinessArea';
+import { BusinessAreaForm, BusinessAreaSchema } from 'common/validations';
 
 interface FormModalProps {
 	show: boolean;

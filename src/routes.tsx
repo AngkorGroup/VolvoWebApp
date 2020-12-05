@@ -176,9 +176,7 @@ export interface Route {
 }
 
 const PageSectors = (props: any) => {
-	const Sectors = lazy(
-		() => import('./pages/Sectors/Sectors'),
-	);
+	const Sectors = lazy(() => import('./pages/Sectors/Sectors'));
 	const LayoutSectors = HOCLayout(Sectors);
 	return <LayoutSectors {...props} />;
 };
@@ -196,8 +194,8 @@ export const guarded: Route[] = [
 		component: PageRechargeTypes,
 	},
 	{
-		id:'BusinessAreas',
-		path:'/configuration/business_areas',
+		id: 'BusinessAreas',
+		path: '/configuration/business_areas',
 		component: PageBusinessAreas,
 	},
 	{
@@ -206,7 +204,7 @@ export const guarded: Route[] = [
 		component: PageDocumentTypes,
 	},
 	{
-		id:'Sectors',
+		id: 'Sectors',
 		path: '/configuration/sectors',
 		component: PageSectors,
 	},
@@ -254,7 +252,6 @@ export const guarded: Route[] = [
 		path: '/clients/client_balance',
 		component: PageClientBalance,
 	},
-	
 
 	// Dealers
 	{

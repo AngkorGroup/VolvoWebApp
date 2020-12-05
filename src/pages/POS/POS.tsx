@@ -32,7 +32,7 @@ import {
 	getDealersByFilter,
 } from 'common/services';
 import { useAlert } from 'react-alert';
-import { resetUser } from 'common/services/Admins';
+import { resetUser } from 'common/services';
 
 const POS: React.FC = () => {
 	const [loading, setLoading] = useState(false);

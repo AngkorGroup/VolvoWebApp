@@ -22,7 +22,7 @@ import { RECHARGE_TYPES_COLUMNS } from './columns';
 import { filterRows, buildAlertBody as at } from 'common/utils';
 import RechargeTypeRow from './RechargeTypeRow/RechargeTypeRow';
 import { useAlert } from 'react-alert';
-import { RechargeTypeForm } from 'common/validations/RechargeType';
+import { RechargeTypeForm } from 'common/validations';
 import FormModal from './FormModal/FormModal';
 
 const RechargeTypes: React.FC = () => {
