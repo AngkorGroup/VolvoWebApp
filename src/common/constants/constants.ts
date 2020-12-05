@@ -71,6 +71,11 @@ export const MENU_ITEMS: MenuItem[] = [
 				title: 'Bancos',
 				path: '/configuration/banks',
 			},
+			{
+				id:'BankAccountTypes',
+				title: 'Tipos de Cuenta de Bancos',
+				path: '/configuration/bankaccount'
+			},
 		],
 	},
 	{
