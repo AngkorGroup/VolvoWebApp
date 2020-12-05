@@ -11,6 +11,7 @@ import {
 	CommonValue,
 	Contact,
 	Dealer,
+	Menu,
 	Option,
 } from './types';
 
@@ -180,4 +181,11 @@ export const parseExportColumns = (cols: any[]): TableColumn[] => {
 			title: col.Header,
 			value: col.accessor,
 		}));
+};
+
+export const parseMenuList = (values: Menu[]): Option[] => {
+	return values.map((v) => ({
+		value: `${v.id}`,
+		label: v.name,
+	}));
 };

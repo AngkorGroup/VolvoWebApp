@@ -270,6 +270,11 @@ export const MENU_ITEMS: MenuItem[] = [
 				title: 'Usuarios',
 				path: '/security/users',
 			},
+			{
+				id: 'ROLES',
+				title: 'Roles',
+				path: '/security/roles',
+			},
 		],
 	},
 ];

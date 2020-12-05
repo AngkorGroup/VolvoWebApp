@@ -33,7 +33,7 @@ interface GenericTableProps {
 	data: any[];
 	customFilters?: React.ReactNode;
 	rightButton?: React.ReactNode;
-	filename: string;
+	filename?: string;
 }
 
 type ChangeEvent = React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>;

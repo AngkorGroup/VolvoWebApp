@@ -359,10 +359,24 @@ export interface RechargeType {
 	status: string;
 }
 
-export interface Sector{
-	id:number;
-	name:string;
-	tpCode:string;
-	archiveAt:string;
-	status:string;
+export interface Sector {
+	id: number;
+	name: string;
+	tpCode: string;
+	archiveAt: string;
+	status: string;
+}
+
+export interface Menu {
+	id: number;
+	key: string;
+	name: string;
+	status: string;
+	menuChildren: Menu;
+}
+
+export interface Role {
+	id: number;
+	name: string;
+	roleMenus: Menu[];
 }
