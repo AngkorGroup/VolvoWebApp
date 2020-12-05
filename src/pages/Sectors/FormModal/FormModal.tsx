@@ -15,7 +15,7 @@ import React from 'react';
 import {
 	SectorForm,
 	SectorSchema,
-} from 'common/validations/Sectors';
+} from 'common/validations/Sector';
 
 interface FormModalProps {
 	show: boolean;

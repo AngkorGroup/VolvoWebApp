@@ -22,7 +22,7 @@ import { SECTORS_COLUMNS } from './columns';
 import { filterRows, buildAlertBody as at } from 'common/utils';
 import SectorRow from './SectorRow/SectorRow';
 import { useAlert } from 'react-alert';
-import { SectorForm } from 'common/validations/Sectors';
+import { SectorForm } from 'common/validations/Sector';
 import FormModal from './FormModal/FormModal';
 
 const Sectors: React.FC = () => {
@@ -67,8 +67,8 @@ const Sectors: React.FC = () => {
 			refetch();
 			alert.success(
 				at(
-					'Tipo de Sector Agregado',
-					'Se agregó un nuevo sector',
+					'Sector de cliente Agregado',
+					'Se agregó un sector de cliente correctamente',
 				),
 			);
 		}
@@ -85,8 +85,8 @@ const Sectors: React.FC = () => {
 			refetch();
 			alert.success(
 				at(
-					'Tipo de Sector Editado',
-					'Se editó un tipo de sector correctamente',
+					'Sector de cliente Editado',
+					'Se editó un sector de cliente correctamente',
 				),
 			);
 		}
@@ -98,8 +98,8 @@ const Sectors: React.FC = () => {
 			refetch();
 			alert.success(
 				at(
-					'Sector Eliminado',
-					'Se eliminó un sector correctamente',
+					'Sector de cliente Eliminado',
+					'Se eliminó un sector de cliente correctamente',
 				),
 			);
 		}
@@ -108,7 +108,7 @@ const Sectors: React.FC = () => {
 	return (
 		<div>
 			<div>
-				<PageTitle title='Sector de Cliente' />
+				<PageTitle title='Sector de cliente' />
 			</div>
 			<PageBody>
 				{status === 'loading' && <PageLoader />}
@@ -132,7 +132,7 @@ const Sectors: React.FC = () => {
 							/>
 							{showAddModal && (
 								<FormModal
-									title='Agregar Tipo de Documento'
+									title='Agregar Sector de cliente'
 									show={showAddModal}
 									onClose={setAddModalVisible(false)}
 									onConfirm={onAdd}

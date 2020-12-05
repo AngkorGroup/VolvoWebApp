@@ -30,7 +30,7 @@ const SectorRow = ({ item, onEdit, onDelete }: SectorRowProps) => {
 	const classes = useStyles();
 	const [showEditModal, setShowEditModal] = useState(false);
 	const [showDeleteModal, setShowDeleteModal] = useState(false);
-	const { id, name, tpCode, status, archiveAt } = item;
+	const { id, name, tpCode,status, archiveAt } = item;
 
 	const setEditModalVisible = (flag: boolean) => () => setShowEditModal(flag);
 	const setDelModalVisible = (flag: boolean) => () => setShowDeleteModal(flag);
@@ -61,7 +61,7 @@ const SectorRow = ({ item, onEdit, onDelete }: SectorRowProps) => {
 			</TableRow>
 			{showEditModal && (
 				<FormModal
-					title='Editar Sector del cliente'
+					title='Editar Sector de cliente'
 					show={showEditModal}
 					values={item as SectorColumn}
 					onClose={setEditModalVisible(false)}
@@ -72,8 +72,8 @@ const SectorRow = ({ item, onEdit, onDelete }: SectorRowProps) => {
 				<ConfirmationModal
 					show={showDeleteModal}
 					id={id}
-					title='Eliminar Sector del cliente'
-					body={`¿Está seguro que desea eliminar el tipo de documento?`}
+					title='Eliminar Sector de cliente'
+					body={`¿Está seguro que desea eliminar el sector de cliente?`}
 					onClose={setDelModalVisible(false)}
 					onConfirm={onDelete}
 				/>

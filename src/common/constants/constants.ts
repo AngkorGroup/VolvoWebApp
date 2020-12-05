@@ -47,6 +47,11 @@ export const MENU_ITEMS: MenuItem[] = [
 				path: '/configuration/document_types',
 			},
 			{
+				id:'Sectors',
+				title:'Sector',
+				path: '/configuration/sectors',
+			},
+			{
 				id: 'Currencies',
 				title: 'Monedas',
 				path: '/configuration/currencies',
@@ -99,11 +104,6 @@ export const MENU_ITEMS: MenuItem[] = [
 				id: 'ClientBalance',
 				title: 'Saldos Cliente',
 				path: '/clients/client_balance',
-			},
-			{
-				id:'ClientSector',
-				title:'Sector',
-				path: '/clients/client_sector',
 			},
 		],
 	},

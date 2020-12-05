@@ -152,7 +152,7 @@ export interface Route {
 	component: (props: any) => JSX.Element;
 }
 
-const PageClientSectors = (props: any) => {
+const PageSectors = (props: any) => {
 	const Sectors = lazy(
 		() => import('./pages/Sectors/Sectors'),
 	);
@@ -171,6 +171,11 @@ export const guarded: Route[] = [
 		id: 'DocumentTypes',
 		path: '/configuration/document_types',
 		component: PageDocumentTypes,
+	},
+	{
+		id:'Sectors',
+		path: '/configuration/sectors',
+		component: PageSectors,
 	},
 	{
 		id: 'Currencies',
@@ -215,11 +220,6 @@ export const guarded: Route[] = [
 		id: 'ClientBalance',
 		path: '/clients/client_balance',
 		component: PageClientBalance,
-	},
-	{
-		id:'ClientSector',
-		path: '/clients/client_sector',
-		component: PageClientSectors,
 	},
 
 	// Dealers
