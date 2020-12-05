@@ -1,3 +1,4 @@
+import ForgotPassword from 'pages/ForgotPassword/ForgotPassword';
 import SignIn from 'pages/SignIn/SignIn';
 import React, { lazy } from 'react';
 import HOCLayout from './common/Layout/HOCLayout';
@@ -27,7 +28,9 @@ const PageBanks = (props: any) => {
 };
 
 const PageBankAccountTypes = (props: any) => {
-	const BankAccountTypes = lazy(() => import('./pages/BankAccountTypes/BankAccountTypes'));
+	const BankAccountTypes = lazy(
+		() => import('./pages/BankAccountTypes/BankAccountTypes'),
+	);
 	const LayoutBankAccountTypes = HOCLayout(BankAccountTypes);
 	return <LayoutBankAccountTypes {...props} />;
 };
@@ -302,4 +305,7 @@ export const guarded: Route[] = [
 	},
 ];
 
-export const routes: Route[] = [{ id: 'SignIn', path: '/', component: SignIn }];
+export const routes: Route[] = [
+	{ id: 'SignIn', path: '/', component: SignIn },
+	{ id: 'ForgotPassword', path: '/forgot_password', component: ForgotPassword },
+];

@@ -1,19 +1,18 @@
-import React, { useContext, useEffect } from 'react';
+import React from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import VpnKeyIcon from '@material-ui/icons/VpnKey';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import { useHistory, Link as BrowserLink } from 'react-router-dom';
-import AppContext from 'AppContext';
-import { setAuthToken, buildAlertBody as at } from 'common/utils';
+import { Link as BrowserLink, useHistory } from 'react-router-dom';
+import { buildAlertBody as at } from 'common/utils';
 import { useAlert } from 'react-alert';
-import { login } from 'common/services';
-import { LoginForm, LoginSchema } from 'common/validations';
+import { forgotPassword } from 'common/services';
+import { ForgotPasswordForm, ForgotPasswordSchema } from 'common/validations';
 import { Field, Form, Formik } from 'formik';
 
 const useStyles = makeStyles((theme) => ({
@@ -40,57 +39,49 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-const initialValues: LoginForm = {
+const initialValues: ForgotPasswordForm = {
 	email: '',
-	password: '',
 };
 
-const SignIn = () => {
+const ForgotPassword = () => {
 	const classes = useStyles();
 	const alert = useAlert();
 	const { push } = useHistory();
-	const { user, setAppUser } = useContext(AppContext);
 
-	const handleSubmit = async ({ email, password }: LoginForm) => {
-		const response = await login(email, password);
+	const handleSubmit = async ({ email }: ForgotPasswordForm) => {
+		const response = await forgotPassword(email);
 		if (response.ok) {
-			const { admin, authToken } = response.data || {};
-			if (admin && authToken && setAppUser) {
-				setAppUser(admin, authToken);
-				setAuthToken(authToken);
-				push('/clients/client_balance');
-			}
+			alert.success(
+				at(
+					'Olvidé mi contraseña',
+					'Se ha enviado un correo con la nueva contraseña generada.',
+				),
+			);
+			push('/');
 		} else {
 			alert.error(
 				at(
-					'Credenciales Incorrectas',
-					'Las credenciales ingresadas no son correctas.',
+					'Ha ocurrido un error',
+					'Hubo un error en la solicitud de olvidé contraseña, intente nuevamente.',
 				),
 			);
 		}
 	};
-
-	useEffect(() => {
-		if (user) {
-			push('/clients/client_balance');
-		}
-		// eslint-disable-next-line
-	}, []);
 
 	return (
 		<Container component='main' maxWidth='xs'>
 			<CssBaseline />
 			<div className={classes.paper}>
 				<Avatar className={classes.avatar}>
-					<LockOutlinedIcon />
+					<VpnKeyIcon />
 				</Avatar>
 				<Typography component='h1' variant='h5'>
-					Login
+					Olvidé mi contraseña
 				</Typography>
 				<Formik
 					initialValues={initialValues}
 					onSubmit={handleSubmit}
-					validationSchema={LoginSchema}
+					validationSchema={ForgotPasswordSchema}
 				>
 					{({ touched, errors }) => (
 						<Form className={classes.form}>
@@ -105,17 +96,6 @@ const SignIn = () => {
 								autoFocus
 								as={TextField}
 							/>
-							<Field
-								name='password'
-								label='Contraseña'
-								error={touched.password && !!errors.password}
-								helperText={touched.password && errors.password}
-								variant='outlined'
-								margin='normal'
-								fullWidth
-								type='password'
-								as={TextField}
-							/>
 							<Button
 								type='submit'
 								fullWidth
@@ -123,12 +103,12 @@ const SignIn = () => {
 								color='primary'
 								className={classes.submit}
 							>
-								Ingresar
+								Enviar
 							</Button>
 							<Grid container>
-								<Grid item xs={6}>
-									<BrowserLink className={classes.link} to='/forgot_password'>
-										¿Olvidó su contraseña?
+								<Grid item xs={12}>
+									<BrowserLink className={classes.link} to='/'>
+										Login
 									</BrowserLink>
 								</Grid>
 							</Grid>
@@ -140,4 +120,4 @@ const SignIn = () => {
 	);
 };
 
-export default SignIn;
+export default ForgotPassword;
