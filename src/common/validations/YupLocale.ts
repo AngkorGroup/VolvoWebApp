@@ -11,6 +11,8 @@ yup.setLocale({
 		email: 'Debe ser un correo válido',
 		// eslint-disable-next-line
 		max: 'Debe tener como máximo ${max} caracteres',
+		// eslint-disable-next-line
+		min: 'Debe tener como mínimo ${min} caracteres',
 	},
 	number: {
 		integer: 'El número debe ser entero',

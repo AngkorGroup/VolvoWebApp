@@ -1,4 +1,4 @@
-import { LOGIN_URL, LOGOUT_URL } from 'common/constants';
+import { LOGIN_URL, LOGOUT_URL, FORGOT_PASSWORD_URL } from 'common/constants';
 import { api, LoginResponse } from 'common/utils';
 
 export const login = async (email: string, password: string) => {
@@ -7,4 +7,8 @@ export const login = async (email: string, password: string) => {
 
 export const logout = async () => {
 	return await api.delete(LOGOUT_URL);
+};
+
+export const forgotPassword = async (email: string) => {
+	return await api.post(FORGOT_PASSWORD_URL, { email });
 };
