@@ -11,3 +11,15 @@ export const getQueryBankAccountTypes = async (
 ) => {
 	return await getBankAccountTypes(onlyActive);
 };
+
+export const addBankAccountTypes = async (bankAccountType: any) => {
+	return await api.post<CommonValue>(BANK_ACCOUNT_TYPES_URL, bankAccountType);
+};
+
+export const editBankAccountType = async (bankAccountType: any) => {
+	return await api.put<CommonValue>(BANK_ACCOUNT_TYPES_URL, bankAccountType);
+};
+
+export const deleteBankAccountType = async (id: string) => {
+	return await api.delete(`${BANK_ACCOUNT_TYPES_URL}/${id}`);
+};

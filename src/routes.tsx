@@ -26,6 +26,12 @@ const PageBanks = (props: any) => {
 	return <LayoutBanks {...props} />;
 };
 
+const PageBankAccountTypes = (props: any) => {
+	const BankAccountTypes = lazy(() => import('./pages/BankAccountTypes/BankAccountTypes'));
+	const LayoutBankAccountTypes = HOCLayout(BankAccountTypes);
+	return <LayoutBankAccountTypes {...props} />;
+};
+
 const PageCurrencies = (props: any) => {
 	const Currencies = lazy(() => import('./pages/Currencies/Currencies'));
 	const LayoutCurrencies = HOCLayout(Currencies);
@@ -76,6 +82,12 @@ const PageConsultLoads = (props: any) => {
 	const ConsultLoads = lazy(() => import('./pages/ConsultLoads/ConsultLoads'));
 	const LayoutConsultLoads = HOCLayout(ConsultLoads);
 	return <LayoutConsultLoads {...props} />;
+};
+
+const PageAmplitudes = (props: any) => {
+	const Amplitudes = lazy(() => import('./pages/Amplitudes/Amplitudes'));
+	const LayoutAmplitudes = HOCLayout(Amplitudes);
+	return <LayoutAmplitudes {...props} />;
 };
 
 const PagePOS = (props: any) => {
@@ -192,6 +204,11 @@ export const guarded: Route[] = [
 		path: '/configuration/recharge_types',
 		component: PageRechargeTypes,
 	},
+	{
+		id: 'BankAccountTypes',
+		path: '/configuration/bank_account_types',
+		component: PageBankAccountTypes,
+	},
 
 	// Cards
 	{
@@ -249,6 +266,11 @@ export const guarded: Route[] = [
 		id: 'ConsultLoads',
 		path: '/operations/consult_loads',
 		component: PageConsultLoads,
+	},
+	{
+		id: 'Amplitudes',
+		path: '/operations/extend_expirations',
+		component: PageAmplitudes,
 	},
 	{
 		id: 'Liquidations',

@@ -11,12 +11,12 @@ import {
     ConfirmationModal,
     VolvoIconButton,
 } from 'common/components';
-import { BankForm, TableBank } from '../interfaces';
+import { BankAccountTypeForm, TableBankAccountType } from '../interfaces';
 import FormModal from '../FormModal/FormModal';
 
-interface BankRowProps {
-    item: TableBank;
-    onEdit: (data: BankForm) => void;
+interface BankAccountTypeRowProps {
+    item: TableBankAccountType;
+    onEdit: (data: BankAccountTypeForm) => void;
     onDelete: (id: string) => void;
 }
 
@@ -29,17 +29,15 @@ const useStyles = makeStyles(() =>
     }),
 );
 
-const BankRow = ({ item, onEdit, onDelete }: BankRowProps) => {
+const BankAccountTypeRow = ({ item, onEdit, onDelete }: BankAccountTypeRowProps) => {
     const classes = useStyles();
     const [showEditModal, setShowEditModal] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const {
         id,
         name,
-        abbreviation,
         status,
         archiveAt,
-        tpCode,
     } = item;
 
     const setEditModalVisible = (flag: boolean) => () => setShowEditModal(flag);
@@ -50,8 +48,6 @@ const BankRow = ({ item, onEdit, onDelete }: BankRowProps) => {
             <TableRow>
                 <TableCell>{id}</TableCell>
                 <TableCell>{name}</TableCell>
-                <TableCell>{tpCode}</TableCell>
-                <TableCell>{abbreviation}</TableCell>
                 <TableCell>{status}</TableCell>
                 <TableCell>{archiveAt}</TableCell>
                 <TableCell>
@@ -72,9 +68,9 @@ const BankRow = ({ item, onEdit, onDelete }: BankRowProps) => {
             </TableRow>
             {!archiveAt && (
                 <FormModal
-                    title='Editar Banco'
+                    title='Editar Tipo de cuenta bancaria'
                     show={showEditModal}
-                    values={item as BankForm}
+                    values={item as BankAccountTypeForm}
                     onClose={setEditModalVisible(false)}
                     onConfirm={onEdit}
                 />
@@ -83,8 +79,8 @@ const BankRow = ({ item, onEdit, onDelete }: BankRowProps) => {
                 <ConfirmationModal
                     show={showDeleteModal}
                     id={id}
-                    title='Eliminar Banco'
-                    body={`¿Está seguro que desea eliminar el banco ${name}?`}
+                    title='Eliminar Tipo de cuenta bancaria'
+                    body={`¿Está seguro que desea eliminar el tipo de cuenta bancaria ${name}?`}
                     onClose={setDelModalVisible(false)}
                     onConfirm={onDelete}
                 />
@@ -93,4 +89,4 @@ const BankRow = ({ item, onEdit, onDelete }: BankRowProps) => {
     );
 };
 
-export default BankRow;
+export default BankAccountTypeRow;
