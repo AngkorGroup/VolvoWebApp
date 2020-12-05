@@ -358,3 +358,11 @@ export interface RechargeType {
 	archiveAt: string;
 	status: string;
 }
+
+export interface Sector{
+	id:number;
+	name:string;
+	tpCode:string;
+	archiveAt:string;
+	status:string;
+}
