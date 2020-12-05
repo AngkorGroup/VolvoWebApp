@@ -14,6 +14,8 @@ export interface TableLoad {
 	reason: string;
 	card: string;
 	tpNumber: string;
+	expiresAt: string;
+	expiresAtExtent: string;
 	balance?: number;
 	createdBy?: string;
 	createdAt?: string;
@@ -39,5 +41,7 @@ export const mapLoads = (loads: Load[]): TableLoad[] => {
 		balance: l.balance?.value,
 		createdBy: l.createdBy,
 		createdAt: l.createdAt,
+		expiresAt: l.expiresAt,
+		expiresAtExtent: l.expiresAtExtent,
 	}));
 };
