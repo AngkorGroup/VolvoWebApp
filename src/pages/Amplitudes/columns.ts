@@ -61,6 +61,15 @@ export const LOAD_COLUMNS = [
 		accessor: 'tpNumber',
 	},
 	{
+		Header: 'Vencimiento',
+		accessor: 'expiresAt',
+	},
+	{
+		Header: 'Vencimiento Ext.',
+		accessor: 'expiresAtExtent',
+		headerProps: { align: 'center' },
+	},
+	{
 		Header: 'Creado Por',
 		accessor: 'createdBy',
 	},
