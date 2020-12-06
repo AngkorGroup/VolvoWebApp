@@ -29,12 +29,9 @@ export const ChangePasswordSchema = yup.object<ChangePasswordForm>({
 	newPassword: yup.string().required(),
 	confirmPassword: yup
 		.string()
-		.required()
-		.test(
-			'passwords-match',
+		.oneOf(
+			[yup.ref('newPassword'), undefined],
 			'Las contraseñas deben coincidir',
-			function (value) {
-				return this.parent.newPassword === value;
-			},
-		),
+		)
+		.required(),
 });
