@@ -48,19 +48,6 @@ const useStyles = makeStyles((theme: Theme) =>
 				marginTop: '8px',
 			},
 		},
-		input: {
-			display: 'none',
-		},
-		fileContainer: {
-			marginTop: '10px',
-			display: 'flex',
-		},
-		filename: {
-			marginLeft: '5px',
-			display: 'flex',
-			justifyContent: 'center',
-			flexDirection: 'column',
-		},
 	}),
 );
 

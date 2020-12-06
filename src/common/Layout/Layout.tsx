@@ -9,12 +9,14 @@ import {
 } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import React, { useContext } from 'react';
 import Sidebar from '../components/Sidebar/Sidebar';
 import AppContext from 'AppContext';
 import { removeAuthToken, buildAlertBody as at } from 'common/utils';
 import { logout } from 'common/services';
 import { useAlert } from 'react-alert';
+import { useHistory } from 'react-router-dom';
 
 interface LayoutProps {
 	menu?: JSX.Element;
@@ -45,6 +47,11 @@ const useStyles = makeStyles((theme) =>
 			flexGrow: 1,
 			padding: theme.spacing(3),
 		},
+		profile: {
+			position: 'absolute',
+			right: '50px',
+			color: '#fff',
+		},
 		logout: {
 			position: 'absolute',
 			right: '10px',
@@ -56,6 +63,7 @@ const useStyles = makeStyles((theme) =>
 const Layout: React.FC<LayoutProps> = (props) => {
 	const alert = useAlert();
 	const classes = useStyles();
+	const { push } = useHistory();
 	const [mobileOpen, setMobileOpen] = React.useState(false);
 	const { setAppUser } = useContext(AppContext);
 
@@ -96,6 +104,14 @@ const Layout: React.FC<LayoutProps> = (props) => {
 						<Typography variant='h6' noWrap>
 							Volvo Web App
 						</Typography>
+						<IconButton
+							className={classes.profile}
+							onClick={() => push('/security/profile')}
+							color='default'
+							title='Ver Perfil'
+						>
+							<AccountCircleIcon />
+						</IconButton>
 						<IconButton
 							className={classes.logout}
 							onClick={onLogout}
