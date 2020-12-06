@@ -186,6 +186,6 @@ export const parseExportColumns = (cols: any[]): TableColumn[] => {
 export const parseMenuList = (values: Menu[]): Option[] => {
 	return values.map((v) => ({
 		value: `${v.id}`,
-		label: v.name,
+		label: v.displayName,
 	}));
 };

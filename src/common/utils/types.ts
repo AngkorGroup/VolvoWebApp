@@ -371,6 +371,7 @@ export interface Menu {
 	id: number;
 	key: string;
 	name: string;
+	displayName: string;
 	status: string;
 	menuChildren: Menu;
 }

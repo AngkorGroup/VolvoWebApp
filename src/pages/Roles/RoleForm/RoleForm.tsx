@@ -72,7 +72,7 @@ const RoleFormModal: React.FC<RoleFormModalProps> = ({
 		onClose();
 	};
 	return (
-		<Dialog fullWidth maxWidth='sm' open={show} onClose={onClose}>
+		<Dialog fullWidth maxWidth='md' open={show} onClose={onClose}>
 			<DialogTitle id='form-dialog-title'>{title}</DialogTitle>
 			<Formik
 				initialValues={values || initialValues}
