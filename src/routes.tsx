@@ -111,6 +111,12 @@ const PageRoles = (props: any) => {
 	return <LayoutRoles {...props} />;
 };
 
+const PageProfile = (props: any) => {
+	const Profile = lazy(() => import('./pages/Profile/Profile'));
+	const LayoutProfile = HOCLayout(Profile);
+	return <LayoutProfile {...props} />;
+};
+
 const PageLiquidations = (props: any) => {
 	const Liquidations = lazy(() => import('./pages/Liquidations/Liquidations'));
 	const LayoutLiquidations = HOCLayout(Liquidations);
@@ -337,6 +343,11 @@ export const guarded: Route[] = [
 		id: 'ROLES',
 		path: '/security/roles',
 		component: PageRoles,
+	},
+	{
+		id: 'PROFILE',
+		path: '/security/profile',
+		component: PageProfile,
 	},
 ];
 

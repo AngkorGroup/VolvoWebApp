@@ -9,6 +9,12 @@ export interface ForgotPasswordForm {
 	email: string;
 }
 
+export interface ChangePasswordForm {
+	oldPassword: string;
+	newPassword: string;
+	confirmPassword: string;
+}
+
 export const LoginSchema = yup.object<LoginForm>({
 	email: yup.string().email().required(),
 	password: yup.string().required(),
@@ -16,4 +22,19 @@ export const LoginSchema = yup.object<LoginForm>({
 
 export const ForgotPasswordSchema = yup.object<ForgotPasswordForm>({
 	email: yup.string().email().required(),
+});
+
+export const ChangePasswordSchema = yup.object<ChangePasswordForm>({
+	oldPassword: yup.string().required(),
+	newPassword: yup.string().required(),
+	confirmPassword: yup
+		.string()
+		.required()
+		.test(
+			'passwords-match',
+			'Las contraseñas deben coincidir',
+			function (value) {
+				return this.parent.newPassword === value;
+			},
+		),
 });
