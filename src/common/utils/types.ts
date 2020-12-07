@@ -31,6 +31,7 @@ export interface Admin {
 	status: string;
 	archiveAt: string;
 	dealerId: number;
+	menuOptions: string[];
 }
 
 export interface Currency {

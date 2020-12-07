@@ -1,7 +1,11 @@
-import { ACTIONS_LABEL, TableColumn } from 'common/constants';
+import {
+	ACTIONS_LABEL,
+	DEFAULT_DATE_FORMAT,
+	MENU_ITEMS,
+	TableColumn,
+} from 'common/constants';
 import moment, { Moment } from 'moment';
 import numeral from 'numeral';
-import { DEFAULT_DATE_FORMAT } from '../constants/constants';
 import {
 	Account,
 	Card,
@@ -188,4 +192,21 @@ export const parseMenuList = (values: Menu[]): Option[] => {
 		value: `${v.id}`,
 		label: v.displayName,
 	}));
+};
+
+export const getAllMenuIds = () => {
+	return MENU_ITEMS.reduce((acc, val) => {
+		const menuListIds = val.menuList?.map((m) => m.id) || [];
+		return [...acc, ...menuListIds];
+	}, [] as string[]);
+};
+
+export const getAllowMenus = (accesses: string[]) => {
+	return MENU_ITEMS.map((menu) => {
+		const menuList = menu.menuList || [];
+		return {
+			...menu,
+			menuList: menuList.filter((m) => accesses.some((id) => id === m.id)),
+		};
+	}).filter((menu) => menu.menuList.length > 0);
 };
