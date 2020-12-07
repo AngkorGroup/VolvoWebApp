@@ -99,7 +99,6 @@ const FormModal: React.FC<FormModalProps> = ({
 		}
 		return [];
 	}, [rolesQuery]);
-	console.log({ roles });
 
 	const handleSubmit = (data: UserForm) => {
 		onConfirm(data);
