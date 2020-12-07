@@ -453,3 +453,5 @@ export const LIQUIDATION_STATUSES = [
 		label: 'PAGADO',
 	},
 ];
+
+export const AUTH_VIEWS: string[] = ['PROFILE'];

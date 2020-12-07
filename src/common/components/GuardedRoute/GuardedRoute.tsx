@@ -1,6 +1,6 @@
 import AppContext from 'AppContext';
 import HOCLayout from 'common/Layout/HOCLayout';
-import { getAllMenuIds } from 'common/utils';
+import { getAllMenuIds, isRouteExcluded } from 'common/utils';
 import React, { useContext } from 'react';
 import {
 	Route,
@@ -23,7 +23,7 @@ const GuardedRoute: React.FC<GuardedRouteProps & RouteProps> = ({
 	const { user } = useContext(AppContext);
 	const isAuth = !!user;
 	const accesses = user?.menuOptions || getAllMenuIds();
-	const isAllowed = accesses.some((menuId) => menuId === id);
+	const isAllowed = accesses.some((key) => key === id) || isRouteExcluded(id);
 	const LayoutUnauthorized = HOCLayout(Unauthorized);
 
 	return (

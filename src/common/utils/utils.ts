@@ -1,5 +1,6 @@
 import {
 	ACTIONS_LABEL,
+	AUTH_VIEWS,
 	DEFAULT_DATE_FORMAT,
 	MENU_ITEMS,
 	TableColumn,
@@ -218,3 +219,5 @@ export const parseRoles = (roles: Role[]): Option[] => {
 		label: name,
 	}));
 };
+
+export const isRouteExcluded = (id: string) => AUTH_VIEWS.some((k) => k === id);
