@@ -220,4 +220,8 @@ export const parseRoles = (roles: Role[]): Option[] => {
 	}));
 };
 
-export const isRouteExcluded = (id: string) => AUTH_VIEWS.some((k) => k === id);
+const isRouteExcluded = (id: string) => AUTH_VIEWS.some((k) => k === id);
+
+export const isRouteAllow = (id: string, accesses: string[]) => {
+	return accesses.some((k) => k === id.toUpperCase()) || isRouteExcluded(id);
+};

@@ -13,6 +13,10 @@ export const getClients = async (query?: string, onlyActive?: boolean) => {
 	return response;
 };
 
+export const getReportClients = async (key: string, onlyActive?: boolean) => {
+	return await getClients(undefined, onlyActive);
+};
+
 export const getQueryClients = async (
 	key: string,
 	query?: string,

@@ -25,7 +25,7 @@ const FilterMultiSelect = ({
 	const [values, setValues] = useState<Option[]>([]);
 	const list = useMemo(() => {
 		if (data?.ok) {
-			return parser(data?.data || [], true);
+			return parser(data?.data || []);
 		}
 		return [];
 	}, [data, parser]);

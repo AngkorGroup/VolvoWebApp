@@ -10,14 +10,9 @@ import {
 	TableFilter,
 	VolvoButton,
 } from 'common/components';
-import {
-	Admin,
-	buildAlertBody as at,
-	filterRows,
-	UserAdmin,
-} from 'common/utils';
+import { buildAlertBody as at, filterRows } from 'common/utils';
 import FormModal from './FormModal/FormModal';
-import { mapUserAdmin, mapUserAdmins, User, UserForm } from './interfaces';
+import { mapUserAdmins, User, UserForm } from './interfaces';
 import UserRow from './UserRow/UserRow';
 import { USER_COLUMNS } from './columns';
 import { useAlert } from 'react-alert';
@@ -29,7 +24,6 @@ import {
 	getUsers,
 	resetUser,
 } from 'common/services';
-import { ADMIN_TYPE } from 'common/constants/constants';
 import { TABLE_ROWS_PER_PAGE } from 'common/constants/tableColumn';
 
 const Users: React.FC = () => {
@@ -41,7 +35,10 @@ const Users: React.FC = () => {
 	const [rowsPerPage, setRowsPerPage] = useState(TABLE_ROWS_PER_PAGE);
 	const [showAddModal, setShowAddModal] = useState(false);
 	const [filtered, setFiltered] = useState<User[]>([]);
-	const { data, status } = useQuery(['getUsers', onlyActive], getUsers);
+	const { data, status, refetch } = useQuery(
+		['getUsers', onlyActive],
+		getUsers,
+	);
 	const users = useMemo(() => {
 		if (data?.ok) {
 			const rows = mapUserAdmins(data?.data || []);
@@ -93,15 +90,7 @@ const Users: React.FC = () => {
 		};
 		const response = await addUser(newUser);
 		if (response.ok) {
-			const newAdmin = response.data || ({} as Admin);
-			const newUserAdmin = {
-				id: newAdmin.userId,
-				type: ADMIN_TYPE,
-				createdAt: newAdmin.createdAt,
-				admin: newAdmin,
-			};
-			const newData = mapUserAdmin(newUserAdmin as UserAdmin);
-			setFiltered((old) => [...old, newData]);
+			refetch();
 			alert.success(
 				at('Usuario Agregado ', 'Se agregó un nuevo usuario correctamente'),
 			);
@@ -120,16 +109,7 @@ const Users: React.FC = () => {
 		};
 		const response = await editUser(newUser);
 		if (response.ok) {
-			const newAdmin = response.data || ({} as Admin);
-			const newUserAdmin = {
-				id: newAdmin.userId,
-				type: ADMIN_TYPE,
-				createdAt: newAdmin.createdAt,
-				admin: newAdmin,
-			};
-			const newData = mapUserAdmin(newUserAdmin as UserAdmin);
-			const newUsers = users.map((d) => (d.id === user.id ? newData : d));
-			setFiltered(newUsers);
+			refetch();
 			alert.success(
 				at('Usuario Editado ', 'Se editó un usuario correctamente'),
 			);
@@ -141,6 +121,7 @@ const Users: React.FC = () => {
 		const response = await resetUser(id);
 		setLoading(false);
 		if (response.ok) {
+			refetch();
 			alert.success(
 				at(
 					'Contraseña restablecida',

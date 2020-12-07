@@ -1,4 +1,4 @@
-import { makeStyles, Typography } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core';
 import { PageTitle } from 'common/components';
 import ReportMaker from 'common/components/ReportMaker/ReportMaker';
 import { REPORT_OPTIONS } from 'common/constants';
@@ -32,12 +32,7 @@ const Reports = () => {
 			<div className={classes.header}>
 				<PageTitle title={title} />
 			</div>
-			<div>
-				<Typography className={classes.filter} variant='subtitle1' align='left'>
-					Filtros
-				</Typography>
-				<ReportMaker id={id} {...filters} endpoint={REPORT_ENDPOINTS[id]} />
-			</div>
+			<ReportMaker id={id} {...filters} endpoint={REPORT_ENDPOINTS[id]} />
 		</div>
 	);
 };
