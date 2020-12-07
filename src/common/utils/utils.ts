@@ -17,6 +17,7 @@ import {
 	Dealer,
 	Menu,
 	Option,
+	Role,
 } from './types';
 
 const ALL_OPTION = { value: 'all', label: 'Todos' };
@@ -209,4 +210,11 @@ export const getAllowMenus = (accesses: string[]) => {
 			menuList: menuList.filter((m) => accesses.some((id) => id === m.id)),
 		};
 	}).filter((menu) => menu.menuList.length > 0);
+};
+
+export const parseRoles = (roles: Role[]): Option[] => {
+	return roles.map(({ id, name }) => ({
+		value: `${id}`,
+		label: name,
+	}));
 };

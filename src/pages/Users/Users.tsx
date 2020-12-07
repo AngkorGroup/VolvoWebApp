@@ -89,6 +89,7 @@ const Users: React.FC = () => {
 			password: user.password,
 			email: user.email,
 			dealerId: +(user.dealerId || '0'),
+			roleIds: user.roleIds?.map((op) => +op.value) || null,
 		};
 		const response = await addUser(newUser);
 		if (response.ok) {
@@ -115,6 +116,7 @@ const Users: React.FC = () => {
 			phone: user.phone,
 			email: user.email,
 			dealerId: +(user.dealerId || '0'),
+			roleIds: user.roleIds?.map((op) => +op.value) || null,
 		};
 		const response = await editUser(newUser);
 		if (response.ok) {
@@ -196,12 +198,14 @@ const Users: React.FC = () => {
 								color='primary'
 								onClick={setAddModalVisible(true)}
 							/>
-							<FormModal
-								title='Agregar Usuario'
-								show={showAddModal}
-								onClose={setAddModalVisible(false)}
-								onConfirm={onAddUser}
-							/>
+							{showAddModal && (
+								<FormModal
+									title='Agregar Usuario'
+									show={showAddModal}
+									onClose={setAddModalVisible(false)}
+									onConfirm={onAddUser}
+								/>
+							)}
 						</PageActionBar>
 						<PaginatedTable
 							columns={USER_COLUMNS}

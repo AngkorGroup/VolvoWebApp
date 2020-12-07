@@ -1,4 +1,4 @@
-import { Card, UserAdmin } from 'common/utils';
+import { Card, Option, RoleAdmin, UserAdmin } from 'common/utils';
 
 export interface User {
 	id: string;
@@ -14,6 +14,7 @@ export interface User {
 	password?: string;
 	archiveAt: string;
 	dealerId: string;
+	roleIds?: any[];
 }
 
 export type UserForm = Partial<User>;
@@ -36,6 +37,13 @@ export const mapUserCards = (cards: Card[]): UserCard[] => {
 	}));
 };
 
+export const mapRoleAdmins = (roles: RoleAdmin[]): Option[] => {
+	return roles?.map((r) => ({
+		value: `${r.role?.id}`,
+		label: r.role?.name,
+	}));
+};
+
 export const mapUserAdmin = ({
 	id,
 	admin,
@@ -47,6 +55,7 @@ export const mapUserAdmin = ({
 	let user = null;
 	let clientId = '';
 	let dealerId = '';
+	let roleIds = undefined;
 	if (contact) {
 		user = contact;
 		clientId = `${contact.clientId}`;
@@ -55,6 +64,7 @@ export const mapUserAdmin = ({
 	} else {
 		user = admin;
 		dealerId = `${admin?.dealerId}`;
+		roleIds = mapRoleAdmins(admin.roleAdmins);
 	}
 
 	const {
@@ -80,6 +90,7 @@ export const mapUserAdmin = ({
 		status,
 		archiveAt,
 		dealerId,
+		roleIds,
 	};
 };
 

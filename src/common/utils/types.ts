@@ -18,6 +18,11 @@ export interface UserAdmin {
 	archiveAt: string;
 }
 
+export interface RoleAdmin {
+	roleId: number;
+	role: Role;
+}
+
 export interface Admin {
 	id: number;
 	userId: number;
@@ -32,6 +37,7 @@ export interface Admin {
 	archiveAt: string;
 	dealerId: number;
 	menuOptions: string[];
+	roleAdmins: RoleAdmin[];
 }
 
 export interface Currency {
