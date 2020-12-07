@@ -35,17 +35,6 @@ const MultiTypeAhead: React.FC<MultiTypeAheadProps> = ({
 	name,
 	onChange,
 }: MultiTypeAheadProps) => {
-	console.log({
-		label,
-		limitTags,
-		placeholder,
-		value,
-		loading,
-		options,
-		name,
-		onChange,
-	});
-
 	return (
 		<div>
 			<Autocomplete
