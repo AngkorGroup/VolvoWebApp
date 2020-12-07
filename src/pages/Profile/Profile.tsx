@@ -38,11 +38,8 @@ const Profile = () => {
 	const classes = useStyles();
 	const [showModal, setShowModal] = useState(false);
 
-	const onChangePassword = async ({
-		oldPassword,
-		newPassword,
-	}: ChangePasswordForm) => {
-		const response = await changePassword(oldPassword, newPassword);
+	const onChangePassword = async (data: ChangePasswordForm) => {
+		const response = await changePassword(data);
 		if (response.ok) {
 			alert.success(
 				at(
