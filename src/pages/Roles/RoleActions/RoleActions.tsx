@@ -17,6 +17,9 @@ const useStyles = makeStyles({
 	actionButtons: {
 		display: 'flex',
 		justifyContent: 'space-evenly',
+		'& > button': {
+			marginLeft: '5px',
+		},
 	},
 });
 

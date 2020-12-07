@@ -3,16 +3,15 @@ import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import Grid from '@material-ui/core/Grid';
 import VpnKeyIcon from '@material-ui/icons/VpnKey';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import { Link as BrowserLink, useHistory } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import { buildAlertBody as at } from 'common/utils';
 import { useAlert } from 'react-alert';
-import { requestForgotPassword } from 'common/services';
-import { ForgotPasswordForm, ForgotPasswordSchema } from 'common/validations';
+import { recoverPassword } from 'common/services';
+import { RecoverPasswordForm, RecoverPasswordSchema } from 'common/validations';
 import { Field, Form, Formik } from 'formik';
 
 const useStyles = makeStyles((theme) => ({
@@ -39,30 +38,34 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-const initialValues: ForgotPasswordForm = {
-	email: '',
+interface PathParams {
+	token: string;
+}
+
+const initialValues: RecoverPasswordForm = {
+	token: '',
+	newPassword: '',
+	confirmPassword: '',
 };
 
-const ForgotPassword = () => {
+const RecoverPassword = () => {
 	const classes = useStyles();
 	const alert = useAlert();
 	const { push } = useHistory();
+	const { token } = useParams<PathParams>();
 
-	const handleSubmit = async ({ email }: ForgotPasswordForm) => {
-		const response = await requestForgotPassword(email);
+	const handleSubmit = async (data: RecoverPasswordForm) => {
+		const response = await recoverPassword({ ...data, token });
 		if (response.ok) {
 			alert.success(
-				at(
-					'Olvidé mi contraseña',
-					'Se ha enviado un correo con un enlace para cambiar su contraseña.',
-				),
+				at('Contraseña Recuperada', 'Se cambió la contraseña con éxito.'),
 			);
 			push('/');
 		} else {
 			alert.error(
 				at(
 					'Ha ocurrido un error',
-					'Hubo un error en la solicitud de olvidé contraseña, intente nuevamente.',
+					'Hubo un error en la solicitud de cambiar contraseña, intente nuevamente.',
 				),
 			);
 		}
@@ -76,20 +79,31 @@ const ForgotPassword = () => {
 					<VpnKeyIcon />
 				</Avatar>
 				<Typography component='h1' variant='h5'>
-					Olvidé mi contraseña
+					Recuperar Contraseña
 				</Typography>
 				<Formik
 					initialValues={initialValues}
 					onSubmit={handleSubmit}
-					validationSchema={ForgotPasswordSchema}
+					validationSchema={RecoverPasswordSchema}
 				>
 					{({ touched, errors }) => (
 						<Form className={classes.form}>
 							<Field
-								name='email'
-								label='Correo'
-								error={touched.email && !!errors.email}
-								helperText={touched.email && errors.email}
+								name='newPassword'
+								label='Nueva Contraseña'
+								error={touched.newPassword && !!errors.newPassword}
+								helperText={touched.newPassword && errors.newPassword}
+								variant='outlined'
+								margin='normal'
+								fullWidth
+								autoFocus
+								as={TextField}
+							/>
+							<Field
+								name='confirmPassword'
+								label='Confirmar Contraseña'
+								error={touched.confirmPassword && !!errors.confirmPassword}
+								helperText={touched.confirmPassword && errors.confirmPassword}
 								variant='outlined'
 								margin='normal'
 								fullWidth
@@ -103,15 +117,8 @@ const ForgotPassword = () => {
 								color='primary'
 								className={classes.submit}
 							>
-								Enviar
+								Cambiar
 							</Button>
-							<Grid container>
-								<Grid item xs={12}>
-									<BrowserLink className={classes.link} to='/'>
-										Login
-									</BrowserLink>
-								</Grid>
-							</Grid>
 						</Form>
 					)}
 				</Formik>
@@ -120,4 +127,4 @@ const ForgotPassword = () => {
 	);
 };
 
-export default ForgotPassword;
+export default RecoverPassword;

@@ -376,8 +376,15 @@ export interface Menu {
 	menuChildren: Menu;
 }
 
+export interface RoleMenu {
+	id: number;
+	menuId: number;
+	roleId: number;
+	menu: Menu;
+}
+
 export interface Role {
 	id: number;
 	name: string;
-	roleMenus: Menu[];
+	roleMenus: RoleMenu[];
 }

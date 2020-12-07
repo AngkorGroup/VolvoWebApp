@@ -1,4 +1,5 @@
 import ForgotPassword from 'pages/ForgotPassword/ForgotPassword';
+import RecoverPassword from 'pages/RecoverPassword/RecoverPassword';
 import SignIn from 'pages/SignIn/SignIn';
 import React, { lazy } from 'react';
 import HOCLayout from './common/Layout/HOCLayout';
@@ -361,5 +362,10 @@ export const routes: Route[] = [
 		id: 'FORGOT_PASSWORD',
 		path: '/forgot_password',
 		component: ForgotPassword,
+	},
+	{
+		id: 'RECOVER_PASSWORD',
+		path: '/security/recover/:token',
+		component: RecoverPassword,
 	},
 ];

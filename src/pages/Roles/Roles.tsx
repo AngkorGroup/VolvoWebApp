@@ -1,12 +1,11 @@
 import {
 	GenericTable,
-	OnlyActiveFilter,
 	PageBody,
 	PageLoader,
 	PageTitle,
 	VolvoButton,
 } from 'common/components';
-import { buildAlertBody as at } from 'common/utils';
+import { buildAlertBody as at, Option } from 'common/utils';
 import React, { useMemo, useState } from 'react';
 import AddIcon from '@material-ui/icons/Add';
 import { useAlert } from 'react-alert';
@@ -23,15 +22,18 @@ import { ACTIONS_COLUMN_V2 } from 'common/constants';
 import RoleActions from './RoleActions/RoleActions';
 import { RoleForm } from 'common/validations/Role';
 import RoleFormModal from './RoleForm/RoleForm';
+import { Chip } from '@material-ui/core';
+
+export const renderMenuList = (menus: Option[]) => {
+	return menus.map((m) => (
+		<Chip style={{ margin: '2px 3px' }} label={m.label} />
+	));
+};
 
 const Roles = () => {
 	const alert = useAlert();
 	const [showAddModal, setShowAddModal] = useState(false);
-	const [onlyActive, setOnlyActive] = useState(true);
-	const { data, status, refetch } = useQuery(
-		['getQueryRoles', onlyActive],
-		getQueryRoles,
-	);
+	const { data, status, refetch } = useQuery('getQueryRoles', getQueryRoles);
 	const cardTypes = useMemo(() => {
 		if (data?.ok) {
 			return mapRoles(data?.data || []);
@@ -42,7 +44,7 @@ const Roles = () => {
 	const onAddRole = async (role: RoleForm) => {
 		const body = {
 			name: role.name || '',
-			roleMenus: role.roleMenus.map((m) => m.value),
+			menuIds: role.roleMenus.map((m) => m.value),
 		};
 		const response = await addRole(body);
 		if (response.ok) {
@@ -55,7 +57,7 @@ const Roles = () => {
 		const body = {
 			id: +(role.id || '0'),
 			name: role.name || '',
-			roleMenus: role.roleMenus.map((m) => m.value),
+			menuIds: role.roleMenus.map((m) => m.value),
 		};
 		const response = await editRole(body);
 		if (response.ok) {
@@ -102,12 +104,6 @@ const Roles = () => {
 						<GenericTable
 							columns={columns}
 							data={cardTypes}
-							customFilters={
-								<OnlyActiveFilter
-									checked={onlyActive}
-									onChange={(e: any) => setOnlyActive(e.target.checked)}
-								/>
-							}
 							rightButton={
 								<VolvoButton
 									text='Agregar'
