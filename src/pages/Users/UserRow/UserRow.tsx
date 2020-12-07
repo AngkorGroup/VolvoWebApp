@@ -124,13 +124,15 @@ const UserRow = ({
 			</TableRow>
 			{!archiveAt && (
 				<React.Fragment>
-					<FormModal
-						title='Editar Usuario'
-						show={showEditModal}
-						values={item}
-						onClose={setEditModalVisible(false)}
-						onConfirm={onEdit}
-					/>
+					{showEditModal && (
+						<FormModal
+							title='Editar Usuario'
+							show={showEditModal}
+							values={item}
+							onClose={setEditModalVisible(false)}
+							onConfirm={onEdit}
+						/>
+					)}
 					<ConfirmationModal
 						show={showPassModal}
 						id={id}

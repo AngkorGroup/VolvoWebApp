@@ -49,6 +49,7 @@ const App = () => {
 										))}
 										{guarded.map((route: RouteType) => (
 											<GuardedRoute
+												id={route.id}
 												key={route.id}
 												exact
 												path={route.path}

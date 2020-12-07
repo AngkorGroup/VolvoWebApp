@@ -1,4 +1,4 @@
-import { Menu, Option, Role } from 'common/utils';
+import { RoleMenu, Option, Role } from 'common/utils';
 
 export interface RoleColumn {
 	id: string;
@@ -6,8 +6,8 @@ export interface RoleColumn {
 	roleMenus: Option[];
 }
 
-const mapMenus = (menus: Menu[]) =>
-	menus.map((m) => ({ value: m.key, label: m.name }));
+const mapMenus = (menus: RoleMenu[]) =>
+	menus.map((m) => ({ value: `${m.menu?.id}`, label: m.menu?.displayName }));
 
 export const mapRoles = (roles: Role[]): RoleColumn[] => {
 	return roles.map((r) => ({

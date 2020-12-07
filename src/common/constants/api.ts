@@ -1,6 +1,7 @@
 export const LOGIN_URL = '/login';
 export const LOGOUT_URL = '/logout';
 export const FORGOT_PASSWORD_URL = '/forgot_password';
+export const REQUEST_FORGOT_PASSWORD_URL = '/request_recover_password';
 export const CHANGE_PASSWORD_URL = 'profile/change_password';
 export const BATCHES_URL = '/batches';
 export const MASSIVE_UPLOAD = `${BATCHES_URL}/massive_load`;

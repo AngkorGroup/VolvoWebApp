@@ -15,9 +15,10 @@ import {
 	TextField,
 	Theme,
 } from '@material-ui/core';
-import { PageLoader, VolvoButton } from 'common/components';
+import { MultiTypeAhead, PageLoader, VolvoButton } from 'common/components';
 import { getQueryOnlyDealers } from 'common/services';
-import { parseDealers } from 'common/utils';
+import { getQueryRoles } from 'common/services/Roles';
+import { Option, parseDealers, parseRoles } from 'common/utils';
 import { UserSchema } from 'common/validations';
 import { Field, Form, Formik } from 'formik';
 import React, { useMemo, useState } from 'react';
@@ -39,6 +40,7 @@ const initialValues: UserForm = {
 	phone: '',
 	password: '',
 	dealerId: '',
+	roleIds: [],
 };
 
 const fieldProps = {
@@ -77,16 +79,28 @@ const FormModal: React.FC<FormModalProps> = ({
 }: FormModalProps) => {
 	const classes = useStyles();
 	const [generate, setGenerate] = useState(true);
-	const { data, status } = useQuery(
+	const dealersQuery = useQuery(
 		['getQueryOnlyDealers', true],
 		getQueryOnlyDealers,
 	);
 	const dealers = useMemo(() => {
+		const { data } = dealersQuery;
 		if (data?.ok) {
 			return parseDealers(data?.data || []);
 		}
 		return [];
-	}, [data]);
+	}, [dealersQuery]);
+
+	const rolesQuery = useQuery('getQueryRoles', getQueryRoles);
+	const roles = useMemo(() => {
+		const { data } = rolesQuery;
+		if (data?.ok) {
+			return parseRoles(data?.data || []);
+		}
+		return [];
+	}, [rolesQuery]);
+	console.log({ roles });
+
 	const handleSubmit = (data: UserForm) => {
 		onConfirm(data);
 		onClose();
@@ -103,7 +117,7 @@ const FormModal: React.FC<FormModalProps> = ({
 				onSubmit={handleSubmit}
 				validationSchema={UserSchema}
 			>
-				{({ setFieldValue, errors, touched }) => (
+				{({ setFieldValue, errors, touched, values: formValues }) => (
 					<Form className={classes.root}>
 						<DialogContent>
 							<Grid container spacing={1}>
@@ -169,8 +183,8 @@ const FormModal: React.FC<FormModalProps> = ({
 									/>
 								</Grid>
 								<Grid item xs={12}>
-									{status === 'loading' && <PageLoader />}
-									{status === 'success' && (
+									{dealersQuery.status === 'loading' && <PageLoader />}
+									{dealersQuery.status === 'success' && (
 										<FormControl variant='outlined' fullWidth size='small'>
 											<InputLabel id='dealerLabel'>Dealer</InputLabel>
 											<Field
@@ -188,6 +202,20 @@ const FormModal: React.FC<FormModalProps> = ({
 											</Field>
 										</FormControl>
 									)}
+								</Grid>
+								<Grid item xs={12}>
+									<MultiTypeAhead
+										placeholder='Seleccione los roles'
+										name='roleIds'
+										label='Roles'
+										onChange={(_: any, vals: Option[]) => {
+											setFieldValue('roleIds', vals);
+										}}
+										loading={rolesQuery.status === 'loading'}
+										options={roles}
+										value={formValues?.roleIds}
+										limitTags={-1}
+									/>
 								</Grid>
 							</Grid>
 						</DialogContent>

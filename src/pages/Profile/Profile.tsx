@@ -24,6 +24,9 @@ const useStyles = makeStyles({
 		minWidth: 275,
 		maxWidth: 350,
 	},
+	title: {
+		marginBottom: 15,
+	},
 	text: {
 		textAlign: 'start',
 	},
@@ -58,7 +61,7 @@ const Profile = () => {
 		<>
 			<Card className={classes.root} variant='outlined'>
 				<CardContent>
-					<Typography variant='h4' component='h2'>
+					<Typography className={classes.title} variant='h4' component='h2'>
 						Perfil
 					</Typography>
 					<Grid container spacing={1}>

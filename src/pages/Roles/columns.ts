@@ -1,4 +1,4 @@
-import { Option } from 'common/utils';
+import { renderMenuList } from './Roles';
 
 export const ROLE_COLUMNS = [
 	{
@@ -12,9 +12,6 @@ export const ROLE_COLUMNS = [
 	{
 		Header: 'Accesos',
 		accessor: 'roleMenus',
-		Cell: (cell: any) => {
-			const menus: Option[] = cell.value;
-			return menus.map((m) => m.label).join(',');
-		},
+		Cell: (cell: any) => renderMenuList(cell.value),
 	},
 ];

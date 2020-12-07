@@ -1,7 +1,11 @@
-import { ACTIONS_LABEL, TableColumn } from 'common/constants';
+import {
+	ACTIONS_LABEL,
+	DEFAULT_DATE_FORMAT,
+	MENU_ITEMS,
+	TableColumn,
+} from 'common/constants';
 import moment, { Moment } from 'moment';
 import numeral from 'numeral';
-import { DEFAULT_DATE_FORMAT } from '../constants/constants';
 import {
 	Account,
 	Card,
@@ -13,6 +17,7 @@ import {
 	Dealer,
 	Menu,
 	Option,
+	Role,
 } from './types';
 
 const ALL_OPTION = { value: 'all', label: 'Todos' };
@@ -187,5 +192,29 @@ export const parseMenuList = (values: Menu[]): Option[] => {
 	return values.map((v) => ({
 		value: `${v.id}`,
 		label: v.displayName,
+	}));
+};
+
+export const getAllMenuIds = () => {
+	return MENU_ITEMS.reduce((acc, val) => {
+		const menuListIds = val.menuList?.map((m) => m.id) || [];
+		return [...acc, ...menuListIds];
+	}, [] as string[]);
+};
+
+export const getAllowMenus = (accesses: string[]) => {
+	return MENU_ITEMS.map((menu) => {
+		const menuList = menu.menuList || [];
+		return {
+			...menu,
+			menuList: menuList.filter((m) => accesses.some((id) => id === m.id)),
+		};
+	}).filter((menu) => menu.menuList.length > 0);
+};
+
+export const parseRoles = (roles: Role[]): Option[] => {
+	return roles.map(({ id, name }) => ({
+		value: `${id}`,
+		label: name,
 	}));
 };

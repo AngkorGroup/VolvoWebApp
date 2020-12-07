@@ -8,11 +8,12 @@ import {
 	Theme,
 	useTheme,
 } from '@material-ui/core';
-import React from 'react';
+import React, { useContext } from 'react';
 import SidebarItem from '../SidebarItem/SidebarItem';
 import { SIDEBAR_WIDTH } from '../../Layout/Layout';
-import { MENU_ITEMS, MenuItem } from '../../constants/constants';
 import SidebarMultiItem from '../SidebarMultiItem/SidebarMultiItem';
+import AppContext from 'AppContext';
+import { getAllMenuIds, getAllowMenus } from 'common/utils';
 
 const useStyles = makeStyles(({ palette, breakpoints, mixins }: Theme) =>
 	createStyles({
@@ -39,15 +40,18 @@ const Sidebar: React.FC<SidebarProps> = ({
 	mobileOpen,
 	handleDrawerToggle,
 }) => {
+	const { user } = useContext(AppContext);
 	const classes = useStyles();
 	const theme = useTheme();
+	const accesses = user?.menuOptions || getAllMenuIds();
+	const allowedMenus = getAllowMenus(accesses);
 
 	const drawer = (
 		<div>
 			<div className={classes.toolbar} />
 			<Divider />
 			<List>
-				{MENU_ITEMS.map((item: MenuItem) => {
+				{allowedMenus.map((item) => {
 					if (item.path) {
 						return (
 							<SidebarItem
