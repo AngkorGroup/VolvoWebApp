@@ -1,4 +1,12 @@
-import { Grid, makeStyles, SvgIcon } from '@material-ui/core';
+import {
+	Card,
+	CardActions,
+	CardContent,
+	Grid,
+	makeStyles,
+	SvgIcon,
+	Typography,
+} from '@material-ui/core';
 import {
 	FilterParams,
 	ReportType,
@@ -7,8 +15,14 @@ import {
 	getQueryCardTypes,
 	getQueryRechargeTypes,
 	getQuerySectors,
+	getReportClients,
 } from 'common/services';
-import { getFilename, parseCardTypes, parseCommonValue } from 'common/utils';
+import {
+	getFilename,
+	parseCardTypes,
+	parseClients,
+	parseCommonValue,
+} from 'common/utils';
 import React, { useContext } from 'react';
 import { ReactComponent as ExcelIcon } from 'common/icons/excel.svg';
 import PictureAsPdfOutlinedIcon from '@material-ui/icons/PictureAsPdfOutlined';
@@ -33,15 +47,21 @@ interface ReportMakerProps {
 	filterRechargeType?: boolean;
 	filterSector?: boolean;
 	filterBank?: boolean;
+	filterMultiClient?: boolean;
 	endpoint: (params: FilterParams) => any;
 }
 
 const useStyles = makeStyles(() => ({
+	root: {
+		margin: '0 auto',
+		minWidth: 275,
+		maxWidth: 600,
+	},
+	title: {
+		marginBottom: 15,
+	},
 	buttons: {
-		marginTop: '15px',
-		'& button': {
-			margin: '0 5px',
-		},
+		justifyContent: 'center',
 	},
 }));
 
@@ -61,6 +81,7 @@ const InnerComponent: React.FC<ReportMakerProps> = ({
 	filterRechargeType,
 	filterSector,
 	filterBank,
+	filterMultiClient,
 	endpoint,
 }) => {
 	const classes = useStyles();
@@ -82,93 +103,110 @@ const InnerComponent: React.FC<ReportMakerProps> = ({
 	};
 	return (
 		<div>
-			<Grid container spacing={1}>
-				{filterClient && (
-					<Grid item xs={4}>
-						<FilterClients />
+			<Card className={classes.root} variant='outlined'>
+				<CardContent>
+					<Typography className={classes.title} variant='h4' component='h3'>
+						Filtros
+					</Typography>
+					<Grid container spacing={1}>
+						{filterClient && (
+							<Grid item xs={12}>
+								<FilterClients />
+							</Grid>
+						)}
+						{filterDealer && (
+							<Grid item xs={12}>
+								<FilterDealers />
+							</Grid>
+						)}
+						{filterDateRange && (
+							<Grid item xs={12}>
+								<FilterDateRange />
+							</Grid>
+						)}
+						{filterCardType && (
+							<Grid item xs={12}>
+								<FilterMultiSelect
+									label={'Tipos de Tarjeta'}
+									param={'cardTypes'}
+									getEndpoint={getQueryCardTypes}
+									paramsEndpoint={[true]}
+									parser={parseCardTypes}
+								/>
+							</Grid>
+						)}
+						{filterEconomicGroup && (
+							<Grid item xs={12}>
+								<FilterEconomicGroup />
+							</Grid>
+						)}
+						{filterBusinessArea && (
+							<Grid item xs={12}>
+								<FilterMultiSelect
+									label={'Área de Negocio'}
+									param={'businessAreas'}
+									getEndpoint={getQueryBusinessAreas}
+									parser={parseCommonValue}
+								/>
+							</Grid>
+						)}
+						{filterRechargeType && (
+							<Grid item xs={12}>
+								<FilterMultiSelect
+									label={'Tipo de Recarga'}
+									param={'chargeTypes'}
+									getEndpoint={getQueryRechargeTypes}
+									parser={parseCommonValue}
+								/>
+							</Grid>
+						)}
+						{filterSector && (
+							<Grid item xs={12}>
+								<FilterMultiSelect
+									label={'Sector'}
+									param={'sectors'}
+									getEndpoint={getQuerySectors}
+									parser={parseCommonValue}
+								/>
+							</Grid>
+						)}
+						{filterBank && (
+							<Grid item xs={12}>
+								<FilterMultiSelect
+									label={'Banco'}
+									param={'banks'}
+									getEndpoint={getQueryBanks}
+									parser={parseCommonValue}
+								/>
+							</Grid>
+						)}
+						{filterMultiClient && (
+							<Grid item xs={12}>
+								<FilterMultiSelect
+									label={'Clientes'}
+									param={'clients'}
+									getEndpoint={getReportClients}
+									parser={parseClients}
+								/>
+							</Grid>
+						)}
 					</Grid>
-				)}
-				{filterDealer && (
-					<Grid item xs={4}>
-						<FilterDealers />
-					</Grid>
-				)}
-				{filterDateRange && (
-					<Grid item xs={4}>
-						<FilterDateRange />
-					</Grid>
-				)}
-				{filterCardType && (
-					<Grid item xs={4}>
-						<FilterMultiSelect
-							label={'Tipos de Tarjeta'}
-							param={'cardTypes'}
-							getEndpoint={getQueryCardTypes}
-							paramsEndpoint={[true]}
-							parser={parseCardTypes}
-						/>
-					</Grid>
-				)}
-				{filterEconomicGroup && (
-					<Grid item xs={4}>
-						<FilterEconomicGroup />
-					</Grid>
-				)}
-				{filterBusinessArea && (
-					<Grid item xs={4}>
-						<FilterMultiSelect
-							label={'Área de Negocio'}
-							param={'businessAreas'}
-							getEndpoint={getQueryBusinessAreas}
-							parser={parseCommonValue}
-						/>
-					</Grid>
-				)}
-				{filterRechargeType && (
-					<Grid item xs={4}>
-						<FilterMultiSelect
-							label={'Tipo de Recarga'}
-							param={'chargeTypes'}
-							getEndpoint={getQueryRechargeTypes}
-							parser={parseCommonValue}
-						/>
-					</Grid>
-				)}
-				{filterSector && (
-					<Grid item xs={4}>
-						<FilterMultiSelect
-							label={'Sector'}
-							param={'sectors'}
-							getEndpoint={getQuerySectors}
-							parser={parseCommonValue}
-						/>
-					</Grid>
-				)}
-				{filterBank && (
-					<Grid item xs={4}>
-						<FilterMultiSelect
-							label={'Banco'}
-							param={'banks'}
-							getEndpoint={getQueryBanks}
-							parser={parseCommonValue}
-						/>
-					</Grid>
-				)}
-			</Grid>
-			<div className={classes.buttons}>
-				<VolvoButton
-					icon={<PictureAsPdfOutlinedIcon />}
-					text='PDF'
-					onClick={exportPDF}
-					color='primary'
-				/>
-				<VolvoButton
-					icon={<SvgIcon component={ExcelIcon} />}
-					text='Excel'
-					onClick={exportExcel}
-					color='primary'
-				/>
-			</div>
+				</CardContent>
+				<CardActions className={classes.buttons}>
+					<VolvoButton
+						icon={<PictureAsPdfOutlinedIcon />}
+						text='PDF'
+						onClick={exportPDF}
+						color='primary'
+					/>
+					<VolvoButton
+						icon={<SvgIcon component={ExcelIcon} />}
+						text='Excel'
+						onClick={exportExcel}
+						color='primary'
+					/>
+				</CardActions>
+			</Card>
 		</div>
 	);
 };

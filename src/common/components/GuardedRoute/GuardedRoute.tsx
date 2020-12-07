@@ -23,13 +23,14 @@ const GuardedRoute: React.FC<GuardedRouteProps & RouteProps> = ({
 	const { user } = useContext(AppContext);
 	const isAuth = !!user;
 	const accesses = user?.menuOptions || getAllMenuIds();
-	const isAllowed = isRouteAllow(id, accesses);
 	const LayoutUnauthorized = HOCLayout(Unauthorized);
 
 	return (
 		<Route
 			{...rest}
 			render={(props) => {
+				const routeId = id === 'REPORTS' ? props.match?.params?.id : id;
+				const isAllowed = isRouteAllow(routeId, accesses);
 				if (isAuth) {
 					return isAllowed ? <Component {...props} /> : <LayoutUnauthorized />;
 				}

@@ -236,6 +236,11 @@ export const MENU_ITEMS: MenuItem[] = [
 				title: 'Cobros pendientes de reembolsos',
 				path: `${REPORT_PATH_SOURCE}/pending_charges_refund`,
 			},
+			{
+				id: 'UNSIGNED_CONTACTS',
+				title: 'Contactos No Logeados',
+				path: `${REPORT_PATH_SOURCE}/unsigned_contacts`,
+			},
 		],
 	},
 	{
@@ -384,6 +389,14 @@ export const REPORT_OPTIONS = [
 		filters: {
 			filterDateRange: true,
 			filterDealer: true,
+		},
+	},
+	{
+		id: 'unsigned_contacts',
+		title: 'Contactos No Logeados',
+		filters: {
+			filterMultiClient: true,
+			filterDateRange: true,
 		},
 	},
 ];

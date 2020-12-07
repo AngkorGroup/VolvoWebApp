@@ -35,4 +35,5 @@ export const REPORT_ENDPOINTS: Record<string, any> = {
 	client_consumes_by_dealer: performRequest('client_consumes_by_dealer'),
 	refunds: performRequest('refunds'),
 	pending_charges_refund: performRequest('pending_charges_refund'),
+	unsigned_contacts: performRequest('unsigned_contacts'),
 };
