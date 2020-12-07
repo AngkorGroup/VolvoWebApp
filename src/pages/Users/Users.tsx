@@ -10,14 +10,9 @@ import {
 	TableFilter,
 	VolvoButton,
 } from 'common/components';
-import {
-	Admin,
-	buildAlertBody as at,
-	filterRows,
-	UserAdmin,
-} from 'common/utils';
+import { buildAlertBody as at, filterRows } from 'common/utils';
 import FormModal from './FormModal/FormModal';
-import { mapUserAdmin, mapUserAdmins, User, UserForm } from './interfaces';
+import { mapUserAdmins, User, UserForm } from './interfaces';
 import UserRow from './UserRow/UserRow';
 import { USER_COLUMNS } from './columns';
 import { useAlert } from 'react-alert';
@@ -29,7 +24,6 @@ import {
 	getUsers,
 	resetUser,
 } from 'common/services';
-import { ADMIN_TYPE } from 'common/constants/constants';
 import { TABLE_ROWS_PER_PAGE } from 'common/constants/tableColumn';
 
 const Users: React.FC = () => {

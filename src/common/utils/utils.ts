@@ -220,4 +220,17 @@ export const parseRoles = (roles: Role[]): Option[] => {
 	}));
 };
 
-export const isRouteExcluded = (id: string) => AUTH_VIEWS.some((k) => k === id);
+const isRouteExcluded = (id: string) => AUTH_VIEWS.some((k) => k === id);
+
+export const isRouteAllow = (id: string, accesses: string[]) => {
+	if (id === 'REPORTS') {
+		const reportMenus = MENU_ITEMS.find((menu) => menu.id === id);
+		if (reportMenus) {
+			return accesses.some((key) =>
+				reportMenus.menuList?.some((menu) => menu.id === key),
+			);
+		}
+		return false;
+	}
+	return accesses.some((key) => key === id) || isRouteExcluded(id);
+};
