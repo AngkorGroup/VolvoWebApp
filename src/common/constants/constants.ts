@@ -238,7 +238,7 @@ export const MENU_ITEMS: MenuItem[] = [
 			},
 			{
 				id: 'UNSIGNED_CONTACTS',
-				title: 'Contactos No Logeados',
+				title: 'Contactos No Logueados',
 				path: `${REPORT_PATH_SOURCE}/unsigned_contacts`,
 			},
 		],
@@ -393,7 +393,7 @@ export const REPORT_OPTIONS = [
 	},
 	{
 		id: 'unsigned_contacts',
-		title: 'Contactos No Logeados',
+		title: 'Contactos No Logueados',
 		filters: {
 			filterMultiClient: true,
 			filterDateRange: true,
