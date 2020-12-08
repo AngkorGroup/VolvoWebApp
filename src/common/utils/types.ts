@@ -215,6 +215,7 @@ export interface CardBatch {
 
 export interface Movement {
 	id: number;
+	batchId: number;
 	amount: Amount;
 	type: string;
 	card: Card;

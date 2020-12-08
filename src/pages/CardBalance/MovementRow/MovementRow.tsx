@@ -31,10 +31,10 @@ const MovementRow = ({ item }: MovementRowProps) => {
 	return (
 		<TableRow>
 			<TableCell>{type}</TableCell>
-			<TableCell>{id}</TableCell>
 			<TableCell>{operationNumber}</TableCell>
 			<TableCell>{operationDate}</TableCell>
 			<TableCell>{reason}</TableCell>
+			<TableCell align='center'>{id}</TableCell>
 			<TableCell align='right'>
 				{status === 'P' && `(${status}) `}
 				{status === 'R' && <CancelIcon color='error' titleAccess='Rechazado' />}

@@ -50,15 +50,7 @@ export const mapExpirations = (batches: CardBatch[]): Expiration[] => {
 
 export const mapMovements = (movements: Movement[]): CardMovement[] => {
 	return movements.map(
-		({
-			id: movementId,
-			type,
-			charge,
-			description,
-			transfer,
-			amount,
-			createdAt,
-		}) => {
+		({ batchId, type, charge, description, transfer, amount, createdAt }) => {
 			let voucherURL = '';
 			let operationNumber = '';
 			let id = '';
@@ -69,7 +61,7 @@ export const mapMovements = (movements: Movement[]): CardMovement[] => {
 				operationNumber = transfer?.operationCode;
 				voucherURL = transfer?.imageUrl;
 			} else if (type === RECHARGE_TYPE) {
-				id = `${movementId}`;
+				id = `${batchId}`;
 			}
 			return {
 				id,
