@@ -1,3 +1,4 @@
+import { NUMERIC_FIELD_MESSAGE } from 'common/constants';
 import yup from './YupLocale';
 
 export interface AccountForm {
@@ -10,8 +11,12 @@ export interface AccountForm {
 }
 
 export const BankAccountSchema = yup.object<AccountForm>({
-	account: yup.string().max(20).required(),
-	cci: yup.string().max(30).required(),
+	account: yup
+		.string()
+		.matches(/^\d+$/, NUMERIC_FIELD_MESSAGE)
+		.max(15)
+		.required(),
+	cci: yup.string().matches(/^\d+$/, NUMERIC_FIELD_MESSAGE).max(20).required(),
 	currencyId: yup.string().required(),
 	isDefault: yup.boolean(),
 	bankAccountTypeId: yup.string().required(),
