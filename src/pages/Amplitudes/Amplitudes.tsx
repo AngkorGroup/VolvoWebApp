@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import {
+	AsyncTypeAhead,
 	DatePicker,
 	GenericTable,
 	PageActionBar,
@@ -8,35 +9,67 @@ import {
 	PageTitle,
 } from 'common/components';
 import { mapLoads } from './interfaces';
-import { extendExpiredDate, getQueryLoads } from 'common/services';
-import { buildAlertBody as at } from 'common/utils';
 import {
-	DEFAULT_NOW_DATE as END_DATE,
+	extendExpiredDate,
+	getQueryLoads,
+	getQueryClients,
+} from 'common/services';
+import { buildAlertBody as at, Option, parseSimpleClients } from 'common/utils';
+import {
 	DEFAULT_WEEK_START_DATE as START_DATE,
 	DEFAULT_MOMENT_FORMAT as FORMAT,
 	ACTIONS_COLUMN_V2,
 } from 'common/constants';
 import { useQuery } from 'react-query';
 import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date';
-import { Grid } from '@material-ui/core';
+import { Grid, makeStyles } from '@material-ui/core';
 import { LOAD_COLUMNS } from './columns';
 import AmplitudeActions from './AmplitudeActions/AmplitudeActions';
 import { useAlert } from 'react-alert';
 
+const useStyles = makeStyles({
+	dateRange: {
+		display: 'flex',
+		'& > div': {
+			marginRight: 5,
+		},
+	},
+});
+
+type Event = React.ChangeEvent<HTMLInputElement>;
+
 const Amplitudes: React.FC = () => {
 	const alert = useAlert();
+	const classes = useStyles();
 	const [startDate, setStartDate] = useState<MaterialUiPickersDate>(START_DATE);
-	const [endDate, setEndDate] = useState<MaterialUiPickersDate>(END_DATE);
-	const { data, status, refetch } = useQuery(
-		['loads', startDate?.format(FORMAT), endDate?.format(FORMAT)],
+	const [endDate, setEndDate] = useState<MaterialUiPickersDate>(null);
+	const [client, setClient] = useState('all');
+	const { data: dataLoads, status: statusLoads, refetch } = useQuery(
+		['loads', startDate?.format(FORMAT), endDate?.format(FORMAT), client],
 		getQueryLoads,
 	);
 	const loads = useMemo(() => {
-		if (data?.ok) {
-			return mapLoads(data?.data || []);
+		if (dataLoads?.ok) {
+			return mapLoads(dataLoads?.data || []);
 		}
 		return [];
-	}, [data]);
+	}, [dataLoads]);
+	const [query, setQuery] = useState('');
+	const { data: dataClients, isLoading } = useQuery(
+		['getQueryClients', query, true],
+		getQueryClients,
+	);
+	const clients = useMemo(() => {
+		if (dataClients?.ok) {
+			return parseSimpleClients(dataClients?.data || [], true);
+		}
+		return [];
+	}, [dataClients]);
+
+	const onTypeClient = (e: Event) => setQuery(e.target.value);
+	const onClientChange = (_: any, newValue: string | Option) => {
+		setClient((newValue as Option).value);
+	};
 
 	const onExtend = async (id: string, date: string) => {
 		const response = await extendExpiredDate(id, date);
@@ -74,17 +107,24 @@ const Amplitudes: React.FC = () => {
 				<PageTitle title='Amplitud de Vencimientos' />
 				<PageActionBar>
 					<Grid container spacing={1}>
-						<Grid item xs={2}>
+						<Grid item xs={3}>
+							<AsyncTypeAhead
+								options={clients}
+								placeholder='Cliente'
+								loading={isLoading}
+								onChange={onClientChange}
+								onType={onTypeClient}
+							/>
+						</Grid>
+						<Grid className={classes.dateRange} item xs={3}>
 							<DatePicker
-								label='Fecha Inicio'
+								label='Fecha Venc. Ext. Inicio'
 								value={startDate}
 								onChange={onStartDateChange}
 							/>
-						</Grid>
-						<Grid item xs={2}>
 							<DatePicker
 								minDate={startDate}
-								label='Fecha Fin'
+								label='Fecha Venc. Ext. Fin'
 								value={endDate}
 								onChange={onEndDateChange}
 							/>
@@ -92,8 +132,8 @@ const Amplitudes: React.FC = () => {
 					</Grid>
 				</PageActionBar>
 			</div>
-			{status === 'loading' && <PageLoader />}
-			{status === 'success' && (
+			{statusLoads === 'loading' && <PageLoader />}
+			{statusLoads === 'success' && (
 				<PageBody>
 					<GenericTable filename='Recargas' columns={columns} data={loads} />
 				</PageBody>

@@ -14,8 +14,9 @@ export const getQueryLoads = async (
 	key: string,
 	beginDate?: string,
 	endDate?: string,
+	clientId?: string,
 ) => {
-	return await api.get<Load[]>(BATCHES_URL, { beginDate, endDate });
+	return await api.get<Load[]>(BATCHES_URL, { beginDate, endDate, clientId });
 };
 
 export const getLoadErrors = async () => {
