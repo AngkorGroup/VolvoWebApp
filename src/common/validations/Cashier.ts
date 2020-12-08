@@ -16,5 +16,5 @@ export const CashierSchema = yup.object<CashierForm>({
 	email: yup.string().max(TEXT_MAX_LENGTH).email().required(),
 	firstName: yup.string().max(TEXT_MAX_LENGTH).required(),
 	lastName: yup.string().max(TEXT_MAX_LENGTH).required(),
-	tpCode: yup.string().matches(/^\d+$/, NUMERIC_FIELD_MESSAGE).required(),
+	tpCode: yup.string().required(),
 });

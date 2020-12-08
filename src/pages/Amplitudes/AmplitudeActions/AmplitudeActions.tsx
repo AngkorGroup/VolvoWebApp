@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import EventIcon from '@material-ui/icons/Event';
 import { TableLoad } from '../interfaces';
 import ExtendModal from '../ExtendModal/ExtendModal';
+import { ACTIONS_STYLE } from 'common/constants';
 
 interface AmplitudeActionsProps {
 	item: TableLoad;
@@ -11,10 +12,7 @@ interface AmplitudeActionsProps {
 }
 
 const useStyles = makeStyles({
-	actionButtons: {
-		display: 'flex',
-		justifyContent: 'space-evenly',
-	},
+	actionButtons: ACTIONS_STYLE,
 });
 
 const AmplitudeActions: React.FC<AmplitudeActionsProps> = ({

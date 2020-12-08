@@ -8,6 +8,7 @@ export const MOVEMENT_COLUMNS = [
 	{ title: '# Op.', value: 'operationNumber' },
 	{ title: 'Fecha Op.', value: 'operationDate' },
 	{ title: 'Motivo', value: 'reason' },
+	{ title: '# Recarga', props: { align: COLUMN_CENTER }, value: 'id' },
 	{ title: 'Monto', props: { align: COLUMN_CENTER }, value: 'amount' },
 	{ title: 'Dealer', value: 'dealerName' },
 	{ title: 'Caja', value: 'cashier' },

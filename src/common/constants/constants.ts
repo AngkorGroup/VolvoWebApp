@@ -238,7 +238,7 @@ export const MENU_ITEMS: MenuItem[] = [
 			},
 			{
 				id: 'UNSIGNED_CONTACTS',
-				title: 'Contactos No Logeados',
+				title: 'Contactos No Logueados',
 				path: `${REPORT_PATH_SOURCE}/unsigned_contacts`,
 			},
 		],
@@ -335,6 +335,7 @@ export const REPORT_OPTIONS = [
 		id: 'clients_card_use',
 		title: 'Clientes VS Uso de tarjeta',
 		filters: {
+			filterDateRange: true,
 			filterClient: true,
 			filterCardType: true,
 		},
@@ -393,7 +394,7 @@ export const REPORT_OPTIONS = [
 	},
 	{
 		id: 'unsigned_contacts',
-		title: 'Contactos No Logeados',
+		title: 'Contactos No Logueados',
 		filters: {
 			filterMultiClient: true,
 			filterDateRange: true,
@@ -404,6 +405,7 @@ export const REPORT_OPTIONS = [
 export const CONSUME_TYPE = 'CON';
 export const S_TRANSFER_TYPE = 'STR';
 export const I_TRANSFER_TYPE = 'ITR';
+export const RECHARGE_TYPE = 'REC';
 
 export const ADMIN_TYPE = 'WebAdmin';
 export const CASHIER_TYPE = 'Cashier';

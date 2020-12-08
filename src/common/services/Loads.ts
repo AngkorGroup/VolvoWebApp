@@ -1,5 +1,6 @@
 import {
 	BATCHES_ERRORS_URL,
+	BATCHES_EXPIRES_AT_EXTENT,
 	BATCHES_URL,
 	MASSIVE_UPLOAD,
 	PRE_MASSIVE_UPLOAD,
@@ -15,7 +16,28 @@ export const getQueryLoads = async (
 	beginDate?: string,
 	endDate?: string,
 ) => {
-	return await api.get<Load[]>(BATCHES_URL, { beginDate, endDate });
+	return await getLoads(beginDate, endDate);
+};
+
+export const getLoadsExtend = async (
+	beginDate?: string,
+	endDate?: string,
+	clientId?: string,
+) => {
+	return await api.get<Load[]>(BATCHES_EXPIRES_AT_EXTENT, {
+		beginDate,
+		endDate,
+		clientId,
+	});
+};
+
+export const getQueryLoadsExtend = async (
+	key: string,
+	beginDate?: string,
+	endDate?: string,
+	clientId?: string,
+) => {
+	return await getLoadsExtend(beginDate, endDate, clientId);
 };
 
 export const getLoadErrors = async () => {

@@ -7,6 +7,7 @@ import {
 import AddIcon from '@material-ui/icons/Add';
 import {
 	BasicTable,
+	OnlyActiveFilter,
 	PageActionBar,
 	PageLoader,
 	VolvoButton,
@@ -35,8 +36,9 @@ interface AccountsModalProps {
 const AccountsModal: React.FC<AccountsModalProps> = ({ show, id, onClose }) => {
 	const alert = useAlert();
 	const [showAddModal, setShowAddModal] = useState(false);
+	const [onlyActive, setOnlyActive] = useState(true);
 	const { data, status, refetch } = useQuery(
-		['getQueryDealerAccounts', id],
+		['getQueryDealerAccounts', id, onlyActive],
 		getQueryDealerAccounts,
 	);
 	const accounts = useMemo(() => {
@@ -45,6 +47,10 @@ const AccountsModal: React.FC<AccountsModalProps> = ({ show, id, onClose }) => {
 		}
 		return [];
 	}, [data]);
+
+	const onOnlyActiveChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+		setOnlyActive(e.target.checked);
+	};
 
 	const setAddModalVisible = (flag: boolean) => () => setShowAddModal(flag);
 
@@ -118,6 +124,10 @@ const AccountsModal: React.FC<AccountsModalProps> = ({ show, id, onClose }) => {
 				{status === 'success' && (
 					<div>
 						<PageActionBar justifyContent='space-between'>
+							<OnlyActiveFilter
+								checked={onlyActive}
+								onChange={onOnlyActiveChange}
+							/>
 							<VolvoButton
 								text='Agregar'
 								icon={<AddIcon />}

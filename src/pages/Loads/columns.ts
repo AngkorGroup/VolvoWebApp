@@ -10,7 +10,7 @@ export const LOAD_COLUMNS = [
 	{ title: 'Importe' },
 	{ title: 'Saldo' },
 	{ title: 'Tipo' },
-	{ title: 'Motivo' },
+	{ title: 'Área de Negocio' },
 	{ title: 'Tipo Tarjeta' },
 	{ title: 'Referencia' },
 ];

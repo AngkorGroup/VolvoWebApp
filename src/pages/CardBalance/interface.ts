@@ -2,10 +2,12 @@ import {
 	CONSUME_TYPE,
 	S_TRANSFER_TYPE,
 	I_TRANSFER_TYPE,
+	RECHARGE_TYPE,
 } from 'common/constants/constants';
 import { CardBatch, Movement } from 'common/utils';
 
 export interface CardMovement {
+	id: string;
 	type: string;
 	operationNumber: string;
 	operationDate: string;
@@ -48,17 +50,21 @@ export const mapExpirations = (batches: CardBatch[]): Expiration[] => {
 
 export const mapMovements = (movements: Movement[]): CardMovement[] => {
 	return movements.map(
-		({ type, charge, description, transfer, amount, createdAt }) => {
+		({ batchId, type, charge, description, transfer, amount, createdAt }) => {
 			let voucherURL = '';
 			let operationNumber = '';
+			let id = '';
 			if (type === CONSUME_TYPE) {
 				operationNumber = charge?.operationCode;
 				voucherURL = charge?.imageUrl;
 			} else if (type === S_TRANSFER_TYPE || type === I_TRANSFER_TYPE) {
 				operationNumber = transfer?.operationCode;
 				voucherURL = transfer?.imageUrl;
+			} else if (type === RECHARGE_TYPE) {
+				id = `${batchId}`;
 			}
 			return {
+				id,
 				type,
 				operationNumber,
 				operationDate: createdAt,

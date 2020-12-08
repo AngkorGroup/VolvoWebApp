@@ -15,6 +15,7 @@ const MovementRow = ({ item }: MovementRowProps) => {
 	const onOpenModal = () => setShowModal(true);
 	const onCloseModal = () => setShowModal(false);
 	const {
+		id,
 		type,
 		operationNumber,
 		operationDate,
@@ -33,6 +34,7 @@ const MovementRow = ({ item }: MovementRowProps) => {
 			<TableCell>{operationNumber}</TableCell>
 			<TableCell>{operationDate}</TableCell>
 			<TableCell>{reason}</TableCell>
+			<TableCell align='center'>{id}</TableCell>
 			<TableCell align='right'>
 				{status === 'P' && `(${status}) `}
 				{status === 'R' && <CancelIcon color='error' titleAccess='Rechazado' />}

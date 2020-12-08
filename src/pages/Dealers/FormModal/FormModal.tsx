@@ -61,8 +61,8 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 const DEALER_TYPES: Option[] = [
-	{ value: 'Internal', label: 'Internal' },
-	{ value: 'External', label: 'External' },
+	{ value: 'Internal', label: 'Private' },
+	{ value: 'External', label: 'Own Dealer' },
 ];
 
 const FormModal: React.FC<FormModalProps> = ({

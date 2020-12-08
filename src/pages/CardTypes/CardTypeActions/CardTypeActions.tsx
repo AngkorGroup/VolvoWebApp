@@ -5,6 +5,7 @@ import CreateIcon from '@material-ui/icons/Create';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { CardTypeForm, TableCardType } from '../interfaces';
 import FormModal from '../FormModal/FormModal';
+import { ACTIONS_STYLE } from 'common/constants';
 
 interface CardTypeActionsProps {
 	item: TableCardType;
@@ -13,10 +14,7 @@ interface CardTypeActionsProps {
 }
 
 const useStyles = makeStyles({
-	actionButtons: {
-		display: 'flex',
-		justifyContent: 'space-evenly',
-	},
+	actionButtons: ACTIONS_STYLE,
 });
 
 const CardTypeActions: React.FC<CardTypeActionsProps> = ({

@@ -25,3 +25,11 @@ export interface TableColumn {
 	value?: string;
 	props?: TableCellProps;
 }
+
+export const ACTIONS_STYLE = {
+	display: 'flex',
+	justifyContent: 'center',
+	'& > button': {
+		marginLeft: '5px',
+	},
+};

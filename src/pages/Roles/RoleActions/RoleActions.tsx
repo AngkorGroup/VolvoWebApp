@@ -6,6 +6,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import { RoleColumn } from '../interfaces';
 import { RoleForm } from 'common/validations/Role';
 import RoleFormModal from '../RoleForm/RoleForm';
+import { ACTIONS_STYLE } from 'common/constants';
 
 interface RoleActionsProps {
 	item: RoleColumn;
@@ -14,13 +15,7 @@ interface RoleActionsProps {
 }
 
 const useStyles = makeStyles({
-	actionButtons: {
-		display: 'flex',
-		justifyContent: 'space-evenly',
-		'& > button': {
-			marginLeft: '5px',
-		},
-	},
+	actionButtons: ACTIONS_STYLE,
 });
 
 const RoleActions: React.FC<RoleActionsProps> = ({

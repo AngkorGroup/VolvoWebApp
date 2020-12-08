@@ -225,3 +225,14 @@ const isRouteExcluded = (id: string) => AUTH_VIEWS.some((k) => k === id);
 export const isRouteAllow = (id: string, accesses: string[]) => {
 	return accesses.some((k) => k === id.toUpperCase()) || isRouteExcluded(id);
 };
+
+export const parseSimpleClients = (
+	clients: Client[],
+	withAll?: boolean,
+): Option[] => {
+	const options = clients.map(({ id, ruc, name }) => ({
+		value: `${id}`,
+		label: `${ruc}-${name}`,
+	}));
+	return withAll ? optionsWithAll(options) : options;
+};

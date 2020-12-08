@@ -16,5 +16,5 @@ export const CardTypeSchema = yup.object<CardTypeForm>({
 	currencyId: yup.string().required(),
 	term: yup.string().matches(/^\d+$/, NUMERIC_FIELD_MESSAGE).max(2).required(),
 	color: yup.string().required(),
-	tpCode: yup.string().matches(/^\d+$/, NUMERIC_FIELD_MESSAGE).required(),
+	tpCode: yup.string().required(),
 });
