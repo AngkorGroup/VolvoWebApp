@@ -18,13 +18,11 @@ import {
 	DEFAULT_NOW_DATE as END_DATE,
 	DEFAULT_WEEK_START_DATE as START_DATE,
 	REFUND_STATUSES,
-	OPERATION_SCHEDULED,
 	DEFAULT_MOMENT_FORMAT as FORMAT,
 	TABLE_ROWS_PER_PAGE,
-	OPERATION_PAID,
 } from 'common/constants';
 import { cancelRefund, getQueryRefunds, payRefund } from 'common/services';
-import { filterRows, buildAlertBody as at } from 'common/utils';
+import { filterRows, buildAlertBody as at, RefundStatus } from 'common/utils';
 import React, { useMemo, useState } from 'react';
 import { useAlert } from 'react-alert';
 import { useQuery } from 'react-query';
@@ -44,7 +42,9 @@ const Refunds = () => {
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(TABLE_ROWS_PER_PAGE);
 	const [query, setQuery] = useState('');
-	const [refundStatus, setRefundStatus] = useState(OPERATION_SCHEDULED);
+	const [refundStatus, setRefundStatus] = useState<string>(
+		RefundStatus.Programado,
+	);
 	const [filtered, setFiltered] = useState<RefundColumn[]>([]);
 	const { data, status, refetch } = useQuery(
 		[
@@ -87,7 +87,7 @@ const Refunds = () => {
 	const onPay = async (id: string, date: string, voucher: string) => {
 		const response = await payRefund(id, date, voucher);
 		if (response.ok) {
-			setRefundStatus(OPERATION_PAID);
+			setRefundStatus(RefundStatus.Pagado);
 			alert.success(
 				at('Reembolso Pagado', 'Se registró el pago correctamente'),
 			);

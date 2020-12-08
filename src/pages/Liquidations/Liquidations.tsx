@@ -19,9 +19,6 @@ import {
 import {
 	DEFAULT_NOW_DATE,
 	DEFAULT_WEEK_START_DATE,
-	OPERATION_SCHEDULED,
-	OPERATION_PAID,
-	OPERATION_GENERATED,
 	LIQUIDATION_STATUSES,
 	TABLE_ROWS_PER_PAGE,
 	DEFAULT_MOMENT_FORMAT,
@@ -36,7 +33,12 @@ import {
 	scheduleLiquidations,
 } from 'common/services';
 import { isGenerated, mapLiquidations, LiquidationColumn } from './interfaces';
-import { buildAlertBody as at, filterRows, getFilename } from 'common/utils';
+import {
+	buildAlertBody as at,
+	filterRows,
+	getFilename,
+	LiquidationStatus,
+} from 'common/utils';
 import { LIQUIDATIONS_COLUMNS } from './columns';
 import LiquidationRow from './LiquidationRow/LiquidationRow';
 import { useAlert } from 'react-alert';
@@ -63,8 +65,8 @@ const Liquidations: React.FC = () => {
 		DEFAULT_NOW_DATE,
 	);
 	const [selectedIds, setSelectedIds] = useState<string[]>([]);
-	const [liquidationStatus, setLiquidationStatus] = useState(
-		OPERATION_GENERATED,
+	const [liquidationStatus, setLiquidationStatus] = useState<string>(
+		LiquidationStatus.Generado,
 	);
 	const [showScheduleModal, setShowScheduleModal] = useState(false);
 	const [page, setPage] = useState(0);
@@ -125,7 +127,7 @@ const Liquidations: React.FC = () => {
 	const onPay = async (id: string, date: string, voucher: string) => {
 		const response = await payLiquidation(id, date, voucher);
 		if (response.ok) {
-			setLiquidationStatus(OPERATION_PAID);
+			setLiquidationStatus(LiquidationStatus.Pagado);
 			alert.success(
 				at('Liquidación Pagada', 'Se registró el pago correctamente'),
 			);
@@ -139,7 +141,7 @@ const Liquidations: React.FC = () => {
 			selectedIds.map((id) => +id),
 		);
 		if (ok) {
-			setLiquidationStatus(OPERATION_SCHEDULED);
+			setLiquidationStatus(LiquidationStatus.Programado);
 			setSelectedIds([]);
 			alert.success(
 				at(

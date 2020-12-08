@@ -1,9 +1,4 @@
-import {
-	OPERATION_PAID,
-	OPERATION_SCHEDULED,
-	OPERATION_CANCELED,
-} from 'common/constants';
-import { Refund } from 'common/utils';
+import { Refund, RefundStatus } from 'common/utils';
 
 export interface RefundColumn {
 	id: string;
@@ -33,6 +28,6 @@ export const mapRefunds = (refunds: Refund[]): RefundColumn[] => {
 	}));
 };
 
-export const isCanceled = (status: string) => status === OPERATION_CANCELED;
-export const isPaid = (status: string) => status === OPERATION_PAID;
-export const isScheduled = (status: string) => status === OPERATION_SCHEDULED;
+export const isCanceled = (st: string) => st === RefundStatus.Anulado;
+export const isPaid = (st: string) => st === RefundStatus.Pagado;
+export const isScheduled = (st: string) => st === RefundStatus.Programado;

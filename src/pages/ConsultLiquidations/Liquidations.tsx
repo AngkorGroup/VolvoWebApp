@@ -17,7 +17,6 @@ import {
 import {
 	DEFAULT_NOW_DATE,
 	DEFAULT_WEEK_START_DATE,
-	OPERATION_GENERATED,
 	LIQUIDATION_STATUSES,
 	TABLE_ROWS_PER_PAGE,
 	DEFAULT_MOMENT_FORMAT,
@@ -26,7 +25,7 @@ import React, { useMemo, useState } from 'react';
 import { useQuery } from 'react-query';
 import { getQueryLiquidations } from 'common/services';
 import { mapLiquidations, LiquidationColumn } from './interfaces';
-import { filterRows } from 'common/utils';
+import { filterRows, LiquidationStatus } from 'common/utils';
 import { LIQUIDATIONS_COLUMNS } from './columns';
 import LiquidationRow from './LiquidationRow/LiquidationRow';
 
@@ -42,8 +41,8 @@ const Liquidations: React.FC = () => {
 	const [endDate, setEndDate] = useState<MaterialUiPickersDate>(
 		DEFAULT_NOW_DATE,
 	);
-	const [liquidationStatus, setLiquidationStatus] = useState(
-		OPERATION_GENERATED,
+	const [liquidationStatus, setLiquidationStatus] = useState<string>(
+		LiquidationStatus.Generado,
 	);
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(TABLE_ROWS_PER_PAGE);

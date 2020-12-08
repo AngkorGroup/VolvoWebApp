@@ -7,6 +7,7 @@ import {
 } from 'common/constants';
 import moment, { Moment } from 'moment';
 import numeral from 'numeral';
+import { ChargeType } from './enums';
 import {
 	Account,
 	Card,
@@ -145,21 +146,12 @@ export const parseCommonValue = (
 	return withAll ? optionsWithAll(options) : options;
 };
 
-const PENDING_STATUS = 'PENDING';
-const REJECTED_STATUS = 'REJECTED';
-const CANCELED_STATUS = 'CANCELED';
-
-export const getKeyStatus = (status: string) => {
-	const lowered = status ? status.toUpperCase() : '';
-	switch (lowered) {
-		case PENDING_STATUS:
-			return PENDING_STATUS[0];
-		case REJECTED_STATUS:
-		case CANCELED_STATUS:
-			return REJECTED_STATUS[0];
-		default:
-			return '';
+export const getKeyStatus = (status: ChargeType) => {
+	const type = ChargeType[status];
+	if (type) {
+		return type[0] || '';
 	}
+	return '';
 };
 
 export const getFilename = (id: string, ext: string, content: any) => {

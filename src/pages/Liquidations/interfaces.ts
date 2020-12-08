@@ -1,5 +1,4 @@
-import { OPERATION_GENERATED } from 'common/constants';
-import { Account, Charge, Liquidation } from 'common/utils';
+import { Account, Charge, Liquidation, LiquidationStatus } from 'common/utils';
 
 export interface LiquidationColumn {
 	id: string;
@@ -90,4 +89,4 @@ export const mapBankAccounts = (accounts: Account[]) => {
 	}));
 };
 
-export const isGenerated = (status: string) => status === OPERATION_GENERATED;
+export const isGenerated = (st: string) => st === LiquidationStatus.Generado;
