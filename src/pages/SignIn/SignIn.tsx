@@ -45,6 +45,8 @@ const initialValues: LoginForm = {
 	password: '',
 };
 
+const REDIRECT_ON_LOGIN = '/security/profile';
+
 const SignIn = () => {
 	const classes = useStyles();
 	const alert = useAlert();
@@ -58,7 +60,7 @@ const SignIn = () => {
 			if (admin && authToken && setAppUser) {
 				setAppUser(admin, authToken);
 				setAuthToken(authToken);
-				push('/clients/client_balance');
+				push(REDIRECT_ON_LOGIN);
 			}
 		} else {
 			alert.error(
@@ -72,7 +74,7 @@ const SignIn = () => {
 
 	useEffect(() => {
 		if (user) {
-			push('/clients/client_balance');
+			push(REDIRECT_ON_LOGIN);
 		}
 		// eslint-disable-next-line
 	}, []);
