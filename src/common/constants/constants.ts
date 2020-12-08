@@ -335,6 +335,7 @@ export const REPORT_OPTIONS = [
 		id: 'clients_card_use',
 		title: 'Clientes VS Uso de tarjeta',
 		filters: {
+			filterDateRange: true,
 			filterClient: true,
 			filterCardType: true,
 		},
