@@ -12,7 +12,7 @@ import { mapLoads } from './interfaces';
 import {
 	extendExpiredDate,
 	getQueryClients,
-	getLoadsExtend,
+	getQueryLoadsExtend,
 } from 'common/services';
 import { buildAlertBody as at, Option, parseSimpleClients } from 'common/utils';
 import {
@@ -46,12 +46,12 @@ const Amplitudes: React.FC = () => {
 	const [client, setClient] = useState('all');
 	const { data: dataLoads, status: statusLoads, refetch } = useQuery(
 		[
-			'getLoadsExtend',
+			'getQueryLoadsExtend',
 			startDate?.format(FORMAT),
 			endDate?.format(FORMAT),
 			client,
 		],
-		getLoadsExtend,
+		getQueryLoadsExtend,
 	);
 	const loads = useMemo(() => {
 		if (dataLoads?.ok) {
