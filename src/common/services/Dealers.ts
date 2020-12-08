@@ -27,12 +27,18 @@ export const getDealersByFilter = async (
 	return await api.get<Dealer[]>(DEALERS_BY_FILTER_URL, { query, onlyActive });
 };
 
-export const getDealerAccounts = async (id: string) => {
-	return await api.get<Account[]>(`${DEALERS_URL}/${id}/bank_accounts`);
+export const getDealerAccounts = async (id: string, onlyActive?: boolean) => {
+	return await api.get<Account[]>(`${DEALERS_URL}/${id}/bank_accounts`, {
+		onlyActive,
+	});
 };
 
-export const getQueryDealerAccounts = async (key: string, id: string) => {
-	return await getDealerAccounts(id);
+export const getQueryDealerAccounts = async (
+	key: string,
+	id: string,
+	onlyActive?: boolean,
+) => {
+	return await getDealerAccounts(id, onlyActive);
 };
 
 export const addDealer = async (dealer: Partial<Dealer>) => {
