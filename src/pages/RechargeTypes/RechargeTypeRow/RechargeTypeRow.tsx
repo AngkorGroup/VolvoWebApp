@@ -10,6 +10,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import { ConfirmationModal, VolvoIconButton } from 'common/components';
 import { RechargeTypeColumn } from '../interfaces';
 import FormModal from '../FormModal/FormModal';
+import { ACTIONS_STYLE } from 'common/constants';
 
 interface RechargeTypeRowProps {
 	item: RechargeTypeColumn;
@@ -19,10 +20,7 @@ interface RechargeTypeRowProps {
 
 const useStyles = makeStyles(() =>
 	createStyles({
-		actionButtons: {
-			display: 'flex',
-			justifyContent: 'space-evenly',
-		},
+		actionButtons: ACTIONS_STYLE,
 	}),
 );
 

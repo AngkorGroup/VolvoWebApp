@@ -10,6 +10,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import { ConfirmationModal, VolvoIconButton } from 'common/components';
 import { BusinessAreaColumn } from '../interfaces';
 import FormModal from '../FormModal/FormModal';
+import { ACTIONS_STYLE } from 'common/constants';
 
 interface BusinessAreaRowProps {
 	item: BusinessAreaColumn;
@@ -19,10 +20,7 @@ interface BusinessAreaRowProps {
 
 const useStyles = makeStyles(() =>
 	createStyles({
-		actionButtons: {
-			display: 'flex',
-			justifyContent: 'space-evenly',
-		},
+		actionButtons: ACTIONS_STYLE,
 	}),
 );
 
@@ -30,7 +28,7 @@ const BusinessAreaRow = ({ item, onEdit, onDelete }: BusinessAreaRowProps) => {
 	const classes = useStyles();
 	const [showEditModal, setShowEditModal] = useState(false);
 	const [showDeleteModal, setShowDeleteModal] = useState(false);
-	const { id, name, tpCode,status, archiveAt } = item;
+	const { id, name, tpCode, status, archiveAt } = item;
 
 	const setEditModalVisible = (flag: boolean) => () => setShowEditModal(flag);
 	const setDelModalVisible = (flag: boolean) => () => setShowDeleteModal(flag);

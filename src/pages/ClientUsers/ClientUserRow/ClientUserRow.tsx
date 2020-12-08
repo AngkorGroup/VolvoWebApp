@@ -10,6 +10,7 @@ import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import { ConfirmationModal, VolvoIconButton } from 'common/components';
 import { ClientUser } from '../interfaces';
 import FormModal from '../FormModal/FormModal';
+import { ACTIONS_STYLE } from 'common/constants';
 
 interface ClientUserRowProps {
 	item: ClientUser;
@@ -19,10 +20,7 @@ interface ClientUserRowProps {
 
 const useStyles = makeStyles(() =>
 	createStyles({
-		actionButtons: {
-			display: 'flex',
-			justifyContent: 'space-evenly',
-		},
+		actionButtons: ACTIONS_STYLE,
 	}),
 );
 
