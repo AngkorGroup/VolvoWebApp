@@ -26,7 +26,7 @@ const BatchMovementsRow = ({ item }: BatchMovementsRowProps) => {
 		chargeStatus,
 		type,
 	} = item;
-	const status = getKeyStatus(chargeStatus);
+	const status = getKeyStatus(chargeStatus as any);
 	return (
 		<TableRow>
 			<TableCell>{type}</TableCell>

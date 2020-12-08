@@ -64,7 +64,7 @@ const ClientUserRow = ({ item, onEdit, onTurnUser }: ClientUserRowProps) => {
 						>
 							<CreateIcon />
 						</VolvoIconButton>
-						{type !== 'Primary' && (
+						{type !== 'Principal' && (
 							<VolvoIconButton
 								color='info'
 								title='Dar de alta como usuario'

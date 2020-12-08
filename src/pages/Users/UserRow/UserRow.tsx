@@ -6,11 +6,7 @@ import { User, UserForm } from '../interfaces';
 import FormModal from '../FormModal/FormModal';
 import DeleteModal from '../DeleteModal/DeleteModal';
 import CardsModal from '../CardsModal/CardsModal';
-import {
-	ADMIN_TYPE,
-	CASHIER_TYPE,
-	CONTACT_TYPE,
-} from 'common/constants/constants';
+import { UserType } from 'common/utils';
 
 interface UserRowProps {
 	item: User;
@@ -46,9 +42,9 @@ const UserRow = ({
 		status,
 		archiveAt,
 	} = item;
-	const isAdmin = type === ADMIN_TYPE;
-	const isContact = type === CONTACT_TYPE;
-	const isCashier = type === CASHIER_TYPE;
+	const isAdmin = type === UserType.WebAdmin;
+	const isContact = type === UserType.Contacto;
+	const isCashier = type === UserType.Cajero;
 
 	const onOpenMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
 		setAnchorEl(event.currentTarget);

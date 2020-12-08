@@ -9,6 +9,7 @@ import LibraryBooksIcon from '@material-ui/icons/LibraryBooks';
 import SettingsIcon from '@material-ui/icons/Settings';
 import WorkIcon from '@material-ui/icons/Work';
 import moment from 'moment';
+import { LiquidationStatus, RefundStatus } from 'common/utils';
 
 type MaterialIcon = OverridableComponent<SvgIconTypeMap<{}, 'svg'>>;
 
@@ -402,70 +403,41 @@ export const REPORT_OPTIONS = [
 	},
 ];
 
-export const CONSUME_TYPE = 'CON';
-export const S_TRANSFER_TYPE = 'STR';
-export const I_TRANSFER_TYPE = 'ITR';
-export const RECHARGE_TYPE = 'REC';
-
-export const ADMIN_TYPE = 'WebAdmin';
-export const CASHIER_TYPE = 'Cashier';
-export const CONTACT_TYPE = 'Contact';
-
-export const USER_TYPES = [
-	{
-		value: ADMIN_TYPE,
-		label: ADMIN_TYPE,
-	},
-	{
-		value: CASHIER_TYPE,
-		label: CASHIER_TYPE,
-	},
-	{
-		value: CONTACT_TYPE,
-		label: CONTACT_TYPE,
-	},
-];
-
 export const TEXT_MAX_LENGTH = 150;
 
 export const NUMERIC_FIELD_MESSAGE = 'El campo debe ser numérico';
 
-export const OPERATION_CANCELED = 'Canceled';
-export const OPERATION_GENERATED = 'Generated';
-export const OPERATION_SCHEDULED = 'Scheduled';
-export const OPERATION_PAID = 'Paid';
-
 export const REFUND_STATUSES = [
 	{
-		value: OPERATION_CANCELED,
-		label: 'ANULADO',
+		value: RefundStatus.Anulado,
+		label: RefundStatus.Anulado.toUpperCase(),
 	},
 	{
-		value: OPERATION_SCHEDULED,
-		label: 'PROGRAMADO',
+		value: RefundStatus.Programado,
+		label: RefundStatus.Programado.toUpperCase(),
 	},
 	{
-		value: OPERATION_PAID,
-		label: 'PAGADO',
+		value: RefundStatus.Pagado,
+		label: RefundStatus.Pagado.toUpperCase(),
 	},
 ];
 
 export const LIQUIDATION_STATUSES = [
 	{
-		value: OPERATION_CANCELED,
-		label: 'ANULADO',
+		value: LiquidationStatus.Anulado,
+		label: LiquidationStatus.Anulado.toUpperCase(),
 	},
 	{
-		value: OPERATION_GENERATED,
-		label: 'GENERADO',
+		value: LiquidationStatus.Generado,
+		label: LiquidationStatus.Generado.toUpperCase(),
 	},
 	{
-		value: OPERATION_SCHEDULED,
-		label: 'PROGRAMADO',
+		value: LiquidationStatus.Programado,
+		label: LiquidationStatus.Programado.toUpperCase(),
 	},
 	{
-		value: OPERATION_PAID,
-		label: 'PAGADO',
+		value: LiquidationStatus.Pagado,
+		label: LiquidationStatus.Pagado.toUpperCase(),
 	},
 ];
 

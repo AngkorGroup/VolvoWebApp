@@ -1,10 +1,4 @@
-import {
-	CONSUME_TYPE,
-	S_TRANSFER_TYPE,
-	I_TRANSFER_TYPE,
-	RECHARGE_TYPE,
-} from 'common/constants/constants';
-import { CardBatch, Movement } from 'common/utils';
+import { CardBatch, Movement, MovementType } from 'common/utils';
 
 export interface CardMovement {
 	id: string;
@@ -54,13 +48,16 @@ export const mapMovements = (movements: Movement[]): CardMovement[] => {
 			let voucherURL = '';
 			let operationNumber = '';
 			let id = '';
-			if (type === CONSUME_TYPE) {
+			if (type === MovementType.Consume) {
 				operationNumber = charge?.operationCode;
 				voucherURL = charge?.imageUrl;
-			} else if (type === S_TRANSFER_TYPE || type === I_TRANSFER_TYPE) {
+			} else if (
+				type === MovementType.TransferOut ||
+				type === MovementType.TransferIn
+			) {
 				operationNumber = transfer?.operationCode;
 				voucherURL = transfer?.imageUrl;
-			} else if (type === RECHARGE_TYPE) {
+			} else if (type === MovementType.Recharge) {
 				id = `${batchId}`;
 			}
 			return {

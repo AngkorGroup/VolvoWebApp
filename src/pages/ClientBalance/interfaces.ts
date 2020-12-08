@@ -1,9 +1,9 @@
 import {
-	CONSUME_TYPE,
-	S_TRANSFER_TYPE,
-	I_TRANSFER_TYPE,
-} from 'common/constants/constants';
-import { BatchMovement, CardBatch, CardTypeSummary } from 'common/utils';
+	BatchMovement,
+	CardBatch,
+	CardTypeSummary,
+	MovementType,
+} from 'common/utils';
 
 export interface BatchMovementRow {
 	cardNumber: string;
@@ -105,10 +105,13 @@ export const mapExpirationMovements = (
 		const { charge, transfer, type } = movement || {};
 		let voucherURL = '';
 		let number = '';
-		if (type === CONSUME_TYPE) {
+		if (type === MovementType.Consume) {
 			number = charge?.operationCode;
 			voucherURL = charge?.imageUrl;
-		} else if (type === S_TRANSFER_TYPE || type === I_TRANSFER_TYPE) {
+		} else if (
+			type === MovementType.TransferOut ||
+			type === MovementType.TransferIn
+		) {
 			number = transfer?.operationCode;
 			voucherURL = transfer?.imageUrl;
 		}
