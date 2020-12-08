@@ -49,7 +49,7 @@ export const LOAD_COLUMNS = [
 		accessor: 'type',
 	},
 	{
-		Header: 'Motivo',
+		Header: 'Área de Negocio',
 		accessor: 'reason',
 	},
 	{
