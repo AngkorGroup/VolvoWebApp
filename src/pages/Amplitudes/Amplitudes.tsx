@@ -11,8 +11,8 @@ import {
 import { mapLoads } from './interfaces';
 import {
 	extendExpiredDate,
-	getQueryLoads,
 	getQueryClients,
+	getLoadsExtend,
 } from 'common/services';
 import { buildAlertBody as at, Option, parseSimpleClients } from 'common/utils';
 import {
@@ -45,8 +45,13 @@ const Amplitudes: React.FC = () => {
 	const [endDate, setEndDate] = useState<MaterialUiPickersDate>(null);
 	const [client, setClient] = useState('all');
 	const { data: dataLoads, status: statusLoads, refetch } = useQuery(
-		['loads', startDate?.format(FORMAT), endDate?.format(FORMAT), client],
-		getQueryLoads,
+		[
+			'getLoadsExtend',
+			startDate?.format(FORMAT),
+			endDate?.format(FORMAT),
+			client,
+		],
+		getLoadsExtend,
 	);
 	const loads = useMemo(() => {
 		if (dataLoads?.ok) {

@@ -4,6 +4,7 @@ export const FORGOT_PASSWORD_URL = '/forgot_password';
 export const REQUEST_FORGOT_PASSWORD_URL = '/request_recover_password';
 export const CHANGE_PASSWORD_URL = 'profile/change_password';
 export const BATCHES_URL = '/batches';
+export const BATCHES_EXPIRES_AT_EXTENT = `${BATCHES_URL}/expires_at_extent`;
 export const MASSIVE_UPLOAD = `${BATCHES_URL}/massive_load`;
 export const PRE_MASSIVE_UPLOAD = `${BATCHES_URL}/pre_massive_load`;
 export const BATCHES_BY_CLIENT_URL = `${BATCHES_URL}/by_client`;

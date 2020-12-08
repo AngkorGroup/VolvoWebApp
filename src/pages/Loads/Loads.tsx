@@ -17,7 +17,6 @@ import LoadRow from './LoadRow/LoadRow';
 import { LOAD_COLUMNS } from './columns';
 import { massiveUpload, preMassiveUpload } from 'common/services';
 import { useAlert } from 'react-alert';
-import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles(() =>
 	createStyles({
@@ -36,7 +35,6 @@ const useStyles = makeStyles(() =>
 
 const Loads: React.FC = () => {
 	const classes = useStyles();
-	const { push } = useHistory();
 	const inputRef = useRef<HTMLInputElement>(null);
 	const [allErrors, setAllErrors] = useState(false);
 	const [showConfirm, setShowConfirm] = useState(false);
@@ -83,9 +81,7 @@ const Loads: React.FC = () => {
 				const alertBody = loadErrors?.length
 					? 'Se realizó la carga masiva de recargas de los registros sin errores'
 					: 'Se realizó la carga masiva de recargas correctamente';
-				alert.success(at(alertTitle, alertBody), {
-					onClose: () => push('/operations/consult_loads'),
-				});
+				alert.success(at(alertTitle, alertBody));
 			} else {
 				alert.error(
 					at(
