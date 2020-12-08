@@ -405,6 +405,7 @@ export const REPORT_OPTIONS = [
 export const CONSUME_TYPE = 'CON';
 export const S_TRANSFER_TYPE = 'STR';
 export const I_TRANSFER_TYPE = 'ITR';
+export const RECHARGE_TYPE = 'REC';
 
 export const ADMIN_TYPE = 'WebAdmin';
 export const CASHIER_TYPE = 'Cashier';

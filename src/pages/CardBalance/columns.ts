@@ -5,6 +5,7 @@ import {
 
 export const MOVEMENT_COLUMNS = [
 	{ title: 'Tipo', value: 'type' },
+	{ title: '# Recarga', props: { align: COLUMN_CENTER }, value: 'id' },
 	{ title: '# Op.', value: 'operationNumber' },
 	{ title: 'Fecha Op.', value: 'operationDate' },
 	{ title: 'Motivo', value: 'reason' },

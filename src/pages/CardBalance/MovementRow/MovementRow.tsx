@@ -15,6 +15,7 @@ const MovementRow = ({ item }: MovementRowProps) => {
 	const onOpenModal = () => setShowModal(true);
 	const onCloseModal = () => setShowModal(false);
 	const {
+		id,
 		type,
 		operationNumber,
 		operationDate,
@@ -30,6 +31,7 @@ const MovementRow = ({ item }: MovementRowProps) => {
 	return (
 		<TableRow>
 			<TableCell>{type}</TableCell>
+			<TableCell>{id}</TableCell>
 			<TableCell>{operationNumber}</TableCell>
 			<TableCell>{operationDate}</TableCell>
 			<TableCell>{reason}</TableCell>
