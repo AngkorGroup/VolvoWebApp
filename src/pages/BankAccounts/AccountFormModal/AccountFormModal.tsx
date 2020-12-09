@@ -19,18 +19,17 @@ import AppContext from 'AppContext';
 import { VolvoButton } from 'common/components';
 import { getQueryBankAccountTypes, getQueryBanks } from 'common/services';
 import { parseCommonValue } from 'common/utils';
-import { BankAccountSchema } from 'common/validations';
+import { AccountForm, BankAccountSchema } from 'common/validations';
 import { Field, Form, Formik } from 'formik';
-import { BankAccountForm } from 'pages/Dealers/interfaces';
 import React, { useContext, useMemo } from 'react';
 import { useQuery } from 'react-query';
 
-interface FormModalProps {
+interface AccountFormModalProps {
 	show: boolean;
 	title: string;
-	values?: BankAccountForm;
+	values?: AccountForm;
 	onClose: () => void;
-	onConfirm: (data: BankAccountForm) => void;
+	onConfirm: (data: AccountForm) => void;
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -46,7 +45,7 @@ const useStyles = makeStyles((theme: Theme) =>
 	}),
 );
 
-const initialValues: BankAccountForm = {
+const initialValues: AccountForm = {
 	id: '',
 	account: '',
 	cci: '',
@@ -63,7 +62,7 @@ const fieldProps = {
 	as: TextField,
 };
 
-const FormModal: React.FC<FormModalProps> = ({
+const AccountFormModal: React.FC<AccountFormModalProps> = ({
 	show,
 	title,
 	values,
@@ -91,7 +90,7 @@ const FormModal: React.FC<FormModalProps> = ({
 		return [];
 	}, [typesData]);
 
-	const handleSubmit = (data: BankAccountForm) => {
+	const handleSubmit = (data: AccountForm) => {
 		onConfirm(data);
 		onClose();
 	};
@@ -203,4 +202,4 @@ const FormModal: React.FC<FormModalProps> = ({
 	);
 };
 
-export default FormModal;
+export default AccountFormModal;

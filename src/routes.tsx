@@ -36,6 +36,12 @@ const PageBankAccountTypes = (props: any) => {
 	return <LayoutBankAccountTypes {...props} />;
 };
 
+const PageBankAccounts = (props: any) => {
+	const BankAccounts = lazy(() => import('./pages/BankAccounts/BankAccounts'));
+	const LayoutBankAccounts = HOCLayout(BankAccounts);
+	return <LayoutBankAccounts {...props} />;
+};
+
 const PageCurrencies = (props: any) => {
 	const Currencies = lazy(() => import('./pages/Currencies/Currencies'));
 	const LayoutCurrencies = HOCLayout(Currencies);
@@ -235,6 +241,11 @@ export const guarded: Route[] = [
 		id: 'BANK_ACCOUNT_TYPES',
 		path: '/configuration/bank_account_types',
 		component: PageBankAccountTypes,
+	},
+	{
+		id: 'BANK_ACCOUNTS',
+		path: '/configuration/bank_accounts',
+		component: PageBankAccounts,
 	},
 
 	// Cards

@@ -1,15 +1,15 @@
 import { makeStyles } from '@material-ui/core';
-import { ConfirmationModal, VolvoIconButton } from 'common/components';
-import React, { useState } from 'react';
 import CreateIcon from '@material-ui/icons/Create';
 import DeleteIcon from '@material-ui/icons/Delete';
-import { CardTypeForm, TableCardType } from '../interfaces';
-import FormModal from '../FormModal/FormModal';
-import { ACTIONS_STYLE } from 'common/constants';
+import { ConfirmationModal, VolvoIconButton } from 'common/components';
+import { ACTIONS_STYLE, TableAccount } from 'common/constants';
+import { AccountForm } from 'common/validations';
+import React, { useState } from 'react';
+import AccountFormModal from '../AccountFormModal/AccountFormModal';
 
-interface CardTypeActionsProps {
-	item: TableCardType;
-	onEdit: (data: CardTypeForm) => void;
+interface AccountActionsProps {
+	item: TableAccount;
+	onEdit: (data: AccountForm) => void;
 	onDelete: (id: string) => void;
 }
 
@@ -17,7 +17,7 @@ const useStyles = makeStyles({
 	actionButtons: ACTIONS_STYLE,
 });
 
-const CardTypeActions: React.FC<CardTypeActionsProps> = ({
+const AccountActions: React.FC<AccountActionsProps> = ({
 	item,
 	onEdit,
 	onDelete,
@@ -25,7 +25,7 @@ const CardTypeActions: React.FC<CardTypeActionsProps> = ({
 	const classes = useStyles();
 	const [showEdit, setShowEdit] = useState(false);
 	const [showDelete, setShowDelete] = useState(false);
-	const { id, type, archiveAt } = item;
+	const { id, archiveAt } = item;
 	return (
 		<>
 			{!archiveAt && (
@@ -37,10 +37,10 @@ const CardTypeActions: React.FC<CardTypeActionsProps> = ({
 						<DeleteIcon />
 					</VolvoIconButton>
 					{showEdit && (
-						<FormModal
-							title='Editar Tipo de Tarjeta'
+						<AccountFormModal
+							title='Editar Cuenta Bancaria'
 							show={showEdit}
-							values={item as CardTypeForm}
+							values={item as AccountForm}
 							onClose={() => setShowEdit(false)}
 							onConfirm={onEdit}
 						/>
@@ -49,8 +49,8 @@ const CardTypeActions: React.FC<CardTypeActionsProps> = ({
 						<ConfirmationModal
 							show={showDelete}
 							id={id}
-							title='Eliminar Tipo de Tarjeta'
-							body={`¿Está seguro que desea eliminar el tipo de tarjeta ${type}?`}
+							title='Eliminar Cuenta Bancaria'
+							body={`¿Está seguro que desea eliminar la siguiente cuenta bancaria?`}
 							onClose={() => setShowDelete(false)}
 							onConfirm={onDelete}
 						/>
@@ -61,4 +61,4 @@ const CardTypeActions: React.FC<CardTypeActionsProps> = ({
 	);
 };
 
-export default CardTypeActions;
+export default AccountActions;

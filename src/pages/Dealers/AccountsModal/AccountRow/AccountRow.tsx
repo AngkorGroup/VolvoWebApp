@@ -2,8 +2,8 @@ import { Menu, MenuItem, TableCell, TableRow } from '@material-ui/core';
 import React, { useState } from 'react';
 import SettingsIcon from '@material-ui/icons/Settings';
 import { ConfirmationModal, VolvoIconButton } from 'common/components';
-import { TableAccount } from 'pages/Dealers/interfaces';
 import FormModal from '../FormModal/FormModal';
+import { TableAccount } from 'common/constants';
 
 interface AccountRowProps {
 	item: TableAccount;
