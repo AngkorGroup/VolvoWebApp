@@ -20,8 +20,8 @@ import {
 import {
 	getFilename,
 	parseCardTypes,
-	parseClients,
 	parseCommonValue,
+	parseSimpleClients,
 } from 'common/utils';
 import React, { useContext } from 'react';
 import { ReactComponent as ExcelIcon } from 'common/icons/excel.svg';
@@ -186,7 +186,7 @@ const InnerComponent: React.FC<ReportMakerProps> = ({
 									label={'Clientes'}
 									param={'clients'}
 									getEndpoint={getReportClients}
-									parser={parseClients}
+									parser={parseSimpleClients}
 								/>
 							</Grid>
 						)}

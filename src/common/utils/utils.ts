@@ -224,7 +224,7 @@ export const parseSimpleClients = (
 ): Option[] => {
 	const options = clients.map(({ id, ruc, name }) => ({
 		value: `${id}`,
-		label: `${ruc}-${name}`,
+		label: `${ruc} - ${name}`,
 	}));
 	return withAll ? optionsWithAll(options) : options;
 };
