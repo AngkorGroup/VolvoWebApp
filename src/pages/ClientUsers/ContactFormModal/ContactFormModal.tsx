@@ -15,17 +15,16 @@ import {
 } from '@material-ui/core';
 import AppContext from 'AppContext';
 import { VolvoButton } from 'common/components';
-import { ClientUserSchema } from 'common/validations';
+import { ClientUserForm, ClientUserSchema } from 'common/validations';
 import { Field, Form, Formik } from 'formik';
 import React, { useContext } from 'react';
-import { ClientUser } from '../interfaces';
 
-interface FormModalProps {
+interface ContactFormModalProps {
 	show: boolean;
 	title: string;
-	values: ClientUser;
+	values: ClientUserForm;
 	onClose: () => void;
-	onConfirm: (data: ClientUser) => void;
+	onConfirm: (data: ClientUserForm) => void;
 }
 
 const fieldProps = {
@@ -48,16 +47,16 @@ const useStyles = makeStyles((theme: Theme) =>
 	}),
 );
 
-const FormModal: React.FC<FormModalProps> = ({
+const ContactFormModal: React.FC<ContactFormModalProps> = ({
 	show,
 	title,
 	values,
 	onClose,
 	onConfirm,
-}: FormModalProps) => {
+}: ContactFormModalProps) => {
 	const classes = useStyles();
 	const { documentTypes } = useContext(AppContext);
-	const handleSubmit = (data: ClientUser) => {
+	const handleSubmit = (data: ClientUserForm) => {
 		onConfirm(data);
 		onClose();
 	};
@@ -81,8 +80,8 @@ const FormModal: React.FC<FormModalProps> = ({
 										<Field
 											labelId='documentTypeLabel'
 											label='Tipo de Documento'
-											name='documentType'
-											error={touched.documentType && !!errors.documentType}
+											name='documentTypeId'
+											error={touched.documentTypeId && !!errors.documentTypeId}
 											as={Select}
 										>
 											{documentTypes.map((d) => (
@@ -151,4 +150,4 @@ const FormModal: React.FC<FormModalProps> = ({
 	);
 };
 
-export default FormModal;
+export default ContactFormModal;

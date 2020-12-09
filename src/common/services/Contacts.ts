@@ -4,6 +4,7 @@ import {
 	GET_CONTACTS_BY_CLIENTS_URL,
 } from 'common/constants/api';
 import { api, Contact } from 'common/utils';
+import { ClientUserForm } from 'common/validations';
 
 export const getContactsByClient = async (
 	clientId: string,
@@ -15,11 +16,19 @@ export const getContactsByClient = async (
 	});
 };
 
+export const getQueryContactsByClient = async (
+	key: string,
+	clientId: string,
+	onlyActive?: boolean,
+) => {
+	return await getContactsByClient(clientId, onlyActive);
+};
+
 export const getContactsByFilter = async (query?: string) => {
 	return await api.get<Contact[]>(GET_CONTACTS_BY_FILTER_URL, { query });
 };
 
-export const editContact = async (contact: Partial<Contact>) => {
+export const editContact = async (contact: ClientUserForm) => {
 	return await api.put<Contact>(`${CONTACT_URL}/${contact.id}`, contact);
 };
 

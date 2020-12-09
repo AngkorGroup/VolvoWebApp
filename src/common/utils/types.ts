@@ -65,7 +65,7 @@ export interface Contact {
 	type: string;
 	phone: string;
 	email: string;
-	documentType: string;
+	documentTypeId: number;
 	documentNumber: string;
 	status: string;
 	clientId: number;
