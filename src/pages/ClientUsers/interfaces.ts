@@ -1,19 +1,31 @@
 import { Contact } from 'common/utils';
 
-export type ClientUser = Partial<Contact>;
+export interface ContactColumn {
+	id: string;
+	documentTypeId: string;
+	documentNumber: string;
+	type: string;
+	phone: string;
+	email: string;
+	fullName: string;
+	firstName: string;
+	lastName: string;
+	status: string;
+	archiveAt: string;
+}
 
-export const mapContact = (contact: Contact) => ({
-	id: contact.id,
-	documentType: contact.documentType,
-	documentNumber: contact.documentNumber,
-	type: contact.type,
-	phone: contact.phone,
-	email: contact.email,
-	firstName: contact.firstName,
-	lastName: contact.lastName,
-	status: contact.status,
-});
-
-export const mapContacts = (contacts: Contact[]) => {
-	return contacts.map(mapContact);
+export const mapContacts = (contacts: Contact[]): ContactColumn[] => {
+	return contacts.map((contact: Contact) => ({
+		id: `${contact.id}`,
+		documentTypeId: `${contact.documentTypeId}`,
+		documentNumber: contact.documentNumber,
+		type: contact.type,
+		phone: contact.phone,
+		email: contact.email,
+		fullName: contact.fullName,
+		firstName: contact.firstName,
+		lastName: contact.lastName,
+		status: contact.status,
+		archiveAt: contact.archiveAt,
+	}));
 };

@@ -1,98 +1,72 @@
-import React, { useEffect, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import {
 	AsyncTypeAhead,
-	BasicTable,
 	EmptyState,
+	GenericTable,
 	OnlyActiveFilter,
-	PageActionBar,
 	PageBody,
 	PageLoader,
 	PageTitle,
-	TableFilter,
 } from 'common/components';
-import { buildAlertBody as at, filterRows, parseClients } from 'common/utils';
-import { ClientUser, mapContact, mapContacts } from './interfaces';
-import ClientUserRow from './ClientUserRow/ClientUserRow';
+import { buildAlertBody as at, parseClients } from 'common/utils';
+import { mapContacts } from './interfaces';
 import { CLIENT_USER_COLUMNS } from './columns';
-import { Contact, Option } from 'common/utils/types';
+import { Option } from 'common/utils/types';
 import {
 	editContact,
-	getClients,
-	getContactsByClient,
+	getQueryClients,
 	makeContactPrimary,
+	getQueryContactsByClient,
 } from 'common/services';
 import { useAlert } from 'react-alert';
+import ContactActions from './ContactActions/ContactActions';
+import { ACTIONS_COLUMN_V2 } from 'common/constants';
+import { ClientUserForm } from 'common/validations';
+import { useQuery } from 'react-query';
+
+type Event = React.ChangeEvent<HTMLInputElement>;
+
+const initialContacts: any = { data: [] };
 
 const ClientUsers: React.FC = () => {
-	const [loading, setLoading] = useState(false);
-	const [loadingOptions, setLoadingOptions] = useState(false);
-	const [selectedClient, setSelectedClient] = useState('');
-	const [onlyActive, setOnlyActive] = useState(true);
-	const [clients, setClients] = useState<Option[]>([]);
-	const [query, setQuery] = useState('');
-	const [clientUsers, setClientUsers] = useState<ClientUser[] | null>(null);
-	const [filtered, setFiltered] = useState<ClientUser[]>([]);
 	const alert = useAlert();
-
-	const onOnlyActiveChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		setOnlyActive(e.target.checked);
-	};
-
-	useEffect(() => {
-		const fetchContacts = async () => {
-			if (selectedClient) {
-				setLoading(true);
-				const response = await getContactsByClient(selectedClient, onlyActive);
-				if (response.ok) {
-					const data = mapContacts(response.data || []);
-					setClientUsers(data);
-					setFiltered(data);
-				}
-				setLoading(false);
-			}
-		};
-
-		fetchContacts();
-	}, [selectedClient, onlyActive]);
-
-	useEffect(() => {
-		setLoadingOptions(true);
-		const fetchClients = async () => {
-			const response = await getClients();
-			setLoadingOptions(false);
-			if (response.ok) {
-				const data = parseClients(response.data || []);
-				setClients(data);
-			}
-		};
-
-		fetchClients();
-	}, []);
-
-	const onFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const newQuery = e.target.value;
-		const filtered = filterRows(newQuery, clientUsers);
-		setQuery(newQuery);
-		setFiltered(filtered);
-	};
-
-	const onTypeQuery = async (e: React.ChangeEvent<HTMLInputElement>) => {
-		setLoadingOptions(true);
-		const response = await getClients(e.target.value);
-		if (response.ok) {
-			const data = parseClients(response.data || []);
-			setClients(data);
+	const [clientId, setClientId] = useState('');
+	const [query, setQuery] = useState('');
+	const [onlyActive, setOnlyActive] = useState(true);
+	const { data, isLoading: loadingOptions } = useQuery(
+		['getQueryClients', query, onlyActive],
+		getQueryClients,
+	);
+	const options = useMemo(() => {
+		if (data?.ok) {
+			return parseClients(data?.data || []);
 		}
-		setLoadingOptions(false);
-	};
+		return [];
+	}, [data]);
 
-	const onClientChange = (_: any, newValue: string | Option) => {
-		setSelectedClient((newValue as Option).value);
-	};
+	const { data: dataContacts, status, isLoading, refetch } = useQuery(
+		['getQueryContactsByClient', clientId, onlyActive],
+		getQueryContactsByClient,
+		{ initialData: clientId ? undefined : initialContacts },
+	);
+	const contacts = useMemo(() => {
+		if (dataContacts?.ok) {
+			return mapContacts(dataContacts?.data || []);
+		}
+		return [];
+	}, [dataContacts]);
+
+	const onOnlyActiveChange = (e: Event) => setOnlyActive(e.target.checked);
+
+	const onTypeQuery = (e: Event) => setQuery(e.target.value);
+
+	const onClientChange = (_: any, newValue: string | Option) =>
+		setClientId((newValue as Option).value);
 
 	const onTurnUser = async (id: string) => {
 		const response = await makeContactPrimary(id);
 		if (response.ok) {
+			refetch();
 			alert.success(
 				at(
 					'Contacto Convertido',
@@ -102,25 +76,40 @@ const ClientUsers: React.FC = () => {
 		}
 	};
 
-	const onEditClient = async (clientUser: ClientUser) => {
-		const response = await editContact(clientUser);
+	const onEditClient = async (form: ClientUserForm) => {
+		const response = await editContact(form);
 		if (response.ok) {
-			const data = mapContact(response.data || ({} as Contact));
-			const newClients = filtered.map((c) => (c.id === data.id ? data : c));
-			setClientUsers(newClients);
-			setFiltered(newClients);
+			refetch();
 			alert.success(
 				at('Contacto Editado', 'Se ha editado el contacto correctamente'),
 			);
 		}
 	};
 
+	const columns = useMemo(
+		() => [
+			...CLIENT_USER_COLUMNS,
+			{
+				...ACTIONS_COLUMN_V2,
+				Cell: (cell: any) => (
+					<ContactActions
+						item={cell?.row?.original}
+						onEdit={onEditClient}
+						onTurnUser={onTurnUser}
+					/>
+				),
+			},
+		],
+		// eslint-disable-next-line
+		[],
+	);
+
 	return (
 		<div>
 			<div>
 				<PageTitle title='Contactos por Cliente' />
 				<AsyncTypeAhead
-					options={clients}
+					options={options}
 					placeholder='Cliente'
 					loading={loadingOptions}
 					onChange={onClientChange}
@@ -128,30 +117,22 @@ const ClientUsers: React.FC = () => {
 				/>
 			</div>
 			<PageBody>
-				{loading && <PageLoader />}
-				{!loading && !clientUsers && <EmptyState text='Ingrese un cliente' />}
-				{!loading && !!clientUsers && clientUsers.length > 0 && (
-					<React.Fragment>
-						<PageActionBar>
-							<TableFilter value={query} onChange={onFilterChange} />
-							<OnlyActiveFilter
-								checked={onlyActive}
-								onChange={onOnlyActiveChange}
-							/>
-						</PageActionBar>
-						<BasicTable columns={CLIENT_USER_COLUMNS}>
-							<React.Fragment>
-								{filtered.map((item, i: number) => (
-									<ClientUserRow
-										key={i}
-										item={item}
-										onEdit={onEditClient}
-										onTurnUser={onTurnUser}
-									/>
-								))}
-							</React.Fragment>
-						</BasicTable>
-					</React.Fragment>
+				{isLoading && <PageLoader />}
+				{!isLoading && !clientId && <EmptyState text='Ingrese un cliente' />}
+				{!isLoading && clientId && status === 'success' && (
+					<PageBody>
+						<GenericTable
+							filename={`Contactos_por_cliente_${clientId}`}
+							columns={columns}
+							data={contacts}
+							customFilters={
+								<OnlyActiveFilter
+									checked={onlyActive}
+									onChange={onOnlyActiveChange}
+								/>
+							}
+						/>
+					</PageBody>
 				)}
 			</PageBody>
 		</div>
