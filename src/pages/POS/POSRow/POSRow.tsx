@@ -23,6 +23,7 @@ const POSRow = ({ item, onEdit, onDelete, onResetPassword }: POSRowProps) => {
 		tpCode,
 		phone,
 		email,
+		status,
 		imei,
 		firstName,
 		lastName,
@@ -56,6 +57,7 @@ const POSRow = ({ item, onEdit, onDelete, onResetPassword }: POSRowProps) => {
 				</TableCell>
 				<TableCell>{phone}</TableCell>
 				<TableCell>{email}</TableCell>
+				<TableCell>{status}</TableCell>
 				<TableCell>{archiveAt}</TableCell>
 				<TableCell align='center'>
 					{!archiveAt && (

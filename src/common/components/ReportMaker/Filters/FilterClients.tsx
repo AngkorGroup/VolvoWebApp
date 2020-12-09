@@ -1,6 +1,6 @@
 import AsyncTypeAhead from 'common/components/AsyncTypeAhead/AsyncTypeAhead';
 import { getQueryClients } from 'common/services';
-import { Option, parseClients } from 'common/utils';
+import { Option, parseSimpleClients } from 'common/utils';
 import React, { useContext, useMemo, useState } from 'react';
 import { useQuery } from 'react-query';
 import ReportMakerContext from '../ReportMakerContext';
@@ -14,7 +14,7 @@ const FilterClients = () => {
 	);
 	const clients = useMemo(() => {
 		if (data?.ok) {
-			return parseClients(data?.data || [], true);
+			return parseSimpleClients(data?.data || [], true);
 		}
 		return [];
 	}, [data]);

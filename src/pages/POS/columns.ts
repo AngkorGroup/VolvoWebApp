@@ -6,6 +6,7 @@ export const POS_COLUMNS = [
 	{ title: 'Nombre' },
 	{ title: 'Celular' },
 	{ title: 'Email' },
+	{ title: 'Estado' },
 	{ title: 'Fecha Baja' },
 	ACTIONS_COLUMN,
 ];
