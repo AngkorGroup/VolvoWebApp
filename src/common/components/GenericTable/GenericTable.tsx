@@ -148,7 +148,7 @@ const GenericTable: React.FC<GenericTableProps> = ({
 					/>
 					{customFilters}
 				</div>
-				<div className={classes.right}>
+				<div className={!!rightButton ? classes.right : ''}>
 					{filename && (
 						<DownloadExcel name={filename} columns={excelColumns} data={data} />
 					)}

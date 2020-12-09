@@ -7,7 +7,12 @@ import {
 } from 'common/constants';
 import moment, { Moment } from 'moment';
 import numeral from 'numeral';
-import { ChargeType, ChargeTypeKey } from './enums';
+import {
+	ChargeType,
+	ChargeTypeKey,
+	ContactType,
+	ContactTypeKey,
+} from './enums';
 import {
 	Account,
 	Card,
@@ -228,3 +233,5 @@ export const parseSimpleClients = (
 	}));
 	return withAll ? optionsWithAll(options) : options;
 };
+
+export const renderContactType = (type: ContactTypeKey) => ContactType[type];

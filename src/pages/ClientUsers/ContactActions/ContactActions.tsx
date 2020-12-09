@@ -7,6 +7,7 @@ import { ContactColumn } from '../interfaces';
 import ContactFormModal from '../ContactFormModal/ContactFormModal';
 import { ACTIONS_STYLE } from 'common/constants';
 import { ClientUserForm } from 'common/validations';
+import { ContactTypeKey } from 'common/utils';
 
 interface ContactActionsProps {
 	item: ContactColumn;
@@ -37,7 +38,7 @@ const ContactActions: React.FC<ContactActionsProps> = ({
 					>
 						<CreateIcon />
 					</VolvoIconButton>
-					{type !== 'Primary' && (
+					{type !== ContactTypeKey.Primary && (
 						<VolvoIconButton
 							color='info'
 							title='Dar de alta como usuario'
