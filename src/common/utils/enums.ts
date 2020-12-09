@@ -40,3 +40,13 @@ export enum ChargeType {
 	Rejected = 'Rechazado',
 	Canceled = 'Cancelado',
 }
+
+export enum ContactTypeKey {
+	Primary = 'Primary',
+	Secondary = 'Secondary',
+}
+
+export enum ContactType {
+	Primary = 'Principal',
+	Secondary = 'Secundario',
+}

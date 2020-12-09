@@ -1,3 +1,5 @@
+import { renderContactType } from 'common/utils';
+
 export const CLIENT_USER_COLUMNS = [
 	{
 		Header: 'Tipo Doc.',
@@ -10,6 +12,7 @@ export const CLIENT_USER_COLUMNS = [
 	{
 		Header: 'Tipo',
 		accessor: 'type',
+		Cell: (cell: any) => renderContactType(cell.value),
 	},
 	{
 		Header: 'Celular',
