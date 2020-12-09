@@ -6,9 +6,12 @@ import {
 } from 'common/constants/api';
 import { api, BatchMovement, Card } from 'common/utils';
 
+export const getQueryCardsByFilter = async (key: string, query?: string) => {
+	return await getCardsByFilter(query);
+};
+
 export const getCardsByFilter = async (query?: string) => {
-	const pathQuery = query ? `?query=${query}` : '';
-	return await api.get<Card[]>(`${CARDS_BY_FILTER}${pathQuery}`);
+	return await api.get<Card[]>(CARDS_BY_FILTER, { query });
 };
 
 export const getCardsByClient = async (

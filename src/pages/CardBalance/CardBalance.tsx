@@ -1,35 +1,30 @@
 import { createStyles, makeStyles } from '@material-ui/core';
+import CancelIcon from '@material-ui/icons/Cancel';
 import {
+	Amount,
 	AsyncTypeAhead,
 	CustomTab,
 	CustomTabs,
 	EmptyState,
-	PageActionBar,
+	GenericTable,
 	PageBody,
 	PageLoader,
 	PageTitle,
-	PaginatedTable,
-	TableFilter,
 	TabPanel,
 	VolvoCard,
 } from 'common/components';
-import { TABLE_ROWS_PER_PAGE } from 'common/constants/tableColumn';
+import { ACTIONS_COLUMN_V2 } from 'common/constants/tableColumn';
 import {
-	getCardBatches,
-	getCardsByFilter,
-	getMovementsByCard,
+	getQueryCardBatches,
+	getQueryCardsByFilter,
+	getQueryMovementsByCard,
 } from 'common/services';
-import { Card, filterRows, Option, parseCards } from 'common/utils';
-import React, { useEffect, useMemo, useState } from 'react';
-import { EXPIRATION_COLUMNS, MOVEMENT_COLUMNS } from './columns';
-import ExpirationRow from './ExpirationRow/ExpirationRow';
-import {
-	Expiration,
-	mapExpirations,
-	CardMovement,
-	mapMovements,
-} from './interface';
-import MovementRow from './MovementRow/MovementRow';
+import { Card, getKeyStatus, Option, parseCards } from 'common/utils';
+import React, { useMemo, useState } from 'react';
+import { useQuery } from 'react-query';
+import { NEW_EXPIRATION_COLUMNS, NEW_MOVEMENT_COLUMNS } from './columns';
+import { mapExpirations, CardMovement, mapMovements } from './interface';
+import MovementActions from './MovementActions/MovementActions';
 
 const useStyles = makeStyles(
 	createStyles({
@@ -47,132 +42,90 @@ const useStyles = makeStyles(
 	}),
 );
 
+export const renderMovementAmount = (item: CardMovement) => {
+	const { chargeStatus, amount } = item;
+	const status = getKeyStatus(chargeStatus as any);
+	return (
+		<>
+			{status === 'P' && `(${status}) `}
+			{status === 'R' && <CancelIcon color='error' titleAccess='Rechazado' />}
+			<Amount value={amount} />
+		</>
+	);
+};
+
+type Event = React.ChangeEvent<HTMLInputElement>;
+
+const initialMovements: any = { data: [] };
+const initialExpiration: any = { data: [] };
+
 const CardBalance: React.FC = () => {
 	const classes = useStyles();
 	const [tab, setTab] = useState(0);
-	const [loading, setLoading] = useState(false);
-	const [loadingOptions, setLoadingOptions] = useState(false);
-	const [options, setOptions] = useState<Option[]>([]);
+	const [query, setQuery] = useState('');
+	const [cardId, setCardId] = useState('');
 	const [cards, setCards] = useState<Card[]>([]);
-	const [queryMovement, setQueryMovement] = useState('');
-	const [queryExpiration, setQueryExpiration] = useState('');
 	const [card, setCard] = useState<Card | null>(null);
-	const [movements, setMovements] = useState<CardMovement[]>([]);
-	const [filteredMovements, setFilteredMovements] = useState<CardMovement[]>(
-		[],
-	);
-	const [expirations, setExpirations] = useState<Expiration[]>([]);
-	const [filteredExpirations, setFilteredExpirations] = useState<Expiration[]>(
-		[],
-	);
-	const [movPage, setMovPage] = useState(0);
-	const [movRowsPerPage, setRowsMovPerPage] = useState(TABLE_ROWS_PER_PAGE);
-	const [expPage, setExpPage] = useState(0);
-	const [expRowsPerPage, setExpRowsPerPage] = useState(TABLE_ROWS_PER_PAGE);
 	const onTabChange = (_: any, newTab: number) => setTab(newTab);
-
-	useEffect(() => {
-		setLoadingOptions(true);
-		const fetchCards = async () => {
-			const response = await getCardsByFilter();
-			if (response.ok) {
-				const data = parseCards(response.data || []);
-				setCards(response.data || []);
-				setOptions(data);
-			}
-			setLoadingOptions(false);
-		};
-
-		fetchCards();
-	}, []);
-
-	const onMovChangePage = (_: any, newPage: number) => {
-		setMovPage(newPage);
-	};
-
-	const onMovChangeRowsPerPage = (
-		event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-	) => {
-		setRowsMovPerPage(parseInt(event.target.value, 10));
-		setMovPage(0);
-	};
-
-	const onExpChangePage = (_: any, newPage: number) => {
-		setExpPage(newPage);
-	};
-
-	const onExpChangeRowsPerPage = (
-		event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-	) => {
-		setExpRowsPerPage(parseInt(event.target.value, 10));
-		setExpPage(0);
-	};
-
-	const onTypeCard = async (e: React.ChangeEvent<HTMLInputElement>) => {
-		setLoadingOptions(true);
-		const response = await getCardsByFilter(e.target.value);
-		if (response.ok) {
-			const data = parseCards(response.data || []);
-			setCards(response.data || []);
-			setOptions(data);
+	const { data: dataOptions, isLoading: loadingOptions } = useQuery(
+		['getQueryCardsByFilter', query],
+		getQueryCardsByFilter,
+	);
+	const options = useMemo(() => {
+		if (dataOptions?.ok) {
+			setCards(dataOptions?.data || []);
+			return parseCards(dataOptions?.data || []);
 		}
-		setLoadingOptions(false);
-	};
+		return [];
+	}, [dataOptions]);
+
+	const movementQuery = useQuery(
+		['getQueryMovementsByCard', cardId],
+		getQueryMovementsByCard,
+		{ initialData: cardId ? undefined : initialExpiration },
+	);
+	const movements = useMemo(() => {
+		if (cardId && movementQuery.data?.ok) {
+			return mapMovements(movementQuery.data?.data || []);
+		}
+		return [];
+	}, [movementQuery, cardId]);
+
+	const expirationQuery = useQuery(
+		['getQueryCardBatches', cardId],
+		getQueryCardBatches,
+		{ initialData: cardId ? undefined : initialMovements },
+	);
+	const expirations = useMemo(() => {
+		if (cardId && expirationQuery.data?.ok) {
+			return mapExpirations(expirationQuery.data?.data || []);
+		}
+		return [];
+	}, [expirationQuery, cardId]);
+
+	const onTypeCard = (e: Event) => setQuery(e.target.value);
 
 	const onCardChange = async (_: any, newValue: string | Option) => {
-		setLoading(true);
-		const cardId = (newValue as Option).value;
-		const curCard = cards.find((c) => `${c.id}` === cardId) || null;
+		const id = (newValue as Option).value;
+		const curCard = cards.find((c) => `${c.id}` === id) || null;
+		setCardId(id);
 		setCard(curCard);
-		const movResponse = await getMovementsByCard(cardId);
-		if (movResponse.ok) {
-			const movementRows = mapMovements(movResponse?.data || []);
-			setMovements(movementRows);
-			setFilteredMovements(movementRows);
-		}
-		const expResponse = await getCardBatches(cardId);
-		if (expResponse.ok) {
-			const expirationRows = mapExpirations(expResponse?.data || []);
-			setExpirations(expirationRows);
-			setFilteredExpirations(expirationRows);
-		}
-		setLoading(false);
 	};
 
-	const onMovementFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const newQuery = e.target.value;
-		const filtered = filterRows(newQuery, movements);
-		setQueryMovement(newQuery);
-		setFilteredMovements(filtered);
-		setMovPage(0);
-	};
-
-	const onExpirationFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const newQuery = e.target.value;
-		const filtered = filterRows(newQuery, expirations);
-		setQueryExpiration(newQuery);
-		setFilteredExpirations(filtered);
-		setExpPage(0);
-	};
-
-	const movRows = useMemo(
-		() =>
-			filteredMovements.slice(
-				movPage * movRowsPerPage,
-				movPage * movRowsPerPage + movRowsPerPage,
-			),
-		[movPage, movRowsPerPage, filteredMovements],
+	const movementColumns = useMemo(
+		() => [
+			...NEW_MOVEMENT_COLUMNS,
+			{
+				...ACTIONS_COLUMN_V2,
+				Cell: (cell: any) => <MovementActions item={cell?.row?.original} />,
+			},
+		],
+		// eslint-disable-next-line
+		[],
 	);
 
-	const expRows = useMemo(
-		() =>
-			filteredExpirations.slice(
-				expPage * expRowsPerPage,
-				expPage * expRowsPerPage + expRowsPerPage,
-			),
-		[expPage, expRowsPerPage, filteredExpirations],
-	);
-	const cardType = card?.cardType?.name || '';
+	const loading = movementQuery.isLoading || expirationQuery.isLoading;
+
 	return (
 		<div>
 			<div className={classes.header}>
@@ -210,61 +163,22 @@ const CardBalance: React.FC = () => {
 							<CustomTab id='movements' label='Movimientos' />
 							<CustomTab id='expirations' label='Vencimientos' />
 						</CustomTabs>
-						{!loading && movements.length > 0 && (
+						{!movementQuery.isLoading && movements.length > 0 && (
 							<TabPanel value={tab} index={0}>
-								<PageActionBar>
-									<TableFilter
-										value={queryMovement}
-										onChange={onMovementFilterChange}
-									/>
-								</PageActionBar>
-								<PaginatedTable
-									columns={MOVEMENT_COLUMNS}
-									count={filteredMovements.length}
-									page={movPage}
-									rowsPerPage={movRowsPerPage}
-									onChangePage={onMovChangePage}
-									onChangeRowsPerPage={onMovChangeRowsPerPage}
-									name={`Saldos Tarjeta Movimientos ${card?.code}`}
+								<GenericTable
+									filename={`Saldos_Tarjeta_Movimientos_${card?.code}`}
+									columns={movementColumns}
 									data={movements}
-									exportExcel
-								>
-									<React.Fragment>
-										{movRows.map((item, i: number) => (
-											<MovementRow key={i} item={item} />
-										))}
-									</React.Fragment>
-								</PaginatedTable>
+								/>
 							</TabPanel>
 						)}
-						{!loading && expirations.length > 0 && (
+						{!expirationQuery.isLoading && expirations.length > 0 && (
 							<TabPanel value={tab} index={1}>
-								<PageActionBar>
-									<TableFilter
-										value={queryExpiration}
-										onChange={onExpirationFilterChange}
-									/>
-								</PageActionBar>
-								<PaginatedTable
-									columns={EXPIRATION_COLUMNS}
-									count={filteredExpirations.length}
-									page={expPage}
-									rowsPerPage={expRowsPerPage}
-									onChangePage={onExpChangePage}
-									onChangeRowsPerPage={onExpChangeRowsPerPage}
-									name={`Saldos Tarjeta Vencimientos ${card?.code}`}
+								<GenericTable
+									filename={`Saldos_Tarjeta_Vencimientos_${card?.code}`}
+									columns={NEW_EXPIRATION_COLUMNS}
 									data={expirations}
-									exportExcel
-								>
-									<React.Fragment>
-										{expRows.map((item, i: number) => (
-											<ExpirationRow
-												key={i}
-												item={{ ...item, type: cardType }}
-											/>
-										))}
-									</React.Fragment>
-								</PaginatedTable>
+								/>
 							</TabPanel>
 						)}
 					</div>
