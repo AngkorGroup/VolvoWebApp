@@ -2,6 +2,7 @@ import { NUMERIC_FIELD_MESSAGE } from 'common/constants';
 import yup from './YupLocale';
 
 export interface AccountForm {
+	id: string;
 	account: string;
 	cci: string;
 	currencyId: string;
@@ -11,6 +12,7 @@ export interface AccountForm {
 }
 
 export const BankAccountSchema = yup.object<AccountForm>({
+	id: yup.string(),
 	account: yup
 		.string()
 		.matches(/^\d+$/, NUMERIC_FIELD_MESSAGE)

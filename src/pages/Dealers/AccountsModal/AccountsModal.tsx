@@ -16,7 +16,7 @@ import { getQueryDealerAccounts } from 'common/services';
 import React, { useMemo, useState } from 'react';
 import { buildAlertBody as at } from 'common/utils';
 import { useQuery } from 'react-query';
-import { BankAccountForm, mapAccounts } from '../interfaces';
+import { BankAccountForm } from '../interfaces';
 import { ACCOUNT_COLUMNS } from '../columns';
 import AccountRow from './AccountRow/AccountRow';
 import {
@@ -26,6 +26,7 @@ import {
 } from 'common/services';
 import FormModal from './FormModal/FormModal';
 import { useAlert } from 'react-alert';
+import { mapAccounts } from 'common/constants';
 
 interface AccountsModalProps {
 	show: boolean;

@@ -77,6 +77,11 @@ export const MENU_ITEMS: MenuItem[] = [
 				title: 'Tipos de Cuenta Bancarias',
 				path: '/configuration/bank_account_types',
 			},
+			{
+				id: 'BANK_ACCOUNTS',
+				title: 'Cuentas Bancarias',
+				path: '/configuration/bank_accounts',
+			},
 		],
 	},
 	{
