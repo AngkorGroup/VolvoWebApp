@@ -7,7 +7,7 @@ import {
 } from 'common/constants';
 import moment, { Moment } from 'moment';
 import numeral from 'numeral';
-import { ChargeType } from './enums';
+import { ChargeType, ChargeTypeKey } from './enums';
 import {
 	Account,
 	Card,
@@ -146,7 +146,7 @@ export const parseCommonValue = (
 	return withAll ? optionsWithAll(options) : options;
 };
 
-export const getKeyStatus = (status: ChargeType) => {
+export const getKeyStatus = (status: ChargeTypeKey) => {
 	const type = ChargeType[status];
 	if (type) {
 		return type[0] || '';

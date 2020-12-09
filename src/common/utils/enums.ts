@@ -27,9 +27,16 @@ export enum MovementType {
 	Extended = 'AVT',
 }
 
+export enum ChargeTypeKey {
+	Pending = 'Pending',
+	Accepted = 'Accepted',
+	Rejected = 'Rejected',
+	Canceled = 'Canceled',
+}
+
 export enum ChargeType {
-	Pendiente = 'Pendiente',
-	Aceptado = 'Aceptado',
-	Rechazado = 'Rechazado',
-	Cancelado = 'Cancelado',
+	Pending = 'Pendiente',
+	Accepted = 'Aceptado',
+	Rejected = 'Rechazado',
+	Canceled = 'Cancelado',
 }
