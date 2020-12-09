@@ -18,3 +18,7 @@ export const extendExpiredDate = async (id: string, newExpiredDate: string) => {
 		newExpiredDate,
 	});
 };
+
+export const getQueryCardBatches = async (key: string, cardId: string) => {
+	return await getCardBatches(cardId);
+};

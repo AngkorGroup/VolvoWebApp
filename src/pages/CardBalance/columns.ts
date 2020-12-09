@@ -1,7 +1,6 @@
-import {
-	ACTIONS_COLUMN,
-	COLUMN_CENTER,
-} from '../../common/constants/tableColumn';
+import { ACTIONS_COLUMN, COLUMN_CENTER } from 'common/constants';
+import { formatNumber } from 'common/utils';
+import { renderMovementAmount } from './CardBalance';
 
 export const MOVEMENT_COLUMNS = [
 	{ title: 'Tipo', value: 'type' },
@@ -16,6 +15,52 @@ export const MOVEMENT_COLUMNS = [
 	ACTIONS_COLUMN,
 ];
 
+export const NEW_MOVEMENT_COLUMNS = [
+	{
+		Header: 'Tipo',
+		accessor: 'type',
+	},
+	{
+		Header: '# Op.',
+		accessor: 'operationNumber',
+	},
+	{
+		Header: 'Fecha Op.',
+		accessor: 'operationDate',
+	},
+	{
+		Header: 'Motivo',
+		accessor: 'reason',
+	},
+	{
+		Header: '# Recarga',
+		accessor: 'id',
+		headerProps: { align: COLUMN_CENTER },
+		props: { align: COLUMN_CENTER },
+	},
+	{
+		Header: 'Monto',
+		accessor: 'amount',
+		Cell: (cell: any) => renderMovementAmount(cell?.row?.original),
+		headerProps: { align: COLUMN_CENTER },
+		props: { align: COLUMN_CENTER },
+	},
+	{
+		Header: 'Dealer',
+		accessor: 'dealerName',
+	},
+	{
+		Header: 'Caja',
+		accessor: 'cashier',
+	},
+	{
+		Header: 'Origen/Destino',
+		accessor: 'source',
+		headerProps: { align: COLUMN_CENTER },
+		props: { align: COLUMN_CENTER },
+	},
+];
+
 export const EXPIRATION_COLUMNS = [
 	{ title: 'Tipo', value: 'type' },
 	{ title: 'Número Tarjeta', value: 'number' },
@@ -24,6 +69,35 @@ export const EXPIRATION_COLUMNS = [
 	{ title: 'Saldo', props: { align: COLUMN_CENTER }, value: 'balance' },
 	{ title: 'Vencimiento', value: 'expirationDate' },
 	//ACTIONS_COLUMN,
+];
+
+export const NEW_EXPIRATION_COLUMNS = [
+	{
+		Header: 'Tipo',
+		accessor: 'type',
+	},
+	{
+		Header: 'Número Tarjeta',
+		accessor: 'number',
+	},
+	{
+		Header: 'Lote',
+		accessor: 'batch',
+	},
+	{
+		Header: 'Moneda',
+		accessor: 'currency',
+	},
+	{
+		Header: 'Saldo',
+		accessor: 'balance',
+		Cell: (cell: any) => formatNumber(cell.value),
+		props: { align: COLUMN_CENTER },
+	},
+	{
+		Header: 'Vencimiento',
+		accessor: 'expirationDate',
+	},
 ];
 
 export const BATCH_COLUMNS = [
