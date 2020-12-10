@@ -25,6 +25,7 @@ import GenericFilter from './GenericFilter/GenericFilter';
 import PageActionBar from '../PageActionBar/PageActionBar';
 import DownloadExcel from '../DownloadExcel/DownloadExcel';
 import { parseExportColumns } from 'common/utils';
+import DownloadPdf from '../DownloadPdf/DownloadPdf';
 
 interface GenericTableProps {
 	containerClass?: string;
@@ -51,6 +52,9 @@ const useStyles = makeStyles((theme: Theme) =>
 			'& > span': {
 				marginRight: theme.spacing(2),
 			},
+		},
+		pdf: {
+			marginRight: theme.spacing(2),
 		},
 	}),
 );
@@ -149,6 +153,14 @@ const GenericTable: React.FC<GenericTableProps> = ({
 					{customFilters}
 				</div>
 				<div className={!!rightButton ? classes.right : ''}>
+					{filename && (
+						<DownloadPdf
+							className={classes.pdf}
+							name={filename}
+							columns={excelColumns}
+							data={data}
+						/>
+					)}
 					{filename && (
 						<DownloadExcel name={filename} columns={excelColumns} data={data} />
 					)}

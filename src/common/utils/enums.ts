@@ -1,3 +1,12 @@
+export enum PDFConfig {
+	orientation = 'landscape',
+	unit = 'pt',
+	size = 'A4',
+	marginLeft = 40,
+	marginTop = 40,
+	fontSize = 15,
+}
+
 export enum UserType {
 	WebAdmin = 'WebAdmin',
 	Contacto = 'Contacto',
