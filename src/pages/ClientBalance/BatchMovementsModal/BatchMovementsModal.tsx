@@ -8,17 +8,18 @@ import {
 	Theme,
 } from '@material-ui/core';
 import {
-	BasicTable,
+	GenericTable,
 	PageLoader,
 	VolvoButton,
 	VolvoCard,
 } from 'common/components';
+import { ACTIONS_COLUMN_V2 } from 'common/constants';
 import { getCardsBatchMovements } from 'common/services';
 import React, { useMemo } from 'react';
 import { useQuery } from 'react-query';
 import { BATCH_MOVEMENTS_COLUMNS } from '../columns';
 import { mapExpirationMovements, VolvoCardData } from '../interfaces';
-import BatchMovementsRow from './BatchMovementsRow/BatchMovementsRow';
+import BatchMovementActions from './BatchMovementActions/BatchMovementActions';
 
 interface BatchMovementsModalProps {
 	show: boolean;
@@ -60,6 +61,19 @@ const BatchMovementsModal: React.FC<BatchMovementsModalProps> = ({
 		return [];
 	}, [data]);
 
+	const columns = useMemo(
+		() => [
+			...BATCH_MOVEMENTS_COLUMNS,
+			{
+				...ACTIONS_COLUMN_V2,
+				Cell: (cell: any) => (
+					<BatchMovementActions item={cell?.row?.original} />
+				),
+			},
+		],
+		[],
+	);
+
 	return (
 		<Dialog
 			fullWidth
@@ -83,13 +97,11 @@ const BatchMovementsModal: React.FC<BatchMovementsModalProps> = ({
 				<div className={classes.batchInfoContainer}>{batchText}</div>
 				{status === 'loading' && <PageLoader />}
 				{status === 'success' && (
-					<BasicTable columns={BATCH_MOVEMENTS_COLUMNS}>
-						<React.Fragment>
-							{batchMovements.map((item, i: number) => (
-								<BatchMovementsRow key={i} item={item} />
-							))}
-						</React.Fragment>
-					</BasicTable>
+					<GenericTable
+						filename={`Saldos_Cliente_Movimientos_por_Lote_${batch}`}
+						columns={columns}
+						data={batchMovements}
+					/>
 				)}
 			</DialogContent>
 			<DialogActions>

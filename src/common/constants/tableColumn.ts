@@ -3,6 +3,7 @@ import { TableCellProps } from '@material-ui/core';
 type Align = 'left' | 'center' | 'right' | 'justify' | 'inherit' | undefined;
 
 export const COLUMN_CENTER: Align = 'center';
+export const COLUMN_RIGHT: Align = 'right';
 
 export const ACTIONS_LABEL = 'Acciones';
 

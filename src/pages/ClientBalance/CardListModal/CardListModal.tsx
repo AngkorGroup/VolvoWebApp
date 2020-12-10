@@ -8,17 +8,18 @@ import {
 	Theme,
 } from '@material-ui/core';
 import {
-	BasicTable,
+	GenericTable,
 	PageLoader,
 	VolvoButton,
 	VolvoCard,
 } from 'common/components';
+import { ACTIONS_COLUMN_V2 } from 'common/constants';
 import { getCardsByClientCardType } from 'common/services';
 import { Card } from 'common/utils';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { CARD_LIST_COLUMNS } from '../columns';
 import { ClientCardRow, VolvoCardData } from '../interfaces';
-import CardListRow from './CardListRow/CardListRow';
+import CardListActions from './CardListActions/CardListActions';
 
 interface CardListModalProps {
 	show: boolean;
@@ -48,7 +49,7 @@ const mapCardList = (data: Card[]): ClientCardRow[] => {
 		number: code,
 		contact: contact?.fullName,
 		phone: contact?.phone,
-		currency: balance?.currency?.symbol,
+		currency: balance?.currencySymbol,
 		balance: balance?.value,
 	}));
 };
@@ -91,6 +92,22 @@ const CardListModal: React.FC<CardListModalProps> = ({
 		color: cardColor,
 	};
 
+	const columns = useMemo(
+		() => [
+			...CARD_LIST_COLUMNS,
+			{
+				...ACTIONS_COLUMN_V2,
+				Cell: (cell: any) => (
+					<CardListActions
+						item={cell?.row?.original}
+						cardData={cardDisplayData}
+					/>
+				),
+			},
+		],
+		[cardDisplayData],
+	);
+
 	return (
 		<Dialog
 			fullWidth
@@ -112,13 +129,11 @@ const CardListModal: React.FC<CardListModalProps> = ({
 				</div>
 				{loading && <PageLoader />}
 				{!loading && (
-					<BasicTable columns={CARD_LIST_COLUMNS}>
-						<React.Fragment>
-							{cards.map((item, i: number) => (
-								<CardListRow key={i} item={item} cardData={cardDisplayData} />
-							))}
-						</React.Fragment>
-					</BasicTable>
+					<GenericTable
+						filename={`Saldos_Cliente_Tarjetas_${cardType}`}
+						columns={columns}
+						data={cards}
+					/>
 				)}
 			</DialogContent>
 			<DialogActions>
