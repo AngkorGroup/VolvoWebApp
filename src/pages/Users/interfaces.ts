@@ -3,6 +3,7 @@ import { Card, Option, RoleAdmin, UserAdmin } from 'common/utils';
 export interface User {
 	id: string;
 	innerId: string;
+	fullName: string;
 	firstName: string;
 	lastName: string;
 	clientId: string;
@@ -69,6 +70,7 @@ export const mapUserAdmin = ({
 
 	const {
 		id: innerId,
+		fullName,
 		firstName,
 		lastName,
 		email,
@@ -81,6 +83,7 @@ export const mapUserAdmin = ({
 		id: `${id}`,
 		innerId: `${innerId}`,
 		clientId,
+		fullName,
 		firstName,
 		lastName,
 		email,

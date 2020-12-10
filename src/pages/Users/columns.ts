@@ -1,18 +1,38 @@
-import {
-	ACTIONS_COLUMN,
-	COLUMN_CENTER,
-} from '../../common/constants/tableColumn';
+import { COLUMN_CENTER } from 'common/constants';
 
 export const USER_COLUMNS = [
-	{ title: 'Código' },
-	{ title: 'Nombre' },
-	{ title: 'Email' },
-	{ title: 'Teléfono' },
-	{ title: 'Fecha de Creación' },
-	{ title: 'Tipo' },
-	{ title: 'Estado' },
-	{ title: 'Fecha de Baja' },
-	ACTIONS_COLUMN,
+	{
+		Header: 'Código',
+		accessor: 'id',
+	},
+	{
+		Header: 'Nombre',
+		accessor: 'fullName',
+	},
+	{
+		Header: 'Email',
+		accessor: 'email',
+	},
+	{
+		Header: 'Teléfono',
+		accessor: 'phone',
+	},
+	{
+		Header: 'Fecha de Creación',
+		accessor: 'createdAt',
+	},
+	{
+		Header: 'Tipo',
+		accessor: 'type',
+	},
+	{
+		Header: 'Estado',
+		accessor: 'status',
+	},
+	{
+		Header: 'Fecha de Baja',
+		accessor: 'archiveAt',
+	},
 ];
 
 export const BATCH_COLUMNS = [
