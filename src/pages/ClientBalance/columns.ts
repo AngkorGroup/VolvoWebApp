@@ -1,53 +1,152 @@
+import { formatNumber } from 'common/utils';
 import {
-	ACTIONS_COLUMN,
 	COLUMN_CENTER,
+	COLUMN_RIGHT,
 } from '../../common/constants/tableColumn';
+import { renderAmount } from './ClientBalance';
 
 export const CARD_COLUMNS = [
-	{ title: 'Tipo de Tarjeta' },
-	{ title: 'Moneda' },
-	{ title: 'Saldo', props: { align: COLUMN_CENTER } },
-	ACTIONS_COLUMN,
+	{
+		Header: 'Tipo de Tarjeta',
+		accessor: 'cardType',
+	},
+	{
+		Header: 'Moneda',
+		accessor: 'currency',
+	},
+	{
+		Header: 'Saldo',
+		accessor: 'balance',
+		Cell: (cell: any) => formatNumber(cell.value),
+		headerProps: { align: COLUMN_CENTER },
+		props: { align: COLUMN_RIGHT },
+	},
 ];
 
 export const EXPIRATION_COLUMNS = [
-	{ title: 'Tipo de Tarjeta', value: 'cardType' },
-	{ title: 'Número de Tarjeta', value: 'cardNumber' },
-	{ title: 'Contacto', value: 'contactName' },
-	{ title: 'Teléfono', value: 'contactPhone' },
-	{ title: 'Lote', value: 'batch' },
-	{ title: 'Vencimiento', value: 'expiration' },
-	{ title: 'Moneda', value: 'currency' },
-	{ title: 'Saldo', value: 'balance', props: { align: COLUMN_CENTER } },
-	ACTIONS_COLUMN,
+	{
+		Header: 'Tipo de Tarjeta',
+		accessor: 'cardType',
+	},
+	{
+		Header: 'Número deTarjeta',
+		accessor: 'cardNumber',
+	},
+	{
+		Header: 'Contacto',
+		accessor: 'contactName',
+	},
+	{
+		Header: 'Teléfono',
+		accessor: 'contactPhone',
+	},
+	{
+		Header: 'Lote',
+		accessor: 'batch',
+	},
+	{
+		Header: 'Vencimiento',
+		accessor: 'expiration',
+	},
+	{
+		Header: 'Moneda',
+		accessor: 'currency',
+	},
+	{
+		Header: 'Saldo',
+		accessor: 'balance',
+		Cell: (cell: any) => formatNumber(cell.value),
+		headerProps: { align: COLUMN_CENTER },
+		props: { align: COLUMN_RIGHT },
+	},
 ];
 
 export const CARD_LIST_COLUMNS = [
-	{ title: 'Número' },
-	{ title: 'Contacto' },
-	{ title: 'Teléfono' },
-	{ title: 'Moneda' },
-	{ title: 'Saldo', props: { align: COLUMN_CENTER } },
-	ACTIONS_COLUMN,
+	{
+		Header: 'Número',
+		accessor: 'number',
+	},
+	{
+		Header: 'Contacto',
+		accessor: 'contact',
+	},
+	{
+		Header: 'Teléfono',
+		accessor: 'phone',
+	},
+	{
+		Header: 'Moneda',
+		accessor: 'currency',
+	},
+	{
+		Header: 'Saldo',
+		accessor: 'balance',
+		Cell: (cell: any) => formatNumber(cell.value),
+		headerProps: { align: COLUMN_CENTER },
+		props: { align: COLUMN_RIGHT },
+	},
 ];
 
 export const CARD_BATCH_COLUMNS = [
-	{ title: 'Número' },
-	{ title: 'Lote' },
-	{ title: 'Vencimiento' },
-	{ title: 'Moneda' },
-	{ title: 'Saldo', props: { align: COLUMN_CENTER } },
-	ACTIONS_COLUMN,
+	{
+		Header: 'Número',
+		accessor: 'number',
+	},
+	{
+		Header: 'Lote',
+		accessor: 'batch',
+	},
+	{
+		Header: 'Vencimiento',
+		accessor: 'expiration',
+	},
+	{
+		Header: 'Moneda',
+		accessor: 'currency',
+	},
+	{
+		Header: 'Saldo',
+		accessor: 'balance',
+		Cell: (cell: any) => formatNumber(cell.value),
+		headerProps: { align: COLUMN_CENTER },
+		props: { align: COLUMN_RIGHT },
+	},
 ];
 
 export const BATCH_MOVEMENTS_COLUMNS = [
-	{ title: 'Tipo' },
-	{ title: '#Operación' },
-	{ title: 'Fecha Op.' },
-	{ title: 'Moneda' },
-	{ title: 'Monto', props: { align: COLUMN_CENTER } },
-	{ title: 'Dealer' },
-	{ title: 'Caja' },
-	{ title: 'Lote' },
-	ACTIONS_COLUMN,
+	{
+		Header: 'Tipo',
+		accessor: 'type',
+	},
+	{
+		Header: '#Operación',
+		accessor: 'number',
+	},
+	{
+		Header: 'Fecha Op.',
+		accessor: 'date',
+	},
+	{
+		Header: 'Moneda',
+		accessor: 'currency',
+	},
+	{
+		Header: 'Monto',
+		accessor: 'amount',
+		Cell: (cell: any) => renderAmount(cell?.row?.original),
+		headerProps: { align: COLUMN_CENTER },
+		props: { align: COLUMN_RIGHT },
+	},
+	{
+		Header: 'Dealer',
+		accessor: 'dealer',
+	},
+	{
+		Header: 'Caja',
+		accessor: 'cashier',
+	},
+	{
+		Header: 'Lote',
+		accessor: 'batch',
+	},
 ];

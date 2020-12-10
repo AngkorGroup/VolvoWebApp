@@ -120,7 +120,6 @@ const CardBalance: React.FC = () => {
 				Cell: (cell: any) => <MovementActions item={cell?.row?.original} />,
 			},
 		],
-		// eslint-disable-next-line
 		[],
 	);
 

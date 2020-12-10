@@ -7,20 +7,20 @@ import {
 	makeStyles,
 	Theme,
 } from '@material-ui/core';
-import React, { useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 import {
+	GenericTable,
 	PageLoader,
-	PaginatedTable,
 	VolvoButton,
 	VolvoCard,
 } from 'common/components';
 import { CardBatch } from 'common/utils';
-import CardBatchesRow from './CardBatchesRow/CardBatchesRow';
 import { CardBatchRow, VolvoCardData } from '../interfaces';
 import { CARD_BATCH_COLUMNS } from '../columns';
 import { useQuery } from 'react-query';
-import { getCardBatches } from 'common/services';
-import { TABLE_ROWS_PER_PAGE } from 'common/constants/tableColumn';
+import { getQueryCardBatches } from 'common/services';
+import CardBatchActions from './CardBatchActions/CardBatchActions';
+import { ACTIONS_COLUMN_V2 } from 'common/constants';
 
 interface CardBatchesModalProps {
 	show: boolean;
@@ -44,7 +44,7 @@ const mapCardBatchList = (data: CardBatch[]): CardBatchRow[] => {
 		number: card.code,
 		batch: `${batchId}`,
 		expiration: expiresAt,
-		currency: balance.currency?.symbol,
+		currency: balance.currencySymbol,
 		balance: balance.value,
 	}));
 };
@@ -56,7 +56,10 @@ const CardBatchesModal: React.FC<CardBatchesModalProps> = ({
 	onClose,
 }: CardBatchesModalProps) => {
 	const classes = useStyles();
-	const { data, status } = useQuery([id], getCardBatches);
+	const { data, status } = useQuery(
+		['getQueryCardBatches', id],
+		getQueryCardBatches,
+	);
 	const cardBatches = useMemo(() => {
 		if (data?.ok) {
 			return mapCardBatchList(data?.data || []);
@@ -68,26 +71,19 @@ const CardBatchesModal: React.FC<CardBatchesModalProps> = ({
 		...cardData,
 		id,
 	};
-	const [page, setPage] = useState(0);
-	const [rowsPerPage, setRowsPerPage] = useState(TABLE_ROWS_PER_PAGE);
 
-	const handleChangePage = (_: any, newPage: number) => {
-		setPage(newPage);
-	};
-
-	const handleChangeRowsPerPage = (
-		e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-	) => {
-		setRowsPerPage(parseInt(e.target.value, 10));
-		setPage(0);
-	};
-
-	const rows = useMemo(
-		() =>
-			cardBatches.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
-		[page, rowsPerPage, cardBatches],
+	const columns = useMemo(
+		() => [
+			...CARD_BATCH_COLUMNS,
+			{
+				...ACTIONS_COLUMN_V2,
+				Cell: (cell: any) => (
+					<CardBatchActions item={cell?.row?.original} cardData={newCardData} />
+				),
+			},
+		],
+		[newCardData],
 	);
-
 	return (
 		<Dialog
 			fullWidth
@@ -110,20 +106,11 @@ const CardBatchesModal: React.FC<CardBatchesModalProps> = ({
 				</div>
 				{status === 'loading' && <PageLoader />}
 				{status === 'success' && (
-					<PaginatedTable
-						columns={CARD_BATCH_COLUMNS}
-						page={page}
-						count={cardBatches.length}
-						rowsPerPage={rowsPerPage}
-						onChangePage={handleChangePage}
-						onChangeRowsPerPage={handleChangeRowsPerPage}
-					>
-						<React.Fragment>
-							{rows.map((item, i: number) => (
-								<CardBatchesRow key={i} item={item} cardData={newCardData} />
-							))}
-						</React.Fragment>
-					</PaginatedTable>
+					<GenericTable
+						filename={`Saldos_Cliente_Lotes_de_Tarjeta_${cardData.number}`}
+						columns={columns}
+						data={cardBatches}
+					/>
 				)}
 			</DialogContent>
 			<DialogActions>
