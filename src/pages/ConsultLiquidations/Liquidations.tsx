@@ -8,6 +8,7 @@ import {
 import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date';
 import {
 	DatePicker,
+	NoDealer,
 	PageActionBar,
 	PageLoader,
 	PageTitle,
@@ -21,13 +22,14 @@ import {
 	TABLE_ROWS_PER_PAGE,
 	DEFAULT_MOMENT_FORMAT,
 } from 'common/constants';
-import React, { useMemo, useState } from 'react';
+import React, { useContext, useEffect, useMemo, useState } from 'react';
 import { useQuery } from 'react-query';
 import { getQueryLiquidations } from 'common/services';
 import { mapLiquidations, LiquidationColumn } from './interfaces';
 import { filterRows, LiquidationStatus } from 'common/utils';
 import { LIQUIDATIONS_COLUMNS } from './columns';
 import LiquidationRow from './LiquidationRow/LiquidationRow';
+import AppContext from 'AppContext';
 
 type Event = React.ChangeEvent<{
 	name?: string | undefined;
@@ -35,6 +37,8 @@ type Event = React.ChangeEvent<{
 }>;
 
 const Liquidations: React.FC = () => {
+	const { user } = useContext(AppContext);
+	const [userHasDealer, setUserHasDealer] = useState(!!user?.dealerId);
 	const [startDate, setStartDate] = useState<MaterialUiPickersDate>(
 		DEFAULT_WEEK_START_DATE,
 	);
@@ -66,6 +70,13 @@ const Liquidations: React.FC = () => {
 		return [];
 	}, [data, setFiltered]);
 
+	useEffect(() => {
+		if (!user?.dealerId) {
+			setUserHasDealer(false);
+			return;
+		}
+	}, [user]);
+
 	const onStartDateChange = (date: MaterialUiPickersDate) => setStartDate(date);
 	const onEndDateChange = (date: MaterialUiPickersDate) => setEndDate(date);
 	const onStatusChange = (e: Event) =>
@@ -92,6 +103,10 @@ const Liquidations: React.FC = () => {
 		() => filtered.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
 		[page, rowsPerPage, filtered],
 	);
+
+	if (!userHasDealer) {
+		return <NoDealer />;
+	}
 
 	return (
 		<div>

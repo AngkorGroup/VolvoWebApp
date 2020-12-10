@@ -12,6 +12,7 @@ export { default as FilePicker } from './FilePicker/FilePicker';
 export { default as GenericTable } from './GenericTable/GenericTable';
 export { default as ImageModal } from './ImageModal/ImageModal';
 export { default as MultiTypeAhead } from './MultiTypeAhead/MultiTypeAhead';
+export { default as NoDealer } from './NoDealer/NoDealer';
 export { default as OnlyActiveFilter } from './OnlyActiveFilter/OnlyActiveFilter';
 export { default as PageActionBar } from './PageActionBar/PageActionBar';
 export { default as PageBody } from './PageBody/PageBody';

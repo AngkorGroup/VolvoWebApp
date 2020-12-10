@@ -21,6 +21,7 @@ import {
 	AsyncTypeAhead,
 	DatePicker,
 	MultiTypeAhead,
+	NoDealer,
 	PageActionBar,
 	PageBody,
 	PageLoader,
@@ -46,6 +47,7 @@ type SelectEvent = React.ChangeEvent<{
 
 const ConsumesByDealer: React.FC = () => {
 	const { user } = useContext(AppContext);
+	const [userHasDealer, setUserHasDealer] = useState(!!user?.dealerId);
 	const [loading, setLoading] = useState(false);
 	const [loadingFilters, setLoadingFilters] = useState(false);
 	const [loadingOptions, setLoadingOptions] = useState(false);
@@ -148,6 +150,10 @@ const ConsumesByDealer: React.FC = () => {
 
 	useEffect(() => {
 		if (user) {
+			if (!user.dealerId) {
+				setUserHasDealer(false);
+				return;
+			}
 			const dealerId = `${user.dealerId}`;
 			const curDealer = options.find((d) => d.value === dealerId);
 			if (curDealer) {
@@ -173,6 +179,10 @@ const ConsumesByDealer: React.FC = () => {
 		() => filtered.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
 		[page, rowsPerPage, filtered],
 	);
+
+	if (!userHasDealer) {
+		return <NoDealer />;
+	}
 
 	return (
 		<div>
