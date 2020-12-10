@@ -34,7 +34,7 @@ const Roles = () => {
 	const alert = useAlert();
 	const [showAddModal, setShowAddModal] = useState(false);
 	const { data, status, refetch } = useQuery('getQueryRoles', getQueryRoles);
-	const cardTypes = useMemo(() => {
+	const roles = useMemo(() => {
 		if (data?.ok) {
 			return mapRoles(data?.data || []);
 		}
@@ -103,7 +103,7 @@ const Roles = () => {
 					<PageBody>
 						<GenericTable
 							columns={columns}
-							data={cardTypes}
+							data={roles}
 							rightButton={
 								<VolvoButton
 									text='Agregar'

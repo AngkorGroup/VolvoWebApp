@@ -37,7 +37,7 @@ const RoleActions: React.FC<RoleActionsProps> = ({
 			</VolvoIconButton>
 			{showEdit && (
 				<RoleFormModal
-					title='Editar Tipo de Tarjeta'
+					title='Editar Rol'
 					show={showEdit}
 					values={item as RoleForm}
 					onClose={() => setShowEdit(false)}
@@ -49,7 +49,7 @@ const RoleActions: React.FC<RoleActionsProps> = ({
 					show={showDelete}
 					id={id}
 					title='Eliminar Rol'
-					body={`¿Está seguro que desea eliminar el tipo de tarjeta ${name}?`}
+					body={`¿Está seguro que desea eliminar el rol: ${name}?`}
 					onClose={() => setShowDelete(false)}
 					onConfirm={onDelete}
 				/>
