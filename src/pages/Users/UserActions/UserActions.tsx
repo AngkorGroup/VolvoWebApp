@@ -1,4 +1,4 @@
-import { Menu, MenuItem, TableCell, TableRow } from '@material-ui/core';
+import { Menu, MenuItem } from '@material-ui/core';
 import React, { useState } from 'react';
 import SettingsIcon from '@material-ui/icons/Settings';
 import { ConfirmationModal, VolvoIconButton } from 'common/components';
@@ -8,7 +8,7 @@ import DeleteModal from '../DeleteModal/DeleteModal';
 import CardsModal from '../CardsModal/CardsModal';
 import { UserType } from 'common/utils';
 
-interface UserRowProps {
+interface UserActionsProps {
 	item: User;
 	onEdit: (data: UserForm) => void;
 	onReestablishPassword: (id: string) => void;
@@ -16,45 +16,27 @@ interface UserRowProps {
 	onDelete: (id: string) => void;
 }
 
-const UserRow = ({
+const UserActions: React.FC<UserActionsProps> = ({
 	item,
 	onEdit,
 	onReestablishPassword,
 	onSelectContact,
 	onDelete,
-}: UserRowProps) => {
+}) => {
 	const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 	const [showEditModal, setShowEditModal] = useState(false);
 	const [showPassModal, setShowPassModal] = useState(false);
 	const [showCardsModal, setShowCardsModal] = useState(false);
 	const [showContactModal, setShowContactModal] = useState(false);
 	const [showDeleteModal, setShowDeleteModal] = useState(false);
-	const {
-		id,
-		innerId,
-		firstName,
-		lastName,
-		clientId,
-		email,
-		phone,
-		createdAt,
-		type,
-		status,
-		archiveAt,
-	} = item;
+	const { id, innerId, clientId, type, archiveAt } = item;
 	const isAdmin = type === UserType.WebAdmin;
 	const isContact = type === UserType.Contacto;
 	const isCashier = type === UserType.Cajero;
 
-	const onOpenMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
-		setAnchorEl(event.currentTarget);
-	};
-
-	const onCloseMenu = () => setAnchorEl(null);
-
 	const withCloseMenu = (func: () => void) => () => {
 		func();
-		onCloseMenu();
+		setAnchorEl(null);
 	};
 
 	const setEditModalVisible = (flag: boolean) =>
@@ -69,57 +51,42 @@ const UserRow = ({
 		withCloseMenu(() => setShowDeleteModal(flag));
 
 	const setDeleteModal = isContact ? setContactModal : setDelModalVisible;
-
 	return (
-		<React.Fragment>
-			<TableRow>
-				<TableCell>{id}</TableCell>
-				<TableCell>
-					{firstName} {lastName}
-				</TableCell>
-				<TableCell>{email}</TableCell>
-				<TableCell>{phone}</TableCell>
-				<TableCell>{createdAt}</TableCell>
-				<TableCell>{type}</TableCell>
-				<TableCell>{status}</TableCell>
-				<TableCell>{archiveAt}</TableCell>
-				<TableCell align='center'>
-					{!archiveAt && (
-						<VolvoIconButton
-							aria-controls='options'
-							aria-haspopup='true'
-							color='primary'
-							onClick={onOpenMenu}
-						>
-							<SettingsIcon />
-						</VolvoIconButton>
-					)}
-					<Menu
-						id='options'
-						anchorEl={anchorEl}
-						keepMounted
-						open={Boolean(anchorEl)}
-						onClose={onCloseMenu}
-					>
-						{isAdmin && (
-							<MenuItem onClick={setEditModalVisible(true)}>Editar</MenuItem>
-						)}
-						{(isAdmin || isCashier) && (
-							<MenuItem onClick={setPassModalVisible(true)}>
-								Restablecer contraseña
-							</MenuItem>
-						)}
-						{isContact && (
-							<MenuItem onClick={setCardsModalVisible(true)}>
-								Consultar tarjetas
-							</MenuItem>
-						)}
-						<MenuItem onClick={setDeleteModal(true)}>Dar de baja</MenuItem>
-					</Menu>
-				</TableCell>
-			</TableRow>
+		<>
 			{!archiveAt && (
-				<React.Fragment>
+				<VolvoIconButton
+					aria-controls='options'
+					aria-haspopup='true'
+					color='primary'
+					onClick={(e: any) => setAnchorEl(e.currentTarget)}
+				>
+					<SettingsIcon />
+				</VolvoIconButton>
+			)}
+			<Menu
+				id='options'
+				anchorEl={anchorEl}
+				keepMounted
+				open={Boolean(anchorEl)}
+				onClose={() => setAnchorEl(null)}
+			>
+				{isAdmin && (
+					<MenuItem onClick={setEditModalVisible(true)}>Editar</MenuItem>
+				)}
+				{(isAdmin || isCashier) && (
+					<MenuItem onClick={setPassModalVisible(true)}>
+						Restablecer contraseña
+					</MenuItem>
+				)}
+				{isContact && (
+					<MenuItem onClick={setCardsModalVisible(true)}>
+						Consultar tarjetas
+					</MenuItem>
+				)}
+				<MenuItem onClick={setDeleteModal(true)}>Dar de baja</MenuItem>
+			</Menu>
+			{!archiveAt && (
+				<>
 					{showEditModal && (
 						<FormModal
 							title='Editar Usuario'
@@ -163,10 +130,10 @@ const UserRow = ({
 							onConfirm={onDelete}
 						/>
 					)}
-				</React.Fragment>
+				</>
 			)}
-		</React.Fragment>
+		</>
 	);
 };
 
-export default UserRow;
+export default UserActions;
