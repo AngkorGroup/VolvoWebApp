@@ -4,6 +4,7 @@ import moment from 'moment';
 import {
 	AsyncTypeAhead,
 	BasicTable,
+	NoDealer,
 	OnlyActiveFilter,
 	PageActionBar,
 	PageBody,
@@ -37,6 +38,7 @@ import AppContext from 'AppContext';
 
 const POS: React.FC = () => {
 	const { user } = useContext(AppContext);
+	const [userHasDealer, setUserHasDealer] = useState(!!user?.dealerId);
 	const [settingDealer, setSettingLoader] = useState(true);
 	const [loading, setLoading] = useState(false);
 	const [loadingOptions, setLoadingOptions] = useState(false);
@@ -68,6 +70,10 @@ const POS: React.FC = () => {
 
 	useEffect(() => {
 		if (user) {
+			if (!user.dealerId) {
+				setUserHasDealer(false);
+				return;
+			}
 			const curDealer = dealers.find((d) => d.id === user.dealerId);
 			if (curDealer) {
 				setDealer(curDealer);
@@ -192,6 +198,10 @@ const POS: React.FC = () => {
 		}
 		setLoadingOptions(false);
 	};
+
+	if (!userHasDealer) {
+		return <NoDealer />;
+	}
 
 	return (
 		<div>
