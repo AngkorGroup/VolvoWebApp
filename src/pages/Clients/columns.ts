@@ -1,8 +1,26 @@
 export const CLIENT_COLUMNS = [
-	{ title: 'RUC', value: 'ruc' },
-	{ title: 'Nombre', value: 'name' },
-	{ title: 'Fecha Creación', value: 'createdAt' },
-	{ title: 'Dirección', value: 'address' },
-	{ title: 'Teléfono', value: 'phone' },
-	{ title: 'Estado', value: 'status' },
+	{
+		Header: 'RUC',
+		accessor: 'ruc',
+	},
+	{
+		Header: 'Nombre',
+		accessor: 'name',
+	},
+	{
+		Header: 'Fecha Creación',
+		accessor: 'createdAt',
+	},
+	{
+		Header: 'Dirección',
+		accessor: 'address',
+	},
+	{
+		Header: 'Teléfono',
+		accessor: 'phone',
+	},
+	{
+		Header: 'Estado',
+		accessor: 'status',
+	},
 ];
