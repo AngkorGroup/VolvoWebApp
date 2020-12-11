@@ -1,6 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import moment from 'moment';
-import ConsumeRow from './ConsumeRow/ConsumeRow';
 import { Consume, mapCharges } from './interface';
 import SearchIcon from '@material-ui/icons/Search';
 import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date';
@@ -23,12 +22,10 @@ import {
 	DatePicker,
 	GenericTable,
 	MultiTypeAhead,
-	OnlyActiveFilter,
 	PageActionBar,
 	PageBody,
 	PageLoader,
 	PageTitle,
-	PaginatedTable,
 	VolvoIconButton,
 } from 'common/components';
 import { CONSUMES_COLUMNS } from './columns';
@@ -38,10 +35,7 @@ import {
 	getDealerCharges,
 	getDealersByFilter,
 } from 'common/services';
-import {
-	ACTIONS_COLUMN_V2,
-	TABLE_ROWS_PER_PAGE,
-} from 'common/constants/tableColumn';
+import { ACTIONS_COLUMN_V2 } from 'common/constants';
 import { DEFAULT_MOMENT_FORMAT } from 'common/constants';
 import ConsumeActions from './ConsumeActions/ConsumeActions';
 
