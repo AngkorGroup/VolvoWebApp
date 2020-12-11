@@ -18,9 +18,12 @@ import {
 	parseDealers,
 } from 'common/utils';
 import {
+	Amount,
 	AsyncTypeAhead,
 	DatePicker,
+	GenericTable,
 	MultiTypeAhead,
+	OnlyActiveFilter,
 	PageActionBar,
 	PageBody,
 	PageLoader,
@@ -35,20 +38,26 @@ import {
 	getDealerCharges,
 	getDealersByFilter,
 } from 'common/services';
-import { TABLE_ROWS_PER_PAGE } from 'common/constants/tableColumn';
+import {
+	ACTIONS_COLUMN_V2,
+	TABLE_ROWS_PER_PAGE,
+} from 'common/constants/tableColumn';
 import { DEFAULT_MOMENT_FORMAT } from 'common/constants';
+import ConsumeActions from './ConsumeActions/ConsumeActions';
 
 type SelectEvent = React.ChangeEvent<{
 	name?: string | undefined;
 	value: unknown;
 }>;
 
+export const renderConsumeAmount = (amount: number) => (
+	<Amount value={amount} />
+);
+
 const ConsumesByDealer: React.FC = () => {
 	const [loading, setLoading] = useState(false);
 	const [loadingFilters, setLoadingFilters] = useState(false);
 	const [loadingOptions, setLoadingOptions] = useState(false);
-	const [page, setPage] = useState(0);
-	const [rowsPerPage, setRowsPerPage] = useState(TABLE_ROWS_PER_PAGE);
 	const [options, setOptions] = useState<Option[]>([]);
 	const [cashiers, setCashiers] = useState<Option[]>([]);
 	const [cardTypeList, setCardTypeList] = useState<Option[]>([]);
@@ -58,7 +67,6 @@ const ConsumesByDealer: React.FC = () => {
 	const [cashier, setCashier] = useState('all');
 	const [cardTypes, setCardTypes] = useState<Option[]>([]);
 	const [consumes, setConsumes] = useState<Consume[]>([]);
-	const [filtered, setFiltered] = useState<Consume[]>([]);
 
 	const onStartDateChange = (date: MaterialUiPickersDate) => setStartDate(date);
 	const onEndDateChange = (date: MaterialUiPickersDate) => setEndDate(date);
@@ -84,7 +92,6 @@ const ConsumesByDealer: React.FC = () => {
 		if (responseCharges.ok) {
 			const data = mapCharges(responseCharges.data || []);
 			setConsumes(data);
-			setFiltered(data);
 		}
 		setLoading(false);
 	};
@@ -104,7 +111,6 @@ const ConsumesByDealer: React.FC = () => {
 		if (responseCharges.ok) {
 			const data = mapCharges(responseCharges.data || []);
 			setConsumes(data);
-			setFiltered(data);
 		}
 		setLoading(false);
 	};
@@ -143,20 +149,15 @@ const ConsumesByDealer: React.FC = () => {
 		fetchCardTypes();
 	}, []);
 
-	const handleChangePage = (_: any, newPage: number) => {
-		setPage(newPage);
-	};
-
-	const handleChangeRowsPerPage = (
-		e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-	) => {
-		setRowsPerPage(parseInt(e.target.value, 10));
-		setPage(0);
-	};
-
-	const rows = useMemo(
-		() => filtered.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
-		[page, rowsPerPage, filtered],
+	const columns = useMemo(
+		() => [
+			...CONSUMES_COLUMNS,
+			{
+				...ACTIONS_COLUMN_V2,
+				Cell: (cell: any) => <ConsumeActions item={cell?.row?.original} />,
+			},
+		],
+		[],
 	);
 
 	return (
@@ -231,20 +232,11 @@ const ConsumesByDealer: React.FC = () => {
 							</PageActionBar>
 							{loading && <PageLoader />}
 							{!loading && consumes.length > 0 && (
-								<PaginatedTable
-									columns={CONSUMES_COLUMNS}
-									count={consumes.length}
-									page={page}
-									rowsPerPage={rowsPerPage}
-									onChangePage={handleChangePage}
-									onChangeRowsPerPage={handleChangeRowsPerPage}
-								>
-									<React.Fragment>
-										{rows.map((item, i: number) => (
-											<ConsumeRow key={i} item={item} />
-										))}
-									</React.Fragment>
-								</PaginatedTable>
+								<GenericTable
+									filename={`Operaciones por Dealer ${dealer}`}
+									columns={columns}
+									data={consumes}
+								/>
 							)}
 						</React.Fragment>
 					)}
