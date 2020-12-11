@@ -1,14 +1,49 @@
-import { COLUMN_CENTER } from 'common/constants/tableColumn';
+import { COLUMN_CENTER, COLUMN_RIGHT } from 'common/constants';
+import { formatNumber, renderContactType } from 'common/utils';
 
 export const CARD_COLUMNS = [
-	{ title: 'Tipo' },
-	{ title: 'Número' },
-	{ title: '#TopPerú' },
-	{ title: 'Fecha Creación' },
-	{ title: 'Moneda' },
-	{ title: 'Monto', props: { align: COLUMN_CENTER } },
-	{ title: 'Nombre del Contacto' },
-	{ title: 'Tipo Contacto' },
-	{ title: 'Celular' },
-	{ title: 'Estado' },
+	{
+		Header: 'Tipo',
+		accessor: 'type',
+	},
+	{
+		Header: 'Número',
+		accessor: 'number',
+	},
+	{
+		Header: '#TopPerú',
+		accessor: 'tpNumber',
+	},
+	{
+		Header: 'Fecha Creación',
+		accessor: 'createdAt',
+	},
+	{
+		Header: 'Moneda',
+		accessor: 'currency',
+	},
+	{
+		Header: 'Monto',
+		accessor: 'amount',
+		Cell: (cell: any) => formatNumber(cell.value),
+		headerProps: { align: COLUMN_CENTER },
+		props: { align: COLUMN_RIGHT },
+	},
+	{
+		Header: 'Nombre del Contacto',
+		accessor: 'contactName',
+	},
+	{
+		Header: 'Tipo Contacto',
+		accessor: 'contactType',
+		Cell: (cell: any) => renderContactType(cell.value),
+	},
+	{
+		Header: 'Celular',
+		accessor: 'contactPhone',
+	},
+	{
+		Header: 'Estado',
+		accessor: 'status',
+	},
 ];

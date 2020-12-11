@@ -1,13 +1,11 @@
 import { Grid } from '@material-ui/core';
 import {
 	AsyncTypeAhead,
-	BasicTable,
+	GenericTable,
 	OnlyActiveFilter,
-	PageActionBar,
 	PageBody,
 	PageLoader,
 	PageTitle,
-	TableFilter,
 } from 'common/components';
 import {
 	getCardsByClient,
@@ -15,9 +13,8 @@ import {
 	getClients,
 	getContactsByFilter,
 } from 'common/services';
-import { filterRows, Option, parseClients, parseContacts } from 'common/utils';
+import { Option, parseClients, parseContacts } from 'common/utils';
 import React, { useEffect, useState } from 'react';
-import CardDataRow from './CardDataRow/CardDataRow';
 import { CARD_COLUMNS } from './columns';
 import { CardData, mapCardData } from './interfaces';
 
@@ -30,9 +27,7 @@ const CardsData: React.FC = () => {
 	const [contact, setContact] = useState('');
 	const [clients, setClients] = useState<Option[]>([]);
 	const [contacts, setContacts] = useState<Option[]>([]);
-	const [query, setQuery] = useState('');
 	const [cards, setCards] = useState<CardData[]>([]);
-	const [filtered, setFiltered] = useState<CardData[]>([]);
 
 	useEffect(() => {
 		setLoadingClients(true);
@@ -66,7 +61,6 @@ const CardsData: React.FC = () => {
 				if (response.ok) {
 					const cardDataRows = mapCardData(response.data || []);
 					setCards(cardDataRows);
-					setFiltered(cardDataRows);
 				}
 				setLoading(false);
 			}
@@ -83,7 +77,6 @@ const CardsData: React.FC = () => {
 				if (response.ok) {
 					const cardDataRows = mapCardData(response.data || []);
 					setCards(cardDataRows);
-					setFiltered(cardDataRows);
 				}
 				setLoading(false);
 			}
@@ -91,17 +84,6 @@ const CardsData: React.FC = () => {
 
 		fetchCardsData();
 	}, [onlyActive, contact]);
-
-	const onOnlyActiveChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		setOnlyActive(e.target.checked);
-	};
-
-	const onFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const newQuery = e.target.value;
-		const filtered = filterRows(newQuery, cards);
-		setQuery(newQuery);
-		setFiltered(filtered);
-	};
 
 	const onTypeClient = async (e: React.ChangeEvent<HTMLInputElement>) => {
 		setLoadingClients(true);
@@ -166,22 +148,17 @@ const CardsData: React.FC = () => {
 				<div>
 					{loading && <PageLoader />}
 					{!loading && cards.length > 0 && (
-						<React.Fragment>
-							<PageActionBar>
-								<TableFilter value={query} onChange={onFilterChange} />
+						<GenericTable
+							filename={`Datos de Tarjeta ${client}`}
+							columns={CARD_COLUMNS}
+							data={cards}
+							customFilters={
 								<OnlyActiveFilter
 									checked={onlyActive}
-									onChange={onOnlyActiveChange}
+									onChange={(e: any) => setOnlyActive(e.target.checked)}
 								/>
-							</PageActionBar>
-							<BasicTable columns={CARD_COLUMNS}>
-								<React.Fragment>
-									{filtered.map((item, i: number) => (
-										<CardDataRow key={i} item={item} />
-									))}
-								</React.Fragment>
-							</BasicTable>
-						</React.Fragment>
+							}
+						/>
 					)}
 				</div>
 			</PageBody>
