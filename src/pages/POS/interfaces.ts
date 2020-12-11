@@ -9,6 +9,7 @@ export interface POS {
 	phone: string;
 	email: string;
 	status: string;
+	fullName: string;
 	firstName: string;
 	lastName: string;
 	archiveAt: string;
@@ -25,6 +26,7 @@ export const mapCashier = (cashier: Cashier): POS => ({
 	phone: cashier.phone,
 	email: cashier.email,
 	status: cashier.status,
+	fullName: cashier.fullName,
 	firstName: cashier.firstName,
 	lastName: cashier.lastName,
 	archiveAt: cashier.archiveAt,

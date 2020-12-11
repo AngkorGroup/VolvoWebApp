@@ -1,97 +1,69 @@
-import React, { useEffect, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import AddIcon from '@material-ui/icons/Add';
-import moment from 'moment';
 import {
 	AsyncTypeAhead,
-	BasicTable,
+	GenericTable,
 	OnlyActiveFilter,
-	PageActionBar,
 	PageBody,
 	PageLoader,
 	PageTitle,
-	TableFilter,
 	VolvoButton,
 } from 'common/components';
 import {
 	buildAlertBody as at,
-	Cashier,
 	Dealer,
-	filterRows,
 	Option,
 	parseDealers,
 } from 'common/utils';
-import { mapCashier, mapCashiers, POS as POSType, POSForm } from './interfaces';
-import POSRow from './POSRow/POSRow';
-import FormModal from './FormModal.tsx/FormModal';
+import { mapCashiers, POSForm } from './interfaces';
+import FormModal from './FormModal/FormModal';
+import POSActions from './POSActions/POSActions';
 import { POS_COLUMNS } from './columns';
 import {
 	addCashier,
 	deleteCashier,
 	editCashier,
-	getDealerCashiers,
-	getDealersByFilter,
+	getQueryDealerCashiers,
+	getQueryDealers,
 } from 'common/services';
 import { useAlert } from 'react-alert';
 import { resetUser } from 'common/services';
+import { ACTIONS_COLUMN_V2 } from 'common/constants';
+import { useQuery } from 'react-query';
+
+const initialData: any = { data: [] };
 
 const POS: React.FC = () => {
-	const [loading, setLoading] = useState(false);
-	const [loadingOptions, setLoadingOptions] = useState(false);
-	const [dealer, setDealer] = useState<Dealer | null>(null);
-	const [dealers, setDealers] = useState<Dealer[]>([]);
+	const alert = useAlert();
 	const [query, setQuery] = useState('');
+	const [dealer, setDealer] = useState<Dealer | null>(null);
 	const [showAddModal, setShowAddModal] = useState(false);
 	const [onlyActive, setOnlyActive] = useState(true);
-	const [posList, setPOSList] = useState<POSType[]>([]);
-	const [filtered, setFiltered] = useState<POSType[]>([]);
-	const alert = useAlert();
-
-	const onOnlyActiveChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-		setOnlyActive(e.target.checked);
-	};
-
-	useEffect(() => {
-		const fetchDealers = async () => {
-			setLoadingOptions(true);
-			const response = await getDealersByFilter();
-			if (response.ok) {
-				const data = response.data || [];
-				setDealers(data);
-			}
-			setLoadingOptions(false);
-		};
-
-		fetchDealers();
-	}, []);
-
-	useEffect(() => {
-		const fetchCashiers = async () => {
-			if (dealer) {
-				setLoading(true);
-				const dealerId = `${dealer.id}`;
-				const response = await getDealerCashiers(dealerId, onlyActive);
-				if (response.ok) {
-					const rows = mapCashiers(response.data || []);
-					setPOSList(rows);
-					setFiltered(rows);
-				}
-				setLoading(false);
-			}
-		};
-
-		fetchCashiers();
-	}, [onlyActive, dealer]);
-
-	const onFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const newQuery = e.target.value;
-		const filtered = filterRows(newQuery, posList);
-		setQuery(newQuery);
-		setFiltered(filtered);
-	};
+	const { data: dataDealers, isLoading: loadingOptions } = useQuery(
+		['getQueryDealers', query, onlyActive],
+		getQueryDealers,
+	);
+	const dealers = useMemo(() => {
+		if (dataDealers?.ok) {
+			return dataDealers?.data;
+		}
+		return [];
+	}, [dataDealers]);
+	const { data: dataCashiers, isLoading: loading, refetch } = useQuery(
+		['getQueryDealerCashiers', `${dealer?.id}`, onlyActive],
+		getQueryDealerCashiers,
+		{ initialData: dealer?.id ? undefined : initialData },
+	);
+	const posList = useMemo(() => {
+		if (dataCashiers?.ok) {
+			return mapCashiers(dataCashiers?.data || []);
+		}
+		return [];
+	}, [dataCashiers]);
 
 	const onDealerChange = (_: any, newValue: string | Option) => {
 		const dealerId = (newValue as Option).value;
-		const selectedDealer = dealers.find((d) => `${d.id}` === dealerId) || null;
+		const selectedDealer = dealers?.find((d) => `${d.id}` === dealerId) || null;
 		setDealer(selectedDealer);
 	};
 
@@ -109,9 +81,7 @@ const POS: React.FC = () => {
 		};
 		const response = await addCashier(body);
 		if (response.ok) {
-			const data = mapCashier(response.data || ({} as Cashier));
-			setPOSList((old) => [...old, data]);
-			setFiltered((old) => [...old, data]);
+			refetch();
 			alert.success(
 				at(
 					'Cajero Agregado',
@@ -133,10 +103,7 @@ const POS: React.FC = () => {
 		};
 		const response = await editCashier(body);
 		if (response.ok) {
-			const data = mapCashier(response.data || ({} as Cashier));
-			const newCashiers = posList.map((c) => (c.id === data.id ? data : c));
-			setPOSList(newCashiers);
-			setFiltered(newCashiers);
+			refetch();
 			alert.success(at('Cajero Editado', 'Se editó un cajero correctamente'));
 		}
 	};
@@ -144,11 +111,7 @@ const POS: React.FC = () => {
 	const onDeletePOS = async (id: string) => {
 		const response = await deleteCashier(id);
 		if (response.ok) {
-			const archiveAt = moment().format('DD/MM/YYYY h:mm:ss');
-			const newRows = posList.map((c) =>
-				c.id === id ? { ...c, archiveAt } : c,
-			);
-			setFiltered(newRows);
+			refetch();
 			alert.success(
 				at('Cajero Eliminado', 'Se eliminó un cajero correctamente'),
 			);
@@ -156,9 +119,7 @@ const POS: React.FC = () => {
 	};
 
 	const onReestablishPassword = async (id: string) => {
-		setLoading(true);
 		const response = await resetUser(id);
-		setLoading(false);
 		if (response.ok) {
 			alert.success(
 				at(
@@ -169,75 +130,69 @@ const POS: React.FC = () => {
 		}
 	};
 
-	const onTypeDealer = async (e: React.ChangeEvent<HTMLInputElement>) => {
-		setLoadingOptions(true);
-		const response = await getDealersByFilter(e.target.value);
-		if (response.ok) {
-			const data = response.data || [];
-			setDealers(data);
-		}
-		setLoadingOptions(false);
-	};
+	const columns = useMemo(
+		() => [
+			...POS_COLUMNS,
+			{
+				...ACTIONS_COLUMN_V2,
+				Cell: (cell: any) => (
+					<POSActions
+						item={cell?.row?.original}
+						onEdit={onEditPOS}
+						onDelete={onDeletePOS}
+						onResetPassword={onReestablishPassword}
+					/>
+				),
+			},
+		],
+		// eslint-disable-next-line
+		[],
+	);
 
 	return (
 		<div>
 			<div>
 				<PageTitle title='POS' />
 				<AsyncTypeAhead
-					options={parseDealers(dealers)}
+					options={parseDealers(dealers || [])}
 					placeholder='Dealer'
 					loading={loadingOptions}
 					onChange={onDealerChange}
-					onType={onTypeDealer}
+					onType={(e: any) => setQuery(e.target.value)}
 				/>
 			</div>
 			<PageBody>
 				{loading && <PageLoader />}
 				{!loading && (
-					<div>
-						<PageActionBar justifyContent='space-between'>
-							{posList.length > 0 && (
-								<div>
-									<TableFilter value={query} onChange={onFilterChange} />
-									<OnlyActiveFilter
-										checked={onlyActive}
-										onChange={onOnlyActiveChange}
-									/>
-								</div>
-							)}
-							{posList.length < (dealer?.maxCashiers || 0) && (
-								<React.Fragment>
-									<VolvoButton
-										text='Agregar'
-										icon={<AddIcon />}
-										color='primary'
-										onClick={setAddModalVisible(true)}
-									/>
-									<FormModal
-										title='Agregar POS'
-										show={showAddModal}
-										onClose={setAddModalVisible(false)}
-										onConfirm={onAddPOS}
-									/>
-								</React.Fragment>
-							)}
-						</PageActionBar>
-						<BasicTable columns={POS_COLUMNS}>
-							<React.Fragment>
-								{filtered.map((item, i: number) => (
-									<POSRow
-										key={i}
-										item={item}
-										onEdit={onEditPOS}
-										onDelete={onDeletePOS}
-										onResetPassword={onReestablishPassword}
-									/>
-								))}
-							</React.Fragment>
-						</BasicTable>
-					</div>
+					<GenericTable
+						filename={`POS ${dealer?.id}`}
+						columns={columns}
+						data={posList}
+						customFilters={
+							<OnlyActiveFilter
+								checked={onlyActive}
+								onChange={(e: any) => setOnlyActive(e.target.checked)}
+							/>
+						}
+						rightButton={
+							<VolvoButton
+								text='Agregar'
+								icon={<AddIcon />}
+								color='primary'
+								onClick={setAddModalVisible(true)}
+							/>
+						}
+					/>
 				)}
 			</PageBody>
+			{showAddModal && (
+				<FormModal
+					title='Agregar POS'
+					show={showAddModal}
+					onClose={setAddModalVisible(false)}
+					onConfirm={onAddPOS}
+				/>
+			)}
 		</div>
 	);
 };
