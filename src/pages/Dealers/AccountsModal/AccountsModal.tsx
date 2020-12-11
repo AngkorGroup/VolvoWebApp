@@ -6,9 +6,8 @@ import {
 } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import {
-	BasicTable,
+	GenericTable,
 	OnlyActiveFilter,
-	PageActionBar,
 	PageLoader,
 	VolvoButton,
 } from 'common/components';
@@ -18,7 +17,6 @@ import { buildAlertBody as at } from 'common/utils';
 import { useQuery } from 'react-query';
 import { BankAccountForm } from '../interfaces';
 import { ACCOUNT_COLUMNS } from '../columns';
-import AccountRow from './AccountRow/AccountRow';
 import {
 	addBankAccount,
 	deleteBankAccount,
@@ -26,7 +24,8 @@ import {
 } from 'common/services';
 import FormModal from './FormModal/FormModal';
 import { useAlert } from 'react-alert';
-import { mapAccounts } from 'common/constants';
+import { ACTIONS_COLUMN_V2, mapAccounts } from 'common/constants';
+import AccountActions from './AccountActions/AccountActions';
 
 interface AccountsModalProps {
 	show: boolean;
@@ -117,6 +116,25 @@ const AccountsModal: React.FC<AccountsModalProps> = ({ show, id, onClose }) => {
 			);
 		}
 	};
+
+	const columns = useMemo(
+		() => [
+			...ACCOUNT_COLUMNS,
+			{
+				...ACTIONS_COLUMN_V2,
+				Cell: (cell: any) => (
+					<AccountActions
+						item={cell?.row?.original}
+						onEdit={onEditAccount}
+						onDelete={onDeleteAccount}
+					/>
+				),
+			},
+		],
+		// eslint-disable-next-line
+		[],
+	);
+
 	return (
 		<Dialog fullWidth maxWidth='xl' open={show} onClose={onClose}>
 			<DialogTitle id='form-dialog-title'>Cuentas Bancarias</DialogTitle>
@@ -124,38 +142,33 @@ const AccountsModal: React.FC<AccountsModalProps> = ({ show, id, onClose }) => {
 				{status === 'loading' && <PageLoader />}
 				{status === 'success' && (
 					<div>
-						<PageActionBar justifyContent='space-between'>
-							<OnlyActiveFilter
-								checked={onlyActive}
-								onChange={onOnlyActiveChange}
-							/>
-							<VolvoButton
-								text='Agregar'
-								icon={<AddIcon />}
-								color='primary'
-								onClick={setAddModalVisible(true)}
-							/>
-							{showAddModal && (
-								<FormModal
-									title='Agregar Cuenta Bancaria'
-									show={showAddModal}
-									onClose={setAddModalVisible(false)}
-									onConfirm={onAddAccount}
+						<GenericTable
+							filename={`Cuentas Bancarias ${id}`}
+							columns={columns}
+							data={accounts}
+							customFilters={
+								<OnlyActiveFilter
+									checked={onlyActive}
+									onChange={onOnlyActiveChange}
 								/>
-							)}
-						</PageActionBar>
-						<BasicTable columns={ACCOUNT_COLUMNS}>
-							<React.Fragment>
-								{accounts.map((item, i: number) => (
-									<AccountRow
-										key={i}
-										item={item}
-										onEdit={onEditAccount}
-										onDelete={onDeleteAccount}
-									/>
-								))}
-							</React.Fragment>
-						</BasicTable>
+							}
+							rightButton={
+								<VolvoButton
+									text='Agregar'
+									icon={<AddIcon />}
+									color='primary'
+									onClick={setAddModalVisible(true)}
+								/>
+							}
+						/>
+						{showAddModal && (
+							<FormModal
+								title='Agregar Cuenta Bancaria'
+								show={showAddModal}
+								onClose={setAddModalVisible(false)}
+								onConfirm={onAddAccount}
+							/>
+						)}
 					</div>
 				)}
 			</DialogContent>

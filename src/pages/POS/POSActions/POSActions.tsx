@@ -1,34 +1,28 @@
-import { Menu, MenuItem, TableCell, TableRow } from '@material-ui/core';
+import { Menu, MenuItem } from '@material-ui/core';
 import React, { useState } from 'react';
 import SettingsIcon from '@material-ui/icons/Settings';
 import { ConfirmationModal, VolvoIconButton } from 'common/components';
 import { POS, POSForm } from '../interfaces';
-import FormModal from '../FormModal.tsx/FormModal';
+import FormModal from '../FormModal/FormModal';
 
-interface POSRowProps {
+interface POSActionsProps {
 	item: POS;
 	onEdit: (data: POSForm) => void;
 	onDelete: (id: string) => void;
 	onResetPassword: (id: string) => void;
 }
 
-const POSRow = ({ item, onEdit, onDelete, onResetPassword }: POSRowProps) => {
+const POSActions: React.FC<POSActionsProps> = ({
+	item,
+	onEdit,
+	onDelete,
+	onResetPassword,
+}) => {
 	const [showEditModal, setShowEditModal] = useState(false);
 	const [showDeleteModal, setShowDeleteModal] = useState(false);
 	const [showPassModal, setShowPassModal] = useState(false);
 	const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-	const {
-		id,
-		userId,
-		tpCode,
-		phone,
-		email,
-		status,
-		imei,
-		firstName,
-		lastName,
-		archiveAt,
-	} = item;
+	const { id, userId, phone, archiveAt } = item;
 	const withCloseMenu = (func: () => void) => () => {
 		func();
 		onCloseMenu();
@@ -46,45 +40,31 @@ const POSRow = ({ item, onEdit, onDelete, onResetPassword }: POSRowProps) => {
 	};
 
 	const onCloseMenu = () => setAnchorEl(null);
-
 	return (
-		<React.Fragment>
-			<TableRow>
-				<TableCell>{imei}</TableCell>
-				<TableCell>{tpCode}</TableCell>
-				<TableCell>
-					{firstName} {lastName}
-				</TableCell>
-				<TableCell>{phone}</TableCell>
-				<TableCell>{email}</TableCell>
-				<TableCell>{status}</TableCell>
-				<TableCell>{archiveAt}</TableCell>
-				<TableCell align='center'>
-					{!archiveAt && (
-						<VolvoIconButton
-							aria-controls='options'
-							aria-haspopup='true'
-							color='primary'
-							onClick={onOpenMenu}
-						>
-							<SettingsIcon />
-						</VolvoIconButton>
-					)}
-					<Menu
-						id='options'
-						anchorEl={anchorEl}
-						keepMounted
-						open={Boolean(anchorEl)}
-						onClose={onCloseMenu}
-					>
-						<MenuItem onClick={setEditModalVisible(true)}>Editar</MenuItem>
-						<MenuItem onClick={setPassModalVisible(true)}>
-							Restablecer contraseña
-						</MenuItem>
-						<MenuItem onClick={setDelModalVisible(true)}>Eliminar</MenuItem>
-					</Menu>
-				</TableCell>
-			</TableRow>
+		<>
+			{!archiveAt && (
+				<VolvoIconButton
+					aria-controls='options'
+					aria-haspopup='true'
+					color='primary'
+					onClick={onOpenMenu}
+				>
+					<SettingsIcon />
+				</VolvoIconButton>
+			)}
+			<Menu
+				id='options'
+				anchorEl={anchorEl}
+				keepMounted
+				open={Boolean(anchorEl)}
+				onClose={onCloseMenu}
+			>
+				<MenuItem onClick={setEditModalVisible(true)}>Editar</MenuItem>
+				<MenuItem onClick={setPassModalVisible(true)}>
+					Restablecer contraseña
+				</MenuItem>
+				<MenuItem onClick={setDelModalVisible(true)}>Eliminar</MenuItem>
+			</Menu>
 			{showEditModal && (
 				<FormModal
 					title='Editar POS'
@@ -114,8 +94,8 @@ const POSRow = ({ item, onEdit, onDelete, onResetPassword }: POSRowProps) => {
 					onConfirm={onDelete}
 				/>
 			)}
-		</React.Fragment>
+		</>
 	);
 };
 
-export default POSRow;
+export default POSActions;

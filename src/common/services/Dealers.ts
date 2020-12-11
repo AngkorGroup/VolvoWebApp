@@ -59,6 +59,14 @@ export const getDealerCashiers = async (id: string, onlyActive?: boolean) => {
 	});
 };
 
+export const getQueryDealerCashiers = async (
+	key: string,
+	id: string,
+	onlyActive?: boolean,
+) => {
+	return await getDealerCashiers(id, onlyActive);
+};
+
 export const getDealerCharges = async (
 	id: string,
 	beginDate?: string,

@@ -1,19 +1,52 @@
-import {
-	ACTIONS_COLUMN,
-	COLUMN_CENTER,
-} from '../../common/constants/tableColumn';
+import { COLUMN_CENTER, COLUMN_RIGHT } from '../../common/constants';
+import { renderConsumeAmount } from './ConsumesByDealer';
 
 export const CONSUMES_COLUMNS = [
-	{ title: '#Voucher' },
-	{ title: 'Tipo' },
-	{ title: 'Número de Tarjeta' },
-	{ title: 'Cajero' },
-	{ title: 'Cliente' },
-	{ title: 'Fecha Op.' },
-	{ title: 'Cobro' },
-	{ title: 'Estado' },
-	{ title: 'Contacto' },
-	{ title: 'Moneda' },
-	{ title: 'Monto', props: { align: COLUMN_CENTER } },
-	ACTIONS_COLUMN,
+	{
+		Header: '#Voucher',
+		accessor: 'voucher',
+	},
+	{
+		Header: 'Tipo',
+		accessor: 'cardType',
+	},
+	{
+		Header: 'Número de Tarjeta',
+		accessor: 'cardNumber',
+	},
+	{
+		Header: 'Cajero',
+		accessor: 'cashier',
+	},
+	{
+		Header: 'Cliente',
+		accessor: 'client',
+	},
+	{
+		Header: 'Fecha Op.',
+		accessor: 'date',
+	},
+	{
+		Header: 'Cobro',
+		accessor: 'paymentType',
+	},
+	{
+		Header: 'Estado',
+		accessor: 'status',
+	},
+	{
+		Header: 'Contacto',
+		accessor: 'contact',
+	},
+	{
+		Header: 'Moneda',
+		accessor: 'currency',
+	},
+	{
+		Header: 'Monto',
+		accessor: 'amount',
+		Cell: (cell: any) => renderConsumeAmount(cell.value),
+		headerProps: { align: COLUMN_CENTER },
+		props: { align: COLUMN_RIGHT },
+	},
 ];
