@@ -21,6 +21,7 @@ export interface Expiration {
 	currency: string;
 	balance: number;
 	expirationDate: string;
+	expiresAtExtent: string;
 }
 
 export interface Batch {
@@ -32,14 +33,17 @@ export interface Batch {
 }
 
 export const mapExpirations = (batches: CardBatch[]): Expiration[] => {
-	return batches.map(({ card, batchId, balance, expiresAt }) => ({
-		type: card?.cardType?.name,
-		number: card?.code,
-		batch: `${batchId}`,
-		currency: balance.currency?.symbol || balance.currencySymbol,
-		balance: balance.value,
-		expirationDate: expiresAt,
-	}));
+	return batches.map(
+		({ card, batchId, balance, expiresAt, expiresAtExtent }) => ({
+			type: card?.cardType?.name,
+			number: card?.code,
+			batch: `${batchId}`,
+			currency: balance.currency?.symbol || balance.currencySymbol,
+			balance: balance.value,
+			expirationDate: expiresAt,
+			expiresAtExtent: expiresAtExtent,
+		}),
+	);
 };
 
 export const mapMovements = (movements: Movement[]): CardMovement[] => {

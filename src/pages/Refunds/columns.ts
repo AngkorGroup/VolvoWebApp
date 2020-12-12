@@ -1,30 +1,106 @@
-import { ACTIONS_COLUMN, COLUMN_CENTER } from 'common/constants';
+import { COLUMN_CENTER, COLUMN_RIGHT } from 'common/constants';
+import { formatNumber } from 'common/utils';
 
 export const LIQUIDATIONS_COLUMNS = [
-	{ title: '#Liquidación' },
-	{ title: 'Dealer' },
-	{ title: 'Moneda' },
-	{ title: 'Monto', props: { align: COLUMN_CENTER } },
-	{ title: 'Fecha' },
-	{ title: '#Consumos' },
-	{ title: 'Origen' },
-	{ title: 'Destino' },
-	{ title: 'Fecha Pago' },
-	{ title: 'Voucher' },
-	{ title: 'Estado' },
-	ACTIONS_COLUMN,
+	{
+		Header: '#Liquidación',
+		accessor: 'id',
+	},
+	{
+		Header: 'Dealer',
+		accessor: 'dealer',
+	},
+	{
+		Header: 'Moneda',
+		accessor: 'currency',
+		headerProps: { align: COLUMN_CENTER },
+		props: { align: COLUMN_CENTER },
+	},
+	{
+		Header: 'Monto',
+		accessor: 'amount',
+		Cell: (cell: any) => formatNumber(cell.value),
+		headerProps: { align: COLUMN_CENTER },
+		props: { align: COLUMN_RIGHT },
+	},
+	{
+		Header: 'Fecha',
+		accessor: 'date',
+	},
+	{
+		Header: '#Consumos',
+		accessor: 'chargesCount',
+		headerProps: { align: COLUMN_CENTER },
+		props: { align: COLUMN_CENTER },
+	},
+	{
+		Header: 'Origen',
+		accessor: 'source',
+	},
+	{
+		Header: 'Destino',
+		accessor: 'target',
+	},
+	{
+		Header: 'Fecha Pago',
+		accessor: 'paymentDate',
+	},
+	{
+		Header: 'Voucher',
+		accessor: 'voucher',
+	},
+	{
+		Header: 'Estado',
+		accessor: 'liquidationStatus',
+		headerProps: { align: COLUMN_CENTER },
+		props: { align: COLUMN_CENTER },
+	},
 ];
 
 export const REFUNDS_COLUMNS = [
-	{ title: '#Reembolso' },
-	{ title: 'Banco' },
-	{ title: 'Cuenta Bancaria' },
-	{ title: 'Moneda', props: { align: COLUMN_CENTER } },
-	{ title: 'Importe', props: { align: COLUMN_CENTER } },
-	{ title: 'Fecha' },
-	{ title: 'Estado' },
-	{ title: '#Liquidaciones' },
-	{ title: 'Fecha Pago' },
-	{ title: '#Voucher' },
-	ACTIONS_COLUMN,
+	{
+		Header: '#Reembolso',
+		accessor: 'id',
+	},
+	{
+		Header: 'Banco',
+		accessor: 'bank',
+	},
+	{
+		Header: 'Cuenta Bancaria',
+		accessor: 'account',
+	},
+	{
+		Header: 'Moneda',
+		accessor: 'currency',
+		headerProps: { align: COLUMN_CENTER },
+		props: { align: COLUMN_CENTER },
+	},
+	{
+		Header: 'Importe',
+		accessor: 'total',
+		Cell: (cell: any) => formatNumber(cell.value),
+		headerProps: { align: COLUMN_CENTER },
+		props: { align: COLUMN_RIGHT },
+	},
+	{
+		Header: 'Fecha',
+		accessor: 'date',
+	},
+	{
+		Header: 'Estado',
+		accessor: 'refundStatus',
+	},
+	{
+		Header: '#Liquidaciones',
+		accessor: 'liquidationsCount',
+	},
+	{
+		Header: 'Fecha Pago',
+		accessor: 'paymentDate',
+	},
+	{
+		Header: '#Voucher',
+		accessor: 'voucher',
+	},
 ];

@@ -49,6 +49,10 @@ export const EXPIRATION_COLUMNS = [
 		accessor: 'expiration',
 	},
 	{
+		Header: 'Venc. Ext.',
+		accessor: 'expiresAtExtent',
+	},
+	{
 		Header: 'Moneda',
 		accessor: 'currency',
 	},
@@ -99,6 +103,10 @@ export const CARD_BATCH_COLUMNS = [
 	{
 		Header: 'Vencimiento',
 		accessor: 'expiration',
+	},
+	{
+		Header: 'Venc. Ext.',
+		accessor: 'expiresAtExtent',
 	},
 	{
 		Header: 'Moneda',
