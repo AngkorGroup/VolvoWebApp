@@ -40,10 +40,11 @@ const useStyles = makeStyles(({ spacing }: Theme) =>
 );
 
 const mapCardBatchList = (data: CardBatch[]): CardBatchRow[] => {
-	return data.map(({ card, batchId, expiresAt, balance }) => ({
+	return data.map(({ card, batchId, expiresAt, expiresAtExtent, balance }) => ({
 		number: card.code,
 		batch: `${batchId}`,
 		expiration: expiresAt,
+		expiresAtExtent: expiresAtExtent,
 		currency: balance.currencySymbol,
 		balance: balance.value,
 	}));

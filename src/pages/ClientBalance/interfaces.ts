@@ -64,6 +64,7 @@ export interface Expiration {
 	cardColor: string;
 	batch: string;
 	expiration: string;
+	expiresAtExtent: string;
 	currency: string;
 	balance: number;
 	contactName: string;
@@ -82,20 +83,23 @@ export const mapCardType = (cardTypes: CardTypeSummary[]): CardType[] => {
 };
 
 export const mapExpirations = (expirations: CardBatch[]): Expiration[] => {
-	return expirations.map(({ card, batchId, expiresAt, balance, cardId }) => ({
-		cardId: `${cardId}`,
-		cardType: card.cardType?.name,
-		cardName: card.cardType?.displayName,
-		cardNumber: card.code,
-		cardBalance: card.balance.value,
-		cardColor: card.cardType?.color,
-		batch: `${batchId}`,
-		expiration: expiresAt,
-		currency: balance.currency?.symbol || balance.currencySymbol,
-		balance: balance.value,
-		contactName: card?.contact?.fullName,
-		contactPhone: card?.contact?.phone,
-	}));
+	return expirations.map(
+		({ card, batchId, expiresAt, expiresAtExtent, balance, cardId }) => ({
+			cardId: `${cardId}`,
+			cardType: card.cardType?.name,
+			cardName: card.cardType?.displayName,
+			cardNumber: card.code,
+			cardBalance: card.balance.value,
+			cardColor: card.cardType?.color,
+			batch: `${batchId}`,
+			expiration: expiresAt,
+			expiresAtExtent: expiresAtExtent,
+			currency: balance.currency?.symbol || balance.currencySymbol,
+			balance: balance.value,
+			contactName: card?.contact?.fullName,
+			contactPhone: card?.contact?.phone,
+		}),
+	);
 };
 
 export const mapExpirationMovements = (

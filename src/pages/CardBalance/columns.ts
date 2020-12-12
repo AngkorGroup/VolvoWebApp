@@ -98,6 +98,10 @@ export const NEW_EXPIRATION_COLUMNS = [
 		Header: 'Vencimiento',
 		accessor: 'expirationDate',
 	},
+	{
+		Header: 'Venc. Ext.',
+		accessor: 'expiresAtExtent',
+	},
 ];
 
 export const BATCH_COLUMNS = [
