@@ -8,27 +8,26 @@ import {
 import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date';
 import {
 	DatePicker,
+	GenericTable,
 	PageActionBar,
 	PageLoader,
 	PageTitle,
-	PaginatedTable,
-	TableFilter,
 } from 'common/components';
 import {
 	DEFAULT_NOW_DATE as END_DATE,
 	DEFAULT_WEEK_START_DATE as START_DATE,
 	REFUND_STATUSES,
 	DEFAULT_MOMENT_FORMAT as FORMAT,
-	TABLE_ROWS_PER_PAGE,
+	ACTIONS_COLUMN_V2,
 } from 'common/constants';
 import { cancelRefund, getQueryRefunds, payRefund } from 'common/services';
-import { filterRows, buildAlertBody as at, RefundStatus } from 'common/utils';
+import { buildAlertBody as at, RefundStatus } from 'common/utils';
 import React, { useMemo, useState } from 'react';
 import { useAlert } from 'react-alert';
 import { useQuery } from 'react-query';
 import { REFUNDS_COLUMNS } from './columns';
-import { mapRefunds, RefundColumn } from './interfaces';
-import RefundRow from './RefundRow/RefundRow';
+import { mapRefunds } from './interfaces';
+import RefundActions from './RefundActions/RefundActions';
 
 type Event = React.ChangeEvent<{
 	name?: string | undefined;
@@ -39,13 +38,9 @@ const Refunds = () => {
 	const alert = useAlert();
 	const [startDate, setStartDate] = useState<MaterialUiPickersDate>(START_DATE);
 	const [endDate, setEndDate] = useState<MaterialUiPickersDate>(END_DATE);
-	const [page, setPage] = useState(0);
-	const [rowsPerPage, setRowsPerPage] = useState(TABLE_ROWS_PER_PAGE);
-	const [query, setQuery] = useState('');
 	const [refundStatus, setRefundStatus] = useState<string>(
 		RefundStatus.Programado,
 	);
-	const [filtered, setFiltered] = useState<RefundColumn[]>([]);
 	const { data, status, refetch } = useQuery(
 		[
 			'getQueryRefunds',
@@ -57,32 +52,14 @@ const Refunds = () => {
 	);
 	const refunds = useMemo(() => {
 		if (data?.ok) {
-			const rows = mapRefunds(data?.data || []);
-			setFiltered(rows);
-			return rows;
+			return mapRefunds(data?.data || []);
 		}
 		return [];
-	}, [data, setFiltered]);
+	}, [data]);
 
 	const onStartDateChange = (date: MaterialUiPickersDate) => setStartDate(date);
 	const onEndDateChange = (date: MaterialUiPickersDate) => setEndDate(date);
 	const onStatusChange = (e: Event) => setRefundStatus(`${e.target.value}`);
-	const onFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const newQuery = e.target.value;
-		const filteredRows = filterRows(newQuery, refunds);
-		setQuery(newQuery);
-		setFiltered(filteredRows);
-	};
-	const handleChangePage = (_: any, newPage: number) => {
-		setPage(newPage);
-	};
-
-	const handleChangeRowsPerPage = (
-		e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-	) => {
-		setRowsPerPage(parseInt(e.target.value, 10));
-		setPage(0);
-	};
 
 	const onPay = async (id: string, date: string, voucher: string) => {
 		const response = await payRefund(id, date, voucher);
@@ -104,10 +81,25 @@ const Refunds = () => {
 		}
 	};
 
-	const rows = useMemo(
-		() => filtered.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
-		[page, rowsPerPage, filtered],
+	const columns = useMemo(
+		() => [
+			...REFUNDS_COLUMNS,
+			{
+				...ACTIONS_COLUMN_V2,
+				Cell: (cell: any) => (
+					<RefundActions
+						item={cell?.row?.original}
+						status={refundStatus}
+						onPay={onPay}
+						onCancel={onCancel}
+					/>
+				),
+			},
+		],
+		// eslint-disable-next-line
+		[],
 	);
+
 	return (
 		<div>
 			<div>
@@ -152,31 +144,7 @@ const Refunds = () => {
 			<div>
 				{status === 'loading' && <PageLoader />}
 				{status === 'success' && (
-					<React.Fragment>
-						<PageActionBar justifyContent='space-between'>
-							<TableFilter value={query} onChange={onFilterChange} />
-						</PageActionBar>
-						<PaginatedTable
-							columns={REFUNDS_COLUMNS}
-							count={refunds.length}
-							page={page}
-							rowsPerPage={rowsPerPage}
-							onChangePage={handleChangePage}
-							onChangeRowsPerPage={handleChangeRowsPerPage}
-						>
-							<React.Fragment>
-								{rows.map((item, i: number) => (
-									<RefundRow
-										key={i}
-										item={item}
-										status={refundStatus}
-										onPay={onPay}
-										onCancel={onCancel}
-									/>
-								))}
-							</React.Fragment>
-						</PaginatedTable>
-					</React.Fragment>
+					<GenericTable columns={columns} data={refunds} />
 				)}
 			</div>
 		</div>

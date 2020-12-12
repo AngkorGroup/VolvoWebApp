@@ -4,13 +4,14 @@ import {
 	DialogContent,
 	DialogTitle,
 } from '@material-ui/core';
-import { BasicTable, PageLoader, VolvoButton } from 'common/components';
+import { GenericTable, PageLoader, VolvoButton } from 'common/components';
+import { ACTIONS_COLUMN_V2 } from 'common/constants';
 import { getQueryRefundLiquidations } from 'common/services';
 import { mapLiquidations } from 'pages/Liquidations/interfaces';
 import React, { useMemo } from 'react';
 import { useQuery } from 'react-query';
 import { LIQUIDATIONS_COLUMNS } from '../columns';
-import LiquidationRow from '../LiquidationRow/LiquidationRow';
+import LiquidationActions from '../LiquidationActions/LiquidationActions';
 
 interface LiquidationsModalProps {
 	show: boolean;
@@ -34,19 +35,23 @@ const LiquidationsModal: React.FC<LiquidationsModalProps> = ({
 		return [];
 	}, [data]);
 
+	const columns = useMemo(
+		() => [
+			...LIQUIDATIONS_COLUMNS,
+			{
+				...ACTIONS_COLUMN_V2,
+				Cell: (cell: any) => <LiquidationActions item={cell?.row?.original} />,
+			},
+		],
+		[],
+	);
 	return (
 		<Dialog fullWidth maxWidth='xl' open={show} onClose={onClose}>
 			<DialogTitle id='alert-dialog-title'>Consumos</DialogTitle>
 			<DialogContent>
 				{status === 'loading' && <PageLoader />}
 				{status === 'success' && (
-					<BasicTable columns={LIQUIDATIONS_COLUMNS}>
-						<React.Fragment>
-							{liquidations.map((item, i: number) => (
-								<LiquidationRow key={i} item={item} />
-							))}
-						</React.Fragment>
-					</BasicTable>
+					<GenericTable columns={columns} data={liquidations} />
 				)}
 			</DialogContent>
 			<DialogActions>
