@@ -7,7 +7,7 @@ interface DealerForm {
 	ruc: string;
 	address: string;
 	type: string;
-	phone: string;
+	phone?: string;
 	zone: string;
 	maxCashiers: number;
 }
@@ -18,7 +18,7 @@ export const DealerSchema = yup.object<DealerForm>({
 	ruc: yup.string().matches(/^\d+$/, NUMERIC_FIELD_MESSAGE).max(11).required(),
 	address: yup.string().max(TEXT_MAX_LENGTH).required(),
 	type: yup.string().max(TEXT_MAX_LENGTH).required(),
-	phone: yup.string().max(9).matches(/^\d+$/, NUMERIC_FIELD_MESSAGE).required(),
+	phone: yup.string().max(9).matches(/^\d+$/, NUMERIC_FIELD_MESSAGE),
 	zone: yup.string().max(TEXT_MAX_LENGTH).required(),
 	maxCashiers: yup.number().max(100).required(),
 });

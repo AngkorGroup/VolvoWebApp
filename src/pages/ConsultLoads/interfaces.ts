@@ -14,7 +14,9 @@ export interface TableLoad {
 	reason: string;
 	card: string;
 	tpNumber: string;
-	balance?: number;
+	dealer: string;
+	contactName: string;
+	contactPhone: string;
 	createdBy?: string;
 	createdAt?: string;
 	errorMessage?: string;
@@ -32,11 +34,14 @@ export const mapLoads = (loads: Load[]): TableLoad[] => {
 		invoice: l.tpInvoiceCode,
 		amount: l.amount?.value,
 		currency: l.amount?.currency?.symbol || l.amount?.currencySymbol,
-		type: l.rechargeType?.name,
+		type: l.rechargeType?.tpCode,
 		reason: l.businessArea?.name,
 		card: l.cardType?.name,
 		tpNumber: l.tpContractNumber,
 		balance: l.balance?.value,
+		dealer: l.dealerName,
+		contactName: l.client?.mainContact?.fullName,
+		contactPhone: l.client?.mainContact?.phone,
 		createdBy: l.createdBy,
 		createdAt: l.createdAt,
 	}));

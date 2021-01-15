@@ -145,7 +145,7 @@ const Loads: React.FC = () => {
 					<BasicTable columns={LOAD_COLUMNS}>
 						<React.Fragment>
 							{filtered.map((item, i: number) => (
-								<LoadRow key={i} item={item} isMain />
+								<LoadRow key={i} item={item} />
 							))}
 						</React.Fragment>
 					</BasicTable>

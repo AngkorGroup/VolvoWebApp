@@ -45,6 +45,10 @@ export const EXPIRATION_COLUMNS = [
 		accessor: 'batch',
 	},
 	{
+		Header: 'Chasis',
+		accessor: 'chassis',
+	},
+	{
 		Header: 'Vencimiento',
 		accessor: 'expiration',
 	},
@@ -99,6 +103,10 @@ export const CARD_BATCH_COLUMNS = [
 	{
 		Header: 'Lote',
 		accessor: 'batch',
+	},
+	{
+		Header: 'Chasis',
+		accessor: 'chassis',
 	},
 	{
 		Header: 'Vencimiento',
@@ -156,5 +164,9 @@ export const BATCH_MOVEMENTS_COLUMNS = [
 	{
 		Header: 'Lote',
 		accessor: 'batch',
+	},
+	{
+		Header: 'Chasis',
+		accessor: 'chassis',
 	},
 ];

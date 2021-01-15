@@ -39,13 +39,19 @@ export const LOAD_COLUMNS = [
 		Cell: (cell: any) => formatNumber(cell.value),
 	},
 	{
-		Header: 'Saldo',
-		accessor: 'balance',
-		Cell: (cell: any) => formatNumber(cell.value),
-		props: { align: 'right' },
+		Header: 'Dealer',
+		accessor: 'dealer',
 	},
 	{
-		Header: 'Tipo',
+		Header: 'Contacto',
+		accessor: 'contactName',
+	},
+	{
+		Header: 'Celular',
+		accessor: 'contactPhone',
+	},
+	{
+		Header: 'Categoría',
 		accessor: 'type',
 	},
 	{
@@ -53,7 +59,7 @@ export const LOAD_COLUMNS = [
 		accessor: 'reason',
 	},
 	{
-		Header: 'Tipo Tarjeta',
+		Header: 'Tipo Bono',
 		accessor: 'card',
 	},
 	{

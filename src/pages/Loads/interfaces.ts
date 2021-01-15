@@ -14,27 +14,43 @@ export interface TableLoad {
 	reason: string;
 	card: string;
 	tpNumber: string;
-	balance?: number;
+	dealer: string;
+	contactName: string;
+	contactPhone: string;
 	errorMessage?: string;
 	lineContent?: string;
 }
 
 export const mapPreLoads = (loads: PreLoad[]): TableLoad[] => {
-	return loads.map(({ rowIndex, batch, card, errorMessage, lineContent }) => ({
-		index: rowIndex,
-		number: batch?.tpContractBatchNumber,
-		ruc: batch?.client?.ruc,
-		name: batch?.client?.name,
-		date: batch?.tpContractDate,
-		chassis: batch?.tpChasis,
-		invoice: batch?.tpInvoiceCode,
-		amount: batch?.amount?.value,
-		currency: batch?.amount?.currency?.symbol || batch?.amount?.currencySymbol,
-		type: batch?.rechargeType?.name,
-		reason: batch?.businessArea?.name,
-		card: card?.cardType?.name,
-		tpNumber: batch?.tpContractNumber,
-		errorMessage,
-		lineContent,
-	}));
+	return loads.map(
+		({
+			rowIndex,
+			batch,
+			card,
+			dealerName,
+			contact,
+			errorMessage,
+			lineContent,
+		}) => ({
+			index: rowIndex,
+			number: batch?.tpContractBatchNumber,
+			ruc: batch?.client?.ruc,
+			name: batch?.client?.name,
+			date: batch?.tpContractDate,
+			chassis: batch?.tpChasis,
+			invoice: batch?.tpInvoiceCode,
+			amount: batch?.amount?.value,
+			currency:
+				batch?.amount?.currency?.symbol || batch?.amount?.currencySymbol,
+			type: batch?.rechargeType?.tpCode,
+			reason: batch?.businessArea?.name,
+			card: card?.cardType?.name,
+			tpNumber: batch?.tpContractNumber,
+			dealer: dealerName,
+			contactName: contact?.fullName,
+			contactPhone: contact?.phone,
+			errorMessage,
+			lineContent,
+		}),
+	);
 };

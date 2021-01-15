@@ -161,6 +161,10 @@ const ConsumesByDealer: React.FC = () => {
 				setDealerValue(curDealer);
 				onDealerChange(null, curDealer);
 			}
+			const cashierId = `${user.cashierId || ''}`;
+			if (cashierId) {
+				setCashier(cashierId);
+			}
 		}
 	}, [options, user]);
 
@@ -228,6 +232,7 @@ const ConsumesByDealer: React.FC = () => {
 												label='Caja'
 												onChange={onCashierChange}
 												value={cashier}
+												disabled={!!user?.cashierId}
 											>
 												{cashiers.map((d) => (
 													<MenuItem key={d.value} value={d.value}>

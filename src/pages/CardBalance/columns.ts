@@ -85,6 +85,10 @@ export const NEW_EXPIRATION_COLUMNS = [
 		accessor: 'batch',
 	},
 	{
+		Header: 'Chasis',
+		accessor: 'chassis',
+	},
+	{
 		Header: 'Moneda',
 		accessor: 'currency',
 	},
