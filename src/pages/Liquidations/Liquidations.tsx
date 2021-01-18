@@ -29,6 +29,7 @@ import {
 	generateLiquidations,
 	getQueryLiquidations,
 	payLiquidation,
+	REPORT_ENDPOINTS,
 	scheduleLiquidations,
 } from 'common/services';
 import { isGenerated, mapLiquidations } from './interfaces';
@@ -154,6 +155,25 @@ const Liquidations: React.FC = () => {
 		refetch();
 	};
 
+	const onGenerateReport = async () => {
+		const endpoint = REPORT_ENDPOINTS.chasis_detail;
+		const { data, headers } = await endpoint({
+			ids: selectedIds.map((id) => +id),
+		});
+		const filename = getFilename(
+			'chasis_detail',
+			'pdf',
+			headers['content-disposition'],
+		);
+		const url = window.URL.createObjectURL(new Blob([data]));
+		const link = document.createElement('a');
+		link.href = url;
+		link.setAttribute('download', filename);
+		document.body.appendChild(link);
+		link.click();
+		document.body.removeChild(link);
+	};
+
 	const onChangeIds = (rows: any[]) =>
 		setSelectedIds(rows.map((r: any) => r.original.id));
 
@@ -239,6 +259,15 @@ const Liquidations: React.FC = () => {
 							}
 						/>
 						<PageActionBar justifyContent='flex-end'>
+							{isGenerated(liquidationStatus) && (
+								<VolvoButton
+									className={classes.actionButton}
+									disabled={selectedIds.length === 0}
+									onClick={onGenerateReport}
+									color='primary'
+									text='Reporte Detallado por Chasis'
+								/>
+							)}
 							{isGenerated(liquidationStatus) && (
 								<VolvoButton
 									className={classes.actionButton}
