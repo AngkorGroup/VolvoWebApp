@@ -15,8 +15,13 @@ import {
 	useTheme,
 } from '@material-ui/core';
 import { TABLE_ROWS_OPTIONS } from 'common/constants';
-import React, { memo } from 'react';
-import { useTable, usePagination, useGlobalFilter } from 'react-table';
+import React, { memo, useEffect } from 'react';
+import {
+	useTable,
+	usePagination,
+	useGlobalFilter,
+	useRowSelect,
+} from 'react-table';
 import FirstPageIcon from '@material-ui/icons/FirstPage';
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
@@ -28,6 +33,8 @@ import { parseExportColumns } from 'common/utils';
 import DownloadPdf from '../DownloadPdf/DownloadPdf';
 
 interface GenericTableProps {
+	isSelectable?: boolean;
+	onUpdateIds?: (ids: any[]) => void;
 	containerClass?: string;
 	size?: 'small' | 'medium' | undefined;
 	columns: any[];
@@ -38,6 +45,8 @@ interface GenericTableProps {
 }
 
 type ChangeEvent = React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>;
+
+const SELECTION_ID = 'selection';
 
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
@@ -59,7 +68,26 @@ const useStyles = makeStyles((theme: Theme) =>
 	}),
 );
 
+const IndeterminateCheckbox = React.forwardRef(
+	({ indeterminate, ...rest }: any, ref) => {
+		const defaultRef = React.useRef() as any;
+		const resolvedRef = ref || defaultRef;
+
+		React.useEffect(() => {
+			resolvedRef.current.indeterminate = indeterminate;
+		}, [resolvedRef, indeterminate]);
+
+		return (
+			<>
+				<input type='checkbox' ref={resolvedRef} {...rest} />
+			</>
+		);
+	},
+);
+
 const GenericTable: React.FC<GenericTableProps> = ({
+	isSelectable = false,
+	onUpdateIds,
 	containerClass,
 	size,
 	columns,
@@ -71,6 +99,7 @@ const GenericTable: React.FC<GenericTableProps> = ({
 	const classes = useStyles();
 	const theme = useTheme();
 	const excelColumns = parseExportColumns(columns);
+	const parameters = [useGlobalFilter, usePagination, useRowSelect];
 	const {
 		getTableProps,
 		getTableBodyProps,
@@ -85,6 +114,7 @@ const GenericTable: React.FC<GenericTableProps> = ({
 		nextPage,
 		previousPage,
 		setPageSize,
+		selectedFlatRows = [],
 		state: { pageIndex, pageSize, globalFilter },
 		setGlobalFilter,
 	} = useTable(
@@ -93,13 +123,37 @@ const GenericTable: React.FC<GenericTableProps> = ({
 			data,
 			initialState: { pageIndex: 0 },
 		},
-		useGlobalFilter,
-		usePagination,
+		...parameters,
+		(hooks: any) => {
+			hooks.visibleColumns.push((columns: any) => [
+				{
+					id: SELECTION_ID,
+					Header: ({ getToggleAllRowsSelectedProps }: any) => (
+						<div>
+							<IndeterminateCheckbox {...getToggleAllRowsSelectedProps()} />
+						</div>
+					),
+					Cell: ({ row }: any) => (
+						<div>
+							<IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />
+						</div>
+					),
+				},
+				...columns,
+			]);
+		},
 	);
 
 	const onChangePage = (e: any, p: number) => gotoPage(p);
 	const onChangeRowsPerPage = (e: ChangeEvent) => setPageSize(e.target.value);
 	const labelPageOf = () => `Página ${pageIndex + 1} de ${pageOptions.length}`;
+
+	useEffect(() => {
+		if (isSelectable && !!onUpdateIds && selectedFlatRows) {
+			onUpdateIds(selectedFlatRows);
+		}
+		// eslint-disable-next-line
+	}, [isSelectable, selectedFlatRows]);
 
 	const paginationActions = memo(() => (
 		<div className={classes.root}>
@@ -172,14 +226,16 @@ const GenericTable: React.FC<GenericTableProps> = ({
 					<TableHead>
 						{headerGroups.map((hg: any) => (
 							<TableRow {...hg.getHeaderGroupProps()}>
-								{hg.headers.map((column: any) => (
-									<TableCell
-										{...column.getHeaderProps()}
-										{...column.headerProps}
-									>
-										{column.render('Header')}
-									</TableCell>
-								))}
+								{hg.headers
+									.filter((h: any) => isSelectable || h.id !== SELECTION_ID)
+									.map((column: any) => (
+										<TableCell
+											{...column.getHeaderProps()}
+											{...column.headerProps}
+										>
+											{column.render('Header')}
+										</TableCell>
+									))}
 							</TableRow>
 						))}
 					</TableHead>
@@ -188,16 +244,21 @@ const GenericTable: React.FC<GenericTableProps> = ({
 							prepareRow(row);
 							return (
 								<TableRow {...row.getRowProps()}>
-									{row.cells.map((cell: any) => {
-										return (
-											<TableCell
-												{...cell.getCellProps()}
-												{...cell.column.props}
-											>
-												{cell.render('Cell')}
-											</TableCell>
-										);
-									})}
+									{row.cells
+										.filter(
+											(c: any) =>
+												isSelectable || c?.column?.id !== SELECTION_ID,
+										)
+										.map((cell: any) => {
+											return (
+												<TableCell
+													{...cell.getCellProps()}
+													{...cell.column.props}
+												>
+													{cell.render('Cell')}
+												</TableCell>
+											);
+										})}
 								</TableRow>
 							);
 						})}

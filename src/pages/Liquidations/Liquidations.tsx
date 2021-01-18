@@ -9,19 +9,18 @@ import {
 import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date';
 import {
 	DatePicker,
+	GenericTable,
 	PageActionBar,
 	PageLoader,
 	PageTitle,
-	PaginatedTable,
-	TableFilter,
 	VolvoButton,
 } from 'common/components';
 import {
 	DEFAULT_NOW_DATE,
 	DEFAULT_WEEK_START_DATE,
 	LIQUIDATION_STATUSES,
-	TABLE_ROWS_PER_PAGE,
 	DEFAULT_MOMENT_FORMAT,
+	ACTIONS_COLUMN_V2,
 } from 'common/constants';
 import React, { useMemo, useState } from 'react';
 import { useQuery } from 'react-query';
@@ -32,17 +31,16 @@ import {
 	payLiquidation,
 	scheduleLiquidations,
 } from 'common/services';
-import { isGenerated, mapLiquidations, LiquidationColumn } from './interfaces';
+import { isGenerated, mapLiquidations } from './interfaces';
 import {
 	buildAlertBody as at,
-	filterRows,
 	getFilename,
 	LiquidationStatus,
 } from 'common/utils';
 import { LIQUIDATIONS_COLUMNS } from './columns';
-import LiquidationRow from './LiquidationRow/LiquidationRow';
 import { useAlert } from 'react-alert';
 import ScheduleModal from './ScheduleModal/ScheduleModal';
+import LiquidationActions from './LiquidationActions/LiquidationActions';
 
 type Event = React.ChangeEvent<{
 	name?: string | undefined;
@@ -64,15 +62,11 @@ const Liquidations: React.FC = () => {
 	const [endDate, setEndDate] = useState<MaterialUiPickersDate>(
 		DEFAULT_NOW_DATE,
 	);
-	const [selectedIds, setSelectedIds] = useState<string[]>([]);
+	const [selectedIds, setSelectedIds] = useState<any[]>([]);
 	const [liquidationStatus, setLiquidationStatus] = useState<string>(
 		LiquidationStatus.Generado,
 	);
 	const [showScheduleModal, setShowScheduleModal] = useState(false);
-	const [page, setPage] = useState(0);
-	const [rowsPerPage, setRowsPerPage] = useState(TABLE_ROWS_PER_PAGE);
-	const [query, setQuery] = useState('');
-	const [filtered, setFiltered] = useState<LiquidationColumn[]>([]);
 	const { data, status, refetch } = useQuery(
 		[
 			'getQueryLiquidations',
@@ -84,39 +78,19 @@ const Liquidations: React.FC = () => {
 	);
 	const liquidations = useMemo(() => {
 		if (data?.ok) {
-			const rows = mapLiquidations(data?.data || []);
-			setFiltered(rows);
-			return rows;
+			return mapLiquidations(data?.data || []);
 		}
 		return [];
-	}, [data, setFiltered]);
+	}, [data]);
 
 	const onStartDateChange = (date: MaterialUiPickersDate) => setStartDate(date);
 	const onEndDateChange = (date: MaterialUiPickersDate) => setEndDate(date);
 	const onStatusChange = (e: Event) =>
 		setLiquidationStatus(e.target.value as string);
-	const onFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const newQuery = e.target.value;
-		const filteredRows = filterRows(newQuery, liquidations);
-		setQuery(newQuery);
-		setFiltered(filteredRows);
-	};
-
-	const handleChangePage = (_: any, newPage: number) => {
-		setPage(newPage);
-	};
-
-	const handleChangeRowsPerPage = (
-		e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-	) => {
-		setRowsPerPage(parseInt(e.target.value, 10));
-		setPage(0);
-	};
 
 	const onAnnulate = async (id: string) => {
 		const response = await annulateLiquidation(id);
 		if (response.ok) {
-			setFiltered((old) => old.filter((r) => r.id !== id));
 			alert.success(
 				at('Reembolso Anulado', 'Se anuló un reembolso correctamente'),
 			);
@@ -180,21 +154,27 @@ const Liquidations: React.FC = () => {
 		refetch();
 	};
 
-	const onSelectId = (id: string) => {
-		setSelectedIds((ids) => [...ids, id]);
-	};
-	const onRemoveId = (id: string) => {
-		setSelectedIds((ids) => ids.filter((selected) => selected !== id));
-	};
+	const onChangeIds = (rows: any[]) =>
+		setSelectedIds(rows.map((r: any) => r.original.id));
 
-	const rows = useMemo(
-		() => filtered.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
-		[page, rowsPerPage, filtered],
+	const columns = useMemo(
+		() => [
+			...LIQUIDATIONS_COLUMNS,
+			{
+				...ACTIONS_COLUMN_V2,
+				Cell: (cell: any) => (
+					<LiquidationActions
+						item={cell?.row?.original}
+						status={liquidationStatus}
+						onAnnulate={onAnnulate}
+						onPay={onPay}
+					/>
+				),
+			},
+		],
+		// eslint-disable-next-line
+		[],
 	);
-
-	const columns = isGenerated(liquidationStatus)
-		? [{ title: '' }, ...LIQUIDATIONS_COLUMNS]
-		: LIQUIDATIONS_COLUMNS;
 
 	return (
 		<div>
@@ -241,39 +221,23 @@ const Liquidations: React.FC = () => {
 				{status === 'loading' && <PageLoader />}
 				{status === 'success' && (
 					<React.Fragment>
-						<PageActionBar justifyContent='space-between'>
-							<TableFilter value={query} onChange={onFilterChange} />
-							{isGenerated(liquidationStatus) && (
-								<VolvoButton
-									className={classes.actionButton}
-									onClick={onGenerate}
-									color='success'
-									text='Generar Liquidaciones'
-								/>
-							)}
-						</PageActionBar>
-						<PaginatedTable
+						<GenericTable
+							isSelectable={isGenerated(liquidationStatus)}
+							onUpdateIds={onChangeIds}
+							filename='Liquidaciones'
 							columns={columns}
-							count={liquidations.length}
-							page={page}
-							rowsPerPage={rowsPerPage}
-							onChangePage={handleChangePage}
-							onChangeRowsPerPage={handleChangeRowsPerPage}
-						>
-							<React.Fragment>
-								{rows.map((item, i: number) => (
-									<LiquidationRow
-										key={i}
-										item={item}
-										status={liquidationStatus}
-										onAnnulate={onAnnulate}
-										onPay={onPay}
-										onSelectId={onSelectId}
-										onRemoveId={onRemoveId}
+							data={liquidations}
+							rightButton={
+								isGenerated(liquidationStatus) && (
+									<VolvoButton
+										className={classes.actionButton}
+										onClick={onGenerate}
+										color='success'
+										text='Generar Liquidaciones'
 									/>
-								))}
-							</React.Fragment>
-						</PaginatedTable>
+								)
+							}
+						/>
 						<PageActionBar justifyContent='flex-end'>
 							{isGenerated(liquidationStatus) && (
 								<VolvoButton
