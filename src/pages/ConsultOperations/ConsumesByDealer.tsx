@@ -100,7 +100,7 @@ const ConsumesByDealer: React.FC = () => {
 		setDealer(dealerId);
 		const responseCashiers = await getDealerCashiers(dealerId);
 		if (responseCashiers.ok) {
-			const data = parseCashiers(responseCashiers.data || []);
+			const data = parseCashiers(responseCashiers.data || [], true);
 			setCashiers(data);
 		}
 		setLoadingFilters(false);

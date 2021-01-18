@@ -9,6 +9,7 @@ interface UserForm {
 	phone: string;
 	password: string;
 	dealerId: string;
+	cashierId: string;
 	roleIds: any[];
 }
 
@@ -19,6 +20,7 @@ export const UserSchema = yup.object<UserForm>({
 	password: yup.string(),
 	phone: yup.string().max(9).matches(/^\d+$/, NUMERIC_FIELD_MESSAGE).required(),
 	dealerId: yup.string(),
+	cashierId: yup.string(),
 	roleIds: yup
 		.array()
 		.of(

@@ -16,9 +16,9 @@ import {
 	Theme,
 } from '@material-ui/core';
 import { MultiTypeAhead, PageLoader, VolvoButton } from 'common/components';
-import { getQueryOnlyDealers } from 'common/services';
+import { getQueryDealerCashiers, getQueryOnlyDealers } from 'common/services';
 import { getQueryRoles } from 'common/services/Roles';
-import { Option, parseDealers, parseRoles } from 'common/utils';
+import { Option, parseCashiers, parseDealers, parseRoles } from 'common/utils';
 import { UserSchema } from 'common/validations';
 import { Field, Form, Formik } from 'formik';
 import React, { useMemo, useState } from 'react';
@@ -40,6 +40,7 @@ const initialValues: UserForm = {
 	phone: '',
 	password: '',
 	dealerId: '',
+	cashierId: '',
 	roleIds: [],
 };
 
@@ -79,6 +80,8 @@ const FormModal: React.FC<FormModalProps> = ({
 }: FormModalProps) => {
 	const classes = useStyles();
 	const [generate, setGenerate] = useState(true);
+	const [dealerId, setDealerId] = useState(values?.dealerId || '-');
+
 	const dealersQuery = useQuery(
 		['getQueryOnlyDealers', true],
 		getQueryOnlyDealers,
@@ -86,7 +89,7 @@ const FormModal: React.FC<FormModalProps> = ({
 	const dealers = useMemo(() => {
 		const { data } = dealersQuery;
 		if (data?.ok) {
-			return parseDealers(data?.data || []);
+			return parseDealers(data?.data || [], false, true);
 		}
 		return [];
 	}, [dealersQuery]);
@@ -99,6 +102,18 @@ const FormModal: React.FC<FormModalProps> = ({
 		}
 		return [];
 	}, [rolesQuery]);
+
+	const cashiersQuery = useQuery(
+		['getDealerCashiers', dealerId],
+		getQueryDealerCashiers,
+	);
+	const cashiers = useMemo(() => {
+		const { data } = cashiersQuery;
+		if (data?.ok) {
+			return parseCashiers(data?.data || [], false, true);
+		}
+		return [];
+	}, [cashiersQuery]);
 
 	const handleSubmit = (data: UserForm) => {
 		onConfirm(data);
@@ -191,9 +206,35 @@ const FormModal: React.FC<FormModalProps> = ({
 												label='Dealer'
 												name='dealerId'
 												error={touched.dealerId && !!errors.dealerId}
+												onChange={(e: any) => {
+													const selected = e.target.value;
+													setDealerId(selected);
+													setFieldValue('dealerId', selected);
+												}}
 												as={Select}
 											>
 												{dealers.map((d) => (
+													<MenuItem key={d.value} value={d.value}>
+														{d.label}
+													</MenuItem>
+												))}
+											</Field>
+										</FormControl>
+									)}
+								</Grid>
+								<Grid item xs={12}>
+									{cashiersQuery.status === 'loading' && <PageLoader />}
+									{cashiersQuery.status === 'success' && (
+										<FormControl variant='outlined' fullWidth size='small'>
+											<InputLabel id='cashierLabel'>Cashier</InputLabel>
+											<Field
+												labelId='cashierLabel'
+												label='Cajero'
+												name='cashierId'
+												error={touched.cashierId && !!errors.cashierId}
+												as={Select}
+											>
+												{cashiers.map((d) => (
 													<MenuItem key={d.value} value={d.value}>
 														{d.label}
 													</MenuItem>
