@@ -15,6 +15,7 @@ export interface User {
 	password?: string;
 	archiveAt: string;
 	dealerId: string;
+	cashierId: string;
 	roleIds?: any[];
 }
 
@@ -56,6 +57,7 @@ export const mapUserAdmin = ({
 	let user = null;
 	let clientId = '';
 	let dealerId = '';
+	let cashierId = '';
 	let roleIds = undefined;
 	if (contact) {
 		user = contact;
@@ -65,6 +67,7 @@ export const mapUserAdmin = ({
 	} else {
 		user = admin;
 		dealerId = `${admin?.dealerId}`;
+		cashierId = `${admin?.cashierId}`;
 		roleIds = mapRoleAdmins(admin.roleAdmins);
 	}
 
@@ -93,6 +96,7 @@ export const mapUserAdmin = ({
 		status,
 		archiveAt,
 		dealerId,
+		cashierId,
 		roleIds,
 	};
 };

@@ -100,7 +100,7 @@ const ConsumesByDealer: React.FC = () => {
 		setDealer(dealerId);
 		const responseCashiers = await getDealerCashiers(dealerId);
 		if (responseCashiers.ok) {
-			const data = parseCashiers(responseCashiers.data || []);
+			const data = parseCashiers(responseCashiers.data || [], true);
 			setCashiers(data);
 		}
 		setLoadingFilters(false);
@@ -160,6 +160,10 @@ const ConsumesByDealer: React.FC = () => {
 				setDealer(dealerId);
 				setDealerValue(curDealer);
 				onDealerChange(null, curDealer);
+			}
+			const cashierId = `${user.cashierId || ''}`;
+			if (cashierId) {
+				setCashier(cashierId);
 			}
 		}
 	}, [options, user]);
@@ -228,6 +232,7 @@ const ConsumesByDealer: React.FC = () => {
 												label='Caja'
 												onChange={onCashierChange}
 												value={cashier}
+												disabled={!!user?.cashierId}
 											>
 												{cashiers.map((d) => (
 													<MenuItem key={d.value} value={d.value}>

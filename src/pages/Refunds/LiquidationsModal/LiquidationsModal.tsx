@@ -47,7 +47,7 @@ const LiquidationsModal: React.FC<LiquidationsModalProps> = ({
 	);
 	return (
 		<Dialog fullWidth maxWidth='xl' open={show} onClose={onClose}>
-			<DialogTitle id='alert-dialog-title'>Consumos</DialogTitle>
+			<DialogTitle id='alert-dialog-title'>Liquidaciones</DialogTitle>
 			<DialogContent>
 				{status === 'loading' && <PageLoader />}
 				{status === 'success' && (

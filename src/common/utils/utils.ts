@@ -28,6 +28,7 @@ import {
 } from './types';
 
 const ALL_OPTION = { value: 'all', label: 'Todos' };
+const NO_OPTION = { value: '-', label: 'Ninguno' };
 
 // TODO: research about iterating over keys of generic types
 export const filterRows = (query: string, rows: any[] | null) => {
@@ -70,6 +71,8 @@ const optionsWithAll = (options: Option[]): Option[] => [
 	...options,
 ];
 
+const optionsWithout = (options: Option[]): Option[] => [NO_OPTION, ...options];
+
 export const parseClients = (
 	clients: Client[],
 	withAll?: boolean,
@@ -92,30 +95,46 @@ export const parseContacts = (contacts: Contact[]): Option[] => {
 };
 
 export const parseCards = (cards: Card[]): Option[] => {
-	return cards.map(({ id, code, contact, balance, cardType }: Card) => ({
+	return cards.map(({ id, contact, balance, cardType }: Card) => ({
 		value: `${id}`,
-		label: `${cardType?.name}:${code} - RUC:${contact?.client?.ruc} - C:${contact?.phone} - ${balance?.label}`,
+		label: `${cardType?.name} - Cliente: ${contact?.client?.name} RUC:${contact?.client?.ruc} - Contacto: ${contact?.fullName} C:${contact?.phone} - ${balance?.label}`,
 	}));
 };
 
 export const parseDealers = (
 	dealers: Dealer[],
 	withAll?: boolean,
+	without?: boolean,
 ): Option[] => {
 	const options = dealers.map(({ id, ruc, tpCode, name, maxCashiers }) => ({
 		value: `${id}`,
 		label: `${tpCode} - ${name} RUC: ${ruc} - MÁX. CAJEROS: ${maxCashiers}`,
 	}));
-	return withAll ? optionsWithAll(options) : options;
+	if (withAll) {
+		return optionsWithAll(options);
+	}
+	if (without) {
+		return optionsWithout(options);
+	}
+	return options;
 };
 
-export const parseCashiers = (cashiers: Cashier[]): Option[] => {
-	const defaultOption = { value: 'all', label: 'Todas' };
+export const parseCashiers = (
+	cashiers: Cashier[],
+	withAll?: boolean,
+	without?: boolean,
+): Option[] => {
 	const options = cashiers.map(({ id, phone, fullName }) => ({
 		value: `${id}`,
 		label: `${phone} - ${fullName}`,
 	}));
-	return [defaultOption, ...options];
+	if (withAll) {
+		return optionsWithAll(options);
+	}
+	if (without) {
+		return optionsWithout(options);
+	}
+	return options;
 };
 
 export const parseCardTypes = (

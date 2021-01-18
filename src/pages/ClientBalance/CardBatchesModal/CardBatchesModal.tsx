@@ -40,14 +40,17 @@ const useStyles = makeStyles(({ spacing }: Theme) =>
 );
 
 const mapCardBatchList = (data: CardBatch[]): CardBatchRow[] => {
-	return data.map(({ card, batchId, expiresAt, expiresAtExtent, balance }) => ({
-		number: card.code,
-		batch: `${batchId}`,
-		expiration: expiresAt,
-		expiresAtExtent: expiresAtExtent,
-		currency: balance.currencySymbol,
-		balance: balance.value,
-	}));
+	return data.map(
+		({ card, batchId, expiresAt, expiresAtExtent, balance, batch }) => ({
+			number: card.code,
+			batch: `${batchId}`,
+			chassis: batch?.tpChasis,
+			expiration: expiresAt,
+			expiresAtExtent: expiresAtExtent,
+			currency: balance.currencySymbol,
+			balance: balance.value,
+		}),
+	);
 };
 
 const CardBatchesModal: React.FC<CardBatchesModalProps> = ({

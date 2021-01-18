@@ -11,7 +11,6 @@ import { TableLoad } from '../interfaces';
 
 interface LoadRowProps {
 	item: TableLoad;
-	isMain?: boolean;
 }
 
 const useStyles = makeStyles(({ palette }: Theme) =>
@@ -22,7 +21,7 @@ const useStyles = makeStyles(({ palette }: Theme) =>
 	}),
 );
 
-const LoadRow = ({ item, isMain }: LoadRowProps) => {
+const LoadRow = ({ item }: LoadRowProps) => {
 	const classes = useStyles();
 	const {
 		index,
@@ -33,7 +32,9 @@ const LoadRow = ({ item, isMain }: LoadRowProps) => {
 		chassis,
 		invoice,
 		amount,
-		balance,
+		dealer,
+		contactName,
+		contactPhone,
 		currency,
 		type,
 		reason,
@@ -66,11 +67,9 @@ const LoadRow = ({ item, isMain }: LoadRowProps) => {
 					<TableCell>
 						<Amount value={amount} />
 					</TableCell>
-					{isMain && (
-						<TableCell>
-							<Amount value={balance || 0} />
-						</TableCell>
-					)}
+					<TableCell>{dealer}</TableCell>
+					<TableCell>{contactName}</TableCell>
+					<TableCell>{contactPhone}</TableCell>
 					<TableCell>{type}</TableCell>
 					<TableCell>{reason}</TableCell>
 					<TableCell>{card}</TableCell>

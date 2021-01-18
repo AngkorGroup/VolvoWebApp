@@ -63,6 +63,7 @@ export interface Expiration {
 	cardBalance: number;
 	cardColor: string;
 	batch: string;
+	chassis: string;
 	expiration: string;
 	expiresAtExtent: string;
 	currency: string;
@@ -84,7 +85,15 @@ export const mapCardType = (cardTypes: CardTypeSummary[]): CardType[] => {
 
 export const mapExpirations = (expirations: CardBatch[]): Expiration[] => {
 	return expirations.map(
-		({ card, batchId, expiresAt, expiresAtExtent, balance, cardId }) => ({
+		({
+			card,
+			batchId,
+			expiresAt,
+			expiresAtExtent,
+			balance,
+			cardId,
+			batch,
+		}) => ({
 			cardId: `${cardId}`,
 			cardType: card.cardType?.name,
 			cardName: card.cardType?.displayName,
@@ -92,6 +101,7 @@ export const mapExpirations = (expirations: CardBatch[]): Expiration[] => {
 			cardBalance: card.balance.value,
 			cardColor: card.cardType?.color,
 			batch: `${batchId}`,
+			chassis: batch?.tpChasis,
 			expiration: expiresAt,
 			expiresAtExtent: expiresAtExtent,
 			currency: balance.currency?.symbol || balance.currencySymbol,
@@ -105,7 +115,7 @@ export const mapExpirations = (expirations: CardBatch[]): Expiration[] => {
 export const mapExpirationMovements = (
 	movements: BatchMovement[],
 ): BatchMovementRow[] => {
-	return movements.map(({ movement, batchId, amount }) => {
+	return movements.map(({ movement, batchId, amount, batch }) => {
 		const { charge, transfer, type } = movement || {};
 		let voucherURL = '';
 		let number = '';
@@ -128,6 +138,7 @@ export const mapExpirationMovements = (
 			dealer: charge?.cashier?.dealer?.name,
 			cashier: charge?.cashier?.fullName,
 			batch: `${batchId}`,
+			chassis: batch?.tpChasis,
 			voucherURL,
 			chargeStatus: charge?.status,
 			type: movement?.displayName,

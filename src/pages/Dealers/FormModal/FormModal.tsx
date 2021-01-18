@@ -92,7 +92,7 @@ const FormModal: React.FC<FormModalProps> = ({
 								<Grid item xs={4}>
 									<Field
 										name='code'
-										label='Código'
+										label='#TopPerú'
 										error={touched.code && !!errors.code}
 										helperText={touched.code && errors.code}
 										{...fieldProps}

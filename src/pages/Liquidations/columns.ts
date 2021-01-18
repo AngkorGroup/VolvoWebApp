@@ -1,19 +1,58 @@
-import { ACTIONS_COLUMN, COLUMN_CENTER } from 'common/constants';
+import { ACTIONS_COLUMN, COLUMN_CENTER, COLUMN_RIGHT } from 'common/constants';
+import { formatNumber } from 'common/utils';
 
 export const LIQUIDATIONS_COLUMNS = [
-	{ title: '#Liquidación' },
-	{ title: 'Dealer' },
-	{ title: 'Moneda' },
-	{ title: 'Monto', props: { align: COLUMN_CENTER } },
-	{ title: 'Fecha' },
-	{ title: '#Consumos' },
-	{ title: 'Origen' },
-	{ title: 'Destino' },
-	{ title: 'Fecha Pago' },
-	{ title: 'Voucher' },
-	{ title: '#Reembolso' },
-	{ title: 'Estado' },
-	ACTIONS_COLUMN,
+	{
+		Header: '#Liquidación',
+		accessor: 'settlement',
+	},
+	{
+		Header: 'Dealer',
+		accessor: 'dealer',
+	},
+	{
+		Header: 'Moneda',
+		accessor: 'currency',
+	},
+	{
+		Header: 'Monto',
+		accessor: 'amount',
+		Cell: (cell: any) => formatNumber(cell.value),
+		propsHeader: { align: COLUMN_CENTER },
+		props: { align: COLUMN_RIGHT },
+	},
+	{
+		Header: 'Fecha',
+		accessor: 'date',
+	},
+	{
+		Header: '#Consumos',
+		accessor: 'chargesCount',
+	},
+	{
+		Header: 'Origen',
+		accessor: 'source',
+	},
+	{
+		Header: 'Destino',
+		accessor: 'target',
+	},
+	{
+		Header: 'Fecha Pago',
+		accessor: 'paymentDate',
+	},
+	{
+		Header: 'Voucher',
+		accessor: 'voucher',
+	},
+	{
+		Header: '#Reembolso',
+		accessor: 'refundId',
+	},
+	{
+		Header: 'Estado',
+		accessor: 'liquidationStatus',
+	},
 ];
 
 export const CHARGES_COLUMNS = [

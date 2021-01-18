@@ -18,6 +18,7 @@ export interface Expiration {
 	type: string;
 	number: string;
 	batch: string;
+	chassis: string;
 	currency: string;
 	balance: number;
 	expirationDate: string;
@@ -34,10 +35,11 @@ export interface Batch {
 
 export const mapExpirations = (batches: CardBatch[]): Expiration[] => {
 	return batches.map(
-		({ card, batchId, balance, expiresAt, expiresAtExtent }) => ({
+		({ card, batchId, balance, expiresAt, expiresAtExtent, batch }) => ({
 			type: card?.cardType?.name,
 			number: card?.code,
 			batch: `${batchId}`,
+			chassis: batch?.tpChasis,
 			currency: balance.currency?.symbol || balance.currencySymbol,
 			balance: balance.value,
 			expirationDate: expiresAt,

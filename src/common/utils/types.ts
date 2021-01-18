@@ -36,6 +36,7 @@ export interface Admin {
 	status: string;
 	archiveAt: string;
 	dealerId: number;
+	cashierId: number;
 	menuOptions: string[];
 	roleAdmins: RoleAdmin[];
 }
@@ -141,6 +142,7 @@ export interface PreLoad {
 	card: Card;
 	client: Client;
 	contact: Contact;
+	dealerName: string;
 	rowIndex: number;
 	errorMessage: string;
 	lineContent: string;
