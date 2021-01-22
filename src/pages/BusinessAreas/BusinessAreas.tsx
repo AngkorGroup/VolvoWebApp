@@ -1,11 +1,9 @@
 import {
-	BasicTable,
+	GenericTable,
 	OnlyActiveFilter,
-	PageActionBar,
 	PageBody,
 	PageLoader,
 	PageTitle,
-	TableFilter,
 	VolvoButton,
 } from 'common/components';
 import AddIcon from '@material-ui/icons/Add';
@@ -17,29 +15,26 @@ import {
 } from 'common/services';
 import React, { useMemo, useState } from 'react';
 import { useQuery } from 'react-query';
-import { mapBusinessAreas, BusinessAreaColumn } from './interfaces';
+import { mapBusinessAreas } from './interfaces';
 import { BUSINESS_AREAS_COLUMNS } from './columns';
-import { filterRows, buildAlertBody as at } from 'common/utils';
-import BusinessAreaRow from './BusinessAreaRow/BusinessAreaRow';
+import { buildAlertBody as at } from 'common/utils';
 import { useAlert } from 'react-alert';
 import { BusinessAreaForm } from 'common/validations';
 import FormModal from './FormModal/FormModal';
+import { ACTIONS_COLUMN_V2 } from 'common/constants';
+import BusinessActions from './BusinessActions/BusinessActions';
 
 const BusinessAreas: React.FC = () => {
 	const alert = useAlert();
-	const [query, setQuery] = useState('');
 	const [showAddModal, setShowAddModal] = useState(false);
 	const [onlyActive, setOnlyActive] = useState(true);
-	const [filtered, setFiltered] = useState<BusinessAreaColumn[]>([]);
 	const { data, status, refetch } = useQuery(
 		['getQueryBusinessAreas', onlyActive],
 		getQueryBusinessAreas,
 	);
 	const businessAreas = useMemo(() => {
 		if (data?.ok) {
-			const rows = mapBusinessAreas(data?.data || []);
-			setFiltered(rows);
-			return rows;
+			return mapBusinessAreas(data?.data || []);
 		}
 		return [];
 	}, [data]);
@@ -48,13 +43,6 @@ const BusinessAreas: React.FC = () => {
 
 	const onOnlyActiveChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
 		setOnlyActive(e.target.checked);
-	};
-
-	const onFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const newQuery = e.target.value;
-		const filtered = filterRows(newQuery, businessAreas);
-		setQuery(newQuery);
-		setFiltered(filtered);
 	};
 
 	const onAdd = async (form: BusinessAreaForm) => {
@@ -105,6 +93,24 @@ const BusinessAreas: React.FC = () => {
 		}
 	};
 
+	const columns = useMemo(
+		() => [
+			...BUSINESS_AREAS_COLUMNS,
+			{
+				...ACTIONS_COLUMN_V2,
+				Cell: (cell: any) => (
+					<BusinessActions
+						item={cell?.row?.original}
+						onEdit={onEdit}
+						onDelete={onDelete}
+					/>
+				),
+			},
+		],
+		// eslint-disable-next-line
+		[],
+	);
+
 	return (
 		<div>
 			<div>
@@ -113,49 +119,37 @@ const BusinessAreas: React.FC = () => {
 			<PageBody>
 				{status === 'loading' && <PageLoader />}
 				{status === 'success' && (
-					<div>
-						<PageActionBar justifyContent='space-between'>
-							{businessAreas.length > 0 && (
-								<div>
-									<TableFilter value={query} onChange={onFilterChange} />
-									<OnlyActiveFilter
-										checked={onlyActive}
-										onChange={onOnlyActiveChange}
-									/>
-								</div>
-							)}
-							<VolvoButton
-								text='Agregar'
-								icon={<AddIcon />}
-								color='primary'
-								onClick={setAddModalVisible(true)}
-							/>
-							{showAddModal && (
-								<FormModal
-									title='Agregar Área de negocio'
-									show={showAddModal}
-									onClose={setAddModalVisible(false)}
-									onConfirm={onAdd}
+					<PageBody>
+						<GenericTable
+							filename='Area_de_negocio'
+							columns={columns}
+							data={businessAreas}
+							customFilters={
+								<OnlyActiveFilter
+									checked={onlyActive}
+									onChange={onOnlyActiveChange}
 								/>
-							)}
-						</PageActionBar>
-						{businessAreas.length > 0 && (
-							<BasicTable columns={BUSINESS_AREAS_COLUMNS}>
-								<React.Fragment>
-									{filtered.map((item, i: number) => (
-										<BusinessAreaRow
-											key={i}
-											item={item}
-											onEdit={onEdit}
-											onDelete={onDelete}
-										/>
-									))}
-								</React.Fragment>
-							</BasicTable>
-						)}
-					</div>
+							}
+							rightButton={
+								<VolvoButton
+									text='Agregar'
+									icon={<AddIcon />}
+									color='primary'
+									onClick={setAddModalVisible(true)}
+								/>
+							}
+						/>
+					</PageBody>
 				)}
 			</PageBody>
+			{showAddModal && (
+				<FormModal
+					title='Agregar Área de Negocio'
+					show={showAddModal}
+					onClose={setAddModalVisible(false)}
+					onConfirm={onAdd}
+				/>
+			)}
 		</div>
 	);
 };
