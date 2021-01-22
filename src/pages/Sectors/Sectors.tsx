@@ -1,5 +1,6 @@
 import {
 	BasicTable,
+	GenericTable,
 	OnlyActiveFilter,
 	PageActionBar,
 	PageBody,
@@ -24,6 +25,8 @@ import SectorRow from './SectorRow/SectorRow';
 import { useAlert } from 'react-alert';
 import { SectorForm } from 'common/validations';
 import FormModal from './FormModal/FormModal';
+import { ACTIONS_COLUMN_V2 } from 'common/constants';
+import SectorActions from './SectorActions/SectorActions';
 
 const Sectors: React.FC = () => {
 	const alert = useAlert();
@@ -105,6 +108,24 @@ const Sectors: React.FC = () => {
 		}
 	};
 
+	const columns = useMemo(
+		() => [
+			...SECTORS_COLUMNS,
+			{
+				...ACTIONS_COLUMN_V2,
+				Cell: (cell: any) => (
+					<SectorActions
+						item={cell?.row?.original}
+						onEdit={onEdit}
+						onDelete={onDelete}
+					/>
+				),
+			},
+		],
+		// eslint-disable-next-line
+		[],
+	);
+
 	return (
 		<div>
 			<div>
@@ -113,49 +134,37 @@ const Sectors: React.FC = () => {
 			<PageBody>
 				{status === 'loading' && <PageLoader />}
 				{status === 'success' && (
-					<div>
-						<PageActionBar justifyContent='space-between'>
-							{sectors.length > 0 && (
-								<div>
-									<TableFilter value={query} onChange={onFilterChange} />
-									<OnlyActiveFilter
-										checked={onlyActive}
-										onChange={onOnlyActiveChange}
-									/>
-								</div>
-							)}
-							<VolvoButton
-								text='Agregar'
-								icon={<AddIcon />}
-								color='primary'
-								onClick={setAddModalVisible(true)}
-							/>
-							{showAddModal && (
-								<FormModal
-									title='Agregar Sector de cliente'
-									show={showAddModal}
-									onClose={setAddModalVisible(false)}
-									onConfirm={onAdd}
+					<PageBody>
+						<GenericTable
+							filename='Sectores'
+							columns={columns}
+							data={sectors}
+							customFilters={
+								<OnlyActiveFilter
+									checked={onlyActive}
+									onChange={onOnlyActiveChange}
 								/>
-							)}
-						</PageActionBar>
-						{sectors.length > 0 && (
-							<BasicTable columns={SECTORS_COLUMNS}>
-								<React.Fragment>
-									{filtered.map((item, i: number) => (
-										<SectorRow
-											key={i}
-											item={item}
-											onEdit={onEdit}
-											onDelete={onDelete}
-										/>
-									))}
-								</React.Fragment>
-							</BasicTable>
-						)}
-					</div>
+							}
+							rightButton={
+								<VolvoButton
+									text='Agregar'
+									icon={<AddIcon />}
+									color='primary'
+									onClick={setAddModalVisible(true)}
+								/>
+							}
+						/>
+					</PageBody>
 				)}
 			</PageBody>
+			{showAddModal && (
+				<FormModal
+					title='Agregar Sector'
+					show={showAddModal}
+					onClose={setAddModalVisible(false)}
+					onConfirm={onAdd}
+				/>
+			)}
 		</div>
 	);
 };

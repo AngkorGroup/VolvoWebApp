@@ -124,7 +124,7 @@ const DocumentTypes: React.FC = () => {
 				{status === 'success' && (
 					<PageBody>
 						<GenericTable
-							filename='Tipos_de_tarjeta'
+							filename='Tipos_de_documento'
 							columns={columns}
 							data={documentTypes}
 							customFilters={
