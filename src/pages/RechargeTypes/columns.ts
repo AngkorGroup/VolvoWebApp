@@ -1,10 +1,22 @@
-import { ACTIONS_COLUMN } from 'common/constants';
-
 export const RECHARGE_TYPES_COLUMNS = [
-	{ title: 'Id' },
-	{ title: 'Nombre' },
-	{ title: '#TopPerú' },
-	{ title: 'Estado' },
-	{ title: 'Fecha Baja' },
-	ACTIONS_COLUMN,
+	{
+		Header: 'Id',
+		accessor: 'id',
+	},
+	{
+		Header: 'Nombre',
+		accessor: 'name',
+	},
+	{
+		Header: '#TopPerú',
+		accessor: 'tpCode',
+	},
+	{
+		Header: 'Estado',
+		accessor: 'status',
+	},
+	{
+		Header: 'Fecha Baja',
+		accessor: 'archiveAt',
+	},
 ];

@@ -1,11 +1,9 @@
 import {
-	BasicTable,
+	GenericTable,
 	OnlyActiveFilter,
-	PageActionBar,
 	PageBody,
 	PageLoader,
 	PageTitle,
-	TableFilter,
 	VolvoButton,
 } from 'common/components';
 import AddIcon from '@material-ui/icons/Add';
@@ -17,29 +15,26 @@ import {
 } from 'common/services';
 import React, { useMemo, useState } from 'react';
 import { useQuery } from 'react-query';
-import { mapRechargeTypes, RechargeTypeColumn } from './interfaces';
+import { mapRechargeTypes } from './interfaces';
 import { RECHARGE_TYPES_COLUMNS } from './columns';
-import { filterRows, buildAlertBody as at } from 'common/utils';
-import RechargeTypeRow from './RechargeTypeRow/RechargeTypeRow';
+import { buildAlertBody as at } from 'common/utils';
 import { useAlert } from 'react-alert';
 import { RechargeTypeForm } from 'common/validations';
 import FormModal from './FormModal/FormModal';
+import { ACTIONS_COLUMN_V2 } from 'common/constants';
+import RechargeTypeActions from './RechargeTypeActions/RechargeTypeActions';
 
 const RechargeTypes: React.FC = () => {
 	const alert = useAlert();
-	const [query, setQuery] = useState('');
 	const [showAddModal, setShowAddModal] = useState(false);
 	const [onlyActive, setOnlyActive] = useState(true);
-	const [filtered, setFiltered] = useState<RechargeTypeColumn[]>([]);
 	const { data, status, refetch } = useQuery(
 		['getQueryRechargeTypes', onlyActive],
 		getQueryRechargeTypes,
 	);
 	const rechargeTypes = useMemo(() => {
 		if (data?.ok) {
-			const rows = mapRechargeTypes(data?.data || []);
-			setFiltered(rows);
-			return rows;
+			return mapRechargeTypes(data?.data || []);
 		}
 		return [];
 	}, [data]);
@@ -48,13 +43,6 @@ const RechargeTypes: React.FC = () => {
 
 	const onOnlyActiveChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
 		setOnlyActive(e.target.checked);
-	};
-
-	const onFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const newQuery = e.target.value;
-		const filtered = filterRows(newQuery, rechargeTypes);
-		setQuery(newQuery);
-		setFiltered(filtered);
 	};
 
 	const onAdd = async (form: RechargeTypeForm) => {
@@ -105,6 +93,24 @@ const RechargeTypes: React.FC = () => {
 		}
 	};
 
+	const columns = useMemo(
+		() => [
+			...RECHARGE_TYPES_COLUMNS,
+			{
+				...ACTIONS_COLUMN_V2,
+				Cell: (cell: any) => (
+					<RechargeTypeActions
+						item={cell?.row?.original}
+						onEdit={onEdit}
+						onDelete={onDelete}
+					/>
+				),
+			},
+		],
+		// eslint-disable-next-line
+		[],
+	);
+
 	return (
 		<div>
 			<div>
@@ -113,49 +119,37 @@ const RechargeTypes: React.FC = () => {
 			<PageBody>
 				{status === 'loading' && <PageLoader />}
 				{status === 'success' && (
-					<div>
-						<PageActionBar justifyContent='space-between'>
-							{rechargeTypes.length > 0 && (
-								<div>
-									<TableFilter value={query} onChange={onFilterChange} />
-									<OnlyActiveFilter
-										checked={onlyActive}
-										onChange={onOnlyActiveChange}
-									/>
-								</div>
-							)}
-							<VolvoButton
-								text='Agregar'
-								icon={<AddIcon />}
-								color='primary'
-								onClick={setAddModalVisible(true)}
-							/>
-							{showAddModal && (
-								<FormModal
-									title='Agregar Tipo de Recarga'
-									show={showAddModal}
-									onClose={setAddModalVisible(false)}
-									onConfirm={onAdd}
+					<PageBody>
+						<GenericTable
+							filename='Tipos_de_tarjeta'
+							columns={columns}
+							data={rechargeTypes}
+							customFilters={
+								<OnlyActiveFilter
+									checked={onlyActive}
+									onChange={onOnlyActiveChange}
 								/>
-							)}
-						</PageActionBar>
-						{rechargeTypes.length > 0 && (
-							<BasicTable columns={RECHARGE_TYPES_COLUMNS}>
-								<React.Fragment>
-									{filtered.map((item, i: number) => (
-										<RechargeTypeRow
-											key={i}
-											item={item}
-											onEdit={onEdit}
-											onDelete={onDelete}
-										/>
-									))}
-								</React.Fragment>
-							</BasicTable>
-						)}
-					</div>
+							}
+							rightButton={
+								<VolvoButton
+									text='Agregar'
+									icon={<AddIcon />}
+									color='primary'
+									onClick={setAddModalVisible(true)}
+								/>
+							}
+						/>
+					</PageBody>
 				)}
 			</PageBody>
+			{showAddModal && (
+				<FormModal
+					title='Agregar Tipo de Recarga'
+					show={showAddModal}
+					onClose={setAddModalVisible(false)}
+					onConfirm={onAdd}
+				/>
+			)}
 		</div>
 	);
 };
