@@ -161,12 +161,4 @@ export const BATCH_MOVEMENTS_COLUMNS = [
 		Header: 'Caja',
 		accessor: 'cashier',
 	},
-	{
-		Header: 'Lote',
-		accessor: 'batch',
-	},
-	{
-		Header: 'Chasis',
-		accessor: 'chassis',
-	},
 ];
