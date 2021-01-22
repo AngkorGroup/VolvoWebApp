@@ -1,11 +1,26 @@
-import { ACTIONS_COLUMN } from '../../common/constants/tableColumn';
-
 export const POS_COLUMNS = [
-	{ title: 'IMEI' },
-	{ title: '#TopPerú' },
-	{ title: 'Nombre' },
-	{ title: 'Celular' },
-	{ title: 'Email' },
-	{ title: 'Fecha Baja' },
-	ACTIONS_COLUMN,
+	{
+		Header: 'IMEI',
+		accessor: 'imei',
+	},
+	{
+		Header: '#TopPerú',
+		accessor: 'tpCode',
+	},
+	{
+		Header: 'Nombre',
+		accessor: 'fullName',
+	},
+	{
+		Header: 'Celular',
+		accessor: 'phone',
+	},
+	{
+		Header: 'Email',
+		accessor: 'email',
+	},
+	{
+		Header: 'Fecha Baja',
+		accessor: 'archiveAt',
+	},
 ];
