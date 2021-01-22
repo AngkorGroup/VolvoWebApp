@@ -144,7 +144,11 @@ const Refunds = () => {
 			<div>
 				{status === 'loading' && <PageLoader />}
 				{status === 'success' && (
-					<GenericTable columns={columns} data={refunds} />
+					<GenericTable
+						filename='Reembolsos'
+						columns={columns}
+						data={refunds}
+					/>
 				)}
 			</div>
 		</div>
