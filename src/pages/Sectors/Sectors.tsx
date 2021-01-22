@@ -1,12 +1,9 @@
 import {
-	BasicTable,
 	GenericTable,
 	OnlyActiveFilter,
-	PageActionBar,
 	PageBody,
 	PageLoader,
 	PageTitle,
-	TableFilter,
 	VolvoButton,
 } from 'common/components';
 import AddIcon from '@material-ui/icons/Add';
@@ -18,10 +15,9 @@ import {
 } from 'common/services';
 import React, { useMemo, useState } from 'react';
 import { useQuery } from 'react-query';
-import { mapSectors, SectorColumn } from './interfaces';
+import { mapSectors } from './interfaces';
 import { SECTORS_COLUMNS } from './columns';
-import { filterRows, buildAlertBody as at } from 'common/utils';
-import SectorRow from './SectorRow/SectorRow';
+import { buildAlertBody as at } from 'common/utils';
 import { useAlert } from 'react-alert';
 import { SectorForm } from 'common/validations';
 import FormModal from './FormModal/FormModal';
@@ -30,19 +26,15 @@ import SectorActions from './SectorActions/SectorActions';
 
 const Sectors: React.FC = () => {
 	const alert = useAlert();
-	const [query, setQuery] = useState('');
 	const [showAddModal, setShowAddModal] = useState(false);
 	const [onlyActive, setOnlyActive] = useState(true);
-	const [filtered, setFiltered] = useState<SectorColumn[]>([]);
 	const { data, status, refetch } = useQuery(
 		['getQuerySectors', onlyActive],
 		getQuerySectors,
 	);
 	const sectors = useMemo(() => {
 		if (data?.ok) {
-			const rows = mapSectors(data?.data || []);
-			setFiltered(rows);
-			return rows;
+			return mapSectors(data?.data || []);
 		}
 		return [];
 	}, [data]);
@@ -51,13 +43,6 @@ const Sectors: React.FC = () => {
 
 	const onOnlyActiveChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
 		setOnlyActive(e.target.checked);
-	};
-
-	const onFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const newQuery = e.target.value;
-		const filtered = filterRows(newQuery, sectors);
-		setQuery(newQuery);
-		setFiltered(filtered);
 	};
 
 	const onAdd = async (form: SectorForm) => {
