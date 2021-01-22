@@ -1,12 +1,30 @@
-import { ACTIONS_COLUMN } from 'common/constants';
-
 export const DOCUMENT_TYPES_COLUMNS = [
-	{ title: 'Id' },
-	{ title: 'Nombre' },
-	{ title: '#TopPerú' },
-	{ title: 'Abreviación' },
-	{ title: 'Cód. SUNAT' },
-	{ title: 'Estado' },
-	{ title: 'Fecha Baja' },
-	ACTIONS_COLUMN,
+	{
+		Header: 'Id',
+		accessor: 'id',
+	},
+	{
+		Header: 'Nombre',
+		accessor: 'name',
+	},
+	{
+		Header: '#TopPerú',
+		accessor: 'tpCode',
+	},
+	{
+		Header: 'Abreviación',
+		accessor: 'abbreviation',
+	},
+	{
+		Header: 'Cód. SUNAT',
+		accessor: 'sunatCode',
+	},
+	{
+		Header: 'Estado',
+		accessor: 'status',
+	},
+	{
+		Header: 'Fecha Baja',
+		accessor: 'archiveAt',
+	},
 ];
