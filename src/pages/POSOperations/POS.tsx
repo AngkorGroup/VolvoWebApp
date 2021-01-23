@@ -138,7 +138,6 @@ const POS: React.FC = () => {
 			phone: pos.phone,
 			tpCode: pos.tpCode,
 		};
-		console.log({ cashiers });
 		const response = await editCashier(body);
 		if (response.ok) {
 			const data = mapCashier(response.data || ({} as Cashier));
