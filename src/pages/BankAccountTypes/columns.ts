@@ -1,11 +1,18 @@
-import {
-    ACTIONS_COLUMN
-} from '../../common/constants/tableColumn';
-
-export const CARD_TYPE_COLUMNS = [
-    { title: 'Id' },
-    { title: 'Nombre' },
-    { title: 'Estado' },
-    { title: 'Fecha Baja' },
-    ACTIONS_COLUMN,
+export const BANK_ACCOUNT_TYPE_COLUMNS = [
+	{
+		Header: 'Id',
+		accessor: 'id',
+	},
+	{
+		Header: 'Nombre',
+		accessor: 'name',
+	},
+	{
+		Header: 'Estado',
+		accessor: 'status',
+	},
+	{
+		Header: 'Fecha Baja',
+		accessor: 'archiveAt',
+	},
 ];
