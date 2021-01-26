@@ -5,7 +5,7 @@ import {
 	PageTitle,
 	VolvoButton,
 } from 'common/components';
-import { buildAlertBody as at, Option } from 'common/utils';
+import { buildAlertBody as at } from 'common/utils';
 import React, { useMemo, useState } from 'react';
 import AddIcon from '@material-ui/icons/Add';
 import { useAlert } from 'react-alert';
@@ -16,7 +16,7 @@ import {
 	editRole,
 	getQueryRoles,
 } from 'common/services/Roles';
-import { mapRoles } from './interfaces';
+import { mapMenus, mapRoles } from './interfaces';
 import { ROLE_COLUMNS } from './columns';
 import { ACTIONS_COLUMN_V2 } from 'common/constants';
 import RoleActions from './RoleActions/RoleActions';
@@ -24,7 +24,8 @@ import { RoleForm } from 'common/validations/Role';
 import RoleFormModal from './RoleForm/RoleForm';
 import { Chip } from '@material-ui/core';
 
-export const renderMenuList = (menus: Option[]) => {
+export const renderMenuList = (menusString: string) => {
+	const menus = mapMenus(menusString);
 	return menus.map((m) => (
 		<Chip style={{ margin: '2px 3px' }} label={m.label} />
 	));
@@ -102,6 +103,7 @@ const Roles = () => {
 				{status === 'success' && (
 					<PageBody>
 						<GenericTable
+							filename='Roles'
 							columns={columns}
 							data={roles}
 							rightButton={

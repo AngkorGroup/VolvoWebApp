@@ -1,14 +1,30 @@
-import {
-    ACTIONS_COLUMN
-} from '../../common/constants/tableColumn';
-
 export const CURRENCY_COLUMNS = [
-    { title: 'Id' },
-    { title: 'Nombre' },
-    { title: '#TopPerú' },
-    { title: 'Abreviatura' },
-    { title: 'Simbolo' },
-    { title: 'Estado' },
-    { title: 'Fecha Baja' },
-    ACTIONS_COLUMN,
+	{
+		Header: 'Id',
+		accessor: 'id',
+	},
+	{
+		Header: 'Nombre',
+		accessor: 'name',
+	},
+	{
+		Header: '#TopPerú',
+		accessor: 'tpCode',
+	},
+	{
+		Header: 'Abreviatura',
+		accessor: 'abbreviation',
+	},
+	{
+		Header: 'Símbolo',
+		accessor: 'symbol',
+	},
+	{
+		Header: 'Estado',
+		accessor: 'status',
+	},
+	{
+		Header: 'Fecha Baja',
+		accessor: 'archiveAt',
+	},
 ];

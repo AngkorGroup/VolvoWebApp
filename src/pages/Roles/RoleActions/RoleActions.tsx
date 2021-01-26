@@ -3,7 +3,7 @@ import { ConfirmationModal, VolvoIconButton } from 'common/components';
 import React, { useState } from 'react';
 import CreateIcon from '@material-ui/icons/Create';
 import DeleteIcon from '@material-ui/icons/Delete';
-import { RoleColumn } from '../interfaces';
+import { mapMenus, RoleColumn } from '../interfaces';
 import { RoleForm } from 'common/validations/Role';
 import RoleFormModal from '../RoleForm/RoleForm';
 import { ACTIONS_STYLE } from 'common/constants';
@@ -26,7 +26,11 @@ const RoleActions: React.FC<RoleActionsProps> = ({
 	const classes = useStyles();
 	const [showEdit, setShowEdit] = useState(false);
 	const [showDelete, setShowDelete] = useState(false);
-	const { id, name } = item;
+	const { id, name, roleMenus } = item;
+	const parsedItem = {
+		...item,
+		roleMenus: mapMenus(roleMenus),
+	};
 	return (
 		<div className={classes.actionButtons}>
 			<VolvoIconButton color='primary' onClick={() => setShowEdit(true)}>
@@ -39,7 +43,7 @@ const RoleActions: React.FC<RoleActionsProps> = ({
 				<RoleFormModal
 					title='Editar Rol'
 					show={showEdit}
-					values={item as RoleForm}
+					values={parsedItem as RoleForm}
 					onClose={() => setShowEdit(false)}
 					onConfirm={onEdit}
 				/>

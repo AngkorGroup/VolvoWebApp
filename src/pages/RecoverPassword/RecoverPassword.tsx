@@ -95,6 +95,7 @@ const RecoverPassword = () => {
 								helperText={touched.newPassword && errors.newPassword}
 								variant='outlined'
 								margin='normal'
+								type='password'
 								fullWidth
 								autoFocus
 								as={TextField}
@@ -106,6 +107,7 @@ const RecoverPassword = () => {
 								helperText={touched.confirmPassword && errors.confirmPassword}
 								variant='outlined'
 								margin='normal'
+								type='password'
 								fullWidth
 								autoFocus
 								as={TextField}
