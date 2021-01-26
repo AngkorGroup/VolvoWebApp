@@ -63,8 +63,8 @@ const BankAccounts: React.FC = () => {
 			refetch();
 			alert.success(
 				at(
-					'Tipo de Tarjeta Agregado',
-					'Se agregó un nuevo tipo de tarjeta correctamente',
+					'Cuenta bancaria Agregada',
+					'Se agregó una nueva cuenta bancaria correctamente',
 				),
 			);
 		}
@@ -85,8 +85,8 @@ const BankAccounts: React.FC = () => {
 			refetch();
 			alert.success(
 				at(
-					'Tipo de Tarjeta Editado',
-					'Se editó un tipo de tarjeta correctamente',
+					'Cuenta bancaria Editada',
+					'Se editó una cuenta bancaria correctamente',
 				),
 			);
 		}
@@ -98,8 +98,8 @@ const BankAccounts: React.FC = () => {
 			refetch();
 			alert.success(
 				at(
-					'Tipo de Tarjeta Desactivado',
-					'Se desactivó un tipo de tarjeta correctamente',
+					'Cuenta Bancaria Desactivada',
+					'Se desactivó una cuenta bancaria correctamente',
 				),
 			);
 		}
