@@ -6,8 +6,10 @@ import {
 } from '@material-ui/core';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import GuardedRoute from 'common/components/GuardedRoute/GuardedRoute';
+import { api, buildAlertBody } from 'common/utils';
 import moment from 'moment';
-import React, { Suspense } from 'react';
+import React, { Suspense, useEffect } from 'react';
+import { useAlert } from 'react-alert';
 import { QueryCache, ReactQueryCacheProvider } from 'react-query';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import './App.css';
@@ -28,6 +30,21 @@ const queryCache = new QueryCache({
 });
 
 const App = () => {
+	const alert = useAlert();
+	useEffect(() => {
+		api.addResponseTransform((response) => {
+			const { errorMessage } = response?.data;
+			if (errorMessage) {
+				alert.error(
+					buildAlertBody(
+						'Error',
+						`Se recibió el siguiente error: ${errorMessage}`,
+					),
+				);
+			}
+		});
+		// eslint-disable-next-line
+	}, []);
 	return (
 		<div className='App'>
 			<ReactQueryCacheProvider queryCache={queryCache}>

@@ -23,15 +23,7 @@ export interface TableLoad {
 
 export const mapPreLoads = (loads: PreLoad[]): TableLoad[] => {
 	return loads.map(
-		({
-			rowIndex,
-			batch,
-			card,
-			dealerName,
-			contact,
-			errorMessage,
-			lineContent,
-		}) => ({
+		({ rowIndex, batch, card, contact, errorMessage, lineContent }) => ({
 			index: rowIndex,
 			number: batch?.tpContractBatchNumber,
 			ruc: batch?.client?.ruc,
@@ -46,8 +38,8 @@ export const mapPreLoads = (loads: PreLoad[]): TableLoad[] => {
 			reason: batch?.businessArea?.name,
 			card: card?.cardType?.name,
 			tpNumber: batch?.tpContractNumber,
-			dealer: dealerName,
-			contactName: contact?.fullName,
+			dealer: batch?.dealerName,
+			contactName: `${contact?.firstName} ${contact?.lastName}`,
 			contactPhone: contact?.phone,
 			errorMessage,
 			lineContent,
