@@ -41,7 +41,7 @@ const ContactActions: React.FC<ContactActionsProps> = ({
 					{type !== ContactTypeKey.Primary && (
 						<VolvoIconButton
 							color='info'
-							title='Dar de alta como usuario'
+							title='Establecer como usuario principal'
 							onClick={() => setShowConfirmation(true)}
 						>
 							<AccountCircleIcon />
