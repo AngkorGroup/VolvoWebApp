@@ -5,6 +5,7 @@ export enum PDFConfig {
 	marginLeft = 40,
 	marginTop = 40,
 	fontSize = 15,
+	maxColumns = 11,
 }
 
 export enum UserType {
