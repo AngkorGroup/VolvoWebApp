@@ -14,12 +14,16 @@ interface DownloadPdfProps {
 	data: any[];
 }
 
+const hasColumnsReachedMax = (row: object[]) =>
+	row.length > 0 && Object.keys(row[0]).length > PDFConfig.maxColumns;
+
 const DownloadPdf: React.FC<DownloadPdfProps> = ({
 	className,
 	name,
 	columns,
 	data,
 }: DownloadPdfProps) => {
+	const exceedMaxColumns = hasColumnsReachedMax(data);
 	const now = moment().format('DD-MM-YYYY');
 	const filename = `${name.split(' ').join('_')}_${now}`;
 	const generatePDF = () => {
@@ -37,6 +41,7 @@ const DownloadPdf: React.FC<DownloadPdfProps> = ({
 			startY: 50,
 			columns: headers,
 			body: data,
+			styles: exceedMaxColumns ? { fontSize: 6 } : {},
 		});
 		doc.save(`${filename}.pdf`);
 	};
