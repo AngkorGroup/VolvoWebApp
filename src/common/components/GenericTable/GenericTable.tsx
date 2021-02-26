@@ -144,6 +144,12 @@ const GenericTable: React.FC<GenericTableProps> = ({
 		},
 	);
 
+	useEffect(() => {
+		const savedGlobalFilter = globalFilter;
+		setGlobalFilter('');
+		setGlobalFilter(savedGlobalFilter);
+	}, [data]);
+
 	const onChangePage = (e: any, p: number) => gotoPage(p);
 	const onChangeRowsPerPage = (e: ChangeEvent) => setPageSize(e.target.value);
 	const labelPageOf = () => `Página ${pageIndex + 1} de ${pageOptions.length}`;
