@@ -33,7 +33,7 @@ const App = () => {
 	const alert = useAlert();
 	useEffect(() => {
 		api.addResponseTransform((response) => {
-			const { errorMessage } = response?.data;
+			const { errorMessage } = response?.data || {};
 			if (errorMessage) {
 				alert.error(
 					buildAlertBody(
