@@ -24,6 +24,7 @@ const initialState: ContextProps = {
 };
 
 type Callback = Function | undefined;
+type ListValues = { currencies: Option[]; documentTypes: Option[] };
 
 const AppContext = React.createContext<ContextProps>(initialState);
 
@@ -31,17 +32,22 @@ const AppProvider = ({ children }: AppProviderProps) => {
 	const [state, setState] = useState<ContextProps>(initialState);
 
 	useEffect(() => {
-		const getListValues = async () => {
-			const curResponse = await getQueryCurrencies();
-			const docResponse = await getDocumentTypes();
-			if (curResponse.ok && docResponse.ok) {
-				const currencies = parseListValues(curResponse.data || []);
-				const documentTypes = parseListValues(docResponse.data || []);
-				setState((old) => ({ ...old, currencies, documentTypes }));
-			}
-		};
-		getListValues();
-	}, []);
+		if (state.user) {
+			const getListValues = async () => {
+				const curResponse = await getQueryCurrencies();
+				const docResponse = await getDocumentTypes();
+				const listValues: ListValues = { currencies: [], documentTypes: [] };
+				if (curResponse.ok) {
+					listValues.currencies = parseListValues(curResponse.data || []);
+				}
+				if (docResponse.ok) {
+					listValues.documentTypes = parseListValues(docResponse.data || []);
+				}
+				setState((old) => ({ ...old, ...listValues }));
+			};
+			getListValues();
+		}
+	}, [state.user]);
 
 	const updateState = useCallback(
 		(newState: ContextProps, callback: Callback = undefined) => {

@@ -82,6 +82,11 @@ export const MENU_ITEMS: MenuItem[] = [
 				title: 'Cuentas Bancarias',
 				path: '/configuration/bank_accounts',
 			},
+			{
+				id: 'MAPPINGS',
+				title: 'Mappings',
+				path: '/configuration/mappings',
+			},
 		],
 	},
 	{

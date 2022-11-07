@@ -398,3 +398,79 @@ export interface Role {
 	name: string;
 	roleMenus: RoleMenu[];
 }
+
+export interface Mapping {
+	id: number;
+	mappingNumber: string;
+	type: string;
+	description: string;
+	company: string;
+	feeder: string;
+	file: string;
+	username: string;
+	password: string;
+	date: string;
+	filler: string;
+	version: string;
+	receiverLogicalID: string;
+	receiverComponentID: string;
+	senderLogicalID: string;
+	senderComponentID: string;
+	createdAt: string;
+	createdBy: string;
+	archiveAt: string;
+}
+
+export interface MappingHeader {
+	id: number;
+	type: string;
+	recordType: string;
+	company: string;
+	documentNumber: string;
+	reference: string;
+	control: string;
+	documentType: string;
+	documentDate: string;
+	postDate: string;
+	currency: string;
+	exchangeRate: string;
+	documentHeader: string;
+	translationDate: string;
+	intercompanyNumber: string;
+	tradingPartner: string;
+	exchangeRateType: string;
+	postingPeriod: string;
+	exchangeRateToFactor: string;
+	exchangeRateFromFactor: string;
+	reversalReason: string;
+	reversalDate: string;
+	createdAt: string;
+	createdBy: string;
+	archiveAt: string;
+}
+
+export interface MappingDetail {
+	id: number;
+	type: string;
+	documentType: string;
+	line: string;
+	recordType: string;
+	company: string;
+	reference: string;
+	postKey: string;
+	account: string;
+	sign: string;
+	taxCode: string;
+	taxAmount: string;
+	costCenter: string;
+	profitCenter: string;
+	tradePartner: string;
+	docText: string;
+	moreInfo: string;
+	businessArea: string;
+	market: string;
+	customer: string;
+	productModel: string;
+	lineType: string;
+	classification: string;
+}

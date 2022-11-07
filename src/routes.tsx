@@ -188,17 +188,23 @@ const PageBusinessAreas = (props: any) => {
 	return <LayoutBusinessAreas {...props} />;
 };
 
-export interface Route {
-	id: string;
-	path: string;
-	component: (props: any) => JSX.Element;
-}
-
 const PageSectors = (props: any) => {
 	const Sectors = lazy(() => import('./pages/Sectors/Sectors'));
 	const LayoutSectors = HOCLayout(Sectors);
 	return <LayoutSectors {...props} />;
 };
+
+const PageMappings = (props: any) => {
+	const Mappings = lazy(() => import('./pages/Mappings/Mappings'));
+	const LayoutMappings = HOCLayout(Mappings);
+	return <LayoutMappings {...props} />;
+};
+
+export interface Route {
+	id: string;
+	path: string;
+	component: (props: any) => JSX.Element;
+}
 
 export const guarded: Route[] = [
 	// Configuration
@@ -246,6 +252,11 @@ export const guarded: Route[] = [
 		id: 'BANK_ACCOUNTS',
 		path: '/configuration/bank_accounts',
 		component: PageBankAccounts,
+	},
+	{
+		id: 'MAPPINGS',
+		path: '/configuration/mappings',
+		component: PageMappings,
 	},
 
 	// Cards
