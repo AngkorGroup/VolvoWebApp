@@ -157,6 +157,15 @@ const FormModal: React.FC<FormModalProps> = ({
 								</Grid>
 								<Grid item xs={4}>
 									<Field
+										name='account'
+										label='Account'
+										error={touched.account && !!errors.account}
+										helperText={touched.account && errors.account}
+										{...fieldProps}
+									/>
+								</Grid>
+								<Grid item xs={4}>
+									<Field
 										name='sign'
 										label='Sign'
 										error={touched.sign && !!errors.sign}
