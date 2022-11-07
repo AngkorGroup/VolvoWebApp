@@ -46,3 +46,6 @@ export const BANK_ACCOUNT_TYPES_URL = '/bank_account_types';
 export const CURRENCIES_URL = '/currencies';
 export const ROLES_URL = '/roles';
 export const MENUS_URL = '/menus';
+export const MAPPINGS_URL = '/mappings';
+export const MAPPING_HEADERS_URL = '/mapping_headers';
+export const MAPPING_DETAILS_URL = '/mapping_details';

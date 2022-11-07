@@ -9,6 +9,7 @@ export * from './ClientUser';
 export * from './Currency';
 export * from './Dealer';
 export * from './DocumentType';
+export * from './Mapping';
 export * from './RechargeType';
 export * from './Role';
 export * from './Sector';

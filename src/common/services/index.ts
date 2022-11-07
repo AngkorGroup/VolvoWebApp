@@ -16,6 +16,7 @@ export * from './Dealers';
 export * from './DocumentTypes';
 export * from './Liquidations';
 export * from './Loads';
+export * from './Mappings';
 export * from './Movements';
 export * from './RechargeTypes';
 export * from './Refunds';
