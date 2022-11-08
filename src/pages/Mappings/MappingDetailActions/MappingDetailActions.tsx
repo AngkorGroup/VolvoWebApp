@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import SettingsIcon from '@material-ui/icons/Settings';
 import { ConfirmationModal, VolvoIconButton } from 'common/components';
 import { MappingDetailForm, TableMapping } from '../interfaces';
-import FormModal from '../MappingHeadersModal/FormModal/FormModal';
+import FormModal from '../MappingDetailsModal/FormModal/FormModal';
 
 interface MappingDetailActionsProps {
 	item: TableMapping;
