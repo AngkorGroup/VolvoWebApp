@@ -31,3 +31,4 @@ export const mapRefunds = (refunds: Refund[]): RefundColumn[] => {
 export const isCanceled = (st: string) => st === RefundStatus.Anulado;
 export const isPaid = (st: string) => st === RefundStatus.Pagado;
 export const isScheduled = (st: string) => st === RefundStatus.Programado;
+export const isTabulated = (st: string) => st === RefundStatus.Contabilizado;

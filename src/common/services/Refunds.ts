@@ -42,3 +42,12 @@ export const getQueryRefundLiquidations = async (key: string, id: string) => {
 export const cancelRefund = async (id: string) => {
 	return await api.post(`${REFUNDS_URL}/${id}/cancel`);
 };
+
+export const sendRefundMapping = async (
+	id: string,
+	shouldResend: boolean = false,
+) => {
+	return shouldResend
+		? await api.post(`${REFUNDS_URL}/${id}/resend`)
+		: await api.post(`${REFUNDS_URL}/${id}/send`);
+};

@@ -25,6 +25,7 @@ export enum RefundStatus {
 	Anulado = 'Anulado',
 	Programado = 'Programado',
 	Pagado = 'Pagado',
+	Contabilizado = 'Contabilizado',
 }
 
 export enum MovementType {

@@ -2,7 +2,13 @@ import { Menu, MenuItem } from '@material-ui/core';
 import React, { useState } from 'react';
 import SettingsIcon from '@material-ui/icons/Settings';
 import { ConfirmationModal, VolvoIconButton } from 'common/components';
-import { isCanceled, isPaid, isScheduled, RefundColumn } from '../interfaces';
+import {
+	isCanceled,
+	isPaid,
+	isScheduled,
+	isTabulated,
+	RefundColumn,
+} from '../interfaces';
 import LiquidationsModal from '../LiquidationsModal/LiquidationsModal';
 import PayModal from '../PayModal/PayModal';
 
@@ -11,6 +17,7 @@ interface RefundActionsProps {
 	status: string;
 	onPay: (id: string, date: string, voucher: string) => void;
 	onCancel: (id: string) => void;
+	onSendMapping: (id: string, shouldResend?: boolean) => void;
 }
 
 const RefundActions: React.FC<RefundActionsProps> = ({
@@ -18,11 +25,14 @@ const RefundActions: React.FC<RefundActionsProps> = ({
 	status,
 	onPay,
 	onCancel,
+	onSendMapping,
 }: RefundActionsProps) => {
 	const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 	const [showLiquidationsModal, setShowLiquidationsModal] = useState(false);
 	const [showPayModal, setShowPayModal] = useState(false);
 	const [showCancelModal, setShowCancelModal] = useState(false);
+	const [showSendMappingModal, setShowSendMappingModal] = useState(false);
+	const [showResendMappingModal, setShowResendMappingModal] = useState(false);
 	const { id } = item;
 
 	const onOpenMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -42,6 +52,12 @@ const RefundActions: React.FC<RefundActionsProps> = ({
 		withCloseMenu(() => setShowPayModal(flag));
 	const setCancelModalVisible = (flag: boolean) =>
 		withCloseMenu(() => setShowCancelModal(flag));
+	const setSendModalVisible = (flag: boolean) =>
+		withCloseMenu(() => setShowSendMappingModal(flag));
+	const setResendModalVisible = (flag: boolean) =>
+		withCloseMenu(() => setShowResendMappingModal(flag));
+
+	const onResendMapping = (id: string) => onSendMapping(id, true);
 
 	return (
 		<>
@@ -65,6 +81,11 @@ const RefundActions: React.FC<RefundActionsProps> = ({
 						{isScheduled(status) && (
 							<MenuItem onClick={setPayModalVisible(true)}>Pagar</MenuItem>
 						)}
+						{isPaid(status) && (
+							<MenuItem onClick={setSendModalVisible(true)}>
+								Enviar Mapping
+							</MenuItem>
+						)}
 						{(isPaid(status) || isScheduled(status)) && (
 							<MenuItem onClick={setLiquidationsModalVisible(true)}>
 								Ver Liquidaciones
@@ -72,6 +93,11 @@ const RefundActions: React.FC<RefundActionsProps> = ({
 						)}
 						{isScheduled(status) && (
 							<MenuItem onClick={setCancelModalVisible(true)}>Anular</MenuItem>
+						)}
+						{isTabulated(status) && (
+							<MenuItem onClick={setResendModalVisible(true)}>
+								Reenviar Mapping
+							</MenuItem>
 						)}
 					</Menu>
 				</>
@@ -99,6 +125,26 @@ const RefundActions: React.FC<RefundActionsProps> = ({
 					body={`¿Está seguro que desea anular el siguiente reembolso?`}
 					onClose={setCancelModalVisible(false)}
 					onConfirm={onCancel}
+				/>
+			)}
+			{showSendMappingModal && (
+				<ConfirmationModal
+					show={showSendMappingModal}
+					id={id}
+					title='Enviar Mapping'
+					body={`Se enviará el mapping del reembolso seleccionado`}
+					onClose={setSendModalVisible(false)}
+					onConfirm={onSendMapping}
+				/>
+			)}
+			{showResendMappingModal && (
+				<ConfirmationModal
+					show={showResendMappingModal}
+					id={id}
+					title='Reenviar Mapping'
+					body={`Se reenviará el mapping del reembolso seleccionado`}
+					onClose={setResendModalVisible(false)}
+					onConfirm={onResendMapping}
 				/>
 			)}
 		</>
