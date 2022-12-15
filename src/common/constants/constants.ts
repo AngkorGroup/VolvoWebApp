@@ -430,6 +430,10 @@ export const REFUND_STATUSES = [
 		value: RefundStatus.Pagado,
 		label: RefundStatus.Pagado.toUpperCase(),
 	},
+	{
+		value: RefundStatus.Contabilizado,
+		label: RefundStatus.Contabilizado.toUpperCase(),
+	},
 ];
 
 export const LIQUIDATION_STATUSES = [

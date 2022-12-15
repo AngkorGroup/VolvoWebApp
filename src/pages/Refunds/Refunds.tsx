@@ -20,7 +20,12 @@ import {
 	DEFAULT_MOMENT_FORMAT as FORMAT,
 	ACTIONS_COLUMN_V2,
 } from 'common/constants';
-import { cancelRefund, getQueryRefunds, payRefund } from 'common/services';
+import {
+	cancelRefund,
+	getQueryRefunds,
+	payRefund,
+	sendRefundMapping,
+} from 'common/services';
 import { buildAlertBody as at, RefundStatus } from 'common/utils';
 import React, { useMemo, useState } from 'react';
 import { useAlert } from 'react-alert';
@@ -81,6 +86,21 @@ const Refunds = () => {
 		}
 	};
 
+	const onSendMapping = async (id: string, shouldResend: boolean = false) => {
+		const response = await sendRefundMapping(id, shouldResend);
+		if (response.ok) {
+			refetch();
+			alert.success(
+				at(
+					`Mapping ${shouldResend ? 'Reenviado' : 'Enviado'}`,
+					`Se ${
+						shouldResend ? 're' : ''
+					}envió el mapping del reembolso correctamente`,
+				),
+			);
+		}
+	};
+
 	const columns = useMemo(
 		() => [
 			...REFUNDS_COLUMNS,
@@ -92,12 +112,13 @@ const Refunds = () => {
 						status={refundStatus}
 						onPay={onPay}
 						onCancel={onCancel}
+						onSendMapping={onSendMapping}
 					/>
 				),
 			},
 		],
 		// eslint-disable-next-line
-		[],
+		[refundStatus],
 	);
 
 	return (
