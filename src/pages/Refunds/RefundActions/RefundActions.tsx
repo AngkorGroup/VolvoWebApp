@@ -86,7 +86,7 @@ const RefundActions: React.FC<RefundActionsProps> = ({
 								Enviar Mapping
 							</MenuItem>
 						)}
-						{(isPaid(status) || isScheduled(status)) && (
+						{(isPaid(status) || isScheduled(status) || isTabulated(status)) && (
 							<MenuItem onClick={setLiquidationsModalVisible(true)}>
 								Ver Liquidaciones
 							</MenuItem>
