@@ -33,6 +33,7 @@ export const getClientsByPagination = async (
 	return await api.get<Client[]>(GET_CLIENT_BY_PAGINATION_URL, {
 		query,
 		onlyActive,
+		pageLength: '10000',
 	});
 };
 
